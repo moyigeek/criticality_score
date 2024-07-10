@@ -1,4 +1,4 @@
-module Count_depends
+module github.com/HUSTSeclab/criticality_score
 
 go 1.20
 

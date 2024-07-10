@@ -3,8 +3,8 @@ package main
 import (
     "fmt"
     "os"
-    "Count_depends/cmd/archlinux"
-    "Count_depends/cmd/debian"
+    "github.com/HUSTSeclab/criticality_score/pkg/collector/archlinux"
+    "github.com/HUSTSeclab/criticality_score/pkg/collector/debian"
 )
 
 func main() {
