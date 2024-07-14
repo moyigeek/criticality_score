@@ -118,6 +118,45 @@ func readDescFile(descPath string) (DepInfo, []DepInfo, error) {
 	return pkgInfo, dependencies, nil
 }
 
+func generateDependencyGraph(packages map[string]map[string]interface{}, outputPath string) error {
+	file, err := os.Create(outputPath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	writer := bufio.NewWriter(file)
+	writer.WriteString("digraph {\n")
+
+	// Create a map to store package indices
+	packageIndices := make(map[string]int)
+	index := 0
+
+	// Assign an index to each package and write the node definitions
+	for pkgName, pkgInfo := range packages {
+		packageIndices[pkgName] = index
+		label := fmt.Sprintf("%s@%s", pkgName, pkgInfo["Info"].(DepInfo).Version)
+		writer.WriteString(fmt.Sprintf("  %d [label=\"%s\"];\n", index, label))
+		index++
+	}
+
+	// Write the edges (dependencies)
+	for pkgName, pkgInfo := range packages {
+		pkgIndex := packageIndices[pkgName]
+		if depends, ok := pkgInfo["Depends"].([]DepInfo); ok {
+			for _, dep := range depends {
+				if depIndex, ok := packageIndices[dep.Name]; ok {
+					writer.WriteString(fmt.Sprintf("  %d -> %d [label=\"%s\"];\n", pkgIndex, depIndex, dep.Version))
+				}
+			}
+		}
+	}
+
+	writer.WriteString("}\n")
+	writer.Flush()
+	return nil
+}
+
 func getAllDep(packages map[string]map[string]interface{}, pkgName string, deps []string) []string {
 	deps = append(deps, pkgName)
 	if pkg, ok := packages[pkgName]; ok {
@@ -142,7 +181,7 @@ func contains(slice []string, item string) bool {
 	return false
 }
 
-func Archlinux() {
+func Archlinux(outputPath string) {
 	downloadDir := "./download"
 
 	// Check if download directory exists
@@ -222,6 +261,15 @@ func Archlinux() {
 		return
 	}
 	fmt.Printf("Done, total: %d packages.\n", len(packages))
+
+	if outputPath != "" {
+		err := generateDependencyGraph(packages, outputPath)
+		if err != nil {
+			fmt.Printf("Error generating dependency graph: %v\n", err)
+			return
+		}
+		fmt.Println("Dependency graph generated successfully.")
+	}
 
 	fmt.Println("Building dependencies graph...")
 	keys := make([]string, 0, len(packages))

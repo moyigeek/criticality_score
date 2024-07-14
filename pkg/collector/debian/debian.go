@@ -101,6 +101,47 @@ func toDep(dep string) DepInfo {
 	return DepInfo{Name: dep, Arch: "", Version: ""}
 }
 
+func generateDependencyGraph(packages map[string]map[string]interface{}, outputPath string) error {
+	file, err := os.Create(outputPath)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	writer := bufio.NewWriter(file)
+	writer.WriteString("digraph {\n")
+
+	// Create a map to store package indices
+	packageIndices := make(map[string]int)
+	index := 0
+
+	// Assign an index to each package and write the node definitions
+	for pkgName, pkgInfo := range packages {
+		packageIndices[pkgName] = index
+		label := fmt.Sprintf("%s@%s", pkgName, pkgInfo["Version"].(string))
+		writer.WriteString(fmt.Sprintf("  %d [label=\"%s\"];\n", index, label))
+		index++
+	}
+
+	// Write the edges (dependencies)
+	for pkgName, pkgInfo := range packages {
+		pkgIndex := packageIndices[pkgName]
+		if depends, ok := pkgInfo["Depends"].([]interface{}); ok {
+			for _, depInterface := range depends {
+				if depInfo, ok := depInterface.(DepInfo); ok {
+					if depIndex, ok := packageIndices[depInfo.Name]; ok {
+						writer.WriteString(fmt.Sprintf("  %d -> %d [label=\"%s\"];\n", pkgIndex, depIndex, depInfo.Version))
+					}
+				}
+			}
+		}
+	}
+
+	writer.WriteString("}\n")
+	writer.Flush()
+	return nil
+}
+
 func getAllDep(packages map[string]map[string]interface{}, pkgName string, deps []string) []string {
 	deps = append(deps, pkgName)
 	if pkg, ok := packages[pkgName]; ok {
@@ -127,7 +168,7 @@ func contains(slice []string, item string) bool {
 	return false
 }
 
-func Debian() {
+func Debian(outputPath string) {
 	fmt.Println("Getting package list...")
 	packages := parseList()
 	fmt.Printf("Done, total: %d packages.\n", len(packages))
@@ -161,4 +202,13 @@ func Debian() {
 		writer.WriteString(fmt.Sprintf("%s,%d\n", key, count))
 	}
 	writer.Flush()
+
+	if outputPath != "" {
+		err := generateDependencyGraph(packages, outputPath)
+		if err != nil {
+			fmt.Printf("Error generating dependency graph: %v\n", err)
+			return
+		}
+		fmt.Println("Dependency graph generated successfully.")
+	}
 }
