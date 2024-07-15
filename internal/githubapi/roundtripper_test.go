@@ -29,7 +29,7 @@ import (
 
 	"go.uber.org/zap/zaptest"
 
-	"github.com/ossf/criticality_score/v2/internal/retry"
+	"github.com/HUSTSecLab/criticality_score/internal/retry"
 )
 
 const (

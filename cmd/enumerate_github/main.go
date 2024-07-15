@@ -282,11 +282,6 @@ func main() {
 		logger = logger.With(zap.String("marker_filename", *markerFileFlag))
 		logger.Debug("Writing the marker file")
 
-		if err := marker.Write(ctx, markerType, *markerFileFlag, out.Name()); err != nil {
-			logger.Error("Failed creating marker file", zap.Error(err))
-			// Don't exit after a failure to create the marker file. Just fail
-			// to write the marker file.
-		}
 	}
 
 	logger.With(

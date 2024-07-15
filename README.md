@@ -49,3 +49,11 @@ The `enumerate_github` tools are designed to enumerate GitHub repositories and g
 To use the `enumerate_github` tools, navigate to the `cmd/enumerate_github` directory and follow the instructions provided in the README file there.
 
 This will provide you with detailed steps on how to use the tools effectively.
+
+### Using the show_depsdev_deps tools
+
+```sh
+./bin/show_depsdev_deps input.txt output.txt
+```
+
+By using the `show_depsdev_deps` tools, you can use deps.dev api to collect the dependencies of the projects in the input file which enumerate_github tools has generated.
