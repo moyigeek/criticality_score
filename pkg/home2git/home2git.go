@@ -3,7 +3,7 @@ package home2git
 import (
 	"fmt"
 
-	"github.com/HUSTSeclab/criticality_score/pkg/home2git/provider"
+	"github.com/HUSTSecLab/criticality_score/pkg/home2git/provider"
 )
 
 var providers = []provider.QueryFunction{
