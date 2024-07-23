@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"slices"
 	"strings"
 
+	"golang.org/x/exp/slices"
 	"golang.org/x/net/html"
 )
 
@@ -27,7 +27,6 @@ func downloadHTML(url string) (*string, error) {
 	}
 
 	bodyStr := string(body)
-
 	return &bodyStr, nil
 }
 
@@ -63,8 +62,6 @@ func browseHTML(url string, depth int, urlVisited *[]string) ([]QueryResultItem,
 
 	*urlVisited = append(*urlVisited, url)
 
-	// fmt.Println("Downloading HTML from", url, "  depth:", depth)
-
 	htmlstr, err := downloadHTML(url)
 	if err != nil {
 		return nil, err
@@ -80,7 +77,7 @@ func browseHTML(url string, depth int, urlVisited *[]string) ([]QueryResultItem,
 	})
 
 	for _, node := range nodesContainingGitLink {
-		mLinks := getMatchedLinks(node.Data)
+		mLinks := getMatchedLinks(node.Data, depth)
 		results = append(results, mLinks...)
 	}
 
@@ -123,6 +120,9 @@ func browseHTML(url string, depth int, urlVisited *[]string) ([]QueryResultItem,
 
 func QeuryByBrowse(homepage string, packageName string) (*QueryResult, error) {
 	links, err := browseHTML(homepage, 2, &[]string{})
+	for _, link := range links {
+		fmt.Println(link)
+	}
 	if err != nil {
 		return nil, err
 	}

@@ -39,6 +39,5 @@ func HomepageToGit(homepage string, packageName string) (*provider.QueryResultIt
 	if maxResult == nil {
 		return nil, fmt.Errorf("no git link found")
 	}
-
 	return maxResult, nil
 }

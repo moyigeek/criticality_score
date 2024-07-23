@@ -1,6 +1,9 @@
 package provider
 
-import "regexp"
+import (
+	"fmt"
+	"regexp"
+)
 
 type QueryResultItem struct {
 	GitURL     string
@@ -18,9 +21,9 @@ var gitLinkPatterns = []struct {
 	Pattern    *regexp.Regexp
 	Confidence int
 }{
-	{Pattern: regexp.MustCompile(`git://\S*`), Confidence: 5000},
-	{Pattern: regexp.MustCompile(`https?://\S*\.git`), Confidence: 5000},
-	{Pattern: regexp.MustCompile(`https?://github.com/\S*`), Confidence: 4000},
+	{Pattern: regexp.MustCompile(`git://[^\s'";,#\\]+`), Confidence: 5000},
+	{Pattern: regexp.MustCompile(`https?://[^\s'";,#\\]+\.git`), Confidence: 5000},
+	{Pattern: regexp.MustCompile(`https?://github.com/[^\s'";,#\\]+`), Confidence: 4000},
 }
 
 func matchGitLink(text string) bool {
@@ -32,14 +35,16 @@ func matchGitLink(text string) bool {
 	return false
 }
 
-func getMatchedLinks(text string) []QueryResultItem {
+func getMatchedLinks(text string, depth int) []QueryResultItem {
 	var links []QueryResultItem
 	for _, pattern := range gitLinkPatterns {
 		matches := pattern.Pattern.FindAllString(text, -1)
 		for _, match := range matches {
+			fmt.Println(depth)
+			confidence := pattern.Confidence / (3 - depth)
 			links = append(links, QueryResultItem{
 				GitURL:     match,
-				Confidence: pattern.Confidence,
+				Confidence: confidence,
 			})
 		}
 	}
