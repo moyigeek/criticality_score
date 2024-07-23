@@ -120,9 +120,6 @@ func browseHTML(url string, depth int, urlVisited *[]string) ([]QueryResultItem,
 
 func QeuryByBrowse(homepage string, packageName string) (*QueryResult, error) {
 	links, err := browseHTML(homepage, 2, &[]string{})
-	for _, link := range links {
-		fmt.Println(link)
-	}
 	if err != nil {
 		return nil, err
 	}

@@ -1,7 +1,6 @@
 package provider
 
 import (
-	"fmt"
 	"regexp"
 )
 
@@ -40,7 +39,6 @@ func getMatchedLinks(text string, depth int) []QueryResultItem {
 	for _, pattern := range gitLinkPatterns {
 		matches := pattern.Pattern.FindAllString(text, -1)
 		for _, match := range matches {
-			fmt.Println(depth)
 			confidence := pattern.Confidence / (3 - depth)
 			links = append(links, QueryResultItem{
 				GitURL:     match,
