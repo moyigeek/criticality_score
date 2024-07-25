@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/home2git"
 )
@@ -61,11 +62,19 @@ func main() {
 
 		packageName := record[0]
 		homepageURL := record[1]
-		links := []string{} // 假设从其他地方获取链接列表
-
+		htmlContent, err := home2git.DownloadHTML(homepageURL)
+		if err != nil {
+			continue
+		}
+		if strings.HasPrefix(homepageURL, "https://github.com") {
+			writer.Write([]string{packageName, homepageURL, homepageURL})
+			continue
+		}
+		links, _ := home2git.FindLinksInHTML(homepageURL, htmlContent, 1)
+		// fmt.Println(links)
 		// 调用 ProcessHomepage 函数处理主页 URL
 		githubURL := home2git.ProcessHomepage(packageName, links, homepageURL)
-
+		// fmt.Println(githubURL)
 		// 将结果写入到输出文件
 		writer.Write([]string{packageName, homepageURL, githubURL})
 	}

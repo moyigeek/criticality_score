@@ -4,11 +4,11 @@ import "regexp"
 
 // 定义匹配Git链接的正则表达式，确保正确终止
 var gitLinkPatterns = []*regexp.Regexp{
-	regexp.MustCompile(`https?://github\.com/[^,)#\s'"]+`),
-	regexp.MustCompile(`https?://gitlab\.com/[^,)#\s'"]+`),
-	regexp.MustCompile(`https?://bitbucket\.org/[^,)#\s'"]+`),
-	regexp.MustCompile(`https?://gitlab\.org/[^,)#\s'"]+`),
-	regexp.MustCompile(`https?://gitee\.com/[^,)#\s'"]+`),
+	regexp.MustCompile(`https?://github\.com/([A-Za-z0-9]+)/([A-Za-z0-9]+)`),
+	// regexp.MustCompile(`https?://gitlab\.com/[^,)#\s'"]+`),
+	// regexp.MustCompile(`https?://bitbucket\.org/[^,)#\s'"]+`),
+	// regexp.MustCompile(`https?://gitlab\.org/[^,)#\s'"]+`),
+	// regexp.MustCompile(`https?://gitee\.com/[^,)#\s'"]+`),
 }
 
 // GitLink 包含链接和匹配的正则表达式
