@@ -20,12 +20,12 @@ type Config struct {
 }
 
 type GitHubStats struct {
-	StarCount        int
-	ForkCount        int
-	CreatedSince     time.Time
-	UpdatedSince     time.Time
-	ContributorCount int
-	CommitFrequency  int
+	StarCount        *int
+	ForkCount        *int
+	CreatedSince     *time.Time
+	UpdatedSince     *time.Time
+	ContributorCount *int
+	CommitFrequency  *int
 }
 
 func Run(ctx context.Context, db *sql.DB, owner string, repo string, config Config) error {
@@ -42,7 +42,7 @@ func Run(ctx context.Context, db *sql.DB, owner string, repo string, config Conf
 	var contributors []*github.Contributor
 	var commits []*github.RepositoryCommit
 
-	// 尝试获取仓库信息
+	// Fetch repository info
 	repoInfo, _, err = client.Repositories.Get(ctx, owner, repo)
 	if err != nil {
 		wait := handleRateLimitError(err)
@@ -52,15 +52,13 @@ func Run(ctx context.Context, db *sql.DB, owner string, repo string, config Conf
 		}
 	}
 	if err == nil {
-		stats.StarCount = *repoInfo.StargazersCount
-		stats.ForkCount = *repoInfo.ForksCount
-		stats.CreatedSince = repoInfo.CreatedAt.Time
-		stats.UpdatedSince = repoInfo.UpdatedAt.Time
-	} else {
-		fmt.Printf("Final error fetching repository info for %s/%s: %v\n", owner, repo, err)
+		stats.StarCount = intPointer(*repoInfo.StargazersCount)
+		stats.ForkCount = intPointer(*repoInfo.ForksCount)
+		stats.CreatedSince = &repoInfo.CreatedAt.Time
+		stats.UpdatedSince = &repoInfo.UpdatedAt.Time
 	}
 
-	// 获取贡献者
+	// Fetch contributors
 	contributors, _, err = client.Repositories.ListContributors(ctx, owner, repo, nil)
 	if err != nil {
 		wait := handleRateLimitError(err)
@@ -70,12 +68,10 @@ func Run(ctx context.Context, db *sql.DB, owner string, repo string, config Conf
 		}
 	}
 	if err == nil {
-		stats.ContributorCount = len(contributors)
-	} else {
-		fmt.Printf("Final error fetching contributors for %s/%s: %v\n", owner, repo, err)
+		stats.ContributorCount = intPointer(len(contributors))
 	}
 
-	// 获取提交信息
+	// Fetch commits
 	now := time.Now()
 	aYearAgo := now.AddDate(-1, 0, 0)
 	commits, _, err = client.Repositories.ListCommits(ctx, owner, repo, &github.CommitsListOptions{
@@ -93,9 +89,8 @@ func Run(ctx context.Context, db *sql.DB, owner string, repo string, config Conf
 		}
 	}
 	if err == nil {
-		stats.CommitFrequency = len(commits) / 52 // Assume 52 weeks in a year
-	} else {
-		fmt.Printf("Final error fetching commits for %s/%s: %v\n", owner, repo, err)
+		commitFreq := len(commits) / 52
+		stats.CommitFrequency = &commitFreq
 	}
 
 	err = updateDatabase(ctx, db, owner, repo, stats)
@@ -113,6 +108,10 @@ func handleRateLimitError(err error) time.Duration {
 		return waitDuration
 	}
 	return 0
+}
+
+func intPointer(i int) *int {
+	return &i
 }
 
 func updateDatabase(ctx context.Context, db *sql.DB, owner, repo string, stats GitHubStats) error {
