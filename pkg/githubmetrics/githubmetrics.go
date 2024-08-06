@@ -37,40 +37,82 @@ func Run(ctx context.Context, db *sql.DB, owner string, repo string, config Conf
 
 	stats := GitHubStats{}
 
-	// Fetch repository info
-	if repoInfo, _, err := client.Repositories.Get(ctx, owner, repo); err == nil {
+	var err error
+	var repoInfo *github.Repository
+	var contributors []*github.Contributor
+	var commits []*github.RepositoryCommit
+
+	// 尝试获取仓库信息
+	repoInfo, _, err = client.Repositories.Get(ctx, owner, repo)
+	if err != nil {
+		wait := handleRateLimitError(err)
+		if wait > 0 {
+			time.Sleep(wait)
+			repoInfo, _, err = client.Repositories.Get(ctx, owner, repo)
+		}
+	}
+	if err == nil {
 		stats.StarCount = *repoInfo.StargazersCount
 		stats.ForkCount = *repoInfo.ForksCount
 		stats.CreatedSince = repoInfo.CreatedAt.Time
 		stats.UpdatedSince = repoInfo.UpdatedAt.Time
 	} else {
-		fmt.Printf("Error fetching repository info for %s/%s: %v\n", owner, repo, err)
+		fmt.Printf("Final error fetching repository info for %s/%s: %v\n", owner, repo, err)
 	}
 
-	// Fetch contributors
-	if contributors, _, err := client.Repositories.ListContributors(ctx, owner, repo, nil); err == nil {
+	// 获取贡献者
+	contributors, _, err = client.Repositories.ListContributors(ctx, owner, repo, nil)
+	if err != nil {
+		wait := handleRateLimitError(err)
+		if wait > 0 {
+			time.Sleep(wait)
+			contributors, _, err = client.Repositories.ListContributors(ctx, owner, repo, nil)
+		}
+	}
+	if err == nil {
 		stats.ContributorCount = len(contributors)
 	} else {
-		fmt.Printf("Error fetching contributors for %s/%s: %v\n", owner, repo, err)
+		fmt.Printf("Final error fetching contributors for %s/%s: %v\n", owner, repo, err)
 	}
 
-	// Fetch commits
+	// 获取提交信息
 	now := time.Now()
 	aYearAgo := now.AddDate(-1, 0, 0)
-	if commits, _, err := client.Repositories.ListCommits(ctx, owner, repo, &github.CommitsListOptions{
+	commits, _, err = client.Repositories.ListCommits(ctx, owner, repo, &github.CommitsListOptions{
 		Since: aYearAgo,
 		Until: now,
-	}); err == nil {
+	})
+	if err != nil {
+		wait := handleRateLimitError(err)
+		if wait > 0 {
+			time.Sleep(wait)
+			commits, _, err = client.Repositories.ListCommits(ctx, owner, repo, &github.CommitsListOptions{
+				Since: aYearAgo,
+				Until: now,
+			})
+		}
+	}
+	if err == nil {
 		stats.CommitFrequency = len(commits) / 52 // Assume 52 weeks in a year
 	} else {
-		fmt.Printf("Error fetching commits for %s/%s: %v\n", owner, repo, err)
+		fmt.Printf("Final error fetching commits for %s/%s: %v\n", owner, repo, err)
 	}
 
-	err := updateDatabase(ctx, db, owner, repo, stats)
+	err = updateDatabase(ctx, db, owner, repo, stats)
 	if err != nil {
 		return fmt.Errorf("error updating database for %s/%s: %v", owner, repo, err)
 	}
 	return nil
+}
+
+func handleRateLimitError(err error) time.Duration {
+	if rateLimitError, ok := err.(*github.RateLimitError); ok {
+		resetTimestamp := rateLimitError.Rate.Reset.Time
+		waitDuration := time.Until(resetTimestamp)
+		fmt.Printf("GitHub API rate limit exceeded. Waiting %v before retrying...\n", waitDuration)
+		return waitDuration
+	}
+	return 0
 }
 
 func updateDatabase(ctx context.Context, db *sql.DB, owner, repo string, stats GitHubStats) error {
