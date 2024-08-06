@@ -8,6 +8,7 @@ require (
 	github.com/google/go-cmp v0.6.0
 	github.com/google/go-github/v47 v47.1.0
 	github.com/hasura/go-graphql-client v0.12.2
+	github.com/lib/pq v1.10.9
 	github.com/ossf/criticality_score/v2 v2.0.4
 	github.com/ossf/scorecard/v4 v4.10.5
 	go.uber.org/zap v1.27.0
