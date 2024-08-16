@@ -52,7 +52,7 @@ func main() {
 		totalRatio += depRatio
 
 		var depsdevCount int
-		err = db.QueryRow("SELECT depsdev_count FROM git_metrics WHERE github_link = $1", link).Scan(&depsdevCount)
+		err = db.QueryRow("SELECT depsdev_count FROM git_metrics WHERE git_link = $1", link).Scan(&depsdevCount)
 		if err != nil {
 			log.Printf("Failed to fetch depsdev_count for %s: %v", link, err)
 			continue
