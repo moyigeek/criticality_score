@@ -16,6 +16,7 @@ import (
 
 func main() {
 	config := loadConfig("config.json")
+
 	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		config.Host, config.Port, config.User, config.Password, config.Database)
 	db, err := sql.Open("postgres", connStr)
@@ -35,48 +36,35 @@ func main() {
 	}
 
 	for _, link := range links {
-		var totalRatio float64
+		totalRatio := 0.0
 
 		depRatio, err := ghdepratios.CalculateDependencyRatio(db, link, "debian_packages")
-		if err != nil {
-			log.Printf("Failed to calculate dependency ratio for Debian packages link %s: %v", link, err)
-			continue
+		if err == nil {
+			totalRatio += depRatio
 		}
-		totalRatio += depRatio
 
 		depRatio, err = ghdepratios.CalculateDependencyRatio(db, link, "arch_packages")
-		if err != nil {
-			log.Printf("Failed to calculate dependency ratio for Arch packages link %s: %v", link, err)
-			continue
+		if err == nil {
+			totalRatio += depRatio
 		}
-		totalRatio += depRatio
-
 		var depsdevCount int
-		err = db.QueryRow("SELECT depsdev_count FROM git_metrics WHERE git_link = $1", link).Scan(&depsdevCount)
-		if err != nil {
-			log.Printf("Failed to fetch depsdev_count for %s: %v", link, err)
-			continue
+		var pm string
+		err = db.QueryRow("SELECT COALESCE(depsdev_count, 0) FROM git_metrics WHERE git_link = $1", link).Scan(&depsdevCount)
+		if err == nil && depsdevCount > 0 {
+			pm, err := ghdepratios.DetectPackageManager(gitClient, link)
+			if err == nil && pm != "" {
+				totalPackages, ok := ghdepratios.PackageManagerData[pm]
+				if ok && totalPackages > 0 {
+					ratio := float64(depsdevCount) / float64(totalPackages)
+					totalRatio += ratio
+				}
+			}
 		}
 
-		if depsdevCount > 0 {
-			pm, err := ghdepratios.DetectPackageManager(gitClient, link)
-			if err != nil {
-				log.Printf("Failed to detect package manager for %s: %v", link, err)
-				continue
-			}
-
-			if pm != "" {
-				totalPackages, ok := ghdepratios.PackageManagerData[pm]
-				if !ok || totalPackages == 0 {
-					log.Printf("Package manager %s not recognized or has zero total packages", pm)
-					continue
-				}
-
-				ratio := float64(depsdevCount) / float64(totalPackages)
-				totalRatio += ratio
-
-				ghdepratios.UpdateDatabase(db, link, pm, totalRatio)
-			}
+		// Update the database with the computed total ratio and the detected package manager
+		err = ghdepratios.UpdateDatabase(db, link, pm, totalRatio)
+		if err != nil {
+			log.Printf("Failed to update database for %s: %v", link, err)
 		}
 	}
 }

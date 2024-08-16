@@ -4,7 +4,6 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"log"
 	"net/http"
 	"regexp"
 	"strconv"
@@ -43,7 +42,7 @@ var packageManagerData = map[string]int{
 
 // FetchGitLinks retrieves GitHub links with a non-null depsdev_count.
 func FetchGitLinks(db *sql.DB) ([]string, error) {
-	rows, err := db.Query("SELECT github_link FROM git_metrics WHERE depsdev_count IS NOT NULL")
+	rows, err := db.Query("SELECT git_link FROM git_metrics")
 	if err != nil {
 		return nil, err
 	}
@@ -63,7 +62,7 @@ func FetchGitLinks(db *sql.DB) ([]string, error) {
 // CalculateDependencyRatio calculates and returns the dependency ratio.
 func CalculateDependencyRatio(db *sql.DB, link, packageType string) (float64, error) {
 	var packageDependencies, totalPackages int
-	err := db.QueryRow(fmt.Sprintf("SELECT SUM(dependent_count) FROM %s WHERE git_link = $1", packageType), link).Scan(&packageDependencies)
+	err := db.QueryRow(fmt.Sprintf("SELECT COALESCE(SUM(depends_count), 0) FROM %s WHERE git_link = $1", packageType), link).Scan(&packageDependencies)
 	if err != nil {
 		return 0.0, err
 	}
@@ -132,10 +131,7 @@ attempt:
 	return "", nil
 }
 
-func UpdateDatabase(db *sql.DB, link, packageManager string, totalRatio float64) {
-	_, err := db.Exec(`UPDATE git_metrics SET pkg_manager = $1, ghdepratios = $2 WHERE github_link = $3`,
-		packageManager, totalRatio, link)
-	if err != nil {
-		log.Printf("Failed to update database for %s: %v", link, err)
-	}
+func UpdateDatabase(db *sql.DB, link, packageManager string, totalRatio float64) error {
+	_, err := db.Exec("UPDATE git_metrics SET pkg_manager = $1, ghdepratios = $2 WHERE git_link = $3", packageManager, totalRatio, link)
+	return err
 }
