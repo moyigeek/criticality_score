@@ -51,7 +51,7 @@ func main() {
 		var pm string
 		err = db.QueryRow("SELECT COALESCE(depsdev_count, 0) FROM git_metrics WHERE git_link = $1", link).Scan(&depsdevCount)
 		if err == nil && depsdevCount > 0 {
-			pm, err := ghdepratios.DetectPackageManager(gitClient, link)
+			pm, err = ghdepratios.DetectPackageManager(gitClient, link)
 			if err == nil && pm != "" {
 				totalPackages, ok := ghdepratios.PackageManagerData[pm]
 				if ok && totalPackages > 0 {
