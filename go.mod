@@ -6,14 +6,18 @@ require (
 	github.com/blendle/zapdriver v1.3.1
 	github.com/go-logr/zapr v1.3.0
 	github.com/google/go-cmp v0.6.0
+	github.com/google/go-github v17.0.0+incompatible
+	github.com/google/go-github/v32 v32.1.0
 	github.com/google/go-github/v47 v47.1.0
+	github.com/google/go-github/v63 v63.0.0
 	github.com/hasura/go-graphql-client v0.12.2
 	github.com/lib/pq v1.10.9
-	github.com/ossf/criticality_score/v2 v2.0.4
 	github.com/ossf/scorecard/v4 v4.10.5
+	github.com/shurcooL/githubv4 v0.0.0-20220115235240-a14260e6f8a2
 	go.uber.org/zap v1.27.0
 	gocloud.dev v0.37.0
 	golang.org/x/net v0.27.0
+	golang.org/x/oauth2 v0.19.0
 )
 
 require (
@@ -51,9 +55,7 @@ require (
 	github.com/golang-jwt/jwt/v4 v4.5.0 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
-	github.com/google/go-github/v41 v41.0.0 // indirect
 	github.com/google/go-github/v56 v56.0.0 // indirect
-	github.com/google/go-github/v63 v63.0.0 // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/s2a-go v0.1.7 // indirect
 	github.com/google/uuid v1.6.0 // indirect
@@ -61,6 +63,7 @@ require (
 	github.com/googleapis/enterprise-certificate-proxy v0.3.2 // indirect
 	github.com/googleapis/gax-go/v2 v2.12.3 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
+	github.com/shurcooL/graphql v0.0.0-20200928012149-18c5c3165e3a // indirect
 	github.com/sirupsen/logrus v1.9.3 // indirect
 	go.opencensus.io v0.24.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.49.0 // indirect
@@ -70,8 +73,6 @@ require (
 	go.opentelemetry.io/otel/trace v1.24.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/crypto v0.25.0 // indirect
-	golang.org/x/exp v0.0.0-20240719175910-8a7402abbf56 // indirect
-	golang.org/x/oauth2 v0.19.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect
 	golang.org/x/sys v0.22.0 // indirect
 	golang.org/x/text v0.16.0 // indirect

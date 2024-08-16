@@ -6,7 +6,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/google/go-github/v41/github"
+	"github.com/google/go-github/github"
+	"github.com/shurcooL/githubv4"
 	"golang.org/x/oauth2"
 )
 
@@ -29,74 +30,97 @@ type GitHubStats struct {
 }
 
 func Run(ctx context.Context, db *sql.DB, owner string, repo string, config Config) error {
-	ts := oauth2.StaticTokenSource(
+	src := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: config.GitHubToken},
 	)
-	tc := oauth2.NewClient(ctx, ts)
-	client := github.NewClient(tc)
+	tc := oauth2.NewClient(ctx, src)
+	client := githubv4.NewClient(tc)
 
 	stats := GitHubStats{}
 
-	var err error
-	var repoInfo *github.Repository
-	var contributors []*github.Contributor
-	var commits []*github.RepositoryCommit
+	var repoQuery struct {
+		Repository struct {
+			Stargazers struct {
+				TotalCount githubv4.Int
+			}
+			Forks struct {
+				TotalCount githubv4.Int
+			}
+			CreatedAt    githubv4.DateTime
+			UpdatedAt    githubv4.DateTime
+			Contributors struct {
+				TotalCount githubv4.Int
+			} `graphql:"mentionableUsers"`
+		} `graphql:"repository(owner: $owner, name: $name)"`
+	}
 
-	// Fetch repository info
-	repoInfo, _, err = client.Repositories.Get(ctx, owner, repo)
+	repoVars := map[string]interface{}{
+		"owner": githubv4.String(owner),
+		"name":  githubv4.String(repo),
+	}
+
+	err := client.Query(ctx, &repoQuery, repoVars)
 	if err != nil {
 		wait := handleRateLimitError(err)
 		if wait > 0 {
 			time.Sleep(wait)
-			repoInfo, _, err = client.Repositories.Get(ctx, owner, repo)
+			err = client.Query(ctx, &repoQuery, repoVars)
+		}
+		if err != nil {
+			return nil
 		}
 	}
-	if err == nil {
-		stats.StarCount = intPointer(*repoInfo.StargazersCount)
-		stats.ForkCount = intPointer(*repoInfo.ForksCount)
-		stats.CreatedSince = &repoInfo.CreatedAt.Time
-		stats.UpdatedSince = &repoInfo.UpdatedAt.Time
+
+	starCount := int(repoQuery.Repository.Stargazers.TotalCount)
+	forkCount := int(repoQuery.Repository.Forks.TotalCount)
+	contributorCount := int(repoQuery.Repository.Contributors.TotalCount)
+
+	stats.StarCount = &starCount
+	stats.ForkCount = &forkCount
+	stats.CreatedSince = &repoQuery.Repository.CreatedAt.Time
+	stats.UpdatedSince = &repoQuery.Repository.UpdatedAt.Time
+	stats.ContributorCount = &contributorCount
+
+	var commitQuery struct {
+		Repository struct {
+			DefaultBranchRef struct {
+				Target struct {
+					Commit struct {
+						History struct {
+							TotalCount githubv4.Int
+						} `graphql:"history(since: $since)"`
+					} `graphql:"... on Commit"`
+				}
+			} `graphql:"defaultBranchRef"`
+		} `graphql:"repository(owner: $owner, name: $name)"`
 	}
 
-	// Fetch contributors
-	contributors, _, err = client.Repositories.ListContributors(ctx, owner, repo, nil)
+	commitVars := map[string]interface{}{
+		"owner": githubv4.String(owner),
+		"name":  githubv4.String(repo),
+		"since": githubv4.GitTimestamp{Time: time.Now().AddDate(-1, 0, 0)},
+	}
+
+	err = client.Query(ctx, &commitQuery, commitVars)
 	if err != nil {
 		wait := handleRateLimitError(err)
 		if wait > 0 {
 			time.Sleep(wait)
-			contributors, _, err = client.Repositories.ListContributors(ctx, owner, repo, nil)
+			err = client.Query(ctx, &commitQuery, commitVars)
 		}
-	}
-	if err == nil {
-		stats.ContributorCount = intPointer(len(contributors))
+		if err != nil {
+			return nil
+		}
 	}
 
-	// Fetch commits
-	now := time.Now()
-	aYearAgo := now.AddDate(-1, 0, 0)
-	commits, _, err = client.Repositories.ListCommits(ctx, owner, repo, &github.CommitsListOptions{
-		Since: aYearAgo,
-		Until: now,
-	})
-	if err != nil {
-		wait := handleRateLimitError(err)
-		if wait > 0 {
-			time.Sleep(wait)
-			commits, _, err = client.Repositories.ListCommits(ctx, owner, repo, &github.CommitsListOptions{
-				Since: aYearAgo,
-				Until: now,
-			})
-		}
-	}
-	if err == nil {
-		commitFreq := len(commits) / 52
-		stats.CommitFrequency = &commitFreq
-	}
+	commitFreq := int(commitQuery.Repository.DefaultBranchRef.Target.Commit.History.TotalCount / 52)
+	stats.CommitFrequency = &commitFreq
 
 	err = updateDatabase(ctx, db, owner, repo, stats)
 	if err != nil {
 		return fmt.Errorf("error updating database for %s/%s: %v", owner, repo, err)
 	}
+
 	return nil
 }
 
@@ -108,10 +132,6 @@ func handleRateLimitError(err error) time.Duration {
 		return waitDuration
 	}
 	return 0
-}
-
-func intPointer(i int) *int {
-	return &i
 }
 
 func updateDatabase(ctx context.Context, db *sql.DB, owner, repo string, stats GitHubStats) error {
