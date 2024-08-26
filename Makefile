@@ -13,7 +13,7 @@ BIN_DIR=./bin
 all: build
 
 # Build the binaries
-build: build_show_distpkg_deps build_enumerate_github build_show_depsdev_deps build_home2git build_gitmetricsync build_githubmetrics build_ghdepratios
+build: build_show_distpkg_deps build_enumerate_github build_show_depsdev_deps build_home2git build_gitmetricsync build_githubmetrics build_ghdepratios build_gen_scores
 
 build_home2git:
 	cd $(CURDIR) && $(GOBUILD) -o $(BIN_DIR)/home2git github.com/HUSTSecLab/criticality_score/cmd/home2git
@@ -36,6 +36,9 @@ build_githubmetrics:
 build_ghdepratios:
 	cd $(CURDIR) && $(GOBUILD) -o $(BIN_DIR)/ghdepratios github.com/HUSTSecLab/criticality_score/cmd/ghdepratios
 
+build_gen_scores:
+	cd $(CURDIR) && $(GOBUILD) -o $(BIN_DIR)/gen_scores github.com/HUSTSecLab/criticality_score/cmd/gen_scores
+
 # Format the code
 fmt:
 	$(GOFMT) ./...
@@ -49,4 +52,4 @@ clean:
 test:
 	$(GOTEST) -v ./...
 
-.PHONY: all build build_show_distpkg_deps build_enumerate_github build_show_depsdev_deps build_home2git build_gitmetricsync build_githubmetrics build_ghdepratios fmt clean test #run
+.PHONY: all build build_show_distpkg_deps build_enumerate_github build_show_depsdev_deps build_home2git build_gitmetricsync build_githubmetrics build_ghdepratios build_gen_scores fmt clean test #run

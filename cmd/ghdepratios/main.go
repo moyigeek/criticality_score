@@ -56,7 +56,7 @@ func main() {
 				totalPackages, ok := ghdepratios.PackageManagerData[pm]
 				if ok && totalPackages > 0 {
 					ratio := float64(depsdevCount) / float64(totalPackages)
-					totalRatio += ratio
+					totalRatio += 10 * ratio
 				}
 			}
 		}
