@@ -31,15 +31,6 @@ var PackageManagerData = map[string]int{
 	"cargo": 155000,
 }
 
-var packageManagerData = map[string]int{
-	"npm":   3400000,
-	"go":    1230000,
-	"maven": 636000,
-	"pypi":  538000,
-	"nuget": 406000,
-	"cargo": 155000,
-}
-
 // FetchGitLinks retrieves GitHub links with a non-null depsdev_count.
 func FetchGitLinks(db *sql.DB) ([]string, error) {
 	rows, err := db.Query("SELECT git_link FROM git_metrics")
@@ -132,6 +123,6 @@ attempt:
 }
 
 func UpdateDatabase(db *sql.DB, link, packageManager string, totalRatio float64) error {
-	_, err := db.Exec("UPDATE git_metrics SET pkg_manager = $1, ghdepratios = $2 WHERE git_link = $3", packageManager, totalRatio, link)
+	_, err := db.Exec("UPDATE git_metrics SET pkg_manager = $1, deps.distro = $2 WHERE git_link = $3", packageManager, totalRatio, link)
 	return err
 }

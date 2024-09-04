@@ -15,7 +15,8 @@ type ProjectData struct {
 	ContributorCount *int
 	CommitFrequency  *float64
 	DepsdevCount     *int
-	GhDepRatios      *float64
+	deps_distro      *float64
+	Pkg_Manager      *string
 }
 
 // CalculateScore calculates the criticality score for a project.
@@ -30,8 +31,8 @@ func CalculateScore(data ProjectData) float64 {
 		"updated_since":     -1,
 		"contributor_count": 2,
 		"commit_frequency":  1,
-		"depsdev_count":     2,
-		"ghdepratios":       1,
+		"depsdev_ratios":    2,
+		"deps_distro":       1,
 	}
 
 	thresholds := map[string]float64{
@@ -41,20 +42,29 @@ func CalculateScore(data ProjectData) float64 {
 		"updated_since":     120, // in months
 		"contributor_count": 5000,
 		"commit_frequency":  1000,
-		"depsdev_count":     500000,
-		"ghdepratios":       1,
+		"depsdev_ratios":    40,
+		"deps_distro":       50,
+	}
+
+	var packageManagerData = map[string]int{
+		"npm":   3400000,
+		"go":    1230000,
+		"maven": 636000,
+		"pypi":  538000,
+		"nuget": 406000,
+		"cargo": 155000,
 	}
 
 	// Calculate each parameter's contribution to the score.
-	if data.StarCount != nil {
-		normalized := math.Min(float64(*data.StarCount)/thresholds["star_count"], 1)
-		score += weights["star_count"] * normalized
-	}
+	// if data.StarCount != nil {
+	// 	normalized := math.Min(float64(*data.StarCount)/thresholds["star_count"], 1)
+	// 	score += weights["star_count"] * normalized
+	// }
 
-	if data.ForkCount != nil {
-		normalized := math.Min(float64(*data.ForkCount)/thresholds["fork_count"], 1)
-		score += weights["fork_count"] * normalized
-	}
+	// if data.ForkCount != nil {
+	// 	normalized := math.Min(float64(*data.ForkCount)/thresholds["fork_count"], 1)
+	// 	score += weights["fork_count"] * normalized
+	// }
 
 	if data.CreatedSince != nil {
 		monthsSinceCreation := time.Since(*data.CreatedSince).Hours() / (24 * 30)
@@ -77,18 +87,20 @@ func CalculateScore(data ProjectData) float64 {
 		normalized := math.Min(*data.CommitFrequency/thresholds["commit_frequency"], 1)
 		score += weights["commit_frequency"] * normalized
 	}
-
-	if data.DepsdevCount != nil {
-		normalized := math.Min(float64(*data.DepsdevCount)/thresholds["depsdev_count"], 1)
-		score += weights["depsdev_count"] * normalized
+	if data.Pkg_Manager != nil {
+		// 确保包管理器的值是有效的
+		pkgManager, ok := packageManagerData[*data.Pkg_Manager]
+		if ok && data.DepsdevCount != nil {
+			normalized := math.Min(float64(*data.DepsdevCount)/float64(pkgManager)/thresholds["depsdev_ratios"], 1)
+			score += weights["depsdev_ratios"] * normalized
+		}
+	}
+	if data.deps_distro != nil {
+		normalized := math.Min((*data.deps_distro*100)/thresholds["deps_distro"], 1)
+		score += weights["deps_distro"] * normalized
 	}
 
-	if data.GhDepRatios != nil {
-		normalized := math.Min(*data.GhDepRatios/thresholds["ghdepratios"], 1)
-		score += weights["ghdepratios"] * normalized
-	}
-
-	return score
+	return score / 6
 }
 
 // UpdateScore updates the criticality score in the database for a given project.
@@ -99,9 +111,9 @@ func UpdateScore(db *sql.DB, gitLink string, score float64) error {
 
 // FetchProjectData retrieves the project data from the database.
 func FetchProjectData(db *sql.DB, gitLink string) (*ProjectData, error) {
-	row := db.QueryRow("SELECT star_count, fork_count, created_since, updated_since, contributor_count, commit_frequency, depsdev_count, ghdepratios FROM git_metrics WHERE git_link = $1", gitLink)
+	row := db.QueryRow("SELECT star_count, fork_count, created_since, updated_since, contributor_count, commit_frequency, depsdev_count, deps.distro, pkg_manager FROM git_metrics WHERE git_link = $1", gitLink)
 	var data ProjectData
-	err := row.Scan(&data.StarCount, &data.ForkCount, &data.CreatedSince, &data.UpdatedSince, &data.ContributorCount, &data.CommitFrequency, &data.DepsdevCount, &data.GhDepRatios)
+	err := row.Scan(&data.StarCount, &data.ForkCount, &data.CreatedSince, &data.UpdatedSince, &data.ContributorCount, &data.CommitFrequency, &data.DepsdevCount, &data.deps_distro, &data.Pkg_Manager)
 	if err != nil {
 		log.Printf("Failed to fetch data for git link %s: %v", gitLink, err)
 		return nil, err

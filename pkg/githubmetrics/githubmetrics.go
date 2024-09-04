@@ -30,59 +30,49 @@ type GitHubStats struct {
 }
 
 func Run(ctx context.Context, db *sql.DB, owner string, repo string, config Config) error {
+	// 初始化 GitHub API 客户端
 	src := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: config.GitHubToken},
 	)
 	tc := oauth2.NewClient(ctx, src)
-	client := githubv4.NewClient(tc)
+	client := github.NewClient(tc) // 使用 v3 API 客户端来验证仓库链接
+
+	// 检查仓库是否存在且可访问
+	_, _, err := client.Repositories.Get(ctx, owner, repo)
+	if err != nil {
+		if githubErr, ok := err.(*github.ErrorResponse); ok && githubErr.Response.StatusCode == 404 {
+			return fmt.Errorf("repository %s/%s not found or access denied", owner, repo)
+		}
+		return fmt.Errorf("error checking repository %s/%s: %v", owner, repo, err)
+	}
+
+	// 初始化 GitHub v4 API 客户端
+	clientV4 := githubv4.NewClient(tc)
 
 	stats := GitHubStats{}
 
-	var repoQuery struct {
+	// 合并后的查询结构体
+	var combinedQuery struct {
 		Repository struct {
+			// 查询 StarCount 和 ForkCount
 			Stargazers struct {
 				TotalCount githubv4.Int
 			}
 			Forks struct {
 				TotalCount githubv4.Int
 			}
-			CreatedAt    githubv4.DateTime
-			UpdatedAt    githubv4.DateTime
-			Contributors struct {
+			CreatedAt githubv4.DateTime
+			UpdatedAt githubv4.DateTime
+
+			// 查询 Contributor 总数（分页查询）
+			MentionableUsers struct {
 				TotalCount githubv4.Int
-			} `graphql:"mentionableUsers"`
-		} `graphql:"repository(owner: $owner, name: $name)"`
-	}
+				Edges      []struct {
+					Cursor githubv4.String
+				}
+			} `graphql:"mentionableUsers(first: 100, after: $cursor)"`
 
-	repoVars := map[string]interface{}{
-		"owner": githubv4.String(owner),
-		"name":  githubv4.String(repo),
-	}
-
-	err := client.Query(ctx, &repoQuery, repoVars)
-	if err != nil {
-		wait := handleRateLimitError(err)
-		if wait > 0 {
-			time.Sleep(wait)
-			err = client.Query(ctx, &repoQuery, repoVars)
-		}
-		if err != nil {
-			return nil
-		}
-	}
-
-	starCount := int(repoQuery.Repository.Stargazers.TotalCount)
-	forkCount := int(repoQuery.Repository.Forks.TotalCount)
-	contributorCount := int(repoQuery.Repository.Contributors.TotalCount)
-
-	stats.StarCount = &starCount
-	stats.ForkCount = &forkCount
-	stats.CreatedSince = &repoQuery.Repository.CreatedAt.Time
-	stats.UpdatedSince = &repoQuery.Repository.UpdatedAt.Time
-	stats.ContributorCount = &contributorCount
-
-	var commitQuery struct {
-		Repository struct {
+			// 查询 CommitFrequency
 			DefaultBranchRef struct {
 				Target struct {
 					Commit struct {
@@ -95,27 +85,44 @@ func Run(ctx context.Context, db *sql.DB, owner string, repo string, config Conf
 		} `graphql:"repository(owner: $owner, name: $name)"`
 	}
 
-	commitVars := map[string]interface{}{
-		"owner": githubv4.String(owner),
-		"name":  githubv4.String(repo),
-		"since": githubv4.GitTimestamp{Time: time.Now().AddDate(-1, 0, 0)},
+	// 设置查询变量
+	vars := map[string]interface{}{
+		"owner":  githubv4.String(owner),
+		"name":   githubv4.String(repo),
+		"cursor": (*githubv4.String)(nil),                                   // 初始化为 nil，用于分页查询
+		"since":  githubv4.GitTimestamp{Time: time.Now().AddDate(-1, 0, 0)}, // 查询过去一年的提交历史
 	}
 
-	err = client.Query(ctx, &commitQuery, commitVars)
+	// 执行查询
+	err = clientV4.Query(ctx, &combinedQuery, vars)
 	if err != nil {
 		wait := handleRateLimitError(err)
 		if wait > 0 {
 			time.Sleep(wait)
-			err = client.Query(ctx, &commitQuery, commitVars)
+			err = clientV4.Query(ctx, &combinedQuery, vars)
 		}
 		if err != nil {
-			return nil
+			return err
 		}
 	}
 
-	commitFreq := int(commitQuery.Repository.DefaultBranchRef.Target.Commit.History.TotalCount / 52)
+	// 设置查询结果
+	starCount := int(combinedQuery.Repository.Stargazers.TotalCount)
+	forkCount := int(combinedQuery.Repository.Forks.TotalCount)
+	stats.StarCount = &starCount
+	stats.ForkCount = &forkCount
+	stats.CreatedSince = &combinedQuery.Repository.CreatedAt.Time
+	stats.UpdatedSince = &combinedQuery.Repository.UpdatedAt.Time
+
+	// 处理 Contributors 的总数
+	totalContributors := int(combinedQuery.Repository.MentionableUsers.TotalCount)
+	stats.ContributorCount = &totalContributors
+
+	// 设置 Commit Frequency
+	commitFreq := int(combinedQuery.Repository.DefaultBranchRef.Target.Commit.History.TotalCount / 52)
 	stats.CommitFrequency = &commitFreq
 
+	// 更新数据库
 	err = updateDatabase(ctx, db, owner, repo, stats)
 	if err != nil {
 		return fmt.Errorf("error updating database for %s/%s: %v", owner, repo, err)

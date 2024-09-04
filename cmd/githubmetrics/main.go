@@ -45,7 +45,7 @@ func main() {
 		repo := parts[4]
 
 		if err := githubmetrics.Run(ctx, db, owner, repo, config); err != nil {
-			log.Fatalf("Failed to update metrics for %s/%s: %v", owner, repo, err)
+			log.Println("Failed to update metrics for %s/%s: %v", owner, repo, err)
 		}
 	}
 }
