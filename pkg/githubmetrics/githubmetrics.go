@@ -63,81 +63,83 @@ func Run(ctx context.Context, db *sql.DB, owner string, repo string, config Conf
 	clientV4 := githubv4.NewClient(tc)
 
 	stats := GitHubStats{}
-
-	// 合并后的查询结构体
-	var combinedQuery struct {
-		Repository struct {
-			Stargazers struct {
-				TotalCount githubv4.Int
-			}
-			Forks struct {
-				TotalCount githubv4.Int
-			}
-			CreatedAt githubv4.DateTime
-			UpdatedAt githubv4.DateTime
-
-			MentionableUsers struct {
-				TotalCount githubv4.Int
-				Edges      []struct {
-					Cursor githubv4.String
+	if !opts.UpdateOrgCount || (opts.UpdateStarCount || opts.UpdateForkCount || opts.UpdateCreatedSince || opts.UpdateUpdatedSince || opts.UpdateContributorCount || opts.UpdateCommitFrequency) {
+		// 合并后的查询结构体
+		var combinedQuery struct {
+			Repository struct {
+				Stargazers struct {
+					TotalCount githubv4.Int
 				}
-			} `graphql:"mentionableUsers(first: 100, after: $cursor)"`
-
-			DefaultBranchRef struct {
-				Target struct {
-					Commit struct {
-						History struct {
-							TotalCount githubv4.Int
-						} `graphql:"history(since: $since)"`
-					} `graphql:"... on Commit"`
+				Forks struct {
+					TotalCount githubv4.Int
 				}
-			} `graphql:"defaultBranchRef"`
-		} `graphql:"repository(owner: $owner, name: $name)"`
-	}
+				CreatedAt githubv4.DateTime
+				UpdatedAt githubv4.DateTime
 
-	// 设置查询变量
-	vars := map[string]interface{}{
-		"owner":  githubv4.String(owner),
-		"name":   githubv4.String(repo),
-		"cursor": (*githubv4.String)(nil),                                   // 初始化为 nil，用于分页查询
-		"since":  githubv4.GitTimestamp{Time: time.Now().AddDate(-1, 0, 0)}, // 查询过去一年的提交历史
-	}
+				MentionableUsers struct {
+					TotalCount githubv4.Int
+					Edges      []struct {
+						Cursor githubv4.String
+					}
+				} `graphql:"mentionableUsers(first: 100, after: $cursor)"`
 
-	// 执行查询
-	err = clientV4.Query(ctx, &combinedQuery, vars)
-	if err != nil {
-		wait := handleRateLimitError(err)
-		if wait > 0 {
-			time.Sleep(wait)
-			err = clientV4.Query(ctx, &combinedQuery, vars)
+				DefaultBranchRef struct {
+					Target struct {
+						Commit struct {
+							History struct {
+								TotalCount githubv4.Int
+							} `graphql:"history(since: $since)"`
+						} `graphql:"... on Commit"`
+					}
+				} `graphql:"defaultBranchRef"`
+			} `graphql:"repository(owner: $owner, name: $name)"`
 		}
+
+		// 设置查询变量
+		vars := map[string]interface{}{
+			"owner":  githubv4.String(owner),
+			"name":   githubv4.String(repo),
+			"cursor": (*githubv4.String)(nil),                                   // 初始化为 nil，用于分页查询
+			"since":  githubv4.GitTimestamp{Time: time.Now().AddDate(-1, 0, 0)}, // 查询过去一年的提交历史
+		}
+
+		// 执行查询
+		err = clientV4.Query(ctx, &combinedQuery, vars)
 		if err != nil {
-			return err
+			fmt.Println(err)
+			wait := handleRateLimitError(err)
+			if wait > 0 {
+				time.Sleep(wait)
+				err = clientV4.Query(ctx, &combinedQuery, vars)
+			}
+			if err != nil {
+				return err
+			}
 		}
-	}
 
-	// 设置查询结果
-	if opts.UpdateStarCount {
-		starCount := int(combinedQuery.Repository.Stargazers.TotalCount)
-		stats.StarCount = &starCount
-	}
-	if opts.UpdateForkCount {
-		forkCount := int(combinedQuery.Repository.Forks.TotalCount)
-		stats.ForkCount = &forkCount
-	}
-	if opts.UpdateCreatedSince {
-		stats.CreatedSince = &combinedQuery.Repository.CreatedAt.Time
-	}
-	if opts.UpdateUpdatedSince {
-		stats.UpdatedSince = &combinedQuery.Repository.UpdatedAt.Time
-	}
-	if opts.UpdateContributorCount {
-		totalContributors := int(combinedQuery.Repository.MentionableUsers.TotalCount)
-		stats.ContributorCount = &totalContributors
-	}
-	if opts.UpdateCommitFrequency {
-		commitFreq := int(combinedQuery.Repository.DefaultBranchRef.Target.Commit.History.TotalCount / 52)
-		stats.CommitFrequency = &commitFreq
+		// 设置查询结果
+		if opts.UpdateStarCount {
+			starCount := int(combinedQuery.Repository.Stargazers.TotalCount)
+			stats.StarCount = &starCount
+		}
+		if opts.UpdateForkCount {
+			forkCount := int(combinedQuery.Repository.Forks.TotalCount)
+			stats.ForkCount = &forkCount
+		}
+		if opts.UpdateCreatedSince {
+			stats.CreatedSince = &combinedQuery.Repository.CreatedAt.Time
+		}
+		if opts.UpdateUpdatedSince {
+			stats.UpdatedSince = &combinedQuery.Repository.UpdatedAt.Time
+		}
+		if opts.UpdateContributorCount {
+			totalContributors := int(combinedQuery.Repository.MentionableUsers.TotalCount)
+			stats.ContributorCount = &totalContributors
+		}
+		if opts.UpdateCommitFrequency {
+			commitFreq := int(combinedQuery.Repository.DefaultBranchRef.Target.Commit.History.TotalCount / 52)
+			stats.CommitFrequency = &commitFreq
+		}
 	}
 	if opts.UpdateOrgCount {
 		orgCount, err := FetchOrgCount(ctx, client, owner, repo, config.GitHubToken)
