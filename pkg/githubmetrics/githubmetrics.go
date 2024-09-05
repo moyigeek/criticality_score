@@ -4,6 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"strings"
+	"sync"
 	"time"
 
 	"github.com/google/go-github/github"
@@ -27,9 +29,20 @@ type GitHubStats struct {
 	UpdatedSince     *time.Time
 	ContributorCount *int
 	CommitFrequency  *int
+	OrgCount         *int // 新增字段，表示唯一组织数量
 }
 
-func Run(ctx context.Context, db *sql.DB, owner string, repo string, config Config) error {
+type UpdateOptions struct {
+	UpdateStarCount        bool
+	UpdateForkCount        bool
+	UpdateCreatedSince     bool
+	UpdateUpdatedSince     bool
+	UpdateContributorCount bool
+	UpdateCommitFrequency  bool
+	UpdateOrgCount         bool // 新增选项
+}
+
+func Run(ctx context.Context, db *sql.DB, owner string, repo string, config Config, opts UpdateOptions) error {
 	// 初始化 GitHub API 客户端
 	src := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: config.GitHubToken},
@@ -54,7 +67,6 @@ func Run(ctx context.Context, db *sql.DB, owner string, repo string, config Conf
 	// 合并后的查询结构体
 	var combinedQuery struct {
 		Repository struct {
-			// 查询 StarCount 和 ForkCount
 			Stargazers struct {
 				TotalCount githubv4.Int
 			}
@@ -64,7 +76,6 @@ func Run(ctx context.Context, db *sql.DB, owner string, repo string, config Conf
 			CreatedAt githubv4.DateTime
 			UpdatedAt githubv4.DateTime
 
-			// 查询 Contributor 总数（分页查询）
 			MentionableUsers struct {
 				TotalCount githubv4.Int
 				Edges      []struct {
@@ -72,7 +83,6 @@ func Run(ctx context.Context, db *sql.DB, owner string, repo string, config Conf
 				}
 			} `graphql:"mentionableUsers(first: 100, after: $cursor)"`
 
-			// 查询 CommitFrequency
 			DefaultBranchRef struct {
 				Target struct {
 					Commit struct {
@@ -107,28 +117,144 @@ func Run(ctx context.Context, db *sql.DB, owner string, repo string, config Conf
 	}
 
 	// 设置查询结果
-	starCount := int(combinedQuery.Repository.Stargazers.TotalCount)
-	forkCount := int(combinedQuery.Repository.Forks.TotalCount)
-	stats.StarCount = &starCount
-	stats.ForkCount = &forkCount
-	stats.CreatedSince = &combinedQuery.Repository.CreatedAt.Time
-	stats.UpdatedSince = &combinedQuery.Repository.UpdatedAt.Time
-
-	// 处理 Contributors 的总数
-	totalContributors := int(combinedQuery.Repository.MentionableUsers.TotalCount)
-	stats.ContributorCount = &totalContributors
-
-	// 设置 Commit Frequency
-	commitFreq := int(combinedQuery.Repository.DefaultBranchRef.Target.Commit.History.TotalCount / 52)
-	stats.CommitFrequency = &commitFreq
+	if opts.UpdateStarCount {
+		starCount := int(combinedQuery.Repository.Stargazers.TotalCount)
+		stats.StarCount = &starCount
+	}
+	if opts.UpdateForkCount {
+		forkCount := int(combinedQuery.Repository.Forks.TotalCount)
+		stats.ForkCount = &forkCount
+	}
+	if opts.UpdateCreatedSince {
+		stats.CreatedSince = &combinedQuery.Repository.CreatedAt.Time
+	}
+	if opts.UpdateUpdatedSince {
+		stats.UpdatedSince = &combinedQuery.Repository.UpdatedAt.Time
+	}
+	if opts.UpdateContributorCount {
+		totalContributors := int(combinedQuery.Repository.MentionableUsers.TotalCount)
+		stats.ContributorCount = &totalContributors
+	}
+	if opts.UpdateCommitFrequency {
+		commitFreq := int(combinedQuery.Repository.DefaultBranchRef.Target.Commit.History.TotalCount / 52)
+		stats.CommitFrequency = &commitFreq
+	}
+	if opts.UpdateOrgCount {
+		orgCount, err := FetchOrgCount(ctx, client, owner, repo, config.GitHubToken)
+		if err != nil {
+			return fmt.Errorf("error fetching organization count for %s/%s: %v", owner, repo, err)
+		}
+		stats.OrgCount = &orgCount
+	}
 
 	// 更新数据库
-	err = updateDatabase(ctx, db, owner, repo, stats)
+	err = updateDatabase(ctx, db, owner, repo, stats, opts)
 	if err != nil {
 		return fmt.Errorf("error updating database for %s/%s: %v", owner, repo, err)
 	}
 
 	return nil
+}
+
+func FetchOrgCount(ctx context.Context, client *github.Client, owner, repo string, Token string) (int, error) {
+	// 初始化组织名称过滤器
+	orgFilter := strings.NewReplacer(
+		"inc.", "",
+		"llc", "",
+		"@", "",
+		" ", "",
+	)
+
+	// 设置获取贡献者的选项
+	opts := &github.ListContributorsOptions{
+		ListOptions: github.ListOptions{
+			PerPage: 100, // 每页最多100个贡献者
+		},
+	}
+
+	// 获取贡献者列表
+	contributors, _, err := client.Repositories.ListContributors(ctx, owner, repo, opts)
+	if err != nil {
+		return 0, err
+	}
+
+	if len(contributors) == 0 {
+		return 0, nil // 没有有效的贡献者
+	}
+
+	// 初始化 GitHub GraphQL 客户端
+	clientV4 := githubv4.NewClient(oauth2.NewClient(ctx, oauth2.StaticTokenSource(&oauth2.Token{AccessToken: Token})))
+
+	// 提取和去重组织名称
+	orgSet := make(map[string]struct{})
+	var mu sync.Mutex // 用于保护 orgSet 的并发访问
+
+	var wg sync.WaitGroup // 用于等待所有协程完成
+
+	// 对每个贡献者逐个查询公司信息
+	for _, contributor := range contributors {
+		login := contributor.GetLogin()
+		if login == "" || strings.HasSuffix(login, "[bot]") {
+			continue
+		}
+
+		// 增加 WaitGroup 计数器
+		wg.Add(1)
+
+		// 启动协程并行查询每个贡献者的公司信息
+		go func(login string) {
+			defer wg.Done() // 协程结束时减少计数器
+
+			for {
+				// 构建 GraphQL 查询
+				var query struct {
+					User struct {
+						Company *string
+					} `graphql:"user(login: $login)"`
+				}
+
+				variables := map[string]interface{}{
+					"login": githubv4.String(login),
+				}
+
+				// 执行查询
+				err := clientV4.Query(ctx, &query, variables)
+				if err != nil {
+					waitDuration := handleRateLimitError(err)
+					if waitDuration > 0 {
+						// 如果触发速率限制，等待指定时间后重试
+						time.Sleep(waitDuration)
+						continue
+					} else {
+						fmt.Printf("Error querying user %s: %v\n", login, err)
+						return
+					}
+				}
+
+				// 处理查询结果
+				if query.User.Company != nil {
+					org := strings.ToLower(*query.User.Company)
+					org = strings.TrimRight(orgFilter.Replace(org), ",")
+
+					if org != "" {
+						// 使用 mutex 锁保护共享资源 orgSet
+						mu.Lock()
+						orgSet[org] = struct{}{}
+						mu.Unlock()
+					}
+				}
+
+				// 如果没有错误，退出循环
+				break
+			}
+		}(login) // 将 login 传递给协程
+	}
+
+	// 等待所有协程完成
+	wg.Wait()
+
+	// 返回唯一组织数量
+	return len(orgSet), nil
 }
 
 func handleRateLimitError(err error) time.Duration {
@@ -141,8 +267,52 @@ func handleRateLimitError(err error) time.Duration {
 	return 0
 }
 
-func updateDatabase(ctx context.Context, db *sql.DB, owner, repo string, stats GitHubStats) error {
-	_, err := db.Exec(`UPDATE git_metrics SET star_count = $1, fork_count = $2, created_since = $3, updated_since = $4, contributor_count = $5, commit_frequency = $6 WHERE git_link = $7`,
-		stats.StarCount, stats.ForkCount, stats.CreatedSince, stats.UpdatedSince, stats.ContributorCount, stats.CommitFrequency, fmt.Sprintf("https://github.com/%s/%s", owner, repo))
+func updateDatabase(ctx context.Context, db *sql.DB, owner, repo string, stats GitHubStats, opts UpdateOptions) error {
+	query := "UPDATE git_metrics SET "
+	args := []interface{}{}
+	argIndex := 1
+
+	if opts.UpdateStarCount {
+		query += fmt.Sprintf("star_count = $%d, ", argIndex)
+		args = append(args, stats.StarCount)
+		argIndex++
+	}
+	if opts.UpdateForkCount {
+		query += fmt.Sprintf("fork_count = $%d, ", argIndex)
+		args = append(args, stats.ForkCount)
+		argIndex++
+	}
+	if opts.UpdateCreatedSince {
+		query += fmt.Sprintf("created_since = $%d, ", argIndex)
+		args = append(args, stats.CreatedSince)
+		argIndex++
+	}
+	if opts.UpdateUpdatedSince {
+		query += fmt.Sprintf("updated_since = $%d, ", argIndex)
+		args = append(args, stats.UpdatedSince)
+		argIndex++
+	}
+	if opts.UpdateContributorCount {
+		query += fmt.Sprintf("contributor_count = $%d, ", argIndex)
+		args = append(args, stats.ContributorCount)
+		argIndex++
+	}
+	if opts.UpdateCommitFrequency {
+		query += fmt.Sprintf("commit_frequency = $%d, ", argIndex)
+		args = append(args, stats.CommitFrequency)
+		argIndex++
+	}
+	if opts.UpdateOrgCount {
+		query += fmt.Sprintf("org_count = $%d, ", argIndex)
+		args = append(args, stats.OrgCount)
+		argIndex++
+	}
+
+	// 去掉最后一个逗号和空格
+	query = query[:len(query)-2]
+	query += fmt.Sprintf(" WHERE git_link = $%d", argIndex)
+	args = append(args, fmt.Sprintf("https://github.com/%s/%s", owner, repo))
+
+	_, err := db.Exec(query, args...)
 	return err
 }
