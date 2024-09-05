@@ -175,7 +175,18 @@ func FetchOrgCount(ctx context.Context, client *github.Client, owner, repo strin
 	// 获取贡献者列表
 	contributors, _, err := client.Repositories.ListContributors(ctx, owner, repo, opts)
 	if err != nil {
-		return 0, err
+		if wait := handleRateLimitError(err); wait > 0 {
+			fmt.Printf("Waiting for %v before retrying...\n", wait)
+			time.Sleep(wait)
+
+			// 重试 ListContributors
+			contributors, _, err = client.Repositories.ListContributors(ctx, owner, repo, opts)
+			if err != nil {
+				return 0, err // 重试后仍然出错，返回错误
+			}
+		} else {
+			return 0, err // 其他类型的错误，直接返回
+		}
 	}
 
 	if len(contributors) == 0 {
