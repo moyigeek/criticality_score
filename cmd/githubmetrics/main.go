@@ -25,6 +25,7 @@ func main() {
 	updateContributorCount := flag.Bool("contributors", false, "Update contributor count")
 	updateCommitFrequency := flag.Bool("commitfreq", false, "Update commit frequency")
 	updateOrgCount := flag.Bool("orgcount", false, "Update unique organization count")
+	forceUpdate := flag.Bool("force", false, "Force update all fields, even if data exists") // 新增的参数
 
 	flag.Parse()
 
@@ -64,6 +65,7 @@ func main() {
 			UpdateContributorCount: *updateAll || *updateContributorCount,
 			UpdateCommitFrequency:  *updateAll || *updateCommitFrequency,
 			UpdateOrgCount:         *updateAll || *updateOrgCount,
+			ForceUpdate:            *forceUpdate, // 根据命令行选项设置是否强制更新
 		}
 
 		// 执行更新

@@ -29,7 +29,7 @@ type GitHubStats struct {
 	UpdatedSince     *time.Time
 	ContributorCount *int
 	CommitFrequency  *int
-	OrgCount         *int // 新增字段，表示唯一组织数量
+	OrgCount         *int
 }
 
 type UpdateOptions struct {
@@ -39,10 +39,63 @@ type UpdateOptions struct {
 	UpdateUpdatedSince     bool
 	UpdateContributorCount bool
 	UpdateCommitFrequency  bool
-	UpdateOrgCount         bool // 新增选项
+	UpdateOrgCount         bool
+	ForceUpdate            bool // 新增选项，决定是否强制更新
 }
 
 func Run(ctx context.Context, db *sql.DB, owner string, repo string, config Config, opts UpdateOptions) error {
+	// 首先从数据库中查询现有的值，决定是否需要更新
+	var currentStats GitHubStats
+	err := db.QueryRowContext(ctx, `
+		SELECT star_count, fork_count, created_since, updated_since, contributor_count, commit_frequency, org_count
+		FROM git_metrics 
+		WHERE git_link = $1
+	`, fmt.Sprintf("https://github.com/%s/%s", owner, repo)).Scan(
+		&currentStats.StarCount,
+		&currentStats.ForkCount,
+		&currentStats.CreatedSince,
+		&currentStats.UpdatedSince,
+		&currentStats.ContributorCount,
+		&currentStats.CommitFrequency,
+		&currentStats.OrgCount,
+	)
+	if err != nil && err != sql.ErrNoRows {
+		return fmt.Errorf("error querying current values for %s/%s: %v", owner, repo, err)
+	}
+
+	// 如果不是强制更新且数据库中已有值，则将对应的更新选项设置为 false
+	if !opts.ForceUpdate {
+		if currentStats.StarCount != nil {
+			opts.UpdateStarCount = false
+		}
+		if currentStats.ForkCount != nil {
+			opts.UpdateForkCount = false
+		}
+		if currentStats.CreatedSince != nil {
+			opts.UpdateCreatedSince = false
+		}
+		if currentStats.UpdatedSince != nil {
+			opts.UpdateUpdatedSince = false
+		}
+		if currentStats.ContributorCount != nil {
+			opts.UpdateContributorCount = false
+		}
+		if currentStats.CommitFrequency != nil {
+			opts.UpdateCommitFrequency = false
+		}
+		if currentStats.OrgCount != nil {
+			opts.UpdateOrgCount = false
+		}
+	}
+
+	// 如果所有更新选项都为 false，则直接返回，不进行查询和更新
+	if !opts.UpdateStarCount && !opts.UpdateForkCount && !opts.UpdateCreatedSince &&
+		!opts.UpdateUpdatedSince && !opts.UpdateContributorCount &&
+		!opts.UpdateCommitFrequency && !opts.UpdateOrgCount {
+		fmt.Println("No updates required, skipping GitHub API queries and database update.")
+		return nil
+	}
+
 	// 初始化 GitHub API 客户端
 	src := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: config.GitHubToken},
@@ -51,7 +104,7 @@ func Run(ctx context.Context, db *sql.DB, owner string, repo string, config Conf
 	client := github.NewClient(tc) // 使用 v3 API 客户端来验证仓库链接
 
 	// 检查仓库是否存在且可访问
-	_, _, err := client.Repositories.Get(ctx, owner, repo)
+	_, _, err = client.Repositories.Get(ctx, owner, repo)
 	if err != nil {
 		if githubErr, ok := err.(*github.ErrorResponse); ok && githubErr.Response.StatusCode == 404 {
 			return fmt.Errorf("repository %s/%s not found or access denied", owner, repo)
@@ -63,7 +116,7 @@ func Run(ctx context.Context, db *sql.DB, owner string, repo string, config Conf
 	clientV4 := githubv4.NewClient(tc)
 
 	stats := GitHubStats{}
-	if !opts.UpdateOrgCount || (opts.UpdateStarCount || opts.UpdateForkCount || opts.UpdateCreatedSince || opts.UpdateUpdatedSince || opts.UpdateContributorCount || opts.UpdateCommitFrequency) {
+	if opts.UpdateStarCount || opts.UpdateForkCount || opts.UpdateCreatedSince || opts.UpdateUpdatedSince || opts.UpdateContributorCount || opts.UpdateCommitFrequency {
 		// 合并后的查询结构体
 		var combinedQuery struct {
 			Repository struct {
@@ -78,10 +131,7 @@ func Run(ctx context.Context, db *sql.DB, owner string, repo string, config Conf
 
 				MentionableUsers struct {
 					TotalCount githubv4.Int
-					Edges      []struct {
-						Cursor githubv4.String
-					}
-				} `graphql:"mentionableUsers(first: 100, after: $cursor)"`
+				}
 
 				DefaultBranchRef struct {
 					Target struct {
@@ -97,10 +147,9 @@ func Run(ctx context.Context, db *sql.DB, owner string, repo string, config Conf
 
 		// 设置查询变量
 		vars := map[string]interface{}{
-			"owner":  githubv4.String(owner),
-			"name":   githubv4.String(repo),
-			"cursor": (*githubv4.String)(nil),                                   // 初始化为 nil，用于分页查询
-			"since":  githubv4.GitTimestamp{Time: time.Now().AddDate(-1, 0, 0)}, // 查询过去一年的提交历史
+			"owner": githubv4.String(owner),
+			"name":  githubv4.String(repo),
+			"since": githubv4.GitTimestamp{Time: time.Now().AddDate(-1, 0, 0)}, // 查询过去一年的提交历史
 		}
 
 		// 执行查询
@@ -141,6 +190,7 @@ func Run(ctx context.Context, db *sql.DB, owner string, repo string, config Conf
 			stats.CommitFrequency = &commitFreq
 		}
 	}
+
 	if opts.UpdateOrgCount {
 		orgCount, err := FetchOrgCount(ctx, client, owner, repo, config.GitHubToken)
 		if err != nil {
@@ -156,6 +206,73 @@ func Run(ctx context.Context, db *sql.DB, owner string, repo string, config Conf
 	}
 
 	return nil
+}
+
+func updateDatabase(ctx context.Context, db *sql.DB, owner, repo string, stats GitHubStats, opts UpdateOptions) error {
+	query := "UPDATE git_metrics SET "
+	args := []interface{}{}
+	argIndex := 1
+
+	if opts.UpdateStarCount {
+		query += fmt.Sprintf("star_count = $%d, ", argIndex)
+		args = append(args, stats.StarCount)
+		argIndex++
+	}
+	if opts.UpdateForkCount {
+		query += fmt.Sprintf("fork_count = $%d, ", argIndex)
+		args = append(args, stats.ForkCount)
+		argIndex++
+	}
+	if opts.UpdateCreatedSince {
+		query += fmt.Sprintf("created_since = $%d, ", argIndex)
+		args = append(args, stats.CreatedSince)
+		argIndex++
+	}
+	if opts.UpdateUpdatedSince {
+		query += fmt.Sprintf("updated_since = $%d, ", argIndex)
+		args = append(args, stats.UpdatedSince)
+		argIndex++
+	}
+	if opts.UpdateContributorCount {
+		query += fmt.Sprintf("contributor_count = $%d, ", argIndex)
+		args = append(args, stats.ContributorCount)
+		argIndex++
+	}
+	if opts.UpdateCommitFrequency {
+		query += fmt.Sprintf("commit_frequency = $%d, ", argIndex)
+		args = append(args, stats.CommitFrequency)
+		argIndex++
+	}
+	if opts.UpdateOrgCount {
+		query += fmt.Sprintf("org_count = $%d, ", argIndex)
+		args = append(args, stats.OrgCount)
+		argIndex++
+	}
+
+	// 去掉最后一个逗号和空格
+	query = query[:len(query)-2]
+	query += fmt.Sprintf(" WHERE git_link = $%d", argIndex)
+	args = append(args, fmt.Sprintf("https://github.com/%s/%s", owner, repo))
+
+	_, err := db.Exec(query, args...)
+	return err
+}
+
+func handleRateLimitError(err error) time.Duration {
+	if rateLimitError, ok := err.(*github.RateLimitError); ok {
+		// 检查 Reset 时间是否有效
+		if !rateLimitError.Rate.Reset.IsZero() {
+			resetTimestamp := rateLimitError.Rate.Reset.Time
+			waitDuration := time.Until(resetTimestamp)
+			if waitDuration > 0 {
+				fmt.Printf("GitHub API rate limit exceeded. Waiting %v before retrying...\n", waitDuration)
+				return waitDuration
+			}
+		}
+	}
+	// 如果没有找到重置时间，则休眠一小时
+	fmt.Println("Unable to determine rate limit reset time. Waiting 1 hour before retrying...")
+	return time.Hour
 }
 
 func FetchOrgCount(ctx context.Context, client *github.Client, owner, repo string, Token string) (int, error) {
@@ -268,64 +385,4 @@ func FetchOrgCount(ctx context.Context, client *github.Client, owner, repo strin
 
 	// 返回唯一组织数量
 	return len(orgSet), nil
-}
-
-func handleRateLimitError(err error) time.Duration {
-	if rateLimitError, ok := err.(*github.RateLimitError); ok {
-		resetTimestamp := rateLimitError.Rate.Reset.Time
-		waitDuration := time.Until(resetTimestamp)
-		fmt.Printf("GitHub API rate limit exceeded. Waiting %v before retrying...\n", waitDuration)
-		return waitDuration
-	}
-	return 0
-}
-
-func updateDatabase(ctx context.Context, db *sql.DB, owner, repo string, stats GitHubStats, opts UpdateOptions) error {
-	query := "UPDATE git_metrics SET "
-	args := []interface{}{}
-	argIndex := 1
-
-	if opts.UpdateStarCount {
-		query += fmt.Sprintf("star_count = $%d, ", argIndex)
-		args = append(args, stats.StarCount)
-		argIndex++
-	}
-	if opts.UpdateForkCount {
-		query += fmt.Sprintf("fork_count = $%d, ", argIndex)
-		args = append(args, stats.ForkCount)
-		argIndex++
-	}
-	if opts.UpdateCreatedSince {
-		query += fmt.Sprintf("created_since = $%d, ", argIndex)
-		args = append(args, stats.CreatedSince)
-		argIndex++
-	}
-	if opts.UpdateUpdatedSince {
-		query += fmt.Sprintf("updated_since = $%d, ", argIndex)
-		args = append(args, stats.UpdatedSince)
-		argIndex++
-	}
-	if opts.UpdateContributorCount {
-		query += fmt.Sprintf("contributor_count = $%d, ", argIndex)
-		args = append(args, stats.ContributorCount)
-		argIndex++
-	}
-	if opts.UpdateCommitFrequency {
-		query += fmt.Sprintf("commit_frequency = $%d, ", argIndex)
-		args = append(args, stats.CommitFrequency)
-		argIndex++
-	}
-	if opts.UpdateOrgCount {
-		query += fmt.Sprintf("org_count = $%d, ", argIndex)
-		args = append(args, stats.OrgCount)
-		argIndex++
-	}
-
-	// 去掉最后一个逗号和空格
-	query = query[:len(query)-2]
-	query += fmt.Sprintf(" WHERE git_link = $%d", argIndex)
-	args = append(args, fmt.Sprintf("https://github.com/%s/%s", owner, repo))
-
-	_, err := db.Exec(query, args...)
-	return err
 }
