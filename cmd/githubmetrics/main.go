@@ -48,6 +48,7 @@ func main() {
 
 	// 遍历git_links并更新它们的统计信息
 	for _, link := range links {
+		link = strings.TrimSuffix(link, ".git") // 删除末尾的 ".git"
 		parts := strings.Split(link, "/")
 		if len(parts) < 5 {
 			log.Printf("Invalid git link format: %s", link)

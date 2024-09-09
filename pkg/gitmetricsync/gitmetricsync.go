@@ -81,11 +81,14 @@ func fetchGitLinks(db *sql.DB) map[string]bool {
 func syncGitMetrics(db *sql.DB, gitLinks map[string]bool) {
 	githubRegex := regexp.MustCompile(`https?://github\.com/([^/\s]+/[^/\s]+)`)
 
-	// 规范化输入链接：保留原始大小写但添加 .git，存储用于插入；用小写化链接用于比较
+	// 规范化输入链接：保留原始大小写但根据情况添加或不添加 .git，存储用于插入；用小写化链接用于比较
 	normalizedLinks := make(map[string]string) // key 为小写化的链接，用于比较；值为原始大小写的链接
 	for link := range gitLinks {
 		if matches := githubRegex.FindStringSubmatch(link); len(matches) > 1 {
-			originalLink := "https://github.com/" + matches[1] + ".git"
+			originalLink := matches[0] // 使用捕获到的完整链接
+			if !strings.HasSuffix(originalLink, ".git") {
+				originalLink += ".git"
+			}
 			lowercaseLink := strings.ToLower(originalLink)
 			normalizedLinks[lowercaseLink] = originalLink
 		}
