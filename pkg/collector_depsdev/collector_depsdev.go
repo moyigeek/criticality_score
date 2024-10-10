@@ -15,12 +15,47 @@ import (
 
 	"github.com/google/go-github/v63/github"
 	"golang.org/x/oauth2"
+	"database/sql"
+	_ "github.com/lib/pq" // Assuming PostgreSQL, adjust as needed
+	"io/ioutil"
 )
 
 type DependentInfo struct {
 	DependentCount         int `json:"dependentCount"`
 	DirectDependentCount   int `json:"directDependentCount"`
 	IndirectDependentCount int `json:"indirectDependentCount"`
+}
+
+type Config struct {
+	Database   string `json:"database"`
+	User       string `json:"user"`
+	Password   string `json:"password"`
+	Host       string `json:"host"`
+	Port       string `json:"port"`
+	GitHubToken string `json:"GitHubToken"`
+}
+
+func loadConfig(configPath string) (Config, error) {
+	var config Config
+	file, err := ioutil.ReadFile(configPath)
+	if err != nil {
+		return config, err
+	}
+	err = json.Unmarshal(file, &config)
+	return config, err
+}
+
+func updateDatabase(dependentCount int, config Config) error {
+	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		config.Host, config.Port, config.User, config.Password, config.Database)
+	db, err := sql.Open("postgres", connStr)
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	_, err = db.Exec("UPDATE git_metrics SET deps = $1 WHERE distro = 'your_distro_name'", dependentCount) // Adjust the WHERE clause as needed
+	return err
 }
 
 func Run(inputName, outputName string) {
@@ -169,6 +204,19 @@ func queryDepsDev(projectType, projectName, version, outputFile string) {
 	var info DependentInfo
 	if err := json.NewDecoder(resp.Body).Decode(&info); err != nil {
 		fmt.Println("Error decoding response:", err)
+		return
+	}
+
+	// Update database with dependent count
+	config, err := loadConfig("config.json")
+	if err != nil {
+		fmt.Printf("Error loading config: %v\n", err)
+		return
+	}
+
+	err = updateDatabase(info.DependentCount, config)
+	if err != nil {
+		fmt.Printf("Error updating database: %v\n", err)
 		return
 	}
 

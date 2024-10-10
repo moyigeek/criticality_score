@@ -6,11 +6,12 @@ import (
 
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/archlinux"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/debian"
+	"github.com/HUSTSecLab/criticality_score/pkg/collector/nix"
 )
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println("Usage: main <archlinux|debian> [gendot <output.dot>]")
+		fmt.Println("Usage: main <archlinux|debian|nix> [gendot <output.dot>]")
 		return
 	}
 
@@ -31,8 +32,14 @@ func main() {
 		} else {
 			fmt.Println("Usage: main debian [gendot <output.dot>]")
 		}
+	case "nix":
+		if len(os.Args) == 2 {
+			nix.Nix()
+		} else {
+			fmt.Println("Usage: main debian [gendot <output.dot>]")
+		}
 	default:
 		fmt.Println("Unknown command:", os.Args[1])
-		fmt.Println("Usage: main <archlinux|debian> [gendot <output.dot>]")
+		fmt.Println("Usage: main <archlinux|debian|nix> [gendot <output.dot>]")
 	}
 }

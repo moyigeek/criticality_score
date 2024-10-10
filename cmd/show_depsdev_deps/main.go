@@ -8,13 +8,12 @@ import (
 )
 
 func main() {
-	if len(os.Args) < 3 {
-		fmt.Println("Usage: show_depdev_deps <input_file_name> <output_file_name>")
+	if len(os.Args) < 2 {
+		fmt.Println("Usage: show_depdev_deps config.json")
 		return
 	}
 
-	inputName := os.Args[1]
-	outputName := os.Args[2]
+	config := os.Args[1]
 
-	collector_depsdev.Run(inputName, outputName)
+	collector_depsdev.Run(config)
 }

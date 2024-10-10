@@ -3,6 +3,8 @@ package debian
 import (
 	"bufio"
 	"compress/gzip"
+	"database/sql"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -10,18 +12,61 @@ import (
 	"regexp"
 	"sort"
 	"strings"
+
+	_ "github.com/lib/pq" // Assuming PostgreSQL, adjust as needed
 )
 
 var cacheDir = "/tmp/cloc-debian-cache"
 
+// Updated DepInfo struct to include Description and Homepage
 type DepInfo struct {
-	Name    string
-	Arch    string
-	Version string
+	Name        string
+	Arch        string
+	Version     string
+	Description string
+	Homepage    string
+}
+
+type Config struct {
+	Database    string `json:"database"`
+	User        string `json:"user"`
+	Password    string `json:"password"`
+	Host        string `json:"host"`
+	Port        string `json:"port"`
+	GitHubToken string `json:"GitHubToken"`
+}
+
+func loadConfig(configPath string) (Config, error) {
+	var config Config
+	file, err := ioutil.ReadFile(configPath)
+	if err != nil {
+		return config, err
+	}
+	err = json.Unmarshal(file, &config)
+	return config, err
+}
+
+func updateDatabase(pkgInfoMap map[string]PackageInfo, config Config) error {
+	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		config.Host, config.Port, config.User, config.Password, config.Database)
+	db, err := sql.Open("postgres", connStr)
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	for pkgName, pkgInfo := range pkgInfoMap {
+		_, err := db.Exec("UPDATE debian_packages SET depends_count = $1, description = $2, homepage = $3 WHERE package = $4",
+			pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgName)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func getMirrorFile(path string) []byte {
-	resp, _ := http.Get("http://mirrors.hust.college/debian/" + path)
+	resp, _ := http.Get("https://mirrors.hust.edu.cn/debian/" + path)
 	defer resp.Body.Close()
 
 	body, _ := ioutil.ReadAll(resp.Body)
@@ -78,7 +123,7 @@ func parseList() map[string]map[string]interface{} {
 			depList := strings.Split(depends, ",")
 			var depStrings []interface{}
 			for _, dep := range depList {
-				depInfo := toDep(strings.TrimSpace(dep))
+				depInfo := toDep(strings.TrimSpace(dep), packageStr)
 				depStrings = append(depStrings, depInfo)
 			}
 			pkg["Depends"] = depStrings
@@ -92,13 +137,39 @@ func parseList() map[string]map[string]interface{} {
 	return packages
 }
 
-func toDep(dep string) DepInfo {
+// Updated toDep function to extract additional fields
+func toDep(dep string, rawContent string) DepInfo {
 	re := regexp.MustCompile(`^(.+?)(:.+?)?(\s\((.+)\))?(\s\|.+)?$`)
 	matches := re.FindStringSubmatch(dep)
+
+	// Initialize DepInfo with default values
+	depInfo := DepInfo{Name: dep, Arch: "", Version: "", Description: "", Homepage: ""}
+
 	if matches != nil {
-		return DepInfo{Name: matches[1], Arch: matches[2], Version: matches[4]}
+		depInfo.Name = matches[1]
+		if matches[2] != "" {
+			depInfo.Arch = strings.TrimSpace(matches[2])
+		}
+		if matches[4] != "" {
+			depInfo.Version = strings.TrimSpace(matches[4])
+		}
 	}
-	return DepInfo{Name: dep, Arch: "", Version: ""}
+
+	// Extract Description and Homepage from rawContent
+	descriptionRegex := regexp.MustCompile(`(?m)^Description:\s*(.*)$`)
+	homepageRegex := regexp.MustCompile(`(?m)^Homepage:\s*(.*)$`)
+
+	// Extract Description
+	if descMatches := descriptionRegex.FindStringSubmatch(rawContent); len(descMatches) > 1 {
+		depInfo.Description = descMatches[1]
+	}
+
+	// Extract Homepage
+	if homeMatches := homepageRegex.FindStringSubmatch(rawContent); len(homeMatches) > 1 {
+		depInfo.Homepage = homeMatches[1]
+	}
+
+	return depInfo
 }
 
 func generateDependencyGraph(packages map[string]map[string]interface{}, outputPath string) error {
@@ -173,6 +244,14 @@ func Debian(outputPath string) {
 	packages := parseList()
 	fmt.Printf("Done, total: %d packages.\n", len(packages))
 	fmt.Println("Building dependencies graph...")
+
+	// Load configuration
+	config, err := loadConfig("config.json")
+	if err != nil {
+		fmt.Printf("Error loading config: %v\n", err)
+		return
+	}
+
 	keys := make([]string, 0, len(packages))
 	for k := range packages {
 		keys = append(keys, k)
@@ -192,16 +271,38 @@ func Debian(outputPath string) {
 		}
 	}
 
-	fmt.Println("Writing result...")
-	file, _ := os.Create("result_debian.csv")
-	defer file.Close()
+	// Create a map to hold package information
+	pkgInfoMap := make(map[string]PackageInfo)
 
-	writer := bufio.NewWriter(file)
-	writer.WriteString("name,refcount\n")
-	for key, count := range countMap {
-		writer.WriteString(fmt.Sprintf("%s,%d\n", key, count))
+	// Populate the pkgInfoMap with counts, descriptions, and homepages
+	for pkgName, pkgInfo := range packages {
+		depCount := countMap[pkgName] // Get the dependency count
+
+		// Safely extract Description and Homepage, defaulting to empty string if not present
+		description, ok := pkgInfo["Description"].(string)
+		if !ok {
+			description = "" // Set to empty string if not found
+		}
+
+		homepage, ok := pkgInfo["Homepage"].(string)
+		if !ok {
+			homepage = "" // Set to empty string if not found
+		}
+
+		pkgInfoMap[pkgName] = PackageInfo{
+			DependsCount: depCount,
+			Description:  description,
+			Homepage:     homepage,
+		}
 	}
-	writer.Flush()
+
+	// Update database with package information
+	err = updateDatabase(pkgInfoMap, config)
+	if err != nil {
+		fmt.Printf("Error updating database: %v\n", err)
+		return
+	}
+	fmt.Println("Database updated successfully.")
 
 	if outputPath != "" {
 		err := generateDependencyGraph(packages, outputPath)
@@ -211,4 +312,10 @@ func Debian(outputPath string) {
 		}
 		fmt.Println("Dependency graph generated successfully.")
 	}
+}
+
+type PackageInfo struct {
+	DependsCount int
+	Description  string
+	Homepage     string
 }

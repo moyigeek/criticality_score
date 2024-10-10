@@ -4,28 +4,95 @@ import (
 	"archive/tar"
 	"bufio"
 	"compress/gzip"
+	"database/sql"
+	"encoding/json"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 	"path/filepath"
 	"regexp"
 	"sort"
 	"strings"
+
+	_ "github.com/lib/pq" // Assuming PostgreSQL, adjust as needed
 )
 
-type DepInfo struct {
-	Name    string
-	Arch    string
-	Version string
+type Config struct {
+	Database    string `json:"database"`
+	User        string `json:"user"`
+	Password    string `json:"password"`
+	Host        string `json:"host"`
+	Port        string `json:"port"`
+	GitHubToken string `json:"GitHubToken"`
 }
 
-func toDep(dep string) DepInfo {
+func loadConfig(configPath string) (Config, error) {
+	var config Config
+	file, err := ioutil.ReadFile(configPath)
+	if err != nil {
+		return config, err
+	}
+	err = json.Unmarshal(file, &config)
+	return config, err
+}
+
+func updateDatabase(pkgInfoMap map[string]DepInfo, config Config) error {
+	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		config.Host, config.Port, config.User, config.Password, config.Database)
+	db, err := sql.Open("postgres", connStr)
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	for pkgName, pkgInfo := range pkgInfoMap {
+		_, err := db.Exec("UPDATE arch_packages SET depends_count = $1, description = $2, homepage = $3 WHERE package = $4",
+			pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgName)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+type DepInfo struct {
+	Name         string
+	Arch         string
+	Version      string
+	Description  string // New field for package description
+	Homepage     string // New field for package homepage
+	DependsCount int    // New field for dependency count
+}
+
+func toDep(dep string, rawContent string) DepInfo {
 	re := regexp.MustCompile(`^([^=><!]+?)(?:([=><!]+)([^:]+))?(?::(.+?))?(?:\s*\((.+)\))?$`)
 	matches := re.FindStringSubmatch(dep)
+
+	// Initialize DepInfo with default values
+	depInfo := DepInfo{Name: dep, Arch: "", Version: "", Description: "", Homepage: ""}
+
 	if matches != nil {
-		return DepInfo{Name: matches[1], Arch: matches[4], Version: matches[2] + matches[3]}
+		depInfo.Name = matches[1]
+		depInfo.Version = matches[2] + matches[3]
+		depInfo.Arch = matches[4]
 	}
-	return DepInfo{Name: dep, Arch: "", Version: ""}
+
+	// Extract Description and Homepage from rawContent
+	descriptionRegex := regexp.MustCompile(`(?m)^%DESC%\s*(.+)$`)
+	homepageRegex := regexp.MustCompile(`(?m)^%URL%\s*(.+)$`)
+
+	// Extract Description
+	if descMatches := descriptionRegex.FindStringSubmatch(rawContent); len(descMatches) > 1 {
+		depInfo.Description = descMatches[1]
+	}
+
+	// Extract Homepage
+	if homeMatches := homepageRegex.FindStringSubmatch(rawContent); len(homeMatches) > 1 {
+		depInfo.Homepage = homeMatches[1]
+	}
+
+	return depInfo
 }
 
 func extractTarGz(gzipStream io.Reader, dest string) error {
@@ -87,6 +154,8 @@ func readDescFile(descPath string) (DepInfo, []DepInfo, error) {
 	var pkgInfo DepInfo
 	var dependencies []DepInfo
 	var inPackageSection, inDependSection bool
+	var rawContent strings.Builder // 用于构建完整的原始内容
+	var expectNextLine string      // 用于存储期待的下一行内容
 
 	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
@@ -104,11 +173,28 @@ func readDescFile(descPath string) (DepInfo, []DepInfo, error) {
 			inPackageSection = false
 			inDependSection = false
 		}
+
 		if inPackageSection && line != "" {
-			pkgInfo = toDep(line)
+			rawContent.WriteString(line + "\n")        // 将当前行添加到原始内容中
+			pkgInfo = toDep(line, rawContent.String()) // 传递完整的原始内容
 		}
+
 		if inDependSection && line != "" {
-			dependencies = append(dependencies, toDep(line))
+			rawContent.WriteString(line + "\n")                                   // 将当前行添加到原始内容中
+			dependencies = append(dependencies, toDep(line, rawContent.String())) // 传递完整的原始内容
+		}
+
+		// 处理特定的标记
+		if line == "%URL%" {
+			expectNextLine = "url" // 标记期待下一行是 URL
+		} else if line == "%DESC%" {
+			expectNextLine = "desc" // 标记期待下一行是描述
+		} else if expectNextLine == "url" {
+			rawContent.WriteString("%URL%\n" + line + "\n") // 将URL行添加到原始内容中
+			expectNextLine = ""                             // 重置标记
+		} else if expectNextLine == "desc" {
+			rawContent.WriteString("%DESC%\n" + line + "\n") // 将描述行添加到原始内容中
+			expectNextLine = ""                              // 重置标记
 		}
 	}
 
@@ -270,7 +356,11 @@ func Archlinux(outputPath string) {
 		}
 		fmt.Println("Dependency graph generated successfully.")
 	}
-
+	config, err := loadConfig("config.json")
+	if err != nil {
+		fmt.Printf("Error loading config: %v\n", err)
+		return
+	}
 	fmt.Println("Building dependencies graph...")
 	keys := make([]string, 0, len(packages))
 	for k := range packages {
@@ -292,13 +382,37 @@ func Archlinux(outputPath string) {
 		}
 	}
 
-	fmt.Println("Writing result...")
-	file, _ := os.Create("result_archlinux.csv")
-	defer file.Close()
-	writer := bufio.NewWriter(file)
-	writer.WriteString("name,refcount\n")
-	for key, count := range countMap {
-		writer.WriteString(fmt.Sprintf("%s,%d\n", key, count))
+	// Create a map to hold package information
+	pkgInfoMap := make(map[string]DepInfo)
+
+	// Populate pkgInfoMap with counts, descriptions, and homepages
+	for pkgName, pkgInfo := range packages {
+		depCount := countMap[pkgName] // Get the dependency count
+
+		// Safely extract Description and Homepage, defaulting to empty string if not present
+		var description, homepage string
+
+		if info, ok := pkgInfo["Info"].(DepInfo); ok {
+			description = info.Description
+			homepage = info.Homepage
+		} else {
+			description = "" // Set to empty string if Info is not of type DepInfo
+			homepage = ""    // Set to empty string if Info is not of type DepInfo
+		}
+
+		pkgInfoMap[pkgName] = DepInfo{
+			Name:         pkgName,
+			DependsCount: depCount,
+			Description:  description,
+			Homepage:     homepage,
+		}
 	}
-	writer.Flush()
+
+	// Update database with package information
+	err = updateDatabase(pkgInfoMap, config) // Pass the pkgInfoMap
+	if err != nil {
+		fmt.Printf("Error updating database: %v\n", err)
+		return
+	}
+	fmt.Println("Database updated successfully.")
 }
