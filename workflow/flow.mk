@@ -21,7 +21,7 @@ update_dependents.rec: package_updated.src union_gitlink.rec
 	echo "* Updating the dependents..."
 	$(APP_BIN)/show_distpkg_deps -config $(CFG_FILE) archlinux
 	$(APP_BIN)/show_distpkg_deps -config $(CFG_FILE) debian
-	$(APP_BIN)/show_distpkg_deps -config $(CFG_FILE) nix
+	# $(APP_BIN)/show_distpkg_deps -config $(CFG_FILE) nix
 	touch $@
 
 update_git_metrics.rec: git_updated.src union_gitlink.rec
