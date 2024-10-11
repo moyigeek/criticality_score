@@ -4,22 +4,14 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"regexp"
 	"strings"
 
+	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	_ "github.com/lib/pq"
 )
-
-type Config struct {
-	Database string `json:"database"`
-	User     string `json:"user"`
-	Password string `json:"password"`
-	Host     string `json:"host"`
-	Port     string `json:"port"`
-}
 
 type DependentInfo struct {
 	DependentCount         int `json:"dependentCount"`
@@ -27,14 +19,8 @@ type DependentInfo struct {
 	IndirectDependentCount int `json:"indirectDependentCount"`
 }
 
-func Run(configPath string) {
-	config, err := loadConfig(configPath)
-	if err != nil {
-		log.Fatal("Failed to load config:", err)
-	}
-
-	db, err := sql.Open("postgres", fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		config.Host, config.Port, config.User, config.Password, config.Database))
+func Run() {
+	db, err := storage.GetDatabaseConnection()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -42,16 +28,6 @@ func Run(configPath string) {
 
 	gitLinks := fetchGitLinks(db)
 	syncGitMetrics(db, gitLinks)
-}
-
-func loadConfig(path string) (Config, error) {
-	var config Config
-	bytes, err := ioutil.ReadFile(path)
-	if err != nil {
-		return config, err
-	}
-	err = json.Unmarshal(bytes, &config)
-	return config, err
 }
 
 func fetchGitLinks(db *sql.DB) map[string]bool {
