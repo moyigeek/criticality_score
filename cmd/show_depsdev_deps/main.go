@@ -1,19 +1,17 @@
 package main
 
 import (
-	"fmt"
-	"os"
+	"flag"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_depsdev"
+	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 )
 
+var flagConfigPath = flag.String("config", "config.json", "path to the config file")
+
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("Usage: show_depdev_deps config.json")
-		return
-	}
+	flag.Parse()
+	storage.InitializeDatabase(*flagConfigPath)
 
-	config := os.Args[1]
-
-	collector_depsdev.Run(config, "/dev/null")
+	collector_depsdev.Run(*flagConfigPath)
 }

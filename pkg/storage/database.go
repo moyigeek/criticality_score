@@ -46,3 +46,7 @@ func GetDatabaseConnection() (*sql.DB, error) {
 	db, err := sql.Open("postgres", connStr)
 	return db, err
 }
+
+func GetGlobalConfig() Config {
+	return globalConfig
+}

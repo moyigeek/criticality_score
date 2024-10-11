@@ -11,9 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"database/sql"
-	"io/ioutil"
-
+	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	"github.com/google/go-github/v63/github"
 	_ "github.com/lib/pq" // Assuming PostgreSQL, adjust as needed
 	"golang.org/x/oauth2"
@@ -25,51 +23,21 @@ type DependentInfo struct {
 	IndirectDependentCount int `json:"indirectDependentCount"`
 }
 
-type Config struct {
-	Database    string `json:"database"`
-	User        string `json:"user"`
-	Password    string `json:"password"`
-	Host        string `json:"host"`
-	Port        string `json:"port"`
-	GitHubToken string `json:"GitHubToken"`
-}
-
-func loadConfig(configPath string) (Config, error) {
-	var config Config
-	file, err := ioutil.ReadFile(configPath)
-	if err != nil {
-		return config, err
-	}
-	err = json.Unmarshal(file, &config)
-	return config, err
-}
-
-func updateDatabase(link, projectName string, dependentCount int, config Config) error {
-	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		config.Host, config.Port, config.User, config.Password, config.Database)
-	db, err := sql.Open("postgres", connStr)
+func updateDatabase(link, projectName string, dependentCount int) error {
+	db, err := storage.GetDatabaseConnection()
 	if err != nil {
 		return err
 	}
 	defer db.Close()
+
 	_, err = db.Exec("UPDATE git_metrics SET depsdev_count = $1 WHERE git_link = $2", dependentCount, link) // Adjust the WHERE clause as needed
 	return err
 }
 
 func Run(configPath string) {
-	// Load configuration
-	config, err := loadConfig(configPath)
+	db, err := storage.GetDatabaseConnection()
 	if err != nil {
-		fmt.Printf("Error loading config: %v\n", err)
-		return
-	}
-
-	// Connect to the database
-	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		config.Host, config.Port, config.User, config.Password, config.Database)
-	db, err := sql.Open("postgres", connStr)
-	if err != nil {
-		fmt.Println("Error connecting to database:", err)
+		fmt.Errorf("Error initializing database: %v\n", err)
 		return
 	}
 	defer db.Close()
@@ -105,7 +73,7 @@ func Run(configPath string) {
 					repo = strings.TrimSuffix(repo, ".git")
 				}
 
-				projectType := getProjectType(owner, repo, config)
+				projectType := getProjectType(owner, repo)
 				if projectType != "" {
 					latestVersion := getLatestVersion(owner, repo, projectType)
 					if latestVersion != "" {
@@ -121,10 +89,10 @@ func Run(configPath string) {
 	}
 }
 
-func getProjectType(owner, repo string, config Config) string {
+func getProjectType(owner, repo string) string {
 	ctx := context.Background()
 	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: config.GitHubToken},
+		&oauth2.Token{AccessToken: storage.GetGlobalConfig().GitHubToken},
 	)
 	tc := oauth2.NewClient(ctx, ts)
 	client := github.NewClient(tc)
@@ -238,14 +206,7 @@ func queryDepsDev(link, projectType, projectName, version string) {
 		return
 	}
 
-	// Update database with dependent count
-	config, err := loadConfig("config.json")
-	if err != nil {
-		fmt.Printf("Error loading config: %v\n", err)
-		return
-	}
-
-	err = updateDatabase(link, projectName, info.DependentCount, config)
+	err = updateDatabase(link, projectName, info.DependentCount)
 	if err != nil {
 		fmt.Printf("Error updating database: %v\n", err)
 		return
