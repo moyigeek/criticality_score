@@ -71,7 +71,7 @@ DB_HOST_PORT="5432"
 
 echo "Setting up files..."
 
-mkdir -p "$DATA_DIR/db" "$DATA_DIR/log" "$DATA_DIR/config" "$DATA_DIR/git"
+mkdir -p "$DATA_DIR/db" "$DATA_DIR/rec" "$DATA_DIR/config" "$DATA_DIR/git"
 
 cat <<EOF > "$DATA_DIR/config/config.json"
 {
@@ -99,7 +99,7 @@ docker compose up -d
 
 # 3. Run first time collector
 echo "Running first time collector..."
-docker compose exec app "/workflow/update.sh" package
+docker compose exec app "/workflow/update.sh" -C /data/rec package
 
 echo_red "========== NOTICE =========="
 echo_red "git link could only be updated manually."

@@ -23,7 +23,7 @@ COPY ./workflow /workflow
 ENV CFG_FILE=/config/config.json
 ENV APP_BIN=/app
 
-RUN /workflow/gen_crontab.sh -o /proc/1/fd/1 > /tmp/update.cron && \
+RUN /workflow/gen_crontab.sh -o /proc/1/fd/1 -r /data/rec > /tmp/update.cron && \
     crontab /tmp/update.cron && \
     rm /tmp/update.cron
 

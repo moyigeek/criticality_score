@@ -18,4 +18,5 @@ services:
     volumes:
       - ${DATA_DIR}/config:/config
       - ${DATA_DIR}/git:/data/git
+      - ${DATA_DIR}/rec:/data/rec
   
