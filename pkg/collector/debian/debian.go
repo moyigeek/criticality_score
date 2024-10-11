@@ -238,13 +238,6 @@ func Debian(outputPath string) {
 	fmt.Printf("Done, total: %d packages.\n", len(packages))
 	fmt.Println("Building dependencies graph...")
 
-	// Load configuration
-	config, err := loadConfig("config.json")
-	if err != nil {
-		fmt.Printf("Error loading config: %v\n", err)
-		return
-	}
-
 	keys := make([]string, 0, len(packages))
 	for k := range packages {
 		keys = append(keys, k)
@@ -290,7 +283,7 @@ func Debian(outputPath string) {
 	}
 
 	// Update database with package information
-	err = updateOrInsertDatabase(pkgInfoMap)
+	err := updateOrInsertDatabase(pkgInfoMap)
 	if err != nil {
 		fmt.Printf("Error updating database: %v\n", err)
 		return
