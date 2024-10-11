@@ -15,5 +15,5 @@ func main() {
 
 	config := os.Args[1]
 
-	collector_depsdev.Run(config)
+	collector_depsdev.Run(config, "/dev/null")
 }
