@@ -23,3 +23,6 @@ bin/
 # Go workspace file
 go.work
 go.work.sum
+
+data/
+.env

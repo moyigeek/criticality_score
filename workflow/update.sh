@@ -20,7 +20,7 @@ prepare() {
 
 run() {
     touch "$1_updated.src"
-    make -s -f "$SCRIPT_DIR/flow.mk"
+    make -s -e -f "$SCRIPT_DIR/flow.mk"
 }
 
 # getopts -C : change dir

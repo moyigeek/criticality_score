@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    shm_size: 128mb
+    volumes:
+      - ${DATA_DIR}/db:/data/postgres
+    ports:
+      - "${DB_HOST_PORT}:5432"
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWD}
+      PGDATA: /data/postgres
+  app:
+    build: .
+    restart: always
+    volumes:
+      - ${DATA_DIR}/config:/config
+      - ${DATA_DIR}/git:/data/git
+  
