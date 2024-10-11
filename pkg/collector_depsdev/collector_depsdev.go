@@ -1,23 +1,22 @@
 package collector_depsdev
 
 import (
-	"bufio"
 	"context"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
-	"os"
 	"regexp"
 	"strconv"
 	"strings"
 	"time"
 
-	"github.com/google/go-github/v63/github"
-	"golang.org/x/oauth2"
 	"database/sql"
-	_ "github.com/lib/pq" // Assuming PostgreSQL, adjust as needed
 	"io/ioutil"
+
+	"github.com/google/go-github/v63/github"
+	_ "github.com/lib/pq" // Assuming PostgreSQL, adjust as needed
+	"golang.org/x/oauth2"
 )
 
 type DependentInfo struct {
@@ -27,11 +26,11 @@ type DependentInfo struct {
 }
 
 type Config struct {
-	Database   string `json:"database"`
-	User       string `json:"user"`
-	Password   string `json:"password"`
-	Host       string `json:"host"`
-	Port       string `json:"port"`
+	Database    string `json:"database"`
+	User        string `json:"user"`
+	Password    string `json:"password"`
+	Host        string `json:"host"`
+	Port        string `json:"port"`
 	GitHubToken string `json:"GitHubToken"`
 }
 
@@ -45,7 +44,7 @@ func loadConfig(configPath string) (Config, error) {
 	return config, err
 }
 
-func updateDatabase(dependentCount int, config Config) error {
+func updateDatabase(link, projectName string, dependentCount int, config Config) error {
 	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		config.Host, config.Port, config.User, config.Password, config.Database)
 	db, err := sql.Open("postgres", connStr)
@@ -53,47 +52,79 @@ func updateDatabase(dependentCount int, config Config) error {
 		return err
 	}
 	defer db.Close()
-
-	_, err = db.Exec("UPDATE git_metrics SET deps = $1 WHERE distro = 'your_distro_name'", dependentCount) // Adjust the WHERE clause as needed
+	_, err = db.Exec("UPDATE git_metrics SET depsdev_count = $1 WHERE git_link = $2", dependentCount, link) // Adjust the WHERE clause as needed
 	return err
 }
 
-func Run(inputName, outputName string) {
-	file, err := os.Open(inputName)
+func Run(configPath string) {
+	// Load configuration
+	config, err := loadConfig(configPath)
 	if err != nil {
-		fmt.Println("Error opening file:", err)
+		fmt.Printf("Error loading config: %v\n", err)
 		return
 	}
-	defer file.Close()
 
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		line := scanner.Text()
-		if strings.HasPrefix(line, "https://github.com/") {
-			parts := strings.Split(line, "/")
+	// Connect to the database
+	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+		config.Host, config.Port, config.User, config.Password, config.Database)
+	db, err := sql.Open("postgres", connStr)
+	if err != nil {
+		fmt.Println("Error connecting to database:", err)
+		return
+	}
+	defer db.Close()
+
+	// Query git_links from git_metrics table
+	rows, err := db.Query("SELECT git_link FROM git_metrics")
+	if err != nil {
+		fmt.Println("Error querying git_metrics:", err)
+		return
+	}
+	defer rows.Close()
+
+	var gitLinks []string
+	for rows.Next() {
+		var gitLink string
+		if err := rows.Scan(&gitLink); err != nil {
+			fmt.Println("Error scanning git_link:", err)
+			return
+		}
+		gitLinks = append(gitLinks, gitLink)
+	}
+
+	// Process each git link
+	for _, link := range gitLinks {
+		if strings.HasPrefix(link, "https://github.com/") {
+			parts := strings.Split(link, "/")
 			if len(parts) >= 5 {
 				owner := parts[3]
 				repo := parts[4]
-				projectType := getProjectType(owner, repo)
+
+				// Remove the .git suffix if it exists
+				if strings.HasSuffix(repo, ".git") {
+					repo = strings.TrimSuffix(repo, ".git")
+				}
+
+				projectType := getProjectType(owner, repo, config)
 				if projectType != "" {
 					latestVersion := getLatestVersion(owner, repo, projectType)
 					if latestVersion != "" {
-						queryDepsDev(projectType, repo, latestVersion, outputName)
+						queryDepsDev(link, projectType, repo, latestVersion)
 					}
 				}
 			}
 		}
 	}
 
-	if err := scanner.Err(); err != nil {
-		fmt.Println("Error reading file:", err)
+	if err := rows.Err(); err != nil {
+		fmt.Println("Error reading rows:", err)
 	}
 }
 
-func getProjectType(owner, repo string) string {
+func getProjectType(owner, repo string, config Config) string {
 	ctx := context.Background()
 	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: os.Getenv("GITHUB_AUTH_TOKEN")},
+		&oauth2.Token{AccessToken: config.GitHubToken},
 	)
 	tc := oauth2.NewClient(ctx, ts)
 	client := github.NewClient(tc)
@@ -187,7 +218,7 @@ func getLatestVersion(owner, repo, projectType string) string {
 	return latestVersion
 }
 
-func queryDepsDev(projectType, projectName, version, outputFile string) {
+func queryDepsDev(link, projectType, projectName, version string) {
 	url := fmt.Sprintf("https://api.deps.dev/v3alpha/systems/%s/packages/%s/versions/%s:dependents", projectType, projectName, version)
 	resp, err := http.Get(url)
 	if err != nil {
@@ -214,22 +245,9 @@ func queryDepsDev(projectType, projectName, version, outputFile string) {
 		return
 	}
 
-	err = updateDatabase(info.DependentCount, config)
+	err = updateDatabase(link, projectName, info.DependentCount, config)
 	if err != nil {
 		fmt.Printf("Error updating database: %v\n", err)
 		return
 	}
-
-	file, err := os.OpenFile(outputFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		fmt.Println("Error opening file:", err)
-		return
-	}
-	defer file.Close()
-
-	// 将输出重定向到文件
-	fmt.Fprintf(file, "Project: %s, Version: %s\n", projectName, version)
-	fmt.Fprintf(file, "Dependent Count: %d, Direct Dependent Count: %d, Indirect Dependent Count: %d\n",
-		info.DependentCount, info.DirectDependentCount, info.IndirectDependentCount)
 }
-
