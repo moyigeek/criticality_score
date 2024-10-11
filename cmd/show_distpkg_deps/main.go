@@ -1,45 +1,34 @@
 package main
 
 import (
+	"flag"
 	"fmt"
-	"os"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/archlinux"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/debian"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/nix"
+	"github.com/HUSTSecLab/criticality_score/pkg/storage"
+)
+
+var (
+	flagConfigPath = flag.String("config", "config.json", "path to the config file")
+	flagType       = flag.String("type", "", "type of the distribution")
+	flagGenDot     = flag.String("gendot", "", "output dot file")
 )
 
 func main() {
-	if len(os.Args) < 2 {
-		fmt.Println("Usage: main <archlinux|debian|nix> [gendot <output.dot>]")
-		return
-	}
+	flag.Parse()
+	storage.InitializeDatabase(*flagConfigPath)
 
-	switch os.Args[1] {
+	switch *flagType {
 	case "archlinux":
-		if len(os.Args) == 4 && os.Args[2] == "gendot" {
-			archlinux.Archlinux(os.Args[3])
-		} else if len(os.Args) == 2 {
-			archlinux.Archlinux("")
-		} else {
-			fmt.Println("Usage: main archlinux [gendot <output.dot>]")
-		}
+		archlinux.Archlinux(*flagGenDot)
 	case "debian":
-		if len(os.Args) == 4 && os.Args[2] == "gendot" {
-			debian.Debian(os.Args[3])
-		} else if len(os.Args) == 2 {
-			debian.Debian("")
-		} else {
-			fmt.Println("Usage: main debian [gendot <output.dot>]")
-		}
+		debian.Debian(*flagGenDot)
 	case "nix":
-		if len(os.Args) == 2 {
-			nix.Nix()
-		} else {
-			fmt.Println("Usage: main debian [gendot <output.dot>]")
+		if *flagGenDot == "" {
+			fmt.Errorf("Nix not support gendot")
 		}
-	default:
-		fmt.Println("Unknown command:", os.Args[1])
-		fmt.Println("Usage: main <archlinux|debian|nix> [gendot <output.dot>]")
+		nix.Nix()
 	}
 }

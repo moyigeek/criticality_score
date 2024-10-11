@@ -3,8 +3,6 @@ package debian
 import (
 	"bufio"
 	"compress/gzip"
-	"database/sql"
-	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -13,6 +11,7 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	_ "github.com/lib/pq" // Assuming PostgreSQL, adjust as needed
 )
 
@@ -27,39 +26,33 @@ type DepInfo struct {
 	Homepage    string
 }
 
-type Config struct {
-	Database    string `json:"database"`
-	User        string `json:"user"`
-	Password    string `json:"password"`
-	Host        string `json:"host"`
-	Port        string `json:"port"`
-	GitHubToken string `json:"GitHubToken"`
-}
-
-func loadConfig(configPath string) (Config, error) {
-	var config Config
-	file, err := ioutil.ReadFile(configPath)
-	if err != nil {
-		return config, err
-	}
-	err = json.Unmarshal(file, &config)
-	return config, err
-}
-
-func updateDatabase(pkgInfoMap map[string]PackageInfo, config Config) error {
-	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		config.Host, config.Port, config.User, config.Password, config.Database)
-	db, err := sql.Open("postgres", connStr)
+func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
+	db, err := storage.GetDatabaseConnection()
 	if err != nil {
 		return err
 	}
 	defer db.Close()
 
 	for pkgName, pkgInfo := range pkgInfoMap {
-		_, err := db.Exec("UPDATE debian_packages SET depends_count = $1, description = $2, homepage = $3 WHERE package = $4",
-			pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgName)
+		var exists bool
+		err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM debian_packages WHERE package = $1)", pkgName).Scan(&exists)
 		if err != nil {
 			return err
+		}
+		if !exists {
+			// TODO: if the package does not exist, notify user to update git_link
+			_, err := db.Exec("INSERT INTO debian_packages (package, depends_count, description, homepage) VALUES ($1, $2, $3, $4)",
+				pkgName, pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage)
+			if err != nil {
+				return err
+			}
+		} else {
+
+			_, err := db.Exec("UPDATE debian_packages SET depends_count = $1, description = $2, homepage = $3 WHERE package = $4",
+				pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgName)
+			if err != nil {
+				return err
+			}
 		}
 	}
 	return nil
@@ -297,7 +290,7 @@ func Debian(outputPath string) {
 	}
 
 	// Update database with package information
-	err = updateDatabase(pkgInfoMap, config)
+	err = updateOrInsertDatabase(pkgInfoMap)
 	if err != nil {
 		fmt.Printf("Error updating database: %v\n", err)
 		return

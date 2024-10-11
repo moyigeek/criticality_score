@@ -4,53 +4,45 @@ import (
 	"archive/tar"
 	"bufio"
 	"compress/gzip"
-	"database/sql"
-	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"regexp"
 	"sort"
 	"strings"
 
+	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	_ "github.com/lib/pq" // Assuming PostgreSQL, adjust as needed
 )
 
-type Config struct {
-	Database    string `json:"database"`
-	User        string `json:"user"`
-	Password    string `json:"password"`
-	Host        string `json:"host"`
-	Port        string `json:"port"`
-	GitHubToken string `json:"GitHubToken"`
-}
-
-func loadConfig(configPath string) (Config, error) {
-	var config Config
-	file, err := ioutil.ReadFile(configPath)
-	if err != nil {
-		return config, err
-	}
-	err = json.Unmarshal(file, &config)
-	return config, err
-}
-
-func updateDatabase(pkgInfoMap map[string]DepInfo, config Config) error {
-	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		config.Host, config.Port, config.User, config.Password, config.Database)
-	db, err := sql.Open("postgres", connStr)
+func updateOrInsertDatabase(pkgInfoMap map[string]DepInfo) error {
+	db, err := storage.GetDatabaseConnection()
 	if err != nil {
 		return err
 	}
 	defer db.Close()
 
 	for pkgName, pkgInfo := range pkgInfoMap {
-		_, err := db.Exec("UPDATE arch_packages SET depends_count = $1, description = $2, homepage = $3 WHERE package = $4",
-			pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgName)
+		var exists bool
+		err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM arch_packages WHERE package = $1)", pkgName).Scan(&exists)
 		if err != nil {
 			return err
+		}
+
+		if !exists {
+			// TODO: if the package does not exist, notify user to update git_link
+			_, err := db.Exec("INSERT INTO arch_packages (package, depends_count, description, homepage) VALUES ($1, $2, $3, $4)",
+				pkgName, pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage)
+			if err != nil {
+				return err
+			}
+		} else {
+			_, err := db.Exec("UPDATE arch_packages SET depends_count = $1, description = $2, homepage = $3 WHERE package = $4",
+				pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgName)
+			if err != nil {
+				return err
+			}
 		}
 	}
 	return nil
@@ -118,11 +110,11 @@ func extractTarGz(gzipStream io.Reader, dest string) error {
 		target := filepath.Join(dest, header.Name)
 		switch header.Typeflag {
 		case tar.TypeDir:
-			if err := os.MkdirAll(target, 0755); err != nil {
+			if err := os.MkdirAll(target, 0o755); err != nil {
 				return err
 			}
 		case tar.TypeReg:
-			if err := os.MkdirAll(filepath.Dir(target), 0755); err != nil {
+			if err := os.MkdirAll(filepath.Dir(target), 0o755); err != nil {
 				return err
 			}
 			file, err := os.OpenFile(target, os.O_CREATE|os.O_WRONLY, os.FileMode(header.Mode))
@@ -283,7 +275,7 @@ func Archlinux(outputPath string) {
 
 	// Create extract directory if it doesn't exist
 	if _, err := os.Stat(extractDir); os.IsNotExist(err) {
-		err := os.Mkdir(extractDir, 0755)
+		err := os.Mkdir(extractDir, 0o755)
 		if err != nil {
 			fmt.Printf("Error creating extract directory: %v\n", err)
 			return
@@ -356,11 +348,6 @@ func Archlinux(outputPath string) {
 		}
 		fmt.Println("Dependency graph generated successfully.")
 	}
-	config, err := loadConfig("config.json")
-	if err != nil {
-		fmt.Printf("Error loading config: %v\n", err)
-		return
-	}
 	fmt.Println("Building dependencies graph...")
 	keys := make([]string, 0, len(packages))
 	for k := range packages {
@@ -409,7 +396,7 @@ func Archlinux(outputPath string) {
 	}
 
 	// Update database with package information
-	err = updateDatabase(pkgInfoMap, config) // Pass the pkgInfoMap
+	err = updateOrInsertDatabase(pkgInfoMap) // Pass the pkgInfoMap
 	if err != nil {
 		fmt.Printf("Error updating database: %v\n", err)
 		return
