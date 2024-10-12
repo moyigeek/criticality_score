@@ -1,5 +1,13 @@
 # Criticality Score Tool
 
+## Quick Start
+
+make sure `docker` is installed, and run
+
+```
+./setup.sh
+```
+
 ## Overview
 
 This tool is designed to calculate the criticality score of packages in Arch Linux and Debian distributions. It can generate dependency graphs in DOT format and CSV files with reference counts.
