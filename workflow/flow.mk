@@ -13,21 +13,22 @@ endif
 calc_score.rec: update_dependents.rec update_git_metrics.rec update_depsdev.rec
 	# Calculate the score
 	echo "* Calculating the score..."
-	$(APP_BIN)/gen_score -config $(CFG_FILE)
+	$(APP_BIN)/gen_scores -config $(CFG_FILE)
 	touch $@
 
 update_dependents.rec: package_updated.src union_gitlink.rec
 	# Update the dependents
 	echo "* Updating the dependents..."
-	$(APP_BIN)/show_distpkg_deps -config $(CFG_FILE) archlinux
-	$(APP_BIN)/show_distpkg_deps -config $(CFG_FILE) debian
+	$(APP_BIN)/show_distpkg_deps -config $(CFG_FILE) -type archlinux
+	$(APP_BIN)/show_distpkg_deps -config $(CFG_FILE) -type debian
 	# $(APP_BIN)/show_distpkg_deps -config $(CFG_FILE) nix
 	touch $@
 
 update_git_metrics.rec: git_updated.src union_gitlink.rec
 	# Update the Git metrics
 	echo "* Updating the Git metrics..."
-	$(APP_BIN)/gitmetricsync -config $(CFG_FILE)
+	$(APP_BIN)/update_git_metrics -config $(CFG_FILE)
+
 	touch $@
 
 update_depsdev.rec: depsdev_updated.src union_gitlink.rec

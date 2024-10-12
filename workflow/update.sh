@@ -28,6 +28,7 @@ run() {
 while getopts "C:" opt; do
     case $opt in
         C)
+            echo "Changing directory to $OPTARG"
             cd "$OPTARG" || exit 1
             ;;
         \?)
