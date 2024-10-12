@@ -19,10 +19,12 @@ about() {
 }
 
 help() {
-    echo "Usage: $0 [-h] -d <data_dir> [-p <db_passwd>]"
+    echo "Usage: $0 [-h] -d <data_dir> [-p <db_passwd>] [-w <web_port>] [-b <db_port>]"
     echo "Options:"
     echo " -d <data_dir>   The directory to store the data, default is ./data"
     echo " -p <db_passwd>  The password for the database, default is randomly generated"
+    echo " -w <web_port>   The port for the web server, default is 8080"
+    echo " -d <db_port>    The port for the database, default is 5432"
 }
 
 echo_red() {
@@ -33,13 +35,22 @@ echo_red() {
 
 about
 
-while getopts "d:p:" opt; do
+DB_HOST_PORT="5432"
+WEB_HOST_PORT="8080"
+
+while getopts "d:p:w:b:h" opt; do
     case $opt in
         d)
             DATA_DIR="$OPTARG"
             ;;
         p)
             DB_PASSWD="$OPTARG"
+            ;;
+        w)
+            WEB_HOST_PORT="$OPTARG"
+            ;;
+        b)
+            DB_HOST_PORT="$OPTARG"
             ;;
         h)
             help
@@ -63,9 +74,18 @@ if [ -z "$DB_PASSWD" ]; then
     DB_PASSWD=$(openssl rand -base64 12)
 fi
 
-DB_HOST_PORT="5432"
+if [ -f "$DATA_DIR"/DB_PASSWD ]; then
+    echo_red "Password file already exists, -p will be ignored"
+    DB_PASSWD=$(cat "$DATA_DIR"/DB_PASSWD)
+else
+    mkdir -p "$DATA_DIR"
+    echo "$DB_PASSWD" > "$DATA_DIR"/DB_PASSWD
+fi
 
 ########## Process ##########
+
+# 0. Down docker compose
+docker compose down
 
 # 1. Create dirs and files
 
@@ -79,7 +99,7 @@ cat <<EOF > "$DATA_DIR/config/config.json"
     "host": "db",
     "user": "postgres",
     "password": "$DB_PASSWD",
-    "port": 5432,
+    "port": "5432",
     "GitHubToken": "$GITHUB_TOKEN"
 }
 EOF
@@ -88,7 +108,9 @@ cat <<EOF > ".env"
 DATA_DIR=$DATA_DIR
 DB_HOST_PORT=$DB_HOST_PORT
 DB_PASSWD=$DB_PASSWD
+WEB_HOST_PORT=$WEB_HOST_PORT
 EOF
+
 
 # 2. Start docker compose
 
@@ -97,9 +119,18 @@ echo "Setting up app..."
 docker compose build
 docker compose up -d
 
+# 3. Create database and tables
+
+echo "Waiting for database to start..."
+sleep 5
+
+docker compose cp ./schema.sql db:/tmp/schema.sql
+docker compose exec db psql -h localhost -U postgres -f /tmp/schema.sql
+docker compose exec db rm /tmp/schema.sql
+
 # 3. Run first time collector
-echo "Running first time collector..."
-docker compose exec app "/workflow/update.sh" -C /data/rec package
+echo "Running workflow for the first time..."
+docker compose exec app /workflow/update.sh -C /data/rec package
 
 echo_red "========== NOTICE =========="
 echo_red "git link could only be updated manually."

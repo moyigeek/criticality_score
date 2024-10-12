@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 
 services:
   db:
@@ -19,4 +19,12 @@ services:
       - ${DATA_DIR}/config:/config
       - ${DATA_DIR}/git:/data/git
       - ${DATA_DIR}/rec:/data/rec
-  
+  web:
+    container_name: pgweb
+    restart: always
+    image: sosedoff/pgweb
+    ports:
+      - "${WEB_HOST_PORT}:8081"
+    environment:
+      - DATABASE_URL=postgres://postgres:${DB_PASSWD}@db:5432/criticality_score?sslmode=disable
+    entrypoint: ["/usr/bin/pgweb", "--bind=0.0.0.0", "--listen=8081", "--readonly"]
