@@ -2,27 +2,24 @@ package main
 
 import (
 	"database/sql"
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
+	"flag"
 	"log"
 
 	scores "github.com/HUSTSecLab/criticality_score/pkg/gen_scores"
+	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	_ "github.com/lib/pq"
 )
 
-type Config struct {
-	Database    string `json:"database"`
-	User        string `json:"user"`
-	Password    string `json:"password"`
-	Host        string `json:"host"`
-	Port        string `json:"port"`
-	GitHubToken string `json:"githubToken"`
-}
+var flagConfigPath = flag.String("config", "config.json", "path to the config file")
 
 func main() {
-	config := loadConfig("config.json")
-	db := setupDatabase(config)
+	flag.Parse()
+	storage.InitializeDatabase(*flagConfigPath)
+	db, err := storage.GetDatabaseConnection()
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %v", err)
+	}
+
 	defer db.Close()
 
 	links, err := fetchAllLinks(db)
@@ -42,28 +39,6 @@ func main() {
 			log.Printf("Failed to update score for %s: %v", link, err)
 		}
 	}
-}
-
-func loadConfig(path string) *Config {
-	file, err := ioutil.ReadFile(path)
-	if err != nil {
-		log.Fatalf("Error reading config file: %v", err)
-	}
-	var config Config
-	if err := json.Unmarshal(file, &config); err != nil {
-		log.Fatalf("Error parsing config file: %v", err)
-	}
-	return &config
-}
-
-func setupDatabase(config *Config) *sql.DB {
-	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		config.Host, config.Port, config.User, config.Password, config.Database)
-	db, err := sql.Open("postgres", connStr)
-	if err != nil {
-		log.Fatalf("Failed to open database: %v", err)
-	}
-	return db
 }
 
 func fetchAllLinks(db *sql.DB) ([]string, error) {
