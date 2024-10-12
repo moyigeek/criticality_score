@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	_ "github.com/lib/pq"
 )
 
 var globalConfig Config
