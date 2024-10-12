@@ -11,10 +11,28 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/config"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/io/database"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/utils"
+	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
+
+func InitDBFromStorageConfig() *gorm.DB {
+	config := storage.GetGlobalConfig()
+	dsn := fmt.Sprintf(
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
+		config.Host,
+		config.User,
+		config.Password,
+		config.Database,
+		config.Port,
+		"disable",
+	)
+
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	utils.CheckIfError(err)
+	return db
+}
 
 func InitDB() *gorm.DB {
 	dsn := fmt.Sprintf(
@@ -42,7 +60,6 @@ func InsertTable(db *gorm.DB, metrics *database.Metrics) {
 }
 
 func BatchInsertMetrics(db *gorm.DB, metrics [database.BATCH_SIZE]database.Metrics) error {
-
 	tx := db.Begin()
 
 	if err := tx.Error; err != nil {
