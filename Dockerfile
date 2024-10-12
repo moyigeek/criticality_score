@@ -2,13 +2,20 @@ FROM golang:1.22 AS builder
 
 ENV GO111MODULE=on
 
-COPY . /build
+# predownload go modules to speed up incremental builds
+RUN mkdir -p /build
 WORKDIR /build
+COPY go.mod go.sum /build/
+RUN go mod download && rm -rf /build
+
+# build the app
+COPY . /build
 
 RUN make all && \
     mkdir -p /app && \
     cp bin/* /app
 
+# final stage
 FROM ubuntu:24.04
 
 RUN apt-get update && apt-get install -y ca-certificates && \
