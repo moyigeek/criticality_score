@@ -41,6 +41,6 @@ update_depsdev.rec: depsdev_updated.src union_gitlink.rec
 union_gitlink.rec: gitlink_updated.src
 	# Union the Git links
 	echo "* Unioning the Git links..."
-	echo "[WARN] Not implemented yet!"  #TODO: implement it
+	$(APP_BIN)/gitmetricssync -config $(CFG_FILE)
 	touch $@
 

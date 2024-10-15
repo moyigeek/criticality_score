@@ -11,7 +11,7 @@ import (
 	"sync"
 	"time"
 
-	config "github.com/HUSTSecLab/criticality_score/pkg/collector_git/config"
+	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/collector"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/io/database"
 	psql "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/io/database/psql"
 	git "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/git"
@@ -19,8 +19,6 @@ import (
 	utils "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/utils"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/workerpool"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
-
-	gogit "github.com/go-git/go-git/v5"
 )
 
 var flagConfigPath = flag.String("config", "config.json", "path to the config file")
@@ -68,14 +66,16 @@ func main() {
 			defer wg.Done()
 			// fmt.Printf("Collecting %s\n", url[0])
 			u := url.ParseURL(input)
-			r, err := gogit.PlainOpen(config.STORAGE_PATH + u.Pathname)
+
+			r, err := collector.Collect(&u)
+			utils.HandleErr(err, u.URL)
 			if err != nil {
-				// r = collector.Collect(&u)
 				r = nil
 			}
 			if r == nil {
-				utils.Warning("[*] Collect %s Failed at %s", input, time.Now().String())
+				utils.Warning("[*] Cloning %s Failed at %s", input, time.Now().String())
 			} else {
+				utils.Info("[*] %s Cloned at %s", input, time.Now().String())
 				repo := git.ParseGitRepo(r)
 				if repo == nil {
 					utils.Warning("[!] %s Collect Failed", input)
