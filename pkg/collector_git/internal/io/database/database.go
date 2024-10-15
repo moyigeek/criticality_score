@@ -17,26 +17,27 @@ const (
 	BATCH_SIZE                = 500
 )
 
-type Metrics struct {
+type GitMetrics struct {
 	gorm.Model
-	Name             string    `gorm:"not null"`
-	Owner            string    `gorm:"not null"`
-	Source           string    `gorm:"not null"`
-	URL              string    `gorm:"not null"` //* `gorm:"unique;not null"`
-	CreatedSince     time.Time `gorm:"not null"`
-	UpdatedSince     time.Time `gorm:"not null"`
-	ContributorCount int       `gorm:"not null"`
-	OrgCount         int       `gorm:"not null"`
-	CommitFrequency  float64   `gorm:"not null"`
+	Name             string    `gorm:"column:_name;not null"`
+	Owner            string    `gorm:"column:_owner;not null"`
+	Source           string    `gorm:"column:_source;not null"`
+	URL              string    `gorm:"column:git_link;not null"` //* `gorm:"unique;not null"`
+	CreatedSince     time.Time `gorm:"column:created_since;not null"`
+	UpdatedSince     time.Time `gorm:"column:updated_since;not null"`
+	ContributorCount int       `gorm:"column:contributor_count;not null"`
+	OrgCount         int       `gorm:"column:org_count;not null"`
+	CommitFrequency  float64   `gorm:"column:commit_frequency;not null"`
+	// License          string    `gorm:"not null"`
 }
 
 func NewMetrics(
-	Name, Owner, Source, URL string,
+	Name, Owner, Source, URL /*, License*/ string,
 	CreatedSince, UpdatedSince time.Time,
 	ContributorCount, OrgCount int,
 	CommitFrequency float64,
-) Metrics {
-	return Metrics{
+) GitMetrics {
+	return GitMetrics{
 		gorm.Model{},
 		Name,
 		Owner,
@@ -47,5 +48,6 @@ func NewMetrics(
 		ContributorCount,
 		OrgCount,
 		CommitFrequency,
+		//		License,
 	}
 }

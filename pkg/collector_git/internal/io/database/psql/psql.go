@@ -51,15 +51,15 @@ func InitDB() *gorm.DB {
 }
 
 func CreateTable(db *gorm.DB) {
-	err := db.AutoMigrate(&database.Metrics{})
+	err := db.AutoMigrate(&database.GitMetrics{})
 	utils.CheckIfError(err)
 }
 
-func InsertTable(db *gorm.DB, metrics *database.Metrics) {
-	db.Where(&database.Metrics{URL: metrics.URL}).FirstOrCreate(metrics)
+func InsertTable(db *gorm.DB, metrics *database.GitMetrics) {
+	db.Where(&database.GitMetrics{URL: metrics.URL}).FirstOrCreate(metrics)
 }
 
-func BatchInsertMetrics(db *gorm.DB, metrics [database.BATCH_SIZE]database.Metrics) error {
+func BatchInsertMetrics(db *gorm.DB, metrics [database.BATCH_SIZE]database.GitMetrics) error {
 	tx := db.Begin()
 
 	if err := tx.Error; err != nil {

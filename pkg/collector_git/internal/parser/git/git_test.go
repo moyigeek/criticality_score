@@ -7,6 +7,7 @@
 package git
 
 import (
+	"fmt"
 	"strconv"
 	"testing"
 	"time"
@@ -118,14 +119,54 @@ func TestParseGitRepo(t *testing.T) {
 	}
 }
 
+func TestGetLicense(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected []string
+	}{
+		{
+			input:    "https://gitee.com/goldpankit/goldpankit.git",
+			expected: []string{"GPL-2.0"},
+		}, /*
+			{
+				input:    "https://github.com/gin-gonic/gin.git",
+				expected: []string{"MIT license"},
+			},
+			{
+				input:    "https://bitbucket.org/evolution536/crysearch-memory-scanner.git",
+				expected: []string{"MIT license"},
+			},*/
+	}
+	for n, test := range tests {
+		t.Run(strconv.Itoa(n), func(t *testing.T) {
+			u := url.ParseURL(test.input)
+			r, err := collector.EzCollect(&u)
+			err = utils.HandleErr(err, u.URL)
+			utils.CheckIfError(err)
+			l := GetLicense(r)
+			fmt.Println(l)
+			require.Equal(t, test.expected, l)
+		})
+	}
+}
+
 func TestGetLanguages(t *testing.T) {
 	tests := []struct {
 		input    string
 		expected []string
 	}{
-		{},
-		{},
-		{},
+		{
+			input:    "https://gitee.com/goldpankit/goldpankit.git",
+			expected: []string{"Vue", "JavaScript", "SCSS", "HTML"},
+		}, /*
+			{
+				input:    "https://github.com/gin-gonic/gin.git",
+				expected: []string{"MIT license"},
+			},
+			{
+				input:    "https://github.com/appleboy/gin-jwt.git",
+				expected: []string{"MIT license"},
+			},*/
 	}
 	for n, test := range tests {
 		t.Run(strconv.Itoa(n), func(t *testing.T) {

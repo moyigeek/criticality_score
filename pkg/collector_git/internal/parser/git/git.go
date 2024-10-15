@@ -17,10 +17,12 @@ import (
 )
 
 type Repo struct {
-	Name      string
-	Owner     string
-	Source    string
-	URL       string
+	Name    string
+	Owner   string
+	Source  string
+	URL     string
+	License string
+	// is_maintained bool
 	Languages []string
 	Metrics   *RepoMetrics
 }
@@ -215,27 +217,55 @@ func GetURL(r *git.Repository) string {
 	return u
 }
 
-func GetLanguages(r *git.Repository) *[]string {
-	tIter, err := r.TreeObjects()
+func GetLicense(r *git.Repository) string {
+
+	// ToDO 尝试实现为 https://github.com/licensee/licensee
+
+	//* Maybe multiple licenses
+	//* l := []string{}
+	l := parser.UNKNOWN_LICENSE
+	ref, err := r.Head()
 	utils.CheckIfError(err)
+	commit, err := r.CommitObject(ref.Hash())
+	utils.CheckIfError(err)
+	tree, err := commit.Tree()
+	utils.CheckIfError(err)
+
+	f, err := tree.File("LICENSE")
+	utils.CheckIfError(err)
+	content, err := f.Lines()
+	utils.CheckIfError(err)
+
+	for k, v := range parser.LICENSE_KEYWORD {
+		if strings.Contains(content[0], k) {
+			//* l = append(l, v)
+			l = v
+		}
+	}
+	return l
+}
+
+func GetLanguages(r *git.Repository) *[]string {
 	l := map[string]int{}
-	err = tIter.ForEach(func(t *object.Tree) error {
-		fIter := t.Files()
-		err = fIter.ForEach(func(f *object.File) error {
-			filename := filepath.Base(f.Name)
-			v, ok := parser.LANGUAGE_FILENAMES[filename]
+	ref, err := r.Head()
+	utils.CheckIfError(err)
+	commit, err := r.CommitObject(ref.Hash())
+	utils.CheckIfError(err)
+	tree, err := commit.Tree()
+	utils.CheckIfError(err)
+	fIter := tree.Files()
+	err = fIter.ForEach(func(f *object.File) error {
+		filename := filepath.Base(f.Name)
+		v, ok := parser.LANGUAGE_FILENAMES[filename]
+		if ok {
+			l[v] += 1
+		} else {
+			ex := filepath.Ext(f.Name)
+			v, ok = parser.LANGUAGE_EXTENSIONS[ex]
 			if ok {
 				l[v] += 1
-			} else {
-				ex := filepath.Ext(f.Name)
-				v, ok = parser.LANGUAGE_EXTENSIONS[ex]
-				if ok {
-					l[v] += 1
-				}
 			}
-			return nil
-		})
-		utils.CheckIfError(err)
+		}
 		return nil
 	})
 	utils.CheckIfError(err)
@@ -354,11 +384,15 @@ func ParseGitRepo(r *git.Repository) *Repo {
 		metrics = &m
 	}
 
+	license := ""
+	//license = GetLicense(r)
+
 	repo.Name = name
 	repo.Owner = owner
 	repo.Source = source
 	repo.URL = u
 	repo.Languages = *languages
+	repo.License = license
 	repo.Metrics = metrics
 
 	return &repo

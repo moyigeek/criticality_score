@@ -45,7 +45,8 @@ func Info(format string, args ...interface{}) {
 // Warning should be used to display a warning
 func Warning(format string, args ...interface{}) {
 	// logger.Warnf("\x1b[36;1m%s\x1b[0m\n", fmt.Sprintf(format, args...))
-	fmt.Printf("\x1b[36;1m%s\x1b[0m\n", fmt.Sprintf(format, args...))
+	//fmt.Printf("\x1b[36;1m%s\x1b[0m\n", fmt.Sprintf(format, args...))
+	fmt.Fprintf(os.Stderr, "\x1b[36;1m%s\x1b[0m\n", fmt.Sprintf(format, args...))
 }
 
 func GetStdInput() string {

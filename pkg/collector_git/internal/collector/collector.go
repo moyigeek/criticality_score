@@ -67,7 +67,7 @@ func Open(path string) (*gogit.Repository, error) {
 	return r, err
 }
 
-func pull(r *gogit.Repository, path string) error {
+func Pull(r *gogit.Repository, path string) error {
 	wt, err := r.Worktree()
 	utils.CheckIfError(err)
 	remotes, err := r.Remotes()
@@ -91,36 +91,38 @@ func pull(r *gogit.Repository, path string) error {
 	}
 
 	err = wt.Pull(&gogit.PullOptions{
-		RemoteName: remote,
-		RemoteURL:  u,
+		RemoteName:   remote,
+		RemoteURL:    u,
+		SingleBranch: true,
+		Force:        true,
 	})
 
 	return err
 }
 
 /*
-	func fetch(r *gogit.Repository, path string) error {
-		var u string
+func Fetch(r *gogit.Repository, path string) error {
+	var u string
 
-		remotes := git.GetRemotes(r)
-		if len(*remotes) > 0 {
-			us := (*remotes)[0].Config().URLs
-			if len(us) > 0 {
-				u = us[0]
-			}
+	remotes := git.GetRemotes(r)
+	if len(*remotes) > 0 {
+		us := (*remotes)[0].Config().URLs
+		if len(us) > 0 {
+			u = us[0]
 		}
-
-		if u == "" {
-			u = "https://" + parser.DEFAULT_SOURCE + path
-		}
-
-		err := r.Fetch(&gogit.FetchOptions{
-			RemoteURL: u,
-			RefSpecs:  []gogitconfig.RefSpec{"refs/*:refs/*", "HEAD:ref/heads/HEAD"},
-			// Progress:  os.Stdout,
-		})
-		return err
 	}
+
+	if u == "" {
+		u = "https://" + parser.DEFAULT_SOURCE + path
+	}
+
+	err := r.Fetch(&gogit.FetchOptions{
+		RemoteURL: u,
+		RefSpecs:  []gogitconfig.RefSpec{"refs/*:refs/*", "HEAD:ref/heads/HEAD"},
+		// Progress:  os.Stdout,
+	})
+	return err
+}
 */
 
 func Update(u *url.RepoURL) (*gogit.Repository, error) {
@@ -128,7 +130,7 @@ func Update(u *url.RepoURL) (*gogit.Repository, error) {
 	if err != nil {
 		return r, err
 	}
-	err = pull(r, u.Pathname)
+	err = Pull(r, u.Pathname)
 	// err := fetch(r)
 	if err == gogit.NoErrAlreadyUpToDate {
 		err = nil
