@@ -34,6 +34,10 @@ RUN /workflow/gen_crontab.sh -o /proc/1/fd/1 -r /data/rec > /tmp/update.cron && 
     crontab /tmp/update.cron && \
     rm /tmp/update.cron
 
+RUN echo '#!/bin/bash' > /gitlink.sh && \
+    echo 'APP_BIN=/app CFG_FILE=/config/config.json /workflow/update.sh -C /data/rec gitlink' >> /gitlink.sh && \
+    chmod +x /gitlink.sh
+
 COPY --from=builder /app /app
 
 CMD ["cron", "-f"]
