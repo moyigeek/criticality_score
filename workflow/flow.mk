@@ -41,6 +41,6 @@ update_depsdev.rec: depsdev_updated.src union_gitlink.rec
 union_gitlink.rec: gitlink_updated.src
 	# Union the Git links
 	echo "* Unioning the Git links..."
-	$(APP_BIN)/gitmetricssync -config $(CFG_FILE)
+	$(APP_BIN)/gitmetricsync -config $(CFG_FILE)
 	touch $@
 
