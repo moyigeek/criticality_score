@@ -18,6 +18,7 @@ type Config struct {
 	Host        string `json:"host"`
 	Port        string `json:"port"`
 	GitHubToken string `json:"GitHubToken"`
+	GitLabToken string `json:"GitLabToken"`
 }
 
 func loadConfig(configPath string) (Config, error) {
