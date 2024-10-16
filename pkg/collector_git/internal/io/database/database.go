@@ -23,16 +23,19 @@ type GitMetrics struct {
 	Owner            string    `gorm:"column:_owner;not null"`
 	Source           string    `gorm:"column:_source;not null"`
 	URL              string    `gorm:"column:git_link;not null"` //* `gorm:"unique;not null"`
+	Ecosystems       []string  `gorm:"column:ecosystem;not null"`
 	CreatedSince     time.Time `gorm:"column:created_since;not null"`
 	UpdatedSince     time.Time `gorm:"column:updated_since;not null"`
 	ContributorCount int       `gorm:"column:contributor_count;not null"`
 	OrgCount         int       `gorm:"column:org_count;not null"`
 	CommitFrequency  float64   `gorm:"column:commit_frequency;not null"`
 	// License          string    `gorm:"not null"`
+	//Languages []string `gorm:"not null"`
 }
 
 func NewMetrics(
 	Name, Owner, Source, URL /*, License*/ string,
+	Ecosystems []string,
 	CreatedSince, UpdatedSince time.Time,
 	ContributorCount, OrgCount int,
 	CommitFrequency float64,
@@ -43,6 +46,7 @@ func NewMetrics(
 		Owner,
 		Source,
 		URL,
+		Ecosystems,
 		CreatedSince,
 		UpdatedSince,
 		ContributorCount,

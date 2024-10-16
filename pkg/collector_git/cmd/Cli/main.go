@@ -64,7 +64,9 @@ func main() {
 						repo.Name,
 						repo.Owner,
 						repo.Source,
+						repo.License,
 						fmt.Sprintf("%s", repo.Languages),
+						fmt.Sprintf("%s", repo.Ecosystems),
 						repo.Metrics.CreatedSince.String(),
 						repo.Metrics.UpdatedSince.String(),
 						fmt.Sprintf("%d", repo.Metrics.ContributorCount),
@@ -81,12 +83,14 @@ func main() {
 				fmt.Printf("Repo Name: %s   ", o[1])
 				fmt.Printf("Owner: %s   ", o[2])
 				fmt.Printf("Source: %s\n", o[3])
-				fmt.Printf("Languages: %s\n", o[4])
-				fmt.Printf("Created Since: %s\n", o[5])
-				fmt.Printf("Updated Since: %s\n", o[6])
-				fmt.Printf("Contributor Count: %s   ", o[7])
-				fmt.Printf("Org Count: %s   ", o[8])
-				fmt.Printf("Commit Frequency: %s\n\n", o[9])
+				fmt.Printf("License: %s\n", o[4])
+				fmt.Printf("Languages: %s\n", o[5])
+				fmt.Printf("Ecosystems: %s\n", o[6])
+				fmt.Printf("Created Since: %s\n", o[7])
+				fmt.Printf("Updated Since: %s\n", o[8])
+				fmt.Printf("Contributor Count: %s   ", o[9])
+				fmt.Printf("Org Count: %s   ", o[10])
+				fmt.Printf("Commit Frequency: %s\n\n", o[11])
 			}
 			return nil
 		}}

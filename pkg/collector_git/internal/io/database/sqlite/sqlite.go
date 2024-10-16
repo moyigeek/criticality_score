@@ -44,7 +44,12 @@ func CreateTable(db *gorm.DB) {
 }
 
 func InsertTable(db *gorm.DB, metrics *database.GitMetrics) {
-	db.Where(&database.GitMetrics{URL: metrics.URL}).FirstOrCreate(metrics)
+	db.Where(&database.GitMetrics{URL: metrics.URL}).Assign(database.GitMetrics{
+		UpdatedSince:     metrics.UpdatedSince,
+		ContributorCount: metrics.ContributorCount,
+		OrgCount:         metrics.OrgCount,
+		CommitFrequency:  metrics.CommitFrequency,
+	}).FirstOrCreate(metrics)
 }
 
 func BatchInsertMetrics(db *gorm.DB, metrics [database.BATCH_SIZE]database.GitMetrics) error {

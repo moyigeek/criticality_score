@@ -32,6 +32,7 @@ func main() {
 	} else {
 		path = ""
 	}
+	// ToDo url 数量过多时有可能会 thread exhausted，考虑限制线程池最大并发数
 	urls := csv.GetCSVInput(path)
 	var wg sync.WaitGroup
 	utils.Info("%d urls in total", len(urls))
@@ -68,6 +69,7 @@ func main() {
 					repo.Owner,
 					repo.Source,
 					repo.URL,
+					repo.Ecosystems,
 					repo.Metrics.CreatedSince,
 					repo.Metrics.UpdatedSince,
 					repo.Metrics.ContributorCount,

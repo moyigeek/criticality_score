@@ -131,11 +131,11 @@ func TestGetLicense(t *testing.T) {
 			{
 				input:    "https://github.com/gin-gonic/gin.git",
 				expected: []string{"MIT license"},
-			},
-			{
-				input:    "https://bitbucket.org/evolution536/crysearch-memory-scanner.git",
-				expected: []string{"MIT license"},
 			},*/
+		{
+			input:    "https://bitbucket.org/evolution536/crysearch-memory-scanner.git",
+			expected: []string{"MIT license"},
+		},
 	}
 	for n, test := range tests {
 		t.Run(strconv.Itoa(n), func(t *testing.T) {
@@ -178,6 +178,31 @@ func TestGetLanguages(t *testing.T) {
 			require.Equal(t, test.expected, *l)
 		})
 	}
+}
+
+func TestGetEcosystem(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected []string
+	}{
+		//{input: "https://gitee.com/goldpankit/goldpankit.git", expected: []string{"npm"}},
+		{input: "https://gitlab.com/Sasha-Zayets/nx-ci-cd.git", expected: []string{"npm"}},
+		{input: "https://gitee.com/mirrors/Proxy-Go.git", expected: []string{"Go"}},
+		{input: "https://gitee.com/sulv0302/onnx-inference4j-play.git", expected: []string{"Maven"}},
+		{input: "https://gitee.com/paddlepaddle/Paddle.git", expected: []string{"PyPI"}},
+		{input: "https://gitee.com/mycrls/turn-rs/tree/main/turn.git", expected: []string{"Cargo"}},
+	}
+	for n, test := range tests {
+		t.Run(strconv.Itoa(n), func(t *testing.T) {
+			u := url.ParseURL(test.input)
+			r, err := collector.EzCollect(&u)
+			err = utils.HandleErr(err, u.URL)
+			utils.CheckIfError(err)
+			eco := GetEcosystem(r)
+			require.Equal(t, test.expected, *eco)
+		})
+	}
+
 }
 
 func TestGetURL(t *testing.T) {

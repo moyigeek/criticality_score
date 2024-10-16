@@ -87,12 +87,14 @@ func main() {
 					repo.Owner,
 					repo.Source,
 					repo.URL,
+					repo.Ecosystems,
 					repo.Metrics.CreatedSince,
 					repo.Metrics.UpdatedSince,
 					repo.Metrics.ContributorCount,
 					repo.Metrics.OrgCount,
 					repo.Metrics.CommitFrequency,
 				)
+
 				psql.InsertTable(db, &output)
 			}
 			// utils.Info("[*] %s Collected at %s", url,time.Now().String())

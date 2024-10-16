@@ -1498,3 +1498,23 @@ var LANGUAGE_FILENAMES = map[string]string{
 	".nanorc":                      "nanorc",
 	"nanorc":                       "nanorc",
 }
+
+var ECOSYSTEM_MAP = map[string]string{
+	"package.json":      "npm",
+	"package-lock.json": "npm",
+	".npmrc":            "npm",
+	"node_modules":      "npm",
+	"setup.py":          "PyPI",
+	"Pipfile":           "PyPI",
+	"Pipfile.lock":      "PyPI",
+	//*	"requirements.txt":  "PyPI",
+	"Cargo.toml":      "Cargo",
+	"Cargo.lock":      "Cargo",
+	"pom.xml":         "Maven",
+	"build.gradle":    "Gradle",
+	"settings.gradle": "Gradle",
+	"go.sum":          "Go",
+	"go.work.sum":     "Go",
+	"go.mod":          "Go",
+	"go.work":         "Go",
+}

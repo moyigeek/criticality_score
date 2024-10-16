@@ -23,18 +23,21 @@ type Repo struct {
 	URL     string
 	License string
 	// is_maintained bool
-	Languages []string
-	Metrics   *RepoMetrics
+	Languages  []string
+	Ecosystems []string
+	Metrics    *RepoMetrics
 }
 
 func NewRepo() Repo {
 	return Repo{
-		Name:      "",
-		Owner:     "",
-		Source:    "",
-		URL:       "",
-		Languages: nil,
-		Metrics:   &RepoMetrics{},
+		Name:       "",
+		Owner:      "",
+		Source:     "",
+		URL:        "",
+		License:    "",
+		Languages:  []string{},
+		Ecosystems: []string{},
+		Metrics:    &RepoMetrics{},
 	}
 }
 
@@ -232,14 +235,21 @@ func GetLicense(r *git.Repository) string {
 	utils.CheckIfError(err)
 
 	f, err := tree.File("LICENSE")
-	utils.CheckIfError(err)
-	content, err := f.Lines()
-	utils.CheckIfError(err)
+	if err != nil {
+		f, err = tree.File("LICENSE.md")
+		if err != nil {
+			f, err = tree.File("LICENSE.txt")
+		}
+	}
+	if err == nil {
+		content, err := f.Lines()
+		utils.CheckIfError(err)
 
-	for k, v := range parser.LICENSE_KEYWORD {
-		if strings.Contains(content[0], k) {
-			//* l = append(l, v)
-			l = v
+		for k, v := range parser.LICENSE_KEYWORD {
+			if strings.Contains(content[0], k) {
+				//* l = append(l, v)
+				l = v
+			}
 		}
 	}
 	return l
@@ -276,6 +286,34 @@ func GetLanguages(r *git.Repository) *[]string {
 		}
 	}
 	return &languages
+}
+
+func GetEcosystem(r *git.Repository) *[]string {
+	eco := []string{}
+	ref, err := r.Head()
+	utils.CheckIfError(err)
+	commit, err := r.CommitObject(ref.Hash())
+	utils.CheckIfError(err)
+	tree, err := commit.Tree()
+	utils.CheckIfError(err)
+
+	emap := map[string]int{}
+	fIter := tree.Files()
+	err = fIter.ForEach(func(f *object.File) error {
+		filename := filepath.Base(f.Name)
+		v, ok := parser.ECOSYSTEM_MAP[filename]
+		if ok {
+			emap[v] += 1
+		}
+		return nil
+	})
+	utils.CheckIfError(err)
+	for k := range emap {
+		eco = append(eco, k)
+	}
+
+	fmt.Println(eco)
+	return &eco
 }
 
 func GetMetrics(r *git.Repository) *RepoMetrics {
@@ -370,6 +408,9 @@ func ParseGitRepo(r *git.Repository) *Repo {
 		}
 	}
 
+	license := ""
+	//license = GetLicense(r)
+
 	languages := &[]string{}
 	/*
 		languages := GetLanguages(r)
@@ -378,21 +419,21 @@ func ParseGitRepo(r *git.Repository) *Repo {
 		}
 	*/
 
+	eco := GetEcosystem(r)
+
 	metrics := GetMetrics(r)
 	if metrics == nil {
 		m := NewRepoMetrics()
 		metrics = &m
 	}
 
-	license := ""
-	//license = GetLicense(r)
-
 	repo.Name = name
 	repo.Owner = owner
 	repo.Source = source
 	repo.URL = u
-	repo.Languages = *languages
 	repo.License = license
+	repo.Languages = *languages
+	repo.Ecosystems = *eco
 	repo.Metrics = metrics
 
 	return &repo
