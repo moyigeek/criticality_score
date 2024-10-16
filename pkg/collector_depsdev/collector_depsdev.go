@@ -59,10 +59,10 @@ func Run(configPath string) {
 		}
 		gitLinks = append(gitLinks, gitLink)
 	}
-
 	// Process each git link
 	for _, link := range gitLinks {
 		if strings.HasPrefix(link, "https://github.com/") || strings.HasPrefix(link, "https://gitlab.com/") || strings.HasPrefix(link, "https://bitbucket.org/") {
+			link = "https://gitlab.com/rust-lang/rust"
 			parts := strings.Split(link, "/")
 			if len(parts) >= 5 {
 				owner := parts[3]
@@ -151,7 +151,19 @@ attempt:
 
 func getGitLabProjectType(owner, repo string) string {
     url := fmt.Sprintf("https://gitlab.com/api/v4/projects/%s%%2F%s/repository/tree", owner, repo)
-    resp, err := http.Get(url)
+    
+    // 创建一个新的请求
+    req, err := http.NewRequest("GET", url, nil)
+    if err != nil {
+        fmt.Println("Error creating request:", err)
+        return ""
+    }
+
+    // 设置Authorization头
+    // req.Header.Set("Authorization", "Bearer "+token)
+
+    // 发送请求
+    resp, err := http.DefaultClient.Do(req)
     if err != nil {
         fmt.Println("Error fetching GitLab repository contents:", err)
         return ""
@@ -159,7 +171,14 @@ func getGitLabProjectType(owner, repo string) string {
     defer resp.Body.Close()
 
     var files []map[string]interface{}
-    json.NewDecoder(resp.Body).Decode(&files)
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println(err)
+	}
+    if err = json.NewDecoder(strings.NewReader(string(body))).Decode(&files); err != nil {
+        fmt.Println("Error decoding JSON response:", err)
+        return ""
+    }
 
     for _, file := range files {
         if name, ok := file["name"].(string); ok {
@@ -325,9 +344,9 @@ func queryDepsDev(link, projectType, projectName, version string) {
 		return
 	}
 
-	err = updateDatabase(link, projectName, info.DependentCount, projectType)
-	if err != nil {
-		fmt.Printf("Error updating database: %v\n", err)
-		return
-	}
+	// err = updateDatabase(link, projectName, info.DependentCount, projectType)
+	// if err != nil {
+	// 	fmt.Printf("Error updating database: %v\n", err)
+	// 	return
+	// }
 }
