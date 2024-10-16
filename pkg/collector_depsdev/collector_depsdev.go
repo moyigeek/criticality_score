@@ -23,14 +23,14 @@ type DependentInfo struct {
 	IndirectDependentCount int `json:"indirectDependentCount"`
 }
 
-func updateDatabase(link, projectName string, dependentCount int) error {
+func updateDatabase(link, projectName string, dependentCount int, projectType string) error {
 	db, err := storage.GetDatabaseConnection()
 	if err != nil {
 		return err
 	}
 	defer db.Close()
 
-	_, err = db.Exec("UPDATE git_metrics SET depsdev_count = $1 WHERE git_link = $2", dependentCount, link) // Adjust the WHERE clause as needed
+	_, err = db.Exec("UPDATE git_metrics SET depsdev_count = $1 and pkg_manager = $2 WHERE git_link = $3", dependentCount, projectType, link) // Adjust the WHERE clause as needed
 	return err
 }
 
@@ -62,18 +62,26 @@ func Run(configPath string) {
 
 	// Process each git link
 	for _, link := range gitLinks {
-		if strings.HasPrefix(link, "https://github.com/") {
+		if strings.HasPrefix(link, "https://github.com/") || strings.HasPrefix(link, "https://gitlab.com/") || strings.HasPrefix(link, "https://bitbucket.org/") {
 			parts := strings.Split(link, "/")
 			if len(parts) >= 5 {
 				owner := parts[3]
 				repo := parts[4]
-
+		
 				// Remove the .git suffix if it exists
 				if strings.HasSuffix(repo, ".git") {
 					repo = strings.TrimSuffix(repo, ".git")
 				}
-
-				projectType := getProjectType(owner, repo)
+		
+				projectType := ""
+				if strings.HasPrefix(link, "https://github.com/") {
+					projectType = getGitHubProjectType(owner, repo)
+				} else if strings.HasPrefix(link, "https://gitlab.com/") {
+					projectType = getGitLabProjectType(owner, repo)
+				} else if strings.HasPrefix(link, "https://bitbucket.org/") {
+					projectType = getBitbucketProjectType(owner, repo)
+				}
+		
 				if projectType != "" {
 					latestVersion := getLatestVersion(owner, repo, projectType)
 					if latestVersion != "" {
@@ -81,7 +89,7 @@ func Run(configPath string) {
 					}
 				}
 			}
-		}
+		}		
 	}
 
 	if err := rows.Err(); err != nil {
@@ -89,7 +97,7 @@ func Run(configPath string) {
 	}
 }
 
-func getProjectType(owner, repo string) string {
+func getGitHubProjectType(owner, repo string) string {
 	ctx := context.Background()
 	ts := oauth2.StaticTokenSource(
 		&oauth2.Token{AccessToken: storage.GetGlobalConfig().GitHubToken},
@@ -138,6 +146,117 @@ attempt:
 			}
 		}
 	}
+	return ""
+}
+
+func getGitLabProjectType(owner, repo string) string {
+    url := fmt.Sprintf("https://gitlab.com/api/v4/projects/%s%%2F%s/repository/tree", owner, repo)
+    resp, err := http.Get(url)
+    if err != nil {
+        fmt.Println("Error fetching GitLab repository contents:", err)
+        return ""
+    }
+    defer resp.Body.Close()
+
+    var files []map[string]interface{}
+    json.NewDecoder(resp.Body).Decode(&files)
+
+    for _, file := range files {
+        if name, ok := file["name"].(string); ok {
+            switch name {
+            case "package.json":
+                return "npm"
+            case "setup.py":
+                return "pypi"
+            case "Cargo.toml":
+                return "cargo"
+            case "pom.xml":
+                return "maven"
+            case "build.gradle":
+                return "gradle"
+            case "go.mod":
+                return "go"
+            }
+        }
+    }
+    return ""
+}
+
+func getBitbucketProjectType(owner, repo string) string {
+    // Initial API request
+    url := fmt.Sprintf("https://api.bitbucket.org/2.0/repositories/%s/%s/src", owner, repo)
+
+    // Create the request
+    req, err := http.NewRequest("GET", url, nil)
+    if err != nil {
+        fmt.Println("Error creating request:", err)
+        return ""
+    }
+
+    // Set headers
+    req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36")
+    client := &http.Client{
+        CheckRedirect: func(req *http.Request, via []*http.Request) error {
+            return http.ErrUseLastResponse // Don't follow redirects automatically
+        },
+    }
+
+    // Send request
+    resp, err := client.Do(req)
+    if err != nil {
+        fmt.Println("Error fetching Bitbucket repository contents:", err)
+        return ""
+    }
+    defer resp.Body.Close()
+	var body []byte
+    // Check if there's a redirect
+    if resp.StatusCode == http.StatusFound || resp.StatusCode == http.StatusMovedPermanently {
+        redirectURL := resp.Header.Get("Location")
+        // fmt.Println("Redirecting to:", redirectURL)
+
+        // Fetch from the new location
+        req, err = http.NewRequest("GET", redirectURL, nil)
+        if err != nil {
+            fmt.Println("Error creating new request:", err)
+            return ""
+        }
+		req.Header.Set("User-Agent", "curl/7.68.0")
+		resp, err = client.Do(req)
+        if err != nil {
+            fmt.Println("Error following redirect:", err)
+            return ""
+        }
+        defer resp.Body.Close()
+
+		body, err = io.ReadAll(resp.Body)
+		if err != nil {
+			fmt.Println(err)
+		}
+    }
+    // Now read the response from the new location
+    var result map[string][]map[string]interface{}
+	err = json.NewDecoder(strings.NewReader(string(body))).Decode(&result)
+
+	files := result["values"]
+	for _, file := range files {
+		if path, ok := file["path"].(string); ok {
+			switch path {
+			case "package.json":
+				return "npm"
+			case "setup.py":
+				return "pypi"
+			case "Cargo.toml":
+				return "cargo"
+			case "pom.xml":
+				return "maven"
+			case "build.gradle":
+				return "gradle"
+			case "go.mod":
+				return "go"
+			}
+		}
+	}
+
 	return ""
 }
 
@@ -206,7 +325,7 @@ func queryDepsDev(link, projectType, projectName, version string) {
 		return
 	}
 
-	err = updateDatabase(link, projectName, info.DependentCount)
+	err = updateDatabase(link, projectName, info.DependentCount, projectType)
 	if err != nil {
 		fmt.Printf("Error updating database: %v\n", err)
 		return

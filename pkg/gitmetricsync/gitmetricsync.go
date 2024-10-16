@@ -2,10 +2,8 @@ package gitmetricsync
 
 import (
 	"database/sql"
-	"encoding/json"
 	"fmt"
 	"log"
-	"net/http"
 	"regexp"
 	"strings"
 
@@ -102,38 +100,13 @@ func syncGitMetrics(db *sql.DB, gitLinks map[string]bool) {
 		if _, exists := dbLinks[normLinkLower]; !exists {
 			parts := strings.Split(normLinkOriginal, "/")
 			if len(parts) >= 5 {
-				projectType, projectName, version := "github", parts[3], strings.TrimSuffix(parts[4], ".git")
-				depCount := queryDepsDev(projectType, projectName, version)
-				_, err := db.Exec(`INSERT INTO git_metrics (git_link, depsdev_count) VALUES ($1, $2)`, normLinkOriginal, depCount)
+				_, err := db.Exec(`INSERT INTO git_metrics git_link VALUES $1`, normLinkOriginal)
 				if err != nil {
 					log.Printf("Failed to insert git_link %s: %v", normLinkOriginal, err)
 				}
 			}
 		}
 	}
-}
-
-func queryDepsDev(projectType, projectName, version string) int {
-	url := fmt.Sprintf("https://api.deps.dev/v3alpha/systems/%s/packages/%s/versions/%s:dependents", projectType, projectName, version)
-	resp, err := http.Get(url)
-	if err != nil {
-		log.Println("Error querying deps.dev:", err)
-		return 0
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		log.Println("Error: received non-200 response code")
-		return 0
-	}
-
-	var info DependentInfo
-	if err := json.NewDecoder(resp.Body).Decode(&info); err != nil {
-		log.Println("Error decoding response:", err)
-		return 0
-	}
-
-	return info.DependentCount
 }
 
 func getKeys(m map[string]bool) []string {
