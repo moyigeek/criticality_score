@@ -6,15 +6,11 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"regexp"
-	"strconv"
 	"strings"
 	"time"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
-	"github.com/google/go-github/v63/github"
 	_ "github.com/lib/pq" // Assuming PostgreSQL, adjust as needed
-	"golang.org/x/oauth2"
 )
 
 type DependentInfo struct {
@@ -23,14 +19,13 @@ type DependentInfo struct {
 	IndirectDependentCount int `json:"indirectDependentCount"`
 }
 
-func updateDatabase(link, projectName string, dependentCount int, projectType string) error {
+func updateDatabase(link, projectName string, dependentCount int) error {
 	db, err := storage.GetDatabaseConnection()
 	if err != nil {
 		return err
 	}
 	defer db.Close()
-
-	_, err = db.Exec("UPDATE git_metrics SET depsdev_count = $1 and pkg_manager = $2 WHERE git_link = $3", dependentCount, projectType, link) // Adjust the WHERE clause as needed
+	_, err = db.Exec("UPDATE git_metrics SET depsdev_count = $1 WHERE git_link = $2", dependentCount, link)
 	return err
 }
 
@@ -62,7 +57,6 @@ func Run(configPath string) {
 	// Process each git link
 	for _, link := range gitLinks {
 		if strings.HasPrefix(link, "https://github.com/") || strings.HasPrefix(link, "https://gitlab.com/") || strings.HasPrefix(link, "https://bitbucket.org/") {
-			link = "https://gitlab.com/rust-lang/rust"
 			parts := strings.Split(link, "/")
 			if len(parts) >= 5 {
 				owner := parts[3]
@@ -73,15 +67,7 @@ func Run(configPath string) {
 					repo = strings.TrimSuffix(repo, ".git")
 				}
 		
-				projectType := ""
-				if strings.HasPrefix(link, "https://github.com/") {
-					projectType = getGitHubProjectType(owner, repo)
-				} else if strings.HasPrefix(link, "https://gitlab.com/") {
-					projectType = getGitLabProjectType(owner, repo)
-				} else if strings.HasPrefix(link, "https://bitbucket.org/") {
-					projectType = getBitbucketProjectType(owner, repo)
-				}
-		
+				projectType := getProjectTypeFromDB(link)
 				if projectType != "" {
 					latestVersion := getLatestVersion(owner, repo, projectType)
 					if latestVersion != "" {
@@ -97,186 +83,21 @@ func Run(configPath string) {
 	}
 }
 
-func getGitHubProjectType(owner, repo string) string {
-	ctx := context.Background()
-	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: storage.GetGlobalConfig().GitHubToken},
-	)
-	tc := oauth2.NewClient(ctx, ts)
-	client := github.NewClient(tc)
-
-attempt:
-	// 获取仓库内容
-	_, dirContent, resp, err := client.Repositories.GetContents(ctx, owner, repo, "", nil)
+func getProjectTypeFromDB(link string) string {
+	var projectType string
+	db, err := storage.GetDatabaseConnection()
 	if err != nil {
-		if resp != nil && resp.StatusCode == http.StatusForbidden {
-			fmt.Println("Error fetching repository contents:", err)
-			body := err.Error()
-			re := regexp.MustCompile(`rate reset in (\d+)m(\d+)s`)
-			matches := re.FindStringSubmatch(body)
-			if len(matches) == 3 {
-				minutes, _ := strconv.Atoi(matches[1])
-				seconds, _ := strconv.Atoi(matches[2])
-				waitTime := time.Duration(minutes)*time.Minute + time.Duration(seconds)*time.Second
-				fmt.Printf("Rate limit exceeded. Waiting %v to retry...\n", waitTime)
-				time.Sleep(waitTime)
-				goto attempt
-			}
-		}
-		fmt.Println("Error fetching repository contents:", err)
+		fmt.Println("Error initializing database:", err)
+		return ""
+	}
+	defer db.Close()
+	err = db.QueryRow("SELECT pkg_manager FROM git_metrics WHERE git_link = $1", link).Scan(&projectType)
+	if err != nil {
+		fmt.Println("Error querying project type:", err)
 		return ""
 	}
 
-	// 判断项目类型
-	for _, file := range dirContent {
-		if file.Name != nil {
-			switch *file.Name {
-			case "package.json":
-				return "npm"
-			case "setup.py":
-				return "pypi"
-			case "Cargo.toml":
-				return "cargo"
-			case "pom.xml":
-				return "maven"
-			case "build.gradle":
-				return "gradle"
-			case "go.mod":
-				return "go"
-			}
-		}
-	}
-	return ""
-}
-
-func getGitLabProjectType(owner, repo string) string {
-    url := fmt.Sprintf("https://gitlab.com/api/v4/projects/%s%%2F%s/repository/tree", owner, repo)
-    
-    // 创建一个新的请求
-    req, err := http.NewRequest("GET", url, nil)
-    if err != nil {
-        fmt.Println("Error creating request:", err)
-        return ""
-    }
-
-    // 设置Authorization头
-    // req.Header.Set("Authorization", "Bearer "+token)
-
-    // 发送请求
-    resp, err := http.DefaultClient.Do(req)
-    if err != nil {
-        fmt.Println("Error fetching GitLab repository contents:", err)
-        return ""
-    }
-    defer resp.Body.Close()
-
-    var files []map[string]interface{}
-	body, err := io.ReadAll(resp.Body)
-	if err != nil {
-		fmt.Println(err)
-	}
-    if err = json.NewDecoder(strings.NewReader(string(body))).Decode(&files); err != nil {
-        fmt.Println("Error decoding JSON response:", err)
-        return ""
-    }
-
-    for _, file := range files {
-        if name, ok := file["name"].(string); ok {
-            switch name {
-            case "package.json":
-                return "npm"
-            case "setup.py":
-                return "pypi"
-            case "Cargo.toml":
-                return "cargo"
-            case "pom.xml":
-                return "maven"
-            case "build.gradle":
-                return "gradle"
-            case "go.mod":
-                return "go"
-            }
-        }
-    }
-    return ""
-}
-
-func getBitbucketProjectType(owner, repo string) string {
-    // Initial API request
-    url := fmt.Sprintf("https://api.bitbucket.org/2.0/repositories/%s/%s/src", owner, repo)
-
-    // Create the request
-    req, err := http.NewRequest("GET", url, nil)
-    if err != nil {
-        fmt.Println("Error creating request:", err)
-        return ""
-    }
-
-    // Set headers
-    req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36")
-    client := &http.Client{
-        CheckRedirect: func(req *http.Request, via []*http.Request) error {
-            return http.ErrUseLastResponse // Don't follow redirects automatically
-        },
-    }
-
-    // Send request
-    resp, err := client.Do(req)
-    if err != nil {
-        fmt.Println("Error fetching Bitbucket repository contents:", err)
-        return ""
-    }
-    defer resp.Body.Close()
-	var body []byte
-    // Check if there's a redirect
-    if resp.StatusCode == http.StatusFound || resp.StatusCode == http.StatusMovedPermanently {
-        redirectURL := resp.Header.Get("Location")
-        // fmt.Println("Redirecting to:", redirectURL)
-
-        // Fetch from the new location
-        req, err = http.NewRequest("GET", redirectURL, nil)
-        if err != nil {
-            fmt.Println("Error creating new request:", err)
-            return ""
-        }
-		req.Header.Set("User-Agent", "curl/7.68.0")
-		resp, err = client.Do(req)
-        if err != nil {
-            fmt.Println("Error following redirect:", err)
-            return ""
-        }
-        defer resp.Body.Close()
-
-		body, err = io.ReadAll(resp.Body)
-		if err != nil {
-			fmt.Println(err)
-		}
-    }
-    // Now read the response from the new location
-    var result map[string][]map[string]interface{}
-	err = json.NewDecoder(strings.NewReader(string(body))).Decode(&result)
-
-	files := result["values"]
-	for _, file := range files {
-		if path, ok := file["path"].(string); ok {
-			switch path {
-			case "package.json":
-				return "npm"
-			case "setup.py":
-				return "pypi"
-			case "Cargo.toml":
-				return "cargo"
-			case "pom.xml":
-				return "maven"
-			case "build.gradle":
-				return "gradle"
-			case "go.mod":
-				return "go"
-			}
-		}
-	}
-
-	return ""
+	return projectType
 }
 
 type VersionInfo struct {
@@ -344,9 +165,9 @@ func queryDepsDev(link, projectType, projectName, version string) {
 		return
 	}
 
-	// err = updateDatabase(link, projectName, info.DependentCount, projectType)
-	// if err != nil {
-	// 	fmt.Printf("Error updating database: %v\n", err)
-	// 	return
-	// }
+	err = updateDatabase(link, projectName, info.DependentCount)
+	if err != nil {
+		fmt.Printf("Error updating database: %v\n", err)
+		return
+	}
 }
