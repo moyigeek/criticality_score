@@ -82,7 +82,7 @@ func main() {
 					return
 				}
 				// output[index] = database.NewMetrics(
-				output := database.NewMetrics(
+				output := database.NewGitMetrics(
 					repo.Name,
 					repo.Owner,
 					repo.Source,

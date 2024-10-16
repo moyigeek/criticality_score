@@ -1507,6 +1507,7 @@ var ECOSYSTEM_MAP = map[string]string{
 	"setup.py":          "PyPI",
 	"Pipfile":           "PyPI",
 	"Pipfile.lock":      "PyPI",
+	"pyproject.toml":    "PyPI",
 	//*	"requirements.txt":  "PyPI",
 	"Cargo.toml":      "Cargo",
 	"Cargo.lock":      "Cargo",

@@ -33,7 +33,7 @@ type GitMetrics struct {
 	//Languages []string `gorm:"not null"`
 }
 
-func NewMetrics(
+func NewGitMetrics(
 	Name, Owner, Source, URL /*, License*/ string,
 	Ecosystems []string,
 	CreatedSince, UpdatedSince time.Time,

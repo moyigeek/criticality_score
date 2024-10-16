@@ -255,6 +255,8 @@ func GetLicense(r *git.Repository) string {
 	return l
 }
 
+//! GetLanguages and GetEcosystem could be merged into one function if needed
+
 func GetLanguages(r *git.Repository) *[]string {
 	l := map[string]int{}
 	ref, err := r.Head()
@@ -312,7 +314,6 @@ func GetEcosystem(r *git.Repository) *[]string {
 		eco = append(eco, k)
 	}
 
-	fmt.Println(eco)
 	return &eco
 }
 

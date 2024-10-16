@@ -185,12 +185,13 @@ func TestGetEcosystem(t *testing.T) {
 		input    string
 		expected []string
 	}{
-		//{input: "https://gitee.com/goldpankit/goldpankit.git", expected: []string{"npm"}},
 		{input: "https://gitlab.com/Sasha-Zayets/nx-ci-cd.git", expected: []string{"npm"}},
 		{input: "https://gitee.com/mirrors/Proxy-Go.git", expected: []string{"Go"}},
-		{input: "https://gitee.com/sulv0302/onnx-inference4j-play.git", expected: []string{"Maven"}},
-		{input: "https://gitee.com/paddlepaddle/Paddle.git", expected: []string{"PyPI"}},
-		{input: "https://gitee.com/mycrls/turn-rs/tree/main/turn.git", expected: []string{"Cargo"}},
+		{input: "https://gitee.com/bingo-rain/bingo-cloud.git", expected: []string{"Maven"}},
+		{input: "https://github.com/pypiserver/pypiserver.git", expected: []string{"PyPI"}},
+		{input: "https://github.com/pallets/flask.git", expected: []string{"PyPI"}},
+		{input: "https://github.com/RustScan/RustScan.git", expected: []string{"Cargo"}},
+		{input: "https://github.com/MinecraftForge/ForgeGradle.git", expected: []string{"Maven", "Gradle"}},
 	}
 	for n, test := range tests {
 		t.Run(strconv.Itoa(n), func(t *testing.T) {
@@ -202,7 +203,6 @@ func TestGetEcosystem(t *testing.T) {
 			require.Equal(t, test.expected, *eco)
 		})
 	}
-
 }
 
 func TestGetURL(t *testing.T) {
