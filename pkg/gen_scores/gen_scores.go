@@ -25,8 +25,8 @@ func CalculateScore(data ProjectData) float64 {
 
 	// Define weights (αi) and max thresholds (Ti)
 	weights := map[string]float64{
-		"star_count":        1,
-		"fork_count":        1,
+		// "star_count":        1,
+		// "fork_count":        1,
 		"created_since":     1,
 		"updated_since":     -1,
 		"contributor_count": 2,
@@ -36,8 +36,8 @@ func CalculateScore(data ProjectData) float64 {
 	}
 
 	thresholds := map[string]float64{
-		"star_count":        10000,
-		"fork_count":        5000,
+		// "star_count":        10000,
+		// "fork_count":        5000,
 		"created_since":     120, // in months
 		"updated_since":     120, // in months
 		"contributor_count": 5000,
@@ -111,7 +111,7 @@ func UpdateScore(db *sql.DB, gitLink string, score float64) error {
 
 // FetchProjectData retrieves the project data from the database.
 func FetchProjectData(db *sql.DB, gitLink string) (*ProjectData, error) {
-	row := db.QueryRow("SELECT star_count, fork_count, created_since, updated_since, contributor_count, commit_frequency, depsdev_count, deps.distro, pkg_manager FROM git_metrics WHERE git_link = $1", gitLink)
+	row := db.QueryRow("SELECT created_since, updated_since, contributor_count, commit_frequency, depsdev_count, deps.distro, pkg_manager FROM git_metrics WHERE git_link = $1", gitLink)
 	var data ProjectData
 	err := row.Scan(&data.StarCount, &data.ForkCount, &data.CreatedSince, &data.UpdatedSince, &data.ContributorCount, &data.CommitFrequency, &data.DepsdevCount, &data.deps_distro, &data.Pkg_Manager)
 	if err != nil {
