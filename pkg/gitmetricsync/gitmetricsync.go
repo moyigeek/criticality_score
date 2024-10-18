@@ -100,7 +100,7 @@ func syncGitMetrics(db *sql.DB, gitLinks map[string]bool) {
 		if _, exists := dbLinks[normLinkLower]; !exists {
 			parts := strings.Split(normLinkOriginal, "/")
 			if len(parts) >= 5 {
-				_, err := db.Exec(`INSERT INTO git_metrics git_link VALUES $1`, normLinkOriginal)
+				_, err := db.Exec(`INSERT INTO git_metrics (git_link, "from") VALUES ($1, 0)`, normLinkOriginal)
 				if err != nil {
 					log.Printf("Failed to insert git_link %s: %v", normLinkOriginal, err)
 				}
