@@ -24,7 +24,7 @@ type Repo struct {
 	License string
 	// is_maintained bool
 	Languages  []string
-	Ecosystems []string
+	Ecosystems string
 	Metrics    *RepoMetrics
 }
 
@@ -36,7 +36,7 @@ func NewRepo() Repo {
 		URL:        "",
 		License:    "",
 		Languages:  []string{},
-		Ecosystems: []string{},
+		Ecosystems: "",
 		Metrics:    &RepoMetrics{},
 	}
 }
@@ -46,7 +46,9 @@ func (r *Repo) Show() {
 	utils.Info("Repo Owner: %s", r.Owner)
 	utils.Info("Repo Source: %s", r.Source)
 	utils.Info("Repo URL: %s", r.URL)
+	utils.Info("Repo License: %s", r.License)
 	utils.Info("Repo Languages: %s", r.Languages)
+	utils.Info("Repo Ecosystems: %s", r.Ecosystems)
 	r.Metrics.Show()
 }
 
@@ -290,8 +292,9 @@ func GetLanguages(r *git.Repository) *[]string {
 	return &languages
 }
 
-func GetEcosystem(r *git.Repository) *[]string {
-	eco := []string{}
+func GetEcosystem(r *git.Repository) string {
+	// eco := []string{}
+	eco := ""
 	ref, err := r.Head()
 	utils.CheckIfError(err)
 	commit, err := r.CommitObject(ref.Hash())
@@ -299,22 +302,24 @@ func GetEcosystem(r *git.Repository) *[]string {
 	tree, err := commit.Tree()
 	utils.CheckIfError(err)
 
-	emap := map[string]int{}
+	//* emap := map[string]int{}
 	fIter := tree.Files()
 	err = fIter.ForEach(func(f *object.File) error {
 		filename := filepath.Base(f.Name)
 		v, ok := parser.ECOSYSTEM_MAP[filename]
 		if ok {
-			emap[v] += 1
+			// emap[v] += 1
+			eco = v
 		}
 		return nil
 	})
 	utils.CheckIfError(err)
-	for k := range emap {
-		eco = append(eco, k)
-	}
-
-	return &eco
+	/*
+		for k := range emap {
+			eco = append(eco, k)
+		}
+	*/
+	return eco
 }
 
 func GetMetrics(r *git.Repository) *RepoMetrics {
@@ -434,7 +439,7 @@ func ParseGitRepo(r *git.Repository) *Repo {
 	repo.URL = u
 	repo.License = license
 	repo.Languages = *languages
-	repo.Ecosystems = *eco
+	repo.Ecosystems = eco
 	repo.Metrics = metrics
 
 	return &repo

@@ -183,15 +183,15 @@ func TestGetLanguages(t *testing.T) {
 func TestGetEcosystem(t *testing.T) {
 	tests := []struct {
 		input    string
-		expected []string
+		expected string
 	}{
-		{input: "https://gitlab.com/Sasha-Zayets/nx-ci-cd.git", expected: []string{"npm"}},
-		{input: "https://gitee.com/mirrors/Proxy-Go.git", expected: []string{"Go"}},
-		{input: "https://gitee.com/bingo-rain/bingo-cloud.git", expected: []string{"Maven"}},
-		{input: "https://github.com/pypiserver/pypiserver.git", expected: []string{"PyPI"}},
-		{input: "https://github.com/pallets/flask.git", expected: []string{"PyPI"}},
-		{input: "https://github.com/RustScan/RustScan.git", expected: []string{"Cargo"}},
-		{input: "https://github.com/MinecraftForge/ForgeGradle.git", expected: []string{"Maven", "Gradle"}},
+		{input: "https://gitlab.com/Sasha-Zayets/nx-ci-cd.git", expected: "npm"},
+		{input: "https://gitee.com/mirrors/Proxy-Go.git", expected: "Go"},
+		{input: "https://gitee.com/bingo-rain/bingo-cloud.git", expected: "Maven"},
+		{input: "https://github.com/pypiserver/pypiserver.git", expected: "PyPI"},
+		{input: "https://github.com/pallets/flask.git", expected: "PyPI"},
+		{input: "https://github.com/RustScan/RustScan.git", expected: "Cargo"},
+		{input: "https://github.com/MinecraftForge/ForgeGradle.git", expected: "Gradle"},
 	}
 	for n, test := range tests {
 		t.Run(strconv.Itoa(n), func(t *testing.T) {
@@ -200,7 +200,7 @@ func TestGetEcosystem(t *testing.T) {
 			err = utils.HandleErr(err, u.URL)
 			utils.CheckIfError(err)
 			eco := GetEcosystem(r)
-			require.Equal(t, test.expected, *eco)
+			require.Equal(t, test.expected, eco)
 		})
 	}
 }
