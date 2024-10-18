@@ -37,9 +37,13 @@ about
 
 DB_HOST_PORT="5432"
 WEB_HOST_PORT="8080"
+APISERVER_HOST_PORT="8081"
 
-while getopts "d:p:w:b:h" opt; do
+while getopts "a:d:p:w:b:h" opt; do
     case $opt in
+        a)
+            APISERVER_HOST_PORT="$OPTARG"
+            ;;
         d)
             DATA_DIR="$OPTARG"
             ;;
@@ -109,6 +113,7 @@ DATA_DIR=$DATA_DIR
 DB_HOST_PORT=$DB_HOST_PORT
 DB_PASSWD=$DB_PASSWD
 WEB_HOST_PORT=$WEB_HOST_PORT
+APISERVER_HOST_PORT=$APISERVER_HOST_PORT
 EOF
 
 
@@ -136,7 +141,7 @@ echo_red "========== NOTICE =========="
 echo_red "git link could only be updated manually."
 echo_red "Try following steps to update git link:"
 echo_red "    1. use home2git tool to find the git link"
-echo_red "    2. update the git link in database"
+echo_red "    2. update the git link in database, database password is $DB_PASSWD"
 echo_red "    3. run 'docker compose exec app /workflow/update.sh gitlink'"
 
 echo

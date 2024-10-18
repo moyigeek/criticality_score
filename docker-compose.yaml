@@ -16,9 +16,20 @@ services:
     build: .
     restart: always
     volumes:
-      - ${DATA_DIR}/config:/config
+      - ${DATA_DIR}/config:/config:ro
       - ${DATA_DIR}/git:/data/git
       - ${DATA_DIR}/rec:/data/rec
+  apiserver:
+    build: .
+    restart: always
+    command: 
+      - /app/apiserver
+      - -config
+      - /config/config.json
+    ports:
+      - "${APISERVER_HOST_PORT}:8080"
+    volumes:
+      - ${DATA_DIR}/config:/config:ro
   web:
     container_name: pgweb
     restart: always
