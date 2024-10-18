@@ -11,6 +11,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/config"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/collector"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/io/database"
 	psql "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/io/database/psql"
@@ -22,6 +23,7 @@ import (
 )
 
 var flagConfigPath = flag.String("config", "config.json", "path to the config file")
+var flagStoragePath = flag.String("storage", "./storage", "path to git storage location")
 
 func getUrls() ([]string, error) {
 	conn, err := storage.GetDatabaseConnection()
@@ -44,6 +46,7 @@ func getUrls() ([]string, error) {
 func main() {
 	flag.Parse()
 	storage.InitializeDatabase(*flagConfigPath)
+	config.SetStoragetPath(*flagStoragePath)
 
 	urls, err := getUrls()
 	if err != nil {

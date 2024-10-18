@@ -57,10 +57,16 @@ func CreateTable(db *gorm.DB) {
 
 func InsertTable(db *gorm.DB, metrics *database.GitMetrics) {
 	db.Where(&database.GitMetrics{URL: metrics.URL}).Assign(database.GitMetrics{
+		CreatedSince:     metrics.CreatedSince,
 		UpdatedSince:     metrics.UpdatedSince,
 		ContributorCount: metrics.ContributorCount,
 		OrgCount:         metrics.OrgCount,
 		CommitFrequency:  metrics.CommitFrequency,
+		Name:             metrics.Name,
+		Owner:            metrics.Owner,
+		Source:           metrics.Source,
+		URL:              metrics.URL,
+		Ecosystems:       metrics.Ecosystems,
 	}).FirstOrCreate(metrics)
 }
 

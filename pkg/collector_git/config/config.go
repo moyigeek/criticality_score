@@ -10,7 +10,6 @@ const (
 	// I/O Config
 	INPUT_CSV_PATH  string = "./input/input.csv"
 	OUTPUT_CSV_PATH string = "./output/output.csv"
-	STORAGE_PATH    string = "./storage"
 
 	// Database Config
 
@@ -25,3 +24,9 @@ const (
 	SQLITE_USER          string = ""
 	SQLITE_PASSWORD      string = ""
 )
+
+var STORAGE_PATH string = "./storage"
+
+func SetStoragetPath(path string) {
+	STORAGE_PATH = path
+}

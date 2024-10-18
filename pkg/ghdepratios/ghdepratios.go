@@ -123,6 +123,6 @@ attempt:
 }
 
 func UpdateDatabase(db *sql.DB, link, packageManager string, totalRatio float64) error {
-	_, err := db.Exec("UPDATE git_metrics SET pkg_manager = $1, deps.distro = $2 WHERE git_link = $3", packageManager, totalRatio, link)
+	_, err := db.Exec("UPDATE git_metrics SET pkg_manager = $1, deps_distro = $2 WHERE git_link = $3", packageManager, totalRatio, link)
 	return err
 }

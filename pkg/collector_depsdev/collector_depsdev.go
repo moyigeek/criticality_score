@@ -91,7 +91,7 @@ func getProjectTypeFromDB(link string) string {
 		return ""
 	}
 	defer db.Close()
-	err = db.QueryRow("SELECT pkg_manager FROM git_metrics WHERE git_link = $1", link).Scan(&projectType)
+	err = db.QueryRow("SELECT ecosystem FROM git_metrics WHERE git_link = $1", link).Scan(&projectType)
 	if err != nil {
 		fmt.Println("Error querying project type:", err)
 		return ""

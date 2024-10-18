@@ -7,8 +7,6 @@ package database
 
 import (
 	"time"
-
-	"gorm.io/gorm"
 )
 
 const (
@@ -18,7 +16,7 @@ const (
 )
 
 type GitMetrics struct {
-	gorm.Model
+	// gorm.Model
 	Name             string    `gorm:"column:_name;not null"`
 	Owner            string    `gorm:"column:_owner;not null"`
 	Source           string    `gorm:"column:_source;not null"`
@@ -41,7 +39,7 @@ func NewGitMetrics(
 	CommitFrequency float64,
 ) GitMetrics {
 	return GitMetrics{
-		gorm.Model{},
+		// gorm.Model{},
 		Name,
 		Owner,
 		Source,
