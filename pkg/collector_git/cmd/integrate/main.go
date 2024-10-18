@@ -56,7 +56,7 @@ func main() {
 	// var output [database.BATCH_SIZE]database.Metrics
 
 	db := psql.InitDBFromStorageConfig()
-	psql.CreateTable(db)
+	// psql.CreateTable(db)
 
 	for _, input := range urls {
 		// for index , url := range urls {
