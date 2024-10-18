@@ -35,17 +35,19 @@ func StartWebServer(host string, port int) {
 }
 
 type metricsVO struct {
-	GitLink          string    `json:"link"`
-	Ecosystems       []string  `json:"ecosystems"`
-	CreatedSince     time.Time `json:"createdSince"`
-	UpdatedSince     time.Time `json:"updatedSince"`
-	ContributorCount int       `json:"contributorCount"`
-	OrgCount         int       `json:"orgCount"`
-	CommitFrequency  float64   `json:"commitFrequency"`
-	DepsDevCount     int       `json:"depsDevCount"`
-	Score            float64   `json:"score"`
+	GitLink          string     `json:"link"`
+	Ecosystems       *string    `json:"ecosystems"`
+	CreatedSince     *time.Time `json:"createdSince"`
+	UpdatedSince     *time.Time `json:"updatedSince"`
+	ContributorCount *int       `json:"contributorCount"`
+	OrgCount         *int       `json:"orgCount"`
+	CommitFrequency  *float64   `json:"commitFrequency"`
+	DepsDevCount     *int       `json:"depsDevCount"`
+	Score            *float64   `json:"score"`
 	// Rank             int       `json:"rank"`
 }
+
+const MAX_ALLOWED_TAKE = 10000
 
 func getMetrics(request *restful.Request, response *restful.Response) {
 
@@ -74,7 +76,11 @@ func getMetrics(request *restful.Request, response *restful.Response) {
 
 	var total int
 
-	r := conn.QueryRow(`SELECT COUNT(*) FROM metrics`)
+	if take > MAX_ALLOWED_TAKE {
+		response.WriteErrorString(http.StatusBadRequest, "take parameter is too large")
+	}
+
+	r := conn.QueryRow(`SELECT COUNT(*) FROM git_metrics`)
 	if r == nil {
 		response.WriteErrorString(http.StatusInternalServerError, "No data found")
 		return
@@ -94,11 +100,25 @@ func getMetrics(request *restful.Request, response *restful.Response) {
 	response.WriteHeader(200)
 	response.Write([]byte(`{"total":` + strconv.Itoa(total) + `,"data":[`))
 
+	var first = true
+
 	for rows.Next() {
+		if !first {
+			response.Write([]byte(","))
+		}
+		first = false
+
 		var metrics metricsVO
-		rows.Scan(&metrics.GitLink, &metrics.Ecosystems, &metrics.CreatedSince, &metrics.UpdatedSince, &metrics.ContributorCount, &metrics.OrgCount, &metrics.CommitFrequency, &metrics.DepsDevCount, &metrics.Score)
-		jsonBytes, _ := json.Marshal(metrics)
-		if jsonBytes != nil {
+		err = rows.Scan(&metrics.GitLink, &metrics.Ecosystems, &metrics.CreatedSince, &metrics.UpdatedSince, &metrics.ContributorCount, &metrics.OrgCount, &metrics.CommitFrequency, &metrics.DepsDevCount, &metrics.Score)
+		if err != nil {
+			log.Print("err at scan: ", err)
+			return
+		}
+
+		log.Printf("debug: %v", metrics)
+		jsonBytes, err := json.Marshal(metrics)
+		if err != nil {
+			log.Print("err at json marshal: ", err)
 			return
 		}
 		response.Write(jsonBytes)
