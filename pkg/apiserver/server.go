@@ -1,0 +1,107 @@
+package apiserver
+
+import (
+	"encoding/json"
+	"log"
+	"net/http"
+	"strconv"
+	"time"
+
+	"github.com/HUSTSecLab/criticality_score/pkg/storage"
+	"github.com/emicklei/go-restful"
+)
+
+const (
+	SERVICE_VERSION = "v1-alpha"
+)
+
+func RegisterService() *restful.WebService {
+	service := new(restful.WebService)
+
+	service.Path("/" + SERVICE_VERSION).
+		Consumes(restful.MIME_JSON).
+		Produces(restful.MIME_JSON)
+
+	service.Route(service.GET("/metrics").To(getMetrics))
+
+	return service
+
+}
+
+func StartWebServer(host string, port int) {
+	log.Printf("Starting server on %d, endpoint is %s", port, "/"+SERVICE_VERSION)
+	restful.Add(RegisterService())
+	log.Fatal(http.ListenAndServe(host+":"+strconv.Itoa(port), nil))
+}
+
+type metricsVO struct {
+	GitLink          string    `json:"link"`
+	Ecosystems       []string  `json:"ecosystems"`
+	CreatedSince     time.Time `json:"createdSince"`
+	UpdatedSince     time.Time `json:"updatedSince"`
+	ContributorCount int       `json:"contributorCount"`
+	OrgCount         int       `json:"orgCount"`
+	CommitFrequency  float64   `json:"commitFrequency"`
+	DepsDevCount     int       `json:"depsDevCount"`
+	Score            float64   `json:"score"`
+	// Rank             int       `json:"rank"`
+}
+
+func getMetrics(request *restful.Request, response *restful.Response) {
+
+	startStr := request.QueryParameter("start")
+	if startStr == "" {
+		startStr = "0"
+	}
+	start, err := strconv.Atoi(startStr)
+	if err != nil {
+		response.WriteErrorString(http.StatusBadRequest, "Invalid start parameter")
+		return
+	}
+
+	takeStr := request.QueryParameter("take")
+	if takeStr == "" {
+		takeStr = "100"
+	}
+	take, err := strconv.Atoi(takeStr)
+
+	conn, err := storage.GetDatabaseConnection()
+	defer conn.Close()
+	if err != nil {
+		response.WriteErrorString(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	var total int
+
+	r := conn.QueryRow(`SELECT COUNT(*) FROM metrics`)
+	if r == nil {
+		response.WriteErrorString(http.StatusInternalServerError, "No data found")
+		return
+	}
+	r.Scan(&total)
+
+	rows, err := conn.Query(`SELECT git_link, ecosystem, created_since, updated_since, contributor_count, org_count, commit_frequency, depsdev_count, scores FROM git_metrics ORDER BY scores DESC OFFSET $1 LIMIT $2`, start, take)
+
+	if err != nil {
+		response.WriteErrorString(http.StatusInternalServerError, "Fetch data error")
+		log.Print(err)
+		return
+	}
+
+	response.Header().Set("Content-Type", "application/json")
+	response.Header().Set("X-From", "criticality_score")
+	response.WriteHeader(200)
+	response.Write([]byte(`{"total":` + strconv.Itoa(total) + `,"data":[`))
+
+	for rows.Next() {
+		var metrics metricsVO
+		rows.Scan(&metrics.GitLink, &metrics.Ecosystems, &metrics.CreatedSince, &metrics.UpdatedSince, &metrics.ContributorCount, &metrics.OrgCount, &metrics.CommitFrequency, &metrics.DepsDevCount, &metrics.Score)
+		jsonBytes, _ := json.Marshal(metrics)
+		if jsonBytes != nil {
+			return
+		}
+		response.Write(jsonBytes)
+	}
+	response.Write([]byte("]}"))
+}
