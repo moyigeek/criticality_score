@@ -20,7 +20,18 @@ prepare() {
 
 run() {
     touch "$1_updated.src"
+
+    echo "* Update by triggering $1"
+    echo "** Target: $1_updated"
+    echo "** Time: $(date '+%Y-%m-%d %H:%M:%S (%Z)')"
+    echo 
+    echo "=================START================="
+
     make -s -e -f "$SCRIPT_DIR/flow.mk"
+
+    echo "==================END=================="
+    echo "** Finish: $(date '+%Y-%m-%d %H:%M:%S (%Z)')"
+    echo
 }
 
 # getopts -C : change dir
