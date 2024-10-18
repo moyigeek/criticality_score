@@ -298,10 +298,10 @@ func Archlinux(outputPath string) {
 			err = extractTarGz(file, extractDir)
 			if err != nil {
 				if err.Error() == "empty tar archive" {
-					fmt.Printf("Skipping empty tar archive: %s\n", path)
+					// fmt.Printf("Skipping empty tar archive: %s\n", path)
 					return nil // Skip empty tar archive and continue
 				}
-				fmt.Printf("Error extracting %s: %v\n", path, err)
+				// fmt.Printf("Error extracting %s: %v\n", path, err)
 				return nil // Skip this file and continue
 			}
 		}
