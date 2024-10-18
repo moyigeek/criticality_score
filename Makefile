@@ -15,7 +15,7 @@ all: build
 # Build the binaries
 build: build_show_distpkg_deps build_enumerate_github build_show_depsdev_deps \
 	build_home2git build_gitmetricsync build_githubmetrics \
-	build_ghdepratios build_gen_scores update_git_metrics \
+	build_gen_scores update_git_metrics \
 	apiserver
 
 build_home2git:
@@ -35,9 +35,6 @@ build_gitmetricsync:
 
 build_githubmetrics:
 	cd $(CURDIR) && $(GOBUILD) -o $(BIN_DIR)/githubmetrics github.com/HUSTSecLab/criticality_score/cmd/githubmetrics
-
-build_ghdepratios:
-	cd $(CURDIR) && $(GOBUILD) -o $(BIN_DIR)/ghdepratios github.com/HUSTSecLab/criticality_score/cmd/ghdepratios
 
 build_gen_scores:
 	cd $(CURDIR) && $(GOBUILD) -o $(BIN_DIR)/gen_scores github.com/HUSTSecLab/criticality_score/cmd/gen_scores
@@ -64,6 +61,6 @@ test:
 
 .PHONY: all build build_show_distpkg_deps build_enumerate_github \
 	build_show_depsdev_deps build_home2git build_gitmetricsync \
-	build_githubmetrics build_ghdepratios build_gen_scores \
+	build_githubmetrics build_gen_scores \
 	update_git_metrics apiserver \
 	fmt clean test #run

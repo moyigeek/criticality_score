@@ -2,8 +2,8 @@ package nix
 
 import (
 	"bytes"
-	"encoding/csv"
 	"encoding/gob"
+	"encoding/csv"
 	"encoding/json"
 	"fmt"
 	"net/url"
@@ -104,10 +104,6 @@ func GetAllNixPackages() (map[DepInfo][]DepInfo, error) {
 				continue
 			}
 
-			if packageInfo.Homepage == "" || packageInfo.Description == "" {
-				continue
-			}
-
 			pkgDepInfo := DepInfo{
 				Name:        packageName,
 				Version:     packageVersion,
@@ -190,7 +186,7 @@ in
 }
 
 func GetNixPackageDependencies(attributePath string) ([]DepInfo, error) {
-	nixPkgExpression := attributePathToNixExpression(attributePath)
+    nixPkgExpression := attributePathToNixExpression(attributePath)
 
 	exprTemplate := `
 	let
@@ -198,65 +194,56 @@ func GetNixPackageDependencies(attributePath string) ([]DepInfo, error) {
 	  pkg = %s;
 	in {
 		buildInputs = map (x: if x ? pname then x.pname else if x ? name then x.name else "") (pkg.buildInputs or []);
-		nativeBuildInputs = map (x: if x ? pname then x.pname else if x ? name then x.name else "") (pkg.nativeBuildInputs or []);
 	}
-	`
-	evalExpr := fmt.Sprintf(exprTemplate, nixPkgExpression)
-	results, err := nixEval(evalExpr)
-	if err != nil {
-		return nil, fmt.Errorf("Error getting dependencies for %s: %v", attributePath, err)
-	}
+	`	
+    evalExpr := fmt.Sprintf(exprTemplate, nixPkgExpression)
+    results, err := nixEval(evalExpr)
+    if err != nil {
+        return nil, fmt.Errorf("Error getting dependencies for %s: %v", attributePath, err)
+    }
 
-	buildInputNames := results["buildInputs"]
-	nativeBuildInputNames := results["nativeBuildInputs"]
-	// Create a map to store nativeBuildInputs for quick lookup
-	nativeSet := make(map[string]struct{})
-	for _, name := range nativeBuildInputNames {
-		nativeSet[name.Name] = struct{}{}
-	}
+    buildInputNames := results["buildInputs"]
+    finalInputs := []DepInfo{}
+    for _, name := range buildInputNames {
+        finalInputs = append(finalInputs, DepInfo{Name: name.Name})
+    }
 
-	// Store only the names of buildInputs that are not in nativeBuildInputs
-	finalInputs := []DepInfo{}
-	for _, name := range buildInputNames {
-		if _, found := nativeSet[name.Name]; !found {
-			finalInputs = append(finalInputs, DepInfo{Name: name.Name})
-		}
-	}
-
-	return finalInputs, nil
+    return finalInputs, nil
 }
 
 // nixEval executes a Nix expression and parses the JSON output into []DepInfo
 func nixEval(expr string) (map[string][]DepInfo, error) {
-	cmd := exec.Command("nix", "eval", "--impure", "--expr", expr, "--extra-experimental-features", "nix-command", "--json")
-	var out bytes.Buffer
-	cmd.Stdout = &out
-	err := cmd.Run()
-	if err != nil {
-		return nil, fmt.Errorf("Error running nix eval: %v", err)
-	}
+    cmd := exec.Command("nix", "eval", "--impure", "--expr", expr, "--extra-experimental-features", "nix-command", "--json")
+    var out bytes.Buffer
+    cmd.Stdout = &out
+    err := cmd.Run()
+    if err != nil {
+        return nil, fmt.Errorf("Error running nix eval: %v", err)
+    }
 
-	// 修改为 map[string][]string 以匹配 JSON 结构
-	var result map[string][]string
-	// fmt.Println(string(out.Bytes())) // 打印输出以便调试
-	if err := json.Unmarshal(out.Bytes(), &result); err != nil {
-		return nil, fmt.Errorf("Error parsing JSON: %v", err)
-	}
+    // 修改为 map[string][]string 以匹配 JSON 结构
+    var result map[string][]string
+    // fmt.Println(string(out.Bytes())) // 打印输出以便调试
+    if err := json.Unmarshal(out.Bytes(), &result); err != nil {
+        return nil, fmt.Errorf("Error parsing JSON: %v", err)
+    }
 
-	depsMap := make(map[string][]DepInfo)
+    depsMap := make(map[string][]DepInfo)
+    
+    // 构建依赖映射
+    for key, depList := range result {
+        for _, depName := range depList {
+            depInfo := DepInfo{
+                Name: depName, // 只存储名称
+            }
+            depsMap[key] = append(depsMap[key], depInfo)
+        }
+    }
 
-	// 构建依赖映射
-	for key, depList := range result {
-		for _, depName := range depList {
-			depInfo := DepInfo{
-				Name: depName, // 只存储名称
-			}
-			depsMap[key] = append(depsMap[key], depInfo)
-		}
-	}
-
-	return depsMap, nil
+    return depsMap, nil
 }
+
+
 
 // processGitLink processes the gitLink to ensure it points to a git repository
 func processGitLink(gitLink string) string {
@@ -327,7 +314,6 @@ func mergeDependencies(packages map[DepInfo][]DepInfo) map[DepInfo][]DepInfo {
 
 	return mergedPackages
 }
-
 // writeCSV writes the collected package information to a CSV file
 // 修改后的 getAllDep 函数
 func getAllDep(packages map[DepInfo][]DepInfo, pkgName string, deps []string) []string {
@@ -405,6 +391,7 @@ func writeCSV(packages map[DepInfo][]DepInfo, filename string) error {
 	return nil
 }
 
+
 // 辅助函数：获取map的键
 func getKeys(set map[string]struct{}) []string {
 	keys := make([]string, 0, len(set))
@@ -415,130 +402,130 @@ func getKeys(set map[string]struct{}) []string {
 }
 
 func SavePackage(packages map[DepInfo][]DepInfo) error {
-	file, err := os.Create("packages.gob")
-	if err != nil {
-		return err
-	}
-	defer file.Close()
+    file, err := os.Create("packages.gob")
+    if err != nil {
+        return err
+    }
+    defer file.Close()
 
-	encoder := gob.NewEncoder(file)
-	return encoder.Encode(packages)
+    encoder := gob.NewEncoder(file)
+    return encoder.Encode(packages)
 }
 
 func LoadPackage() (map[DepInfo][]DepInfo, error) {
-	file, err := os.Open("packages.gob")
-	if err != nil {
-		if os.IsNotExist(err) {
-			return nil, nil // 文件不存在，返回 nil
-		}
-		return nil, err
-	}
-	defer file.Close()
+    file, err := os.Open("packages.gob")
+    if err != nil {
+        if os.IsNotExist(err) {
+            return nil, nil // 文件不存在，返回 nil
+        }
+        return nil, err
+    }
+    defer file.Close()
 
-	var packages map[DepInfo][]DepInfo
-	decoder := gob.NewDecoder(file)
-	err = decoder.Decode(&packages)
-	if err != nil {
-		return nil, err
-	}
+    var packages map[DepInfo][]DepInfo
+    decoder := gob.NewDecoder(file)
+    err = decoder.Decode(&packages)
+    if err != nil {
+        return nil, err
+    }
 
-	return packages, nil
+    return packages, nil
 }
 
 func GetNixPackageList() ([]DepInfo, error) {
-	cmd := exec.Command("nix-env", "-qaP")
-	out, err := cmd.Output()
-	if err != nil {
-		return nil, fmt.Errorf("Error running nix-env command: %v", err)
-	}
+    cmd := exec.Command("nix-env", "-qaP")
+    out, err := cmd.Output()
+    if err != nil {
+        return nil, fmt.Errorf("Error running nix-env command: %v", err)
+    }
 
-	var packages []DepInfo
-	lines := strings.Split(string(out), "\n")
+    var packages []DepInfo
+    lines := strings.Split(string(out), "\n")
 
-	re := regexp.MustCompile(`^nixpkgs\.(.+?)\s+([^\s]+)$`)
-	for _, line := range lines {
-		if strings.TrimSpace(line) == "" || strings.Contains(line, "evaluation warning") {
-			continue
-		}
+    re := regexp.MustCompile(`^nixpkgs\.(.+?)\s+([^\s]+)$`)
+    for _, line := range lines {
+        if strings.TrimSpace(line) == "" || strings.Contains(line, "evaluation warning") {
+            continue
+        }
 
-		matches := re.FindStringSubmatch(line)
-		if len(matches) == 3 {
-			packages = append(packages, DepInfo{Name: matches[1], Version: matches[2]})
-		}
-	}
-	return packages, nil
+        matches := re.FindStringSubmatch(line)
+        if len(matches) == 3 {
+            packages = append(packages, DepInfo{Name: matches[1], Version: matches[2]})
+        }
+    }
+    return packages, nil
 }
 
 func reverseDependencies(deps map[DepInfo][]DepInfo) map[DepInfo][]DepInfo {
-	reversed := make(map[DepInfo][]DepInfo)
-	for key, values := range deps {
-		for _, dep := range values {
-			simplifiedDep := DepInfo{Name: dep.Name} // 只保留 Name 字段
+    reversed := make(map[DepInfo][]DepInfo)
+    for key, values := range deps {
+        for _, dep := range values {
+            simplifiedDep := DepInfo{Name: dep.Name} // 只保留 Name 字段
 			// fmt.Println(key)
-			reversed[simplifiedDep] = append(reversed[simplifiedDep], key)
-		}
-	}
-	return reversed
+            reversed[simplifiedDep] = append(reversed[simplifiedDep], key)
+        }
+    }
+    return reversed
 }
 
 func Nix() {
-	// 检查是否存在缓存文件
-	packages, err := LoadPackage()
-	if err != nil {
-		fmt.Printf("Error loading package list: %v\n", err)
-		return
-	}
+    // 检查是否存在缓存文件
+    packages, err := LoadPackage()
+    if err != nil {
+        fmt.Printf("Error loading package list: %v\n", err)
+        return
+    }
 
-	if packages == nil {
-		// 如果没有缓存，则获取新的包列表
-		packages, err = GetAllNixPackages()
-		if err != nil {
-			fmt.Printf("Error retrieving Nix packages: %v\n", err)
-			return
-		}
+    if packages == nil {
+        // 如果没有缓存，则获取新的包列表
+        packages, err = GetAllNixPackages()
+        if err != nil {
+            fmt.Printf("Error retrieving Nix packages: %v\n", err)
+            return
+        }
 
-		// 存储到文件
-		if err := SavePackage(packages); err != nil {
-			fmt.Printf("Error saving package list: %v\n", err)
-			return
-		}
-	}
+        // 存储到文件
+        if err := SavePackage(packages); err != nil {
+            fmt.Printf("Error saving package list: %v\n", err)
+            return
+        }
+    }
 
-	// 反转依赖关系
-	simplifiedDep := reverseDependencies(packages)
+    // 反转依赖关系
+    simplifiedDep := reverseDependencies(packages)
 
-	// 更新 simplifiedDep 的键名
-	for dep, deps := range simplifiedDep {
-		if fullDep, exists := findDepInfoByName(packages, dep.Name); exists {
-			// 删除旧键
-			delete(simplifiedDep, dep)
+    // 更新 simplifiedDep 的键名
+    for dep, deps := range simplifiedDep {
+        if fullDep, exists := findDepInfoByName(packages, dep.Name); exists {
+            // 删除旧键
+            delete(simplifiedDep, dep)
 
-			// 使用完整信息更新键
-			simplifiedDep[fullDep] = deps
-		}
-	}
+            // 使用完整信息更新键
+            simplifiedDep[fullDep] = deps
+        }
+    }
 
 	for dep := range packages {
-		if _, exists := simplifiedDep[dep]; !exists {
-			simplifiedDep[dep] = nil // Add packages with no dependencies
-		}
-	}
+        if _, exists := simplifiedDep[dep]; !exists {
+            simplifiedDep[dep] = nil  // Add packages with no dependencies
+        }
+    }
 
-	// 将包信息写入CSV
-	if err := writeCSV(simplifiedDep, "nix_packages.csv"); err != nil {
-		fmt.Printf("Error writing to CSV: %v\n", err)
-		return
-	}
+    // 将包信息写入CSV
+    if err := writeCSV(simplifiedDep, "nix_packages.csv"); err != nil {
+        fmt.Printf("Error writing to CSV: %v\n", err)
+        return
+    }
 
-	fmt.Println("Successfully wrote package information to nix_packages.csv")
+    fmt.Println("Successfully wrote package information to nix_packages.csv")
 }
 
 // findDepInfoByName 根据包名在包列表中查找对应的 DepInfo
 func findDepInfoByName(packages map[DepInfo][]DepInfo, name string) (DepInfo, bool) {
-	for dep := range packages {
-		if dep.Name == name {
-			return dep, true
-		}
-	}
-	return DepInfo{}, false
+    for dep := range packages {
+        if dep.Name == name {
+            return dep, true
+        }
+    }
+    return DepInfo{}, false
 }
