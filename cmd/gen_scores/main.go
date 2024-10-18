@@ -54,7 +54,7 @@ func main() {
 		}
 
 		// Update the database with the computed total ratio and the detected package manager
-		err = scores.UpdateDepsdistro(db, link, pm, totalRatio)
+		err = scores.UpdateDepsdistro(db, link, totalRatio)
 		if err != nil {
 			log.Printf("Failed to update database for %s: %v", link, err)
 		}

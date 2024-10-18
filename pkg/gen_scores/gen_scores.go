@@ -2,10 +2,11 @@ package scores
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"math"
-	"fmt"
 	"time"
+
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 )
 
@@ -141,7 +142,7 @@ func CalculateScore(data ProjectData) float64 {
 	return score / 6
 }
 
-func UpdateDepsdistro(db *sql.DB, link, packageManager string, totalRatio float64) error {
+func UpdateDepsdistro(db *sql.DB, link string, totalRatio float64) error {
 	_, err := db.Exec("UPDATE git_metrics SET deps_distro = $1 WHERE git_link = $2", totalRatio, link)
 	return err
 }
