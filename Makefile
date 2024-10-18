@@ -15,7 +15,8 @@ all: build
 # Build the binaries
 build: build_show_distpkg_deps build_enumerate_github build_show_depsdev_deps \
 	build_home2git build_gitmetricsync build_githubmetrics \
-	build_ghdepratios build_gen_scores update_git_metrics
+	build_ghdepratios build_gen_scores update_git_metrics \
+	apiserver
 
 build_home2git:
 	cd $(CURDIR) && $(GOBUILD) -o $(BIN_DIR)/home2git github.com/HUSTSecLab/criticality_score/cmd/home2git
@@ -44,6 +45,10 @@ build_gen_scores:
 update_git_metrics:
 	cd $(CURDIR) && $(GOBUILD) -o $(BIN_DIR)/update_git_metrics github.com/HUSTSecLab/criticality_score/pkg/collector_git/cmd/integrate
 
+
+apiserver:
+	cd $(CURDIR) && $(GOBUILD) -o $(BIN_DIR)/apiserver github.com/HUSTSecLab/criticality_score/cmd/apiserver
+
 # Format the code
 fmt:
 	$(GOFMT) ./...
@@ -60,5 +65,5 @@ test:
 .PHONY: all build build_show_distpkg_deps build_enumerate_github \
 	build_show_depsdev_deps build_home2git build_gitmetricsync \
 	build_githubmetrics build_ghdepratios build_gen_scores \
-	update_git_metrics \
+	update_git_metrics apiserver \
 	fmt clean test #run
