@@ -83,10 +83,6 @@ ALTER TABLE "public"."debian_packages" ADD CONSTRAINT "debian_packages_pkey" PRI
 -- ----------------------------
 ALTER TABLE "public"."git_metrics" ADD CONSTRAINT "git_metrics_pkey" PRIMARY KEY ("git_link");
 
--- ----------------------------
--- Primary Key structure for table git_metrics_backup
--- ----------------------------
-ALTER TABLE "public"."git_metrics_backup" ADD CONSTRAINT "git_metrics_copy1_pkey" PRIMARY KEY ("git_link");
 
 -- ----------------------------
 -- Primary Key structure for table nix_packages
