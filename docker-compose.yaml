@@ -19,6 +19,7 @@ services:
       - ${DATA_DIR}/config:/config:ro
       - ${DATA_DIR}/git:/data/git
       - ${DATA_DIR}/rec:/data/rec
+      - ${STORAGE_DIR}:/storage
   apiserver:
     build: .
     restart: always

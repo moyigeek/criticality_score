@@ -26,5 +26,5 @@ shift $((OPTIND-1))
 
 sed -e "s|@WORKFLOW_DIR@|${WORKFLOW_DIR}|g; 
 s|@OUTPUT_FILE@|${OUTPUT_FILE}|g;
-s|@ENV@|APP_BIN=${APP_BIN} CFG_FILE=${CFG_FILE}|g;
+s|@ENV@|APP_BIN=${APP_BIN} CFG_FILE=${CFG_FILE} STORAGE_DIR=${STORAGE_DIR}|g;
 s|@REC_DIR@|${REC_DIR}|g;" "${WORKFLOW_DIR}/update.crontab"

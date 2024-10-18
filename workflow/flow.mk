@@ -1,5 +1,6 @@
 APP_BIN := ../bin/
 CFG_FILE := ../config.json
+STORAGE_DIR := ../storage/
 
 .PHONY: all
 
@@ -27,7 +28,7 @@ update_dependents.rec: package_updated.src union_gitlink.rec
 update_git_metrics.rec: git_updated.src union_gitlink.rec
 	# Update the Git metrics
 	echo "* Updating the Git metrics..."
-	$(APP_BIN)/update_git_metrics -config $(CFG_FILE)
+	$(APP_BIN)/update_git_metrics -config $(CFG_FILE) -storage $(STORAGE_DIR)
 
 	touch $@
 
