@@ -31,9 +31,9 @@ update_git_metrics.rec: git_updated.src union_gitlink.rec
 
 	touch $@
 
-update_depsdev.rec: depsdev_updated.src union_gitlink.rec
-	# Update the dependencies development
-	echo "* Updating the dependencies development..."
+update_depsdev.rec: depsdev_updated.src union_gitlink.rec update_git_metrics.rec
+	# Update from deps.dev
+	echo "* Updating from deps.dev..."
 	$(APP_BIN)/show_depsdev_deps -config $(CFG_FILE)
 	touch $@
 
