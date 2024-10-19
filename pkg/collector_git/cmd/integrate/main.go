@@ -24,6 +24,7 @@ import (
 
 var flagConfigPath = flag.String("config", "config.json", "path to the config file")
 var flagStoragePath = flag.String("storage", "./storage", "path to git storage location")
+var flagJoinCount = flag.Int("join", 256, "join count")
 
 func getUrls() ([]string, error) {
 	conn, err := storage.GetDatabaseConnection()
@@ -60,7 +61,7 @@ func main() {
 
 	db := psql.InitDBFromStorageConfig()
 	// psql.CreateTable(db)
-	workerpool.SetCap(512)
+	workerpool.SetCap(int32(*flagJoinCount))
 
 	for _, input := range urls {
 		// for index , url := range urls {
