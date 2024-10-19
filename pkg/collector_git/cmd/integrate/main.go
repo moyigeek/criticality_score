@@ -60,6 +60,7 @@ func main() {
 
 	db := psql.InitDBFromStorageConfig()
 	// psql.CreateTable(db)
+	workerpool.SetCap(512)
 
 	for _, input := range urls {
 		// for index , url := range urls {
