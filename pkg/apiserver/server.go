@@ -114,8 +114,6 @@ func getMetrics(request *restful.Request, response *restful.Response) {
 			log.Print("err at scan: ", err)
 			return
 		}
-
-		log.Printf("debug: %v", metrics)
 		jsonBytes, err := json.Marshal(metrics)
 		if err != nil {
 			log.Print("err at json marshal: ", err)
