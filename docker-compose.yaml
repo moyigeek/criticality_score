@@ -37,6 +37,14 @@ services:
     image: sosedoff/pgweb
     ports:
       - "${WEB_HOST_PORT}:8081"
-    environment:
-      - PGWEB_DATABASE_URL=postgres://postgres:${DB_PASSWD}@db:5432/criticality_score?sslmode=disable
-    entrypoint: ["/usr/bin/pgweb", "--bind=0.0.0.0", "--listen=8081", "--readonly"]
+    entrypoint:
+      - "/usr/bin/pgweb"
+      - "--bind=0.0.0.0"
+      - "--listen=8081"
+      - "--readonly"
+      - "--host=db"
+      - "--port=5432"
+      - "--user=postgres"
+      - "--pass=${DB_PASSWD}"
+      - "--db=criticality_score"
+      - "--ssl=disable"
