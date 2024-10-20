@@ -120,6 +120,8 @@ func getMetrics(request *restful.Request, response *restful.Response) {
 			return
 		}
 		response.Write(jsonBytes)
+		response.Flush()
 	}
 	response.Write([]byte("]}"))
+	response.Flush()
 }
