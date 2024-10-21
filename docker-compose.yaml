@@ -17,8 +17,8 @@ services:
     restart: always
     volumes:
       - ${DATA_DIR}/config:/config:ro
-      - ${DATA_DIR}/git:/data/git
       - ${DATA_DIR}/rec:/data/rec
+      - ${DATA_DIR}/log:/data/log
       - ${STORAGE_DIR}:/storage
   apiserver:
     build: .
