@@ -112,7 +112,7 @@ fi
 
 echo "Setting up files..."
 
-mkdir -p "$DATA_DIR/db" "$DATA_DIR/rec" "$DATA_DIR/config" "$DATA_DIR/git"
+mkdir -p "$DATA_DIR/db" "$DATA_DIR/rec" "$DATA_DIR/config" "$DATA_DIR/git" "$DATA_DIR/log"
 
 cat <<EOF >"$DATA_DIR/config/config.json"
 {
