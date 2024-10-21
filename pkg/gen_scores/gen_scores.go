@@ -6,6 +6,7 @@ import (
 	"log"
 	"math"
 	"time"
+	"strings"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 )
@@ -20,6 +21,7 @@ type ProjectData struct {
 	DepsdevCount     *int
 	deps_distro      *float64
 	Pkg_Manager      *string
+	Org_Count		 *int
 }
 
 // Define weights (αi) and max thresholds (Ti)
@@ -30,8 +32,9 @@ var weights = map[string]float64{
 	"updated_since":     -1,
 	"contributor_count": 2,
 	"commit_frequency":  1,
-	"depsdev_ratios":    2,
-	"deps_distro":       1,
+	"depsdev_ratios":    3,
+	"deps_distro":       3,
+	"org_count":		 1,
 }
 
 var thresholds = map[string]float64{
@@ -39,10 +42,11 @@ var thresholds = map[string]float64{
 	// "fork_count":        5000,
 	"created_since":     120, // in months
 	"updated_since":     120, // in months
-	"contributor_count": 5000,
+	"contributor_count": 40000,
 	"commit_frequency":  1000,
-	"depsdev_ratios":    40,
+	"depsdev_ratios":    50,
 	"deps_distro":       50,
+	"org_count":		 8400,
 }
 
 var PackageManagerData = map[string]int{
@@ -56,7 +60,7 @@ var PackageManagerData = map[string]int{
 
 func CalculateDependencyRatio(db *sql.DB, link, packageType string) (float64, error) {
 	var packageDependencies, totalPackages int
-	err := db.QueryRow(fmt.Sprintf("SELECT COALESCE(SUM(depends_count), 0) FROM %s WHERE git_link = $1", packageType), link).Scan(&packageDependencies)
+	err := db.QueryRow(fmt.Sprintf("SELECT COALESCE(SUM(depends_count), 0) FROM %s WHERE git_link like $1", packageType), strings.TrimSuffix(link, ".git")).Scan(&packageDependencies)
 	if err != nil {
 		return 0.0, err
 	}
@@ -94,37 +98,36 @@ func GetProjectTypeFromDB(link string) string {
 func CalculateScore(data ProjectData) float64 {
 	score := 0.0
 
-	// Calculate each parameter's contribution to the score.
-	// if data.StarCount != nil {
-	// 	normalized := math.Min(float64(*data.StarCount)/thresholds["star_count"], 1)
-	// 	score += weights["star_count"] * normalized
-	// }
-
-	// if data.ForkCount != nil {
-	// 	normalized := math.Min(float64(*data.ForkCount)/thresholds["fork_count"], 1)
-	// 	score += weights["fork_count"] * normalized
-	// }
-
+	var createdSinceScore, updatedSinceScore, contributorCountScore, commitFrequencyScore, Org_CountScore float64
 	if data.CreatedSince != nil {
 		monthsSinceCreation := time.Since(*data.CreatedSince).Hours() / (24 * 30)
 		normalized := math.Min(monthsSinceCreation/thresholds["created_since"], 1)
-		score += weights["created_since"] * normalized
+		createdSinceScore = weights["created_since"] * normalized
+		score += createdSinceScore
 	}
 
 	if data.UpdatedSince != nil {
 		monthsSinceUpdate := time.Since(*data.UpdatedSince).Hours() / (24 * 30)
 		normalized := math.Min(monthsSinceUpdate/thresholds["updated_since"], 1)
-		score += weights["updated_since"] * normalized
+		updatedSinceScore = weights["updated_since"] * normalized
+		score += updatedSinceScore
 	}
 
 	if data.ContributorCount != nil {
 		normalized := math.Min(float64(*data.ContributorCount)/thresholds["contributor_count"], 1)
-		score += weights["contributor_count"] * normalized
+		contributorCountScore = weights["contributor_count"] * normalized
+		score += contributorCountScore
 	}
 
 	if data.CommitFrequency != nil {
 		normalized := math.Min(*data.CommitFrequency/thresholds["commit_frequency"], 1)
-		score += weights["commit_frequency"] * normalized
+		commitFrequencyScore = weights["commit_frequency"] * normalized
+		score += commitFrequencyScore
+	}
+	if data.Org_Count != nil {
+		normalized := math.Min(float64(*data.Org_Count)/thresholds["org_count"], 1)
+		Org_CountScore = weights["org_count"] * normalized
+		score += Org_CountScore
 	}
 	if data.Pkg_Manager != nil {
 		// 确保包管理器的值是有效的
@@ -139,7 +142,7 @@ func CalculateScore(data ProjectData) float64 {
 		score += weights["deps_distro"] * normalized
 	}
 
-	return score / 6
+	return score / 10
 }
 
 func UpdateDepsdistro(db *sql.DB, link string, totalRatio float64) error {
@@ -155,12 +158,34 @@ func UpdateScore(db *sql.DB, gitLink string, score float64) error {
 
 // FetchProjectData retrieves the project data from the database.
 func FetchProjectData(db *sql.DB, gitLink string) (*ProjectData, error) {
-	row := db.QueryRow("SELECT created_since, updated_since, contributor_count, commit_frequency, depsdev_count, deps_distro, ecosystem FROM git_metrics WHERE git_link = $1", gitLink)
+	row := db.QueryRow("SELECT created_since, updated_since, contributor_count, commit_frequency, depsdev_count, deps_distro, ecosystem, org_count FROM git_metrics WHERE git_link = $1", gitLink)
 	var data ProjectData
-	err := row.Scan(&data.CreatedSince, &data.UpdatedSince, &data.ContributorCount, &data.CommitFrequency, &data.DepsdevCount, &data.deps_distro, &data.Pkg_Manager)
+	err := row.Scan(&data.CreatedSince, &data.UpdatedSince, &data.ContributorCount, &data.CommitFrequency, &data.DepsdevCount, &data.deps_distro, &data.Pkg_Manager, &data.Org_Count)
 	if err != nil {
 		log.Printf("Failed to fetch data for git link %s: %v", gitLink, err)
 		return nil, err
 	}
 	return &data, nil
+}
+
+func CalculateDepsdistro(db *sql.DB, link string) float64{
+	totalRatio := 0.0
+	depRatio, err := CalculateDependencyRatio(db, link, "debian_packages")
+	// fmt.Println(link)
+	// fmt.Println(depRatio)
+	if err == nil {
+		totalRatio += depRatio
+	}
+	
+	depRatio, err = CalculateDependencyRatio(db, link, "arch_packages")
+	// fmt.Println(depRatio)
+	if err == nil {
+			totalRatio += depRatio
+	}
+	// Update the database with the computed total ratio and the detected package manager
+	err = UpdateDepsdistro(db, link, totalRatio)
+	if err != nil {
+		log.Printf("Failed to update database for %s: %v", link, err)
+	}
+	return totalRatio
 }

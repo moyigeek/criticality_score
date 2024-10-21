@@ -26,38 +26,8 @@ func main() {
 	if err != nil {
 		log.Fatalf("Failed to fetch git links: %v", err)
 	}
-
-	for _, link := range links {
-		totalRatio := 0.0
-
-		depRatio, err := scores.CalculateDependencyRatio(db, link, "debian_packages")
-		if err == nil {
-			totalRatio += depRatio
-		}
-
-		depRatio, err = scores.CalculateDependencyRatio(db, link, "arch_packages")
-		if err == nil {
-			totalRatio += depRatio
-		}
-		var depsdevCount int
-		var pm string
-		err = db.QueryRow("SELECT COALESCE(depsdev_count, 0) FROM git_metrics WHERE git_link = $1", link).Scan(&depsdevCount)
-		if err == nil && depsdevCount > 0 {
-			pm = scores.GetProjectTypeFromDB(link)
-			if err == nil && pm != "" {
-				totalPackages, ok := scores.PackageManagerData[pm]
-				if ok && totalPackages > 0 {
-					ratio := float64(depsdevCount) / float64(totalPackages)
-					totalRatio += 10 * ratio
-				}
-			}
-		}
-
-		// Update the database with the computed total ratio and the detected package manager
-		err = scores.UpdateDepsdistro(db, link, totalRatio)
-		if err != nil {
-			log.Printf("Failed to update database for %s: %v", link, err)
-		}
+	for _, link := range links{
+		scores.CalculateDepsdistro(db, link)
 	}
 
 	for _, link := range links {
