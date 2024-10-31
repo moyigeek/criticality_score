@@ -7,6 +7,7 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/archlinux"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/debian"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/nix"
+	"github.com/HUSTSecLab/criticality_score/pkg/collector/homebrew"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 )
 
@@ -30,5 +31,7 @@ func main() {
 			fmt.Errorf("Nix not support gendot")
 		}
 		nix.Nix()
-	}
+	case "homebrew":
+		homebrew.Homebrew(*flagGenDot)
+	}	
 }

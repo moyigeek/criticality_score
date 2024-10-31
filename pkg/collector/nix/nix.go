@@ -13,6 +13,8 @@ import (
 	"sort"
 	"strings"
 	"unicode"
+
+	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 )
 
 // DepInfo struct to store package information
@@ -511,13 +513,48 @@ func Nix() {
         }
     }
 
-    // 将包信息写入CSV
-    if err := writeCSV(simplifiedDep, "nix_packages.csv"); err != nil {
-        fmt.Printf("Error writing to CSV: %v\n", err)
+    // 将包信息存储到数据库
+    if err := updateOrInsertNixPackages(simplifiedDep); err != nil {
+        fmt.Printf("Error updating or inserting Nix packages into database: %v\n", err)
         return
     }
 
-    fmt.Println("Successfully wrote package information to nix_packages.csv")
+    fmt.Println("Successfully updated package information in the database")
+}
+
+// 新增函数：将 Nix 包信息存储到数据库
+func updateOrInsertNixPackages(packages map[DepInfo][]DepInfo) error {
+    db, err := storage.GetDatabaseConnection()
+    if err != nil {
+        return err
+    }
+    defer db.Close()
+
+    for pkg, deps := range packages {
+        // 假设我们只存储包名和依赖数量
+        var exists bool
+        err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM nix_packages WHERE name = $1)", pkg.Name).Scan(&exists)
+        if err != nil {
+            return err
+        }
+
+        if !exists {
+            // 插入新包信息
+            _, err := db.Exec("INSERT INTO nix_packages (name, version, homepage, description, git_link, dependency_count) VALUES ($1, $2, $3, $4, $5, $6)",
+                pkg.Name, pkg.Version, pkg.Homepage, pkg.Description, pkg.GitLink, len(deps))
+            if err != nil {
+                return err
+            }
+        } else {
+            // 更新已存在的包信息
+            _, err := db.Exec("UPDATE nix_packages SET version = $1, homepage = $2, description = $3, git_link = $4, dependency_count = $5 WHERE name = $6",
+                pkg.Version, pkg.Homepage, pkg.Description, pkg.GitLink, len(deps), pkg.Name)
+            if err != nil {
+                return err
+            }
+        }
+    }
+    return nil
 }
 
 // findDepInfoByName 根据包名在包列表中查找对应的 DepInfo
