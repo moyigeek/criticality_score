@@ -1,6 +1,8 @@
 package collector
 
 import (
+	"fmt"
+
 	config "github.com/HUSTSecLab/criticality_score/pkg/collector_git/config"
 	parser "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser"
 	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/url"
@@ -34,7 +36,7 @@ func EzCollect(u *url.RepoURL) (*gogit.Repository, error) {
 }
 
 func Clone(u *url.RepoURL) (*gogit.Repository, error) {
-	path := config.STORAGE_PATH + u.Pathname
+	path := fmt.Sprintf("%s/%s%s", config.STORAGE_PATH, u.Resource, u.Pathname)
 	r, err := gogit.PlainClone(path, false, &gogit.CloneOptions{
 		URL: u.URL,
 		// Progress:     os.Stdout,
@@ -44,7 +46,7 @@ func Clone(u *url.RepoURL) (*gogit.Repository, error) {
 }
 
 func BriefClone(u *url.RepoURL) (*gogit.Repository, error) {
-	path := config.STORAGE_PATH + u.Pathname
+	path := fmt.Sprintf("%s/%s%s", config.STORAGE_PATH, u.Resource, u.Pathname)
 	r, err := gogit.PlainClone(path, true, &gogit.CloneOptions{
 		URL: u.URL,
 		// Progress:     os.Stdout,
