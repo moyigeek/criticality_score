@@ -8,6 +8,7 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/debian"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/nix"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/homebrew"
+	"github.com/HUSTSecLab/criticality_score/pkg/collector/gentoo"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 )
 
@@ -32,6 +33,8 @@ func main() {
 		}
 		nix.Nix()
 	case "homebrew":
-		homebrew.Homebrew(*flagGenDot)
-	}	
+		homebrew.Homebrew(*flagGenDot)	
+	case "gentoo":
+		gentoo.Gentoo(*flagGenDot)
+	}
 }

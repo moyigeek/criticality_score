@@ -198,10 +198,6 @@ func Homebrew(outputPath string) {
 	for pkgName := range pkgInfoMap {
 		visited := make(map[string]bool)	
 		deps := getAllDep(pkgInfoMap, pkgName, visited, []string{})
-		if pkgName == "OpensslAT30" {
-			fmt.Print(pkgName + " : ")
-			fmt.Println(deps)
-		}
 		depMap[pkgName] = deps
 	}
 

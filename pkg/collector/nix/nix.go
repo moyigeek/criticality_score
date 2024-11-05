@@ -533,25 +533,41 @@ func updateOrInsertNixPackages(packages map[DepInfo][]DepInfo) error {
     for pkg, deps := range packages {
         // 假设我们只存储包名和依赖数量
         var exists bool
-        err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM nix_packages WHERE name = $1)", pkg.Name).Scan(&exists)
+        err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM nix_packages WHERE package = $1)", pkg.Name).Scan(&exists)
         if err != nil {
             return err
         }
 
         if !exists {
             // 插入新包信息
-            _, err := db.Exec("INSERT INTO nix_packages (name, version, homepage, description, git_link, dependency_count) VALUES ($1, $2, $3, $4, $5, $6)",
-                pkg.Name, pkg.Version, pkg.Homepage, pkg.Description, pkg.GitLink, len(deps))
+            _, err := db.Exec("INSERT INTO nix_packages (package, version, homepage, description, git_link, depends_count) VALUES ($1, $2, $3, $4, $5, $6)",
+                pkg.Name, pkg.Version, pkg.Homepage, pkg.Description, normalizeGitLink(pkg.GitLink), len(deps))
             if err != nil {
                 return err
             }
         } else {
-            // 更新已存在的包信息
-            _, err := db.Exec("UPDATE nix_packages SET version = $1, homepage = $2, description = $3, git_link = $4, dependency_count = $5 WHERE name = $6",
-                pkg.Version, pkg.Homepage, pkg.Description, pkg.GitLink, len(deps), pkg.Name)
+            // 检查当前 git_link 是否为空
+            var currentGitLink *string
+            err := db.QueryRow("SELECT git_link FROM nix_packages WHERE package = $1", pkg.Name).Scan(&currentGitLink)
             if err != nil {
                 return err
             }
+
+            // 更新其他字段，如果 currentGitLink 为空则更新 git_link
+            // if currentGitLink == nil || *currentGitLink == "" {
+                _, err = db.Exec("UPDATE nix_packages SET version = $1, homepage = $2, description = $3, git_link = $4, depends_count = $5 WHERE package = $6",
+                    pkg.Version, pkg.Homepage, pkg.Description, normalizeGitLink(pkg.GitLink), len(deps), pkg.Name)
+                if err != nil {
+                    return err
+                }
+        //     } else {
+        //         // 只更新其他字段，不更新 git_link
+        //         _, err := db.Exec("UPDATE nix_packages SET version = $1, homepage = $2, description = $3, depends_count = $4 WHERE name = $5",
+        //             pkg.Version, pkg.Homepage, pkg.Description, len(deps), pkg.Name)
+        //         if err != nil {
+        //             return err
+        //         }
+        //     }
         }
     }
     return nil
@@ -565,4 +581,69 @@ func findDepInfoByName(packages map[DepInfo][]DepInfo, name string) (DepInfo, bo
         }
     }
     return DepInfo{}, false
+}
+
+func normalizeGitLink(link string) string {
+	// 检查并提取组织名和仓库名
+	var orgName, repoName string
+
+	if strings.HasPrefix(link, "https://github.com/") {
+		parts := strings.Split(link, "/")
+		if len(parts) >= 5 {
+			orgName = parts[3]
+			repoName = parts[4]
+			return fmt.Sprintf("https://github.com/%s/%s.git", orgName, repoName)
+		}
+	} else if strings.HasPrefix(link, "http://github.com/") {
+		parts := strings.Split(link, "/")
+		if len(parts) >= 5 {
+			orgName = parts[3]
+			repoName = parts[4]
+			return fmt.Sprintf("http://github.com/%s/%s.git", orgName, repoName)
+		}
+	} else if strings.HasPrefix(link, "https://gitlab.com/") {
+		parts := strings.Split(link, "/")
+		if len(parts) >= 5 {
+			orgName = parts[3]
+			repoName = parts[4]
+			return fmt.Sprintf("https://gitlab.com/%s/%s.git", orgName, repoName)
+		}
+	} else if strings.HasPrefix(link, "http://gitlab.com/") {
+		parts := strings.Split(link, "/")
+		if len(parts) >= 5 {
+			orgName = parts[3]
+			repoName = parts[4]
+			return fmt.Sprintf("http://gitlab.com/%s/%s.git", orgName, repoName)
+		}
+	} else if strings.HasPrefix(link, "https://gitee.com/") {
+		parts := strings.Split(link, "/")
+		if len(parts) >= 5 {
+			orgName = parts[3]
+			repoName = parts[4]
+			return fmt.Sprintf("https://gitee.com/%s/%s.git", orgName, repoName)
+		}
+	} else if strings.HasPrefix(link, "http://gitee.com/") {
+		parts := strings.Split(link, "/")
+		if len(parts) >= 5 {
+			orgName = parts[3]
+			repoName = parts[4]
+			return fmt.Sprintf("http://gitee.com/%s/%s.git", orgName, repoName)
+		}
+	} else if strings.HasPrefix(link, "https://bitbucket.org/") {
+		parts := strings.Split(link, "/")
+		if len(parts) >= 5 {
+			orgName = parts[3]
+			repoName = parts[4]
+			return fmt.Sprintf("https://bitbucket.org/%s/%s.git", orgName, repoName)
+		}
+	} else if strings.HasPrefix(link, "http://bitbucket.org/") {
+		parts := strings.Split(link, "/")
+		if len(parts) >= 5 {
+			orgName = parts[3]
+			repoName = parts[4]
+			return fmt.Sprintf("http://bitbucket.org/%s/%s.git", orgName, repoName)
+		}
+	}
+
+	return "" // 如果不符合任何协议，返回空字符串
 }

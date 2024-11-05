@@ -25,7 +25,7 @@ func Run() {
 	defer db.Close()
 
 	gitLinks := fetchGitLinks(db)
-	syncGitMetrics(db, gitLinks)
+	syncGitMetrics(db, gitLinks, 0)
 }
 
 func fetchGitLinks(db *sql.DB) map[string]bool {
@@ -52,7 +52,7 @@ func fetchGitLinks(db *sql.DB) map[string]bool {
 	return gitLinks
 }
 
-func syncGitMetrics(db *sql.DB, gitLinks map[string]bool) {
+func syncGitMetrics(db *sql.DB, gitLinks map[string]bool, from int) {
 	githubRegex := regexp.MustCompile(`https?://github\.com/([^/\s]+/[^/\s]+)`)
 
 	// 规范化输入链接：保留原始大小写但根据情况添加或不添加 .git，存储用于插入；用小写化链接用于比较
@@ -70,8 +70,8 @@ func syncGitMetrics(db *sql.DB, gitLinks map[string]bool) {
 
 	// 获取数据库中所有 git_links 的当前状态，用于比较（小写化比较）
 	dbLinks := make(map[string]string)
-	query := `SELECT git_link FROM git_metrics`
-	rows, err := db.Query(query)
+	query := `SELECT git_link FROM git_metrics WHERE "from" = $1`
+	rows, err := db.Query(query, from)
 	if err != nil {
 		log.Fatalf("Failed to fetch git_links from git_metrics: %v", err)
 	}
@@ -88,7 +88,7 @@ func syncGitMetrics(db *sql.DB, gitLinks map[string]bool) {
 	// 检查哪些需要删除
 	for dbLinkLower, dbLinkOriginal := range dbLinks {
 		if _, exists := normalizedLinks[dbLinkLower]; !exists {
-			_, err := db.Exec(`DELETE FROM git_metrics WHERE LOWER(git_link) = $1`, dbLinkLower)
+			_, err := db.Exec(`DELETE FROM git_metrics WHERE LOWER(git_link) = $1 AND "from" = $2`, dbLinkLower, from)
 			if err != nil {
 				log.Printf("Failed to delete git_link %s: %v", dbLinkOriginal, err)
 			}
@@ -100,7 +100,7 @@ func syncGitMetrics(db *sql.DB, gitLinks map[string]bool) {
 		if _, exists := dbLinks[normLinkLower]; !exists {
 			parts := strings.Split(normLinkOriginal, "/")
 			if len(parts) >= 5 {
-				_, err := db.Exec(`INSERT INTO git_metrics (git_link, "from") VALUES ($1, 0)`, normLinkOriginal)
+				_, err := db.Exec(`INSERT INTO git_metrics (git_link, "from") VALUES ($1, $2)`, normLinkOriginal, from)
 				if err != nil {
 					log.Printf("Failed to insert git_link %s: %v", normLinkOriginal, err)
 				}
