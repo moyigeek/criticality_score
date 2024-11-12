@@ -24,7 +24,7 @@ import (
 
 var flagConfigPath = flag.String("config", "config.json", "path to the config file")
 var flagStoragePath = flag.String("storage", "./storage", "path to git storage location")
-var flagJoinCount = flag.Int("join", 256, "join count")
+var flagJobsCount = flag.Int("jobs", 256, "jobs count")
 var flagForceUpdateAll = flag.Bool("force-update-all", false, "force update all repositories")
 
 func getUrls() ([]string, error) {
@@ -71,7 +71,7 @@ func main() {
 
 	db := psql.InitDBFromStorageConfig()
 	// psql.CreateTable(db)
-	workerpool.SetCap(int32(*flagJoinCount))
+	workerpool.SetCap(int32(*flagJobsCount))
 
 	for _, input := range urls {
 		// for index , url := range urls {
