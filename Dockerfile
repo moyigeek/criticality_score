@@ -40,7 +40,7 @@ RUN echo '#!/bin/bash' > /gitlink.sh && \
     chmod +x /gitlink.sh
 
 RUN echo '#!/bin/bash' > /gitlink.sh && \
-    echo 'APP_BIN=/app CFG_FILE=/config/config.json /workflow/update.sh -C /data/rec "$1"' >> /gitlink.sh && \
+    echo 'APP_BIN=/app CFG_FILE=/config/config.json /workflow/update.sh -C /data/rec "$1"' >> /update.sh && \
     chmod +x /update.sh
 
 COPY --from=builder /app /app
