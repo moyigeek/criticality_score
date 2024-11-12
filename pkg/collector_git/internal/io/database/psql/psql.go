@@ -67,6 +67,7 @@ func InsertTable(db *gorm.DB, metrics *database.GitMetrics) {
 		Source:           metrics.Source,
 		URL:              metrics.URL,
 		Ecosystems:       metrics.Ecosystems,
+		NeedUpdate:	      metrics.NeedUpdate,
 	}).FirstOrCreate(metrics)
 }
 

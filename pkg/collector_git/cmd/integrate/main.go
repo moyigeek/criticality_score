@@ -108,6 +108,7 @@ func main() {
 					repo.Metrics.ContributorCount,
 					repo.Metrics.OrgCount,
 					repo.Metrics.CommitFrequency,
+					false,
 				)
 
 				psql.InsertTable(db, &output)

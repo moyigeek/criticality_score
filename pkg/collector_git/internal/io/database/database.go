@@ -27,6 +27,7 @@ type GitMetrics struct {
 	ContributorCount int       `gorm:"column:contributor_count;not null"`
 	OrgCount         int       `gorm:"column:org_count;not null"`
 	CommitFrequency  float64   `gorm:"column:commit_frequency;not null"`
+	NeedUpdate       bool      `gorm:"column:need_update;not null"`
 	// License          string    `gorm:"not null"`
 	//Languages []string `gorm:"not null"`
 }
@@ -37,6 +38,7 @@ func NewGitMetrics(
 	CreatedSince, UpdatedSince time.Time,
 	ContributorCount, OrgCount int,
 	CommitFrequency float64,
+	NeedUpdate bool,
 ) GitMetrics {
 	return GitMetrics{
 		// gorm.Model{},
@@ -50,6 +52,7 @@ func NewGitMetrics(
 		ContributorCount,
 		OrgCount,
 		CommitFrequency,
+		NeedUpdate,
 		//		License,
 	}
 }
