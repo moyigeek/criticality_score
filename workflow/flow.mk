@@ -30,14 +30,14 @@ update_dependents.rec: package_updated.src union_gitlink.rec
 update_git_metrics_partial.rec: union_gitlink.rec
 	# Update the Git metrics
 	echo "* Updating the Git metrics..."
-	$(APP_BIN)/update_git_metrics -config $(CFG_FILE) -storage $(STORAGE_DIR)
+	$(APP_BIN)/update_git_metrics -jobs 64 -config $(CFG_FILE) -storage $(STORAGE_DIR)
 
 	touch $@
 
 update_git_metrics.rec: git_updated.src 
 	# Update the Git metrics
 	echo "* Updating the Git metrics..."
-	$(APP_BIN)/update_git_metrics -config $(CFG_FILE) -storage $(STORAGE_DIR) -force-update-all
+	$(APP_BIN)/update_git_metrics -jobs 64 -config $(CFG_FILE) -storage $(STORAGE_DIR) -force-update-all
 
 	touch $@
 
