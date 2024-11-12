@@ -94,7 +94,6 @@ func GetProjectTypeFromDB(link string) string {
 	return projectType
 }
 
-// CalculateScore calculates the criticality score for a project.
 func CalculateScore(data ProjectData) float64 {
 	score := 0.0
 
@@ -130,7 +129,6 @@ func CalculateScore(data ProjectData) float64 {
 		score += Org_CountScore
 	}
 	if data.Pkg_Manager != nil {
-		// 确保包管理器的值是有效的
 		pkgManager, ok := PackageManagerData[*data.Pkg_Manager]
 		if ok && data.DepsdevCount != nil {
 			normalized := math.Min(float64(*data.DepsdevCount)/float64(pkgManager)/thresholds["depsdev_ratios"], 1)
@@ -150,13 +148,11 @@ func UpdateDepsdistro(db *sql.DB, link string, totalRatio float64) error {
 	return err
 }
 
-// UpdateScore updates the criticality score in the database for a given project.
 func UpdateScore(db *sql.DB, gitLink string, score float64) error {
 	_, err := db.Exec("UPDATE git_metrics SET scores = $1 WHERE git_link = $2", score, gitLink)
 	return err
 }
 
-// FetchProjectData retrieves the project data from the database.
 func FetchProjectData(db *sql.DB, gitLink string) (*ProjectData, error) {
 	row := db.QueryRow("SELECT created_since, updated_since, contributor_count, commit_frequency, depsdev_count, deps_distro, ecosystem, org_count FROM git_metrics WHERE git_link = $1", gitLink)
 	var data ProjectData
@@ -171,18 +167,30 @@ func FetchProjectData(db *sql.DB, gitLink string) (*ProjectData, error) {
 func CalculateDepsdistro(db *sql.DB, link string) float64{
 	totalRatio := 0.0
 	depRatio, err := CalculateDependencyRatio(db, link, "debian_packages")
-	// fmt.Println(link)
-	// fmt.Println(depRatio)
 	if err == nil {
 		totalRatio += depRatio
 	}
 	
 	depRatio, err = CalculateDependencyRatio(db, link, "arch_packages")
-	// fmt.Println(depRatio)
 	if err == nil {
 			totalRatio += depRatio
 	}
-	// Update the database with the computed total ratio and the detected package manager
+
+	depRatio, err = CalculateDependencyRatio(db, link, "nix_packages")
+	if err == nil {
+			totalRatio += depRatio
+	}
+
+	depRatio, err = CalculateDependencyRatio(db, link, "homebrew_packages")
+	if err == nil {
+			totalRatio += depRatio
+	}
+
+	depRatio, err = CalculateDependencyRatio(db, link, "gentoo_packages")
+	if err == nil {
+			totalRatio += depRatio
+	}
+
 	err = UpdateDepsdistro(db, link, totalRatio)
 	if err != nil {
 		log.Printf("Failed to update database for %s: %v", link, err)

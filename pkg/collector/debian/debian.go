@@ -12,12 +12,11 @@ import (
 	"strings"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
-	_ "github.com/lib/pq" // Assuming PostgreSQL, adjust as needed
+	"github.com/lib/pq"
 )
 
 var cacheDir = "/tmp/cloc-debian-cache"
 
-// Updated DepInfo struct to include Description and Homepage
 type DepInfo struct {
 	Name        string
 	Arch        string
@@ -40,19 +39,33 @@ func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
 			return err
 		}
 		if !exists {
-			// TODO: if the package does not exist, notify user to update git_link
 			_, err := db.Exec("INSERT INTO debian_packages (package, depends_count, description, homepage) VALUES ($1, $2, $3, $4)",
 				pkgName, pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage)
 			if err != nil {
 				return err
 			}
 		} else {
-
 			_, err := db.Exec("UPDATE debian_packages SET depends_count = $1, description = $2, homepage = $3 WHERE package = $4",
 				pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgName)
 			if err != nil {
 				return err
 			}
+		}
+	}
+	return nil
+}
+
+func storeDependenciesInDatabase(pkgName string, dependencies []DepInfo) error {
+	db, err := storage.GetDatabaseConnection()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	for _, dep := range dependencies {
+		_, err := db.Exec("INSERT INTO debian_relationships (frompackage, topackage) VALUES ($1, $2)", pkgName, dep.Name)
+		if err != nil {
+			return err
 		}
 	}
 	return nil
@@ -104,14 +117,12 @@ func parseList() map[string]map[string]interface{} {
 				currentKey = strings.Split(line, ":")[0]
 				pkg[currentKey] = ""
 			} else if matched, _ := regexp.MatchString(" .+", line); matched {
-				// 类型断言，确保 currentKey 对应的值是字符串
 				if currentValue, ok := pkg[currentKey].(string); ok {
 					pkg[currentKey] = currentValue + " " + strings.TrimSpace(line)
 				}
 			}
 		}
 
-		// 后处理
 		if depends, ok := pkg["Depends"].(string); ok {
 			depList := strings.Split(depends, ",")
 			var depStrings []interface{}
@@ -130,12 +141,10 @@ func parseList() map[string]map[string]interface{} {
 	return packages
 }
 
-// Updated toDep function to extract additional fields
 func toDep(dep string, rawContent string) DepInfo {
 	re := regexp.MustCompile(`^(.+?)(:.+?)?(\s\((.+)\))?(\s\|.+)?$`)
 	matches := re.FindStringSubmatch(dep)
 
-	// Initialize DepInfo with default values
 	depInfo := DepInfo{Name: dep, Arch: "", Version: "", Description: "", Homepage: ""}
 
 	if matches != nil {
@@ -148,16 +157,13 @@ func toDep(dep string, rawContent string) DepInfo {
 		}
 	}
 
-	// Extract Description and Homepage from rawContent
 	descriptionRegex := regexp.MustCompile(`(?m)^Description:\s*(.*)$`)
 	homepageRegex := regexp.MustCompile(`(?m)^Homepage:\s*(.*)$`)
 
-	// Extract Description
 	if descMatches := descriptionRegex.FindStringSubmatch(rawContent); len(descMatches) > 1 {
 		depInfo.Description = descMatches[1]
 	}
 
-	// Extract Homepage
 	if homeMatches := homepageRegex.FindStringSubmatch(rawContent); len(homeMatches) > 1 {
 		depInfo.Homepage = homeMatches[1]
 	}
@@ -175,11 +181,9 @@ func generateDependencyGraph(packages map[string]map[string]interface{}, outputP
 	writer := bufio.NewWriter(file)
 	writer.WriteString("digraph {\n")
 
-	// Create a map to store package indices
 	packageIndices := make(map[string]int)
 	index := 0
 
-	// Assign an index to each package and write the node definitions
 	for pkgName, pkgInfo := range packages {
 		packageIndices[pkgName] = index
 		label := fmt.Sprintf("%s@%s", pkgName, pkgInfo["Version"].(string))
@@ -187,7 +191,6 @@ func generateDependencyGraph(packages map[string]map[string]interface{}, outputP
 		index++
 	}
 
-	// Write the edges (dependencies)
 	for pkgName, pkgInfo := range packages {
 		pkgIndex := packageIndices[pkgName]
 		if depends, ok := pkgInfo["Depends"].([]interface{}); ok {
@@ -243,7 +246,7 @@ func Debian(outputPath string) {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
-	// fmt.Println(keys)
+
 	depMap := make(map[string][]string)
 	for _, pkgName := range keys {
 		deps := getAllDep(packages, pkgName, []string{})
@@ -257,22 +260,19 @@ func Debian(outputPath string) {
 		}
 	}
 
-	// Create a map to hold package information
 	pkgInfoMap := make(map[string]PackageInfo)
 
-	// Populate the pkgInfoMap with counts, descriptions, and homepages
 	for pkgName, pkgInfo := range packages {
-		depCount := countMap[pkgName] // Get the dependency count
+		depCount := countMap[pkgName]
 
-		// Safely extract Description and Homepage, defaulting to empty string if not present
 		description, ok := pkgInfo["Description"].(string)
 		if !ok {
-			description = "" // Set to empty string if not found
+			description = ""
 		}
 
 		homepage, ok := pkgInfo["Homepage"].(string)
 		if !ok {
-			homepage = "" // Set to empty string if not found
+			homepage = ""
 		}
 
 		pkgInfoMap[pkgName] = PackageInfo{
@@ -282,11 +282,29 @@ func Debian(outputPath string) {
 		}
 	}
 
-	// Update database with package information
 	err := updateOrInsertDatabase(pkgInfoMap)
 	if err != nil {
 		fmt.Printf("Error updating database: %v\n", err)
 		return
+	}
+	for _, pkgInfo := range packages {
+		if packageName, ok := pkgInfo["Package"].(string); ok {
+			if depends, ok := pkgInfo["Depends"].([]interface{}); ok {
+				dependencies := make([]DepInfo, len(depends))
+				for i, depInterface := range depends {
+					if depInfo, ok := depInterface.(DepInfo); ok {
+						dependencies[i] = depInfo
+					}
+				}
+				if err := storeDependenciesInDatabase(packageName, dependencies); err != nil {
+					if isUniqueViolation(err) {
+						continue
+					}
+					fmt.Printf("Error storing dependencies for package %s: %v\n", packageName, err)
+					return
+				}
+			}
+		}
 	}
 	fmt.Println("Database updated successfully.")
 
@@ -304,4 +322,11 @@ type PackageInfo struct {
 	DependsCount int
 	Description  string
 	Homepage     string
+}
+
+func isUniqueViolation(err error) bool {
+	if pqErr, ok := err.(*pq.Error); ok {
+		return pqErr.Code == "23505"
+	}
+	return false
 }

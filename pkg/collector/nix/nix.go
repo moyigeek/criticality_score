@@ -3,14 +3,12 @@ package nix
 import (
 	"bytes"
 	"encoding/gob"
-	"encoding/csv"
 	"encoding/json"
 	"fmt"
 	"net/url"
 	"os"
 	"os/exec"
 	"regexp"
-	"sort"
 	"strings"
 	"unicode"
 
@@ -316,24 +314,27 @@ func mergeDependencies(packages map[DepInfo][]DepInfo) map[DepInfo][]DepInfo {
 
 	return mergedPackages
 }
-// writeCSV writes the collected package information to a CSV file
-// 修改后的 getAllDep 函数
-func getAllDep(packages map[DepInfo][]DepInfo, pkgName string, deps []string) []string {
-	deps = append(deps, pkgName) // 添加当前包名到依赖列表
-	// fmt.Println(pkgName)
+
+func getAllDep(packages map[DepInfo][]DepInfo, pkgName string, visited map[string]bool, deps []string) []string {
+	if visited[pkgName] {
+		return deps
+	}
+
+	visited[pkgName] = true
+	deps = append(deps, pkgName)
+
 	for pkg, depsList := range packages {
-		if pkg.Name == pkgName { // 比较包名
+		if pkg.Name == pkgName {
 			for _, dep := range depsList {
 				pkgname := dep.Name
-				if !contains(deps, pkgname) { // 检查依赖是否已在列表中
-					deps = getAllDep(packages, pkgname, deps) // 递归调用
+				if !visited[pkgname] {
+					deps = getAllDep(packages, pkgname, visited, deps)
 				}
 			}
 		}
 	}
 	return deps
 }
-
 func contains(slice []string, item string) bool {
 	for _, s := range slice {
 		if s == item {
@@ -343,58 +344,6 @@ func contains(slice []string, item string) bool {
 	return false
 }
 
-// 修改后的 writeCSV 函数
-func writeCSV(packages map[DepInfo][]DepInfo, filename string) error {
-	file, err := os.Create(filename)
-	if err != nil {
-		return fmt.Errorf("Error creating CSV file: %v", err)
-	}
-	defer file.Close()
-
-	writer := csv.NewWriter(file)
-	defer writer.Flush()
-
-	// 写入 CSV 头部
-	if err := writer.Write([]string{"Package Name", "Version", "Homepage", "Description", "Git Link", "Dependencies", "Dependency Count"}); err != nil {
-		return fmt.Errorf("Error writing header to CSV: %v", err)
-	}
-
-	// 合并包信息
-	mergedPackages := mergeDependencies(packages)
-	// fmt.Println(mergedPackages)
-	// 写入合并后的包数据
-	for pkg, deps := range mergedPackages {
-		// fmt.Println(pkg)
-		allDeps := getAllDep(mergedPackages, pkg.Name, []string{}) // 使用新的 getAllDep 逻辑
-
-		// 计算依赖数
-		pkg.DepCount = len(allDeps)
-
-		dependencies := make([]string, len(deps))
-		for i, dep := range deps {
-			dependencies[i] = dep.Name
-		}
-		sort.Strings(dependencies)
-
-		// 使用双引号包裹每个字段以处理逗号
-		if err := writer.Write([]string{
-			fmt.Sprintf("\"%s\"", pkg.Name),
-			fmt.Sprintf("\"%s\"", pkg.Version),
-			fmt.Sprintf("\"%s\"", pkg.Homepage),
-			fmt.Sprintf("\"%s\"", pkg.Description),
-			fmt.Sprintf("\"%s\"", pkg.GitLink),
-			fmt.Sprintf("\"%s\"", strings.Join(dependencies, ", ")),
-			fmt.Sprintf("\"%d\"", pkg.DepCount),
-		}); err != nil {
-			return fmt.Errorf("Error writing package data to CSV: %v", err)
-		}
-	}
-
-	return nil
-}
-
-
-// 辅助函数：获取map的键
 func getKeys(set map[string]struct{}) []string {
 	keys := make([]string, 0, len(set))
 	for key := range set {
@@ -493,28 +442,10 @@ func Nix() {
         }
     }
 
-    // 反转依赖关系
-    simplifiedDep := reverseDependencies(packages)
-
-    // 更新 simplifiedDep 的键名
-    for dep, deps := range simplifiedDep {
-        if fullDep, exists := findDepInfoByName(packages, dep.Name); exists {
-            // 删除旧键
-            delete(simplifiedDep, dep)
-
-            // 使用完整信息更新键
-            simplifiedDep[fullDep] = deps
-        }
-    }
-
-	for dep := range packages {
-        if _, exists := simplifiedDep[dep]; !exists {
-            simplifiedDep[dep] = nil  // Add packages with no dependencies
-        }
-    }
+    countDependencies(packages)
 
     // 将包信息存储到数据库
-    if err := updateOrInsertNixPackages(simplifiedDep); err != nil {
+    if err := updateOrInsertNixPackages(packages); err != nil {
         fmt.Printf("Error updating or inserting Nix packages into database: %v\n", err)
         return
     }
@@ -530,7 +461,7 @@ func updateOrInsertNixPackages(packages map[DepInfo][]DepInfo) error {
     }
     defer db.Close()
 
-    for pkg, deps := range packages {
+    for pkg,_ := range packages {
         // 假设我们只存储包名和依赖数量
         var exists bool
         err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM nix_packages WHERE package = $1)", pkg.Name).Scan(&exists)
@@ -540,23 +471,23 @@ func updateOrInsertNixPackages(packages map[DepInfo][]DepInfo) error {
 
         if !exists {
             // 插入新包信息
-            _, err := db.Exec("INSERT INTO nix_packages (package, version, homepage, description, git_link, depends_count) VALUES ($1, $2, $3, $4, $5, $6)",
-                pkg.Name, pkg.Version, pkg.Homepage, pkg.Description, normalizeGitLink(pkg.GitLink), len(deps))
+            _, err := db.Exec("INSERT INTO nix_packages (name, version, homepage, description, git_link, dependency_count) VALUES ($1, $2, $3, $4, $5, $6)",
+                pkg.Name, pkg.Version, pkg.Homepage, pkg.Description, normalizeGitLink(pkg.GitLink), pkg.DepCount)
             if err != nil {
                 return err
             }
         } else {
             // 检查当前 git_link 是否为空
-            var currentGitLink *string
-            err := db.QueryRow("SELECT git_link FROM nix_packages WHERE package = $1", pkg.Name).Scan(&currentGitLink)
-            if err != nil {
-                return err
-            }
+            // var currentGitLink *string
+            // err := db.QueryRow("SELECT git_link FROM nix_packages WHERE package = $1", pkg.Name).Scan(&currentGitLink)
+            // if err != nil {
+            //     return err
+            // }
 
             // 更新其他字段，如果 currentGitLink 为空则更新 git_link
             // if currentGitLink == nil || *currentGitLink == "" {
                 _, err = db.Exec("UPDATE nix_packages SET version = $1, homepage = $2, description = $3, git_link = $4, depends_count = $5 WHERE package = $6",
-                    pkg.Version, pkg.Homepage, pkg.Description, normalizeGitLink(pkg.GitLink), len(deps), pkg.Name)
+                    pkg.Version, pkg.Homepage, pkg.Description, normalizeGitLink(pkg.GitLink), pkg.DepCount, pkg.Name)
                 if err != nil {
                     return err
                 }
@@ -583,6 +514,7 @@ func findDepInfoByName(packages map[DepInfo][]DepInfo, name string) (DepInfo, bo
     return DepInfo{}, false
 }
 
+// normalizeGitLink 规范化 Git 链接
 func normalizeGitLink(link string) string {
 	// 检查并提取组织名和仓库名
 	var orgName, repoName string
@@ -646,4 +578,27 @@ func normalizeGitLink(link string) string {
 	}
 
 	return "" // 如果不符合任何协议，返回空字符串
+}
+
+func countDependencies(packages map[DepInfo][]DepInfo) {
+	countMap := make(map[string]int)
+	depMap := make(map[string][]string)
+
+	for pkgInfo := range packages {
+		visited := make(map[string]bool)
+		deps := getAllDep(packages, pkgInfo.Name, visited, []string{})
+		depMap[pkgInfo.Name] = deps
+	}
+
+	for _, deps := range depMap {
+		for _, dep := range deps {
+			countMap[dep]++
+		}
+	}
+
+	for pkgInfo := range packages {
+		depCount := countMap[pkgInfo.Name]
+		pkgInfo.DepCount = depCount
+		packages[pkgInfo] = packages[pkgInfo]
+	}
 }
