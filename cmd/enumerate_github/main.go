@@ -68,7 +68,7 @@ var (
 	logEnv              log.Env
 	format              repowriter.WriterType
 	markerType          marker.Type
-	dbConfigFlag        string
+	dbConfigFlag        = flag.String("config", "", "path to the database configuration file.")
 
 	// Maps environment variables to the flags they correspond to.
 	envFlagMap = envflag.Map{
@@ -117,7 +117,6 @@ func init() {
 	flag.TextVar(&format, "format", repowriter.WriterTypeText, "set output file `format`.")
 	flag.TextVar(&logEnv, "log-env", log.DefaultEnv, "set logging `env`.")
 	flag.TextVar(&markerType, "marker-type", marker.TypeFull, "format of the contents in the marker file. Can be 'full', 'dir' or 'file'.")
-	flag.StringVar(&dbConfigFlag, "config", "", "path to the database configuration file.")
 	outfile.DefineFlags(flag.CommandLine, "out", "force", "append", "FILE")
 	flag.Usage = func() {
 		cmdName := path.Base(os.Args[0])
@@ -224,9 +223,9 @@ func main() {
 	w := format.New(out)
 
 	var dbWriter *repowriter.DatabaseWriter
-	if dbConfigFlag != "" {
+	if *dbConfigFlag != "" {
 		var err error
-		dbWriter, err = repowriter.Database(dbConfigFlag)
+		dbWriter, err = repowriter.Database(*dbConfigFlag)
 
 		if err != nil {
 			logger.Error("Failed to open database", zap.Error(err))
@@ -270,7 +269,10 @@ func main() {
 		for repo := range results {
 			w.Write(repo)
 			if dbWriter != nil {
-				dbWriter.Write(repo)
+				err := dbWriter.Write(repo)
+				if err != nil {
+					logger.Error("Failed to write to database", zap.Error(err))
+				}
 			}
 			totalRepos++
 		}
