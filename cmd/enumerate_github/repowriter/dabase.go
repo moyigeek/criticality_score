@@ -27,7 +27,7 @@ func (w *DatabaseWriter) Write(repo string) error {
 
 	var exists bool
 
-	err := w.db.QueryRow(`SELECT EXSITS(SELECT 1 FROM github_links WHERE git_link = $1)`, repo).Scan(&exists)
+	err := w.db.QueryRow(`SELECT EXISTS(SELECT 1 FROM github_links WHERE git_link = $1)`, repo).Scan(&exists)
 
 	if err != nil {
 		return err
