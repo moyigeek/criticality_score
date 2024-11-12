@@ -58,7 +58,8 @@ union_gitlink.rec: gitlink_updated.src enumerate_github.rec
 enumerate_github.rec: github_updated.src
 	# Enumerate the GitHub repositories
 	echo "* Enumerating the GitHub repositories..."
-	$(APP_BIN)/enumerate_github -config $(CFG_FILE) -min-stars 50 -out /dev/null -workers 20
+	rm -f /tmp/github.txt
+	$(APP_BIN)/enumerate_github -config $(CFG_FILE) -min-stars 50 -out /tmp/github.txt -workers 20
 	touch $@
 
 
