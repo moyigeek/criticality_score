@@ -15,6 +15,7 @@ prepare() {
     ensure_exists git_updated.src
     ensure_exists depsdev_updated.src
     ensure_exists gitlink_updated.src
+    ensure_exists github_updated.src
 }
 
 
@@ -53,7 +54,9 @@ shift $((OPTIND-1))
 
 # $1 must be 'package' or 'git' or 'depsdev' or 'gitlink'
 
-if [ "$1" = "package" ] || [ "$1" = "git" ] || [ "$1" = "depsdev" ] || [ "$1" = "gitlink" ]; then
+if [ "$1" = "package" ] || [ "$1" = "git" ] || 
+    [ "$1" = "depsdev" ] || [ "$1" = "gitlink" ] ||
+    [ "$1" = "github" ]; then
     prepare
     run "$1"
 else
