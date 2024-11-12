@@ -25,13 +25,23 @@ import (
 var flagConfigPath = flag.String("config", "config.json", "path to the config file")
 var flagStoragePath = flag.String("storage", "./storage", "path to git storage location")
 var flagJoinCount = flag.Int("join", 256, "join count")
+var flagForceUpdateAll = flag.Bool("force-update-all", false, "force update all repositories")
 
 func getUrls() ([]string, error) {
 	conn, err := storage.GetDatabaseConnection()
 	if err != nil {
 		return nil, err
 	}
-	rows, err := conn.Query("SELECT git_link from git_metrics")
+	
+	var sqlStatement string
+
+	if *flagForceUpdateAll {
+		sqlStatement = `SELECT git_link from git_metrics`
+	} else {
+		sqlStatement = `SELECT git_link from git_metrics where need_update = true`
+	}
+
+	rows, err := conn.Query(sqlStatement)
 	if err != nil {
 		return nil, err
 	}
