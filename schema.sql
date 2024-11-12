@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS "public"."debian_packages" (
 -- Table structure for github_links
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS "public"."github_links" (
-  "git_link" text COLLATE "pg_catalog"."default" NOT NULL,
+  "git_link" text COLLATE "pg_catalog"."default" NOT NULL
 )
 ;
 
