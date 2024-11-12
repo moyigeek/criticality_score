@@ -79,6 +79,23 @@ CREATE TABLE IF NOT EXISTS "public"."nix_packages" (
 )
 ;
 
+CREATE TABLE IF NOT EXISTS "public"."homebrew_packages" (
+  "package" text COLLATE "pg_catalog"."default" NOT NULL,
+  "version" text COLLATE "pg_catalog"."default",
+  "homepage" text COLLATE "pg_catalog"."default",
+  "description" text COLLATE "pg_catalog"."default",
+  "depends_count" int8,
+  "git_link" text COLLATE "pg_catalog"."default",
+  "alias_link" text COLLATE "pg_catalog"."default",
+  "link_confidence" float4
+)
+;
+
+-- ----------------------------
+-- Primary Key structure for table homebrew_packages
+-- ----------------------------
+ALTER TABLE "public"."homebrew_packages" ADD CONSTRAINT "debian_packages_copy1_pkey" PRIMARY KEY ("package");
+
 -- ----------------------------
 -- Primary Key structure for table arch_packages
 -- ----------------------------
