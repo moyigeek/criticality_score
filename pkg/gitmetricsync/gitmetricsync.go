@@ -17,6 +17,11 @@ type DependentInfo struct {
 	IndirectDependentCount int `json:"indirectDependentCount"`
 }
 
+var unionTables = [][]string{
+	[]string{"debian_packages", "arch_packages"},
+	[]string{"github_links"},
+}
+
 func Run() {
 	db, err := storage.GetDatabaseConnection()
 	if err != nil {
@@ -24,15 +29,17 @@ func Run() {
 	}
 	defer db.Close()
 
-	gitLinks := fetchGitLinks(db)
-	syncGitMetrics(db, gitLinks, 0)
+	for i := 0; i < len(unionTables); i++ {
+		gitLinks := fetchGitLinks(db, i)
+		syncGitMetrics(db, gitLinks, i)
+	}
+
 }
 
-func fetchGitLinks(db *sql.DB) map[string]bool {
+func fetchGitLinks(db *sql.DB, from int) map[string]bool {
 	gitLinks := make(map[string]bool)
 	githubRegex := regexp.MustCompile(`https?://github\.com/[^\s/]+/[^\s/]+`)
-	tables := []string{"debian_packages", "arch_packages"}
-	for _, table := range tables {
+	for _, table := range unionTables[from] {
 		rows, err := db.Query(fmt.Sprintf("SELECT git_link FROM %s", table))
 		if err != nil {
 			log.Fatal(err)
