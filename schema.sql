@@ -33,6 +33,16 @@ CREATE TABLE IF NOT EXISTS "public"."debian_packages" (
 ;
 
 -- ----------------------------
+-- Table structure for github_links
+-- ----------------------------
+CREATE TABLE IF NOT EXISTS "public"."github_links" (
+  "git_link" text COLLATE "pg_catalog"."default" NOT NULL,
+)
+;
+
+ALTER TABLE "public"."github_links" ADD CONSTRAINT "github_links_pkey" PRIMARY KEY ("git_link");
+
+-- ----------------------------
 -- Table structure for git_metrics
 -- ----------------------------
 CREATE TABLE IF NOT EXISTS "public"."git_metrics" (
@@ -47,6 +57,7 @@ CREATE TABLE IF NOT EXISTS "public"."git_metrics" (
   "deps_distro" float8,
   "scores" float8,
   "org_count" int4,
+  "need_update" bool,
   "_name" varchar(255) COLLATE "pg_catalog"."default",
   "_owner" varchar(255) COLLATE "pg_catalog"."default",
   "_source" varchar(255) COLLATE "pg_catalog"."default"
