@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
+	"github.com/lib/pq"
 )
 
 // PackageInfo struct to store package information
@@ -22,6 +23,22 @@ type PackageInfo struct {
 	DependsCount int
 	URL          string
 	GitRepo      string
+}
+
+func storeDependenciesInDatabase(pkgName string, dependencies []string) error {
+	db, err := storage.GetDatabaseConnection()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	for _, dep := range dependencies {
+		_, err := db.Exec("INSERT INTO gentoo_relationships (frompackage, topackage) VALUES ($1, $2)", pkgName, dep)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func extractNameAndVersion(fileName string) (string, string) {
@@ -131,7 +148,6 @@ func getDependenciesFromCommand(pkgName string) ([]string, error) {
 			}
 		}
 	}
-	fmt.Println("Dependencies:", dependencies)
 	return dependencies, nil
 }
 
@@ -214,7 +230,6 @@ func Gentoo(outputPath string) {
 		visited := make(map[string]bool)
 		deps := getAllDep(pkgInfoMap, pkgName, visited, []string{})
 		depMap[pkgName] = deps
-		fmt.Println(pkgName, "depends on:", deps)
 	}
 
 	countMap := make(map[string]int)
@@ -234,6 +249,15 @@ func Gentoo(outputPath string) {
 	if err != nil {
 		fmt.Printf("Error updating database: %v\n", err)
 		return
+	}
+	for pkgName, pkgInfo := range pkgInfoMap {
+		fmt.Println("Storing dependencies for package", pkgName, pkgInfo.Depends)
+		if err := storeDependenciesInDatabase(pkgName, pkgInfo.Depends); err != nil {
+			if isUniqueViolation(err) {
+				continue
+			}
+			fmt.Printf("Error storing dependencies for package %s: %v\n", pkgName, err)
+		}
 	}
 	fmt.Println("Database updated successfully.")
 
@@ -313,4 +337,11 @@ func generateDependencyGraph(pkgInfoMap map[string]PackageInfo, outputPath strin
 	writer.WriteString("}\n")
 	writer.Flush()
 	return nil
+}
+
+func isUniqueViolation(err error) bool {
+	if pqErr, ok := err.(*pq.Error); ok {
+		return pqErr.Code == "23505"
+	}
+	return false
 }

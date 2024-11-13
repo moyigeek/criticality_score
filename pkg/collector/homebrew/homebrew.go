@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
+	"github.com/lib/pq"
 )
 
 type PackageInfo struct {
@@ -22,7 +23,21 @@ type PackageInfo struct {
 	URL          string
 	GitRepo      string
 }
+func storeDependenciesInDatabase(pkgName string, dependencies []string) error {
+	db, err := storage.GetDatabaseConnection()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
 
+	for _, dep := range dependencies {
+		_, err := db.Exec("INSERT INTO homebrew_relationships (frompackage, topackage) VALUES ($1, $2)", pkgName, dep)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
 func CloneHomebrewRepo() (string, error) {
 	repoURL := "https://github.com/Homebrew/homebrew-core.git"
 	dir := "homebrew-core"
@@ -218,6 +233,14 @@ func Homebrew(outputPath string) {
 		fmt.Printf("Error updating database: %v\n", err)
 		return
 	}
+	for pkgName, pkgInfo := range pkgInfoMap {
+		if err := storeDependenciesInDatabase(pkgName, pkgInfo.Depends); err != nil {
+			if isUniqueViolation(err) {
+				continue
+			}
+			fmt.Printf("Error storing dependencies for package %s: %v\n", pkgName, err)
+		}
+	}
 	fmt.Println("Database updated successfully.")
 
 	if outputPath != "" {
@@ -268,3 +291,9 @@ func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
 	return nil
 }
 
+func isUniqueViolation(err error) bool {
+	if pqErr, ok := err.(*pq.Error); ok {
+		return pqErr.Code == "23505"
+	}
+	return false
+}

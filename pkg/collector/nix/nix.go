@@ -13,6 +13,7 @@ import (
 	"unicode"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
+	"github.com/lib/pq"
 )
 
 // DepInfo struct to store package information
@@ -23,6 +24,22 @@ type DepInfo struct {
 	Description string
 	GitLink     string
 	DepCount    int // 新增的依赖计数字段
+}
+
+func storeDependenciesInDatabase(pkgName string, dependencies []DepInfo) error {
+	db, err := storage.GetDatabaseConnection()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	for _, dep := range dependencies {
+		_, err := db.Exec("INSERT INTO nix_relationships (frompackage, topackage) VALUES ($1, $2)", pkgName, dep.Name)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 // isValidNixIdentifier checks if a string is a valid Nix identifier
@@ -444,10 +461,18 @@ func Nix() {
 
     countDependencies(packages)
 
-    // 将包信息存储到数据库
     if err := updateOrInsertNixPackages(packages); err != nil {
         fmt.Printf("Error updating or inserting Nix packages into database: %v\n", err)
         return
+    }
+
+    for pkg, pkgInfo := range packages {
+        if err := storeDependenciesInDatabase(pkg.Name, pkgInfo); err != nil {
+			if isUniqueViolation(err) {
+				continue
+			}
+			fmt.Printf("Error storing dependencies for package %s: %v\n", pkg.Name, err)
+        }
     }
 
     fmt.Println("Successfully updated package information in the database")
@@ -477,28 +502,11 @@ func updateOrInsertNixPackages(packages map[DepInfo][]DepInfo) error {
                 return err
             }
         } else {
-            // 检查当前 git_link 是否为空
-            // var currentGitLink *string
-            // err := db.QueryRow("SELECT git_link FROM nix_packages WHERE package = $1", pkg.Name).Scan(&currentGitLink)
-            // if err != nil {
-            //     return err
-            // }
-
-            // 更新其他字段，如果 currentGitLink 为空则更新 git_link
-            // if currentGitLink == nil || *currentGitLink == "" {
-                _, err = db.Exec("UPDATE nix_packages SET version = $1, homepage = $2, description = $3, git_link = $4, depends_count = $5 WHERE package = $6",
-                    pkg.Version, pkg.Homepage, pkg.Description, normalizeGitLink(pkg.GitLink), pkg.DepCount, pkg.Name)
-                if err != nil {
-                    return err
-                }
-        //     } else {
-        //         // 只更新其他字段，不更新 git_link
-        //         _, err := db.Exec("UPDATE nix_packages SET version = $1, homepage = $2, description = $3, depends_count = $4 WHERE name = $5",
-        //             pkg.Version, pkg.Homepage, pkg.Description, len(deps), pkg.Name)
-        //         if err != nil {
-        //             return err
-        //         }
-        //     }
+            _, err = db.Exec("UPDATE nix_packages SET version = $1, homepage = $2, description = $3, git_link = $4, depends_count = $5 WHERE package = $6",
+                pkg.Version, pkg.Homepage, pkg.Description, normalizeGitLink(pkg.GitLink), pkg.DepCount, pkg.Name)
+            if err != nil {
+                return err
+            }
         }
     }
     return nil
@@ -601,4 +609,11 @@ func countDependencies(packages map[DepInfo][]DepInfo) {
 		pkgInfo.DepCount = depCount
 		packages[pkgInfo] = packages[pkgInfo]
 	}
+}
+
+func isUniqueViolation(err error) bool {
+	if pqErr, ok := err.(*pq.Error); ok {
+		return pqErr.Code == "23505"
+	}
+	return false
 }
