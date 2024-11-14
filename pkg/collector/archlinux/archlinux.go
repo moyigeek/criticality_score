@@ -179,6 +179,7 @@ func readDescFile(descPath string) (DepInfo, []DepInfo, error) {
 
 		if inPackageSection && line != "" {
 			rawContent.WriteString(line + "\n")
+			// fmt.Println(rawContent.String())
 			pkgInfo = toDep(line, rawContent.String())
 		}
 
@@ -192,10 +193,10 @@ func readDescFile(descPath string) (DepInfo, []DepInfo, error) {
 		} else if line == "%DESC%" {
 			expectNextLine = "desc"
 		} else if expectNextLine == "url" {
-			rawContent.WriteString("%URL%\n" + line + "\n")
+			pkgInfo.Homepage = line
 			expectNextLine = ""
 		} else if expectNextLine == "desc" {
-			rawContent.WriteString("%DESC%\n" + line + "\n")
+			pkgInfo.Description = line
 			expectNextLine = ""
 		}
 	}

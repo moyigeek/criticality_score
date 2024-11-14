@@ -38,7 +38,7 @@ func main() {
 		}
 
 		score := scores.CalculateScore(*data)
-		if err := scores.UpdateScore(db, link, score); err != nil {
+		if err := scores.UpdateScore(db, link, score * 100); err != nil {
 			log.Printf("Failed to update score for %s: %v", link, err)
 		}
 	}
