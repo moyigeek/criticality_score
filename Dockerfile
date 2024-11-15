@@ -43,6 +43,9 @@ RUN echo '#!/bin/bash' > /update.sh && \
     echo 'APP_BIN=/app CFG_FILE=/config/config.json /workflow/update.sh -C /data/rec "$1"' >> /update.sh && \
     chmod +x /update.sh
 
+# install nix package manager
+RUN bash -c 'sh <(curl -L https://nixos.org/nix/install) --daemon'
+
 COPY --from=builder /app /app
 
 CMD ["cron", "-f"]
