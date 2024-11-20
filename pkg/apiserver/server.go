@@ -87,7 +87,7 @@ func getMetrics(request *restful.Request, response *restful.Response) {
 	}
 	r.Scan(&total)
 
-	rows, err := conn.Query(`SELECT git_link, ecosystem, created_since, updated_since, contributor_count, org_count, commit_frequency, depsdev_count, scores FROM git_metrics ORDER BY scores DESC OFFSET $1 LIMIT $2`, start, take)
+	rows, err := conn.Query(`SELECT git_link, ecosystem, created_since, updated_since, contributor_count, org_count, commit_frequency, depsdev_count, scores FROM git_metrics WHERE scores IS NOT NULL ORDER BY scores DESC OFFSET $1 LIMIT $2`, start, take)
 
 	if err != nil {
 		response.WriteErrorString(http.StatusInternalServerError, "Fetch data error")
