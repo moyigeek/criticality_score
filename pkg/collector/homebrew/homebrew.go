@@ -267,8 +267,8 @@ func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
 			return err
 		}
 		if !exists {
-			_, err := db.Exec("INSERT INTO homebrew_packages (package, depends_count, description, homepage, git_link) VALUES ($1, $2, $3, $4, $5)",
-				pkgName, pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgInfo.GitRepo)
+			_, err := db.Exec("INSERT INTO homebrew_packages (package, depends_count, description, homepage) VALUES ($1, $2, $3, $4)",
+				pkgName, pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage)
 			if err != nil {
 				return err
 			}
@@ -280,8 +280,8 @@ func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
 			}
 
 			if currentGitLink == nil {
-				_, err := db.Exec("UPDATE homebrew_packages SET depends_count = $1, description = $2, homepage = $3, git_link = $4 WHERE package = $5",
-					pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgInfo.GitRepo, pkgName)
+				_, err := db.Exec("UPDATE homebrew_packages SET depends_count = $1, description = $2, homepage = $3 WHERE package = $4",
+					pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgName)
 				if err != nil {
 					return err
 				}

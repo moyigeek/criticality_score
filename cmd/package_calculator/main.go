@@ -11,12 +11,17 @@ import (
 
 var flagConfigPath = flag.String("config", "config.json", "path to the config file")
 var flagRepoName = flag.String("repo", "", "name of the repository")
+var flagMethod = flag.String("method", "", "method to use for calculation (bfs or dfs)")
 
 func main() {
 	flag.Parse()
 
 	if *flagRepoName == "" {
 		log.Fatal("Repository name must be provided")
+	}
+
+	if *flagMethod != "bfs" && *flagMethod != "dfs" {
+		log.Fatal("Method must be either 'bfs' or 'dfs'")
 	}
 
 	storage.InitializeDatabase(*flagConfigPath)
@@ -33,7 +38,7 @@ func main() {
 	}
 	defer rows.Close()
 
-	if err := package_calculator.CalculatePackages(rows); err != nil {
+	if err := package_calculator.CalculatePackages(rows, *flagMethod); err != nil {
 		log.Fatalf("Error calculating packages: %v", err)
 	}
 }

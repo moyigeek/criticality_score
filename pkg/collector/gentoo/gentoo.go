@@ -13,7 +13,6 @@ import (
 	"github.com/lib/pq"
 )
 
-// PackageInfo struct to store package information
 type PackageInfo struct {
 	Name         string
 	Version      string
@@ -193,14 +192,14 @@ func UpdateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
 			return err
 		}
 		if !exists {
-			_, err := db.Exec("INSERT INTO gentoo_packages (package, version, depends_count, description, homepage, git_link) VALUES ($1, $2, $3, $4, $5, $6)",
-				pkgName, pkgInfo.Version, pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgInfo.GitRepo)
+			_, err := db.Exec("INSERT INTO gentoo_packages (package, version, depends_count, description, homepage) VALUES ($1, $2, $3, $4, $5)",
+				pkgName, pkgInfo.Version, pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage)
 			if err != nil {
 				return err
 			}
 		} else {
-			_, err := db.Exec("UPDATE gentoo_packages SET version = $1, depends_count = $2, description = $3, homepage = $4, git_link = $5 WHERE package = $6",
-				pkgInfo.Version, pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgInfo.GitRepo, pkgName)
+			_, err := db.Exec("UPDATE gentoo_packages SET version = $1, depends_count = $2, description = $3, homepage = $4 WHERE package = $5",
+				pkgInfo.Version, pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage pkgName)
 			if err != nil {
 				return err
 			}
@@ -214,6 +213,12 @@ func Gentoo(outputPath string) {
 	err := cloneGentooRepo(baseDirectory)
 	if err != nil {
 		fmt.Printf("Error cloning Gentoo repository: %v\n", err)
+		return
+	}
+
+	cmd := exec.Command("emerge", "--sync")
+	if err := cmd.Run(); err != nil {
+		fmt.Printf("Error executing emerge --sync: %v\n", err)
 		return
 	}
 

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sort"
 	"database/sql"
+	"container/list"
 )
 
 type TopPackageCount struct {
@@ -11,7 +12,7 @@ type TopPackageCount struct {
 	Deps          []string
 }
 
-func CalculatePackages(rows *sql.Rows) error {
+func CalculatePackages(rows *sql.Rows, method string) error {
 	relationships := make([][2]string, 0)
 
 	for rows.Next() {
@@ -52,9 +53,45 @@ func CalculatePackages(rows *sql.Rows) error {
 		return allDeps
 	}
 
-	for pkg := range topPackageMap {
+	var bfs func(pkg string, packages map[string]map[string]struct{}) []string
+	bfs = func(pkg string, packages map[string]map[string]struct{}) []string {
+		var allDeps []string
 		visited := make(map[string]struct{})
-		deps := dfs(pkg, visited, topPackageMap)
+		queue := list.New()
+		queue.PushBack(pkg)
+		visited[pkg] = struct{}{}
+		level := 0
+
+		for queue.Len() > 0 && level < 1 {
+			levelSize := queue.Len()
+			for i := 0; i < levelSize; i++ {
+				element := queue.Front()
+				queue.Remove(element)
+				currentPkg := element.Value.(string)
+
+				if deps, exists := packages[currentPkg]; exists {
+					for dep := range deps {
+						if _, seen := visited[dep]; !seen {
+							allDeps = append(allDeps, dep)
+							visited[dep] = struct{}{}
+							queue.PushBack(dep)
+						}
+					}
+				}
+			}
+			level++
+		}
+		return allDeps
+	}
+
+	for pkg := range topPackageMap {
+		var deps []string
+		if method == "bfs" {
+			deps = bfs(pkg, topPackageMap)
+		} else {
+			visited := make(map[string]struct{})
+			deps = dfs(pkg, visited, topPackageMap)
+		}
 		indirectCount := len(deps)
 		topPackageCounts = append(topPackageCounts, TopPackageCount{IndirectCount: indirectCount, Deps: deps})
 	}
@@ -63,6 +100,7 @@ func CalculatePackages(rows *sql.Rows) error {
 		return topPackageCounts[i].IndirectCount > topPackageCounts[j].IndirectCount
 	})
 
+	fmt.Println("Top packages:", len(topPackageMap))
 	uniqueFromPackages := make(map[string]struct{})
 
 	for _, fromPackages := range topPackageMap {
@@ -72,13 +110,14 @@ func CalculatePackages(rows *sql.Rows) error {
 	}
 
 	totalUniqueFromPackages := len(uniqueFromPackages)
-	fmt.Println("Total unique frompackages:", totalUniqueFromPackages)
+	fmt.Println("Total unique frompackages:", len(uniqueFromPackages))
 	threshold := int(float64(totalUniqueFromPackages) * 0.7)
 
 	currentCount := 0
 	requiredPackages := 0
 
 	for _, pkgCount := range topPackageCounts {
+		fmt.Println("Indirect count:", pkgCount.IndirectCount)
 		deps := pkgCount.Deps
 
 		for _, dep := range deps {

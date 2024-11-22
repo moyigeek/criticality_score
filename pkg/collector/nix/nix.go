@@ -496,14 +496,14 @@ func updateOrInsertNixPackages(packages map[DepInfo][]DepInfo) error {
 
         if !exists {
             // 插入新包信息
-            _, err := db.Exec("INSERT INTO nix_packages (name, version, homepage, description, git_link, dependency_count) VALUES ($1, $2, $3, $4, $5, $6)",
-                pkg.Name, pkg.Version, pkg.Homepage, pkg.Description, normalizeGitLink(pkg.GitLink), pkg.DepCount)
+            _, err := db.Exec("INSERT INTO nix_packages (name, version, homepage, description, dependency_count) VALUES ($1, $2, $3, $4, $5)",
+                pkg.Name, pkg.Version, pkg.Homepage, pkg.Description, pkg.DepCount)
             if err != nil {
                 return err
             }
         } else {
-            _, err = db.Exec("UPDATE nix_packages SET version = $1, homepage = $2, description = $3, git_link = $4, depends_count = $5 WHERE package = $6",
-                pkg.Version, pkg.Homepage, pkg.Description, normalizeGitLink(pkg.GitLink), pkg.DepCount, pkg.Name)
+            _, err = db.Exec("UPDATE nix_packages SET version = $1, homepage = $2, description = $3, depends_count = $4 WHERE package = $5",
+                pkg.Version, pkg.Homepage, pkg.Description, pkg.DepCount, pkg.Name)
             if err != nil {
                 return err
             }
