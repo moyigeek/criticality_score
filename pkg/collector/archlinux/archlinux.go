@@ -31,14 +31,14 @@ func updateOrInsertDatabase(pkgInfoMap map[string]DepInfo) error {
 		}
 
 		if !exists {
-			_, err := db.Exec("INSERT INTO arch_packages (package, depends_count, description, homepage) VALUES ($1, $2, $3, $4)",
-				pkgName, pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage)
+			_, err := db.Exec("INSERT INTO arch_packages (package, depends_count, description, homepage, version) VALUES ($1, $2, $3, $4, $5)",
+				pkgName, pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgInfo.Version)
 			if err != nil {
 				return err
 			}
 		} else {
-			_, err := db.Exec("UPDATE arch_packages SET depends_count = $1, description = $2, homepage = $3 WHERE package = $4",
-				pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgName)
+			_, err := db.Exec("UPDATE arch_packages SET depends_count = $1, description = $2, homepage = $3, version = $4 WHERE package = $5",
+				pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgInfo.version, pkgName)
 			if err != nil {
 				return err
 			}
