@@ -31,6 +31,13 @@ func main() {
 	}
 	defer db.Close()
 
+	Countquery := fmt.Sprintf("SELECT count(*) FROM %s_packages", *flagRepoName)
+	var count int
+	err = db.QueryRow(Countquery).Scan(&count)
+	if err != nil {
+		log.Fatalf("Error querying database: %v", err)
+	}
+
 	query := fmt.Sprintf("SELECT frompackage, topackage FROM %s_relationships", *flagRepoName)
 	rows, err := db.Query(query)
 	if err != nil {
@@ -38,7 +45,7 @@ func main() {
 	}
 	defer rows.Close()
 
-	if err := package_calculator.CalculatePackages(rows, *flagMethod); err != nil {
+	if err := package_calculator.CalculatePackages(rows, *flagMethod, count); err != nil {
 		log.Fatalf("Error calculating packages: %v", err)
 	}
 }

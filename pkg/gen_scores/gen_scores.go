@@ -100,43 +100,44 @@ func CalculateScore(data ProjectData) float64 {
 	var createdSinceScore, updatedSinceScore, contributorCountScore, commitFrequencyScore, Org_CountScore float64
 	if data.CreatedSince != nil {
 		monthsSinceCreation := time.Since(*data.CreatedSince).Hours() / (24 * 30)
-		normalized := math.Min(monthsSinceCreation/thresholds["created_since"], 1)
+		normalized := math.Log(monthsSinceCreation + 1) / math.Log(math.Max(monthsSinceCreation, thresholds["created_since"]) + 1)
 		createdSinceScore = weights["created_since"] * normalized
 		score += createdSinceScore
 	}
 
 	if data.UpdatedSince != nil {
 		monthsSinceUpdate := time.Since(*data.UpdatedSince).Hours() / (24 * 30)
-		normalized := math.Min(monthsSinceUpdate/thresholds["updated_since"], 1)
+		normalized := math.Log(monthsSinceUpdate + 1) / math.Log(math.Max(monthsSinceUpdate, thresholds["updated_since"]) + 1)
 		updatedSinceScore = weights["updated_since"] * normalized
 		score += updatedSinceScore
 	}
 
 	if data.ContributorCount != nil {
-		normalized := math.Min(float64(*data.ContributorCount)/thresholds["contributor_count"], 1)
+		normalized := math.Log(float64(*data.ContributorCount) + 1) / math.Log(math.Max(float64(*data.ContributorCount), thresholds["contributor_count"]) + 1)
 		contributorCountScore = weights["contributor_count"] * normalized
 		score += contributorCountScore
 	}
 
 	if data.CommitFrequency != nil {
-		normalized := math.Min(*data.CommitFrequency/thresholds["commit_frequency"], 1)
+		normalized := math.Log(float64(*data.CommitFrequency) + 1) / math.Log(math.Max(float64(*data.CommitFrequency), thresholds["commit_frequency"]) + 1)
 		commitFrequencyScore = weights["commit_frequency"] * normalized
 		score += commitFrequencyScore
 	}
 	if data.Org_Count != nil {
-		normalized := math.Min(float64(*data.Org_Count)/thresholds["org_count"], 1)
+		normalized := math.Log(float64(*data.Org_Count) + 1) / math.Log(math.Max(float64(*data.Org_Count), thresholds["org_count"]) + 1)
 		Org_CountScore = weights["org_count"] * normalized
 		score += Org_CountScore
 	}
 	if data.Pkg_Manager != nil {
 		pkgManager, ok := PackageManagerData[*data.Pkg_Manager]
 		if ok && data.DepsdevCount != nil {
-			normalized := math.Min(float64(*data.DepsdevCount)/float64(pkgManager)/thresholds["depsdev_ratios"], 1)
+			ratios := float64(*data.DepsdevCount)/float64(pkgManager)
+			normalized := math.Log(ratios + 1) / math.Log(math.Max(ratios, thresholds["depsdev_ratios"]) + 1)
 			score += weights["depsdev_ratios"] * normalized
 		}
 	}
 	if data.deps_distro != nil {
-		normalized := math.Min((*data.deps_distro*100)/thresholds["deps_distro"], 1)
+		normalized := math.Log(float64(*data.deps_distro) + 1) / math.Log(math.Max(float64(*data.deps_distro), thresholds["deps_distro"]) + 1))
 		score += weights["deps_distro"] * normalized
 	}
 

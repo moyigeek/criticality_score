@@ -437,27 +437,27 @@ func reverseDependencies(deps map[DepInfo][]DepInfo) map[DepInfo][]DepInfo {
 }
 
 func Nix() {
-    // 检查是否存在缓存文件
-    packages, err := LoadPackage()
-    if err != nil {
-        fmt.Printf("Error loading package list: %v\n", err)
-        return
-    }
+    // // 检查是否存在缓存文件
+    // packages, err := LoadPackage()
+    // if err != nil {
+    //     fmt.Printf("Error loading package list: %v\n", err)
+    //     return
+    // }
 
-    if packages == nil {
+    // if packages == nil {
         // 如果没有缓存，则获取新的包列表
-        packages, err = GetAllNixPackages()
+        packages, err := GetAllNixPackages()
         if err != nil {
             fmt.Printf("Error retrieving Nix packages: %v\n", err)
             return
         }
 
         // 存储到文件
-        if err := SavePackage(packages); err != nil {
-            fmt.Printf("Error saving package list: %v\n", err)
-            return
-        }
-    }
+        // if err := SavePackage(packages); err != nil {
+        //     fmt.Printf("Error saving package list: %v\n", err)
+        //     return
+        // }
+    // }
 
     countDependencies(packages)
 

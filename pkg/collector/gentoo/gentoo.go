@@ -199,7 +199,7 @@ func UpdateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
 			}
 		} else {
 			_, err := db.Exec("UPDATE gentoo_packages SET version = $1, depends_count = $2, description = $3, homepage = $4 WHERE package = $5",
-				pkgInfo.Version, pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage pkgName)
+				pkgInfo.Version, pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgName)
 			if err != nil {
 				return err
 			}

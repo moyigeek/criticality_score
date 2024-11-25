@@ -12,7 +12,7 @@ type TopPackageCount struct {
 	Deps          []string
 }
 
-func CalculatePackages(rows *sql.Rows, method string) error {
+func CalculatePackages(rows *sql.Rows, method string, count int) error {
 	relationships := make([][2]string, 0)
 
 	for rows.Next() {
@@ -109,15 +109,13 @@ func CalculatePackages(rows *sql.Rows, method string) error {
 		}
 	}
 
-	totalUniqueFromPackages := len(uniqueFromPackages)
-	fmt.Println("Total unique frompackages:", len(uniqueFromPackages))
-	threshold := int(float64(totalUniqueFromPackages) * 0.7)
+	threshold := int(float64(count) * 0.7)
 
 	currentCount := 0
 	requiredPackages := 0
 
 	for _, pkgCount := range topPackageCounts {
-		fmt.Println("Indirect count:", pkgCount.IndirectCount)
+		// fmt.Println("Indirect count:", pkgCount.IndirectCount)
 		deps := pkgCount.Deps
 
 		for _, dep := range deps {

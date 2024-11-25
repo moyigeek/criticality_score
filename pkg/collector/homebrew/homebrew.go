@@ -42,11 +42,11 @@ func CloneHomebrewRepo() (string, error) {
 	repoURL := "https://github.com/Homebrew/homebrew-core.git"
 	dir := "homebrew-core"
 
-	if _, err := os.Stat(dir); err == nil {
-		return dir, nil
-	} else if !os.IsNotExist(err) {
-		return "", fmt.Errorf("failed to check directory: %v", err)
-	}
+	// if _, err := os.Stat(dir); err == nil {
+	// 	return dir, nil
+	// } else if !os.IsNotExist(err) {
+	// 	return "", fmt.Errorf("failed to check directory: %v", err)
+	// }
 
 	cmd := exec.Command("git", "clone", repoURL, dir)
 	if err := cmd.Run(); err != nil {

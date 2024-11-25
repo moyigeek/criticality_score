@@ -275,10 +275,16 @@ func Debian(outputPath string) {
 			homepage = ""
 		}
 
+		version, ok := pkgInfo["Version"].(string)
+		if !ok {
+			version = ""
+		}
+
 		pkgInfoMap[pkgName] = PackageInfo{
 			DependsCount: depCount,
 			Description:  description,
 			Homepage:     homepage,
+			Version:      version,
 		}
 	}
 
@@ -322,6 +328,7 @@ type PackageInfo struct {
 	DependsCount int
 	Description  string
 	Homepage     string
+	Version		 string
 }
 
 func isUniqueViolation(err error) bool {

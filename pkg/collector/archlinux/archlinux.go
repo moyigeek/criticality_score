@@ -38,7 +38,7 @@ func updateOrInsertDatabase(pkgInfoMap map[string]DepInfo) error {
 			}
 		} else {
 			_, err := db.Exec("UPDATE arch_packages SET depends_count = $1, description = $2, homepage = $3, version = $4 WHERE package = $5",
-				pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgInfo.version, pkgName)
+				pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgInfo.Version, pkgName)
 			if err != nil {
 				return err
 			}
@@ -270,10 +270,10 @@ func contains(slice []string, item string) bool {
 func Archlinux(outputPath string) {
 	downloadDir := "./download"
 
-	if _, err := os.Stat(downloadDir); os.IsNotExist(err) {
-		fmt.Println("Download directory not found, starting download...")
+	// if _, err := os.Stat(downloadDir); os.IsNotExist(err) {
+	// 	fmt.Println("Download directory not found, starting download...")
 		DownloadFiles()
-	}
+	// }
 
 	fmt.Println("Getting package list...")
 	extractDir := "./extracted"
