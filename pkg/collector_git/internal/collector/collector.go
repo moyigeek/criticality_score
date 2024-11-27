@@ -4,9 +4,9 @@ import (
 	"fmt"
 
 	config "github.com/HUSTSecLab/criticality_score/pkg/collector_git/config"
+	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/logger"
 	parser "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser"
 	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/url"
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/utils"
 
 	gogit "github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/storage/memory"
@@ -14,44 +14,65 @@ import (
 
 func Collect(u *url.RepoURL) (*gogit.Repository, error) {
 	r, err := Clone(u)
+
 	if err == gogit.ErrRepositoryAlreadyExists {
 		r, err = Update(u)
+		if err != nil {
+			logger.Errorf("Failed to Update %s", u.URL)
+		}
+	} else {
+		logger.Errorf("Failed to Clone %s", u.URL)
 	}
+
 	return r, err
 }
 
 func BriefCollect(u *url.RepoURL) (*gogit.Repository, error) {
 	r, err := BriefClone(u)
-	/*
-		if err == gogit.ErrRepositoryAlreadyExists {
-			r, err = Update(u)
+
+	if err == gogit.ErrRepositoryAlreadyExists {
+		r, err = Update(u)
+		if err != nil {
+			logger.Errorf("Failed to Update %s", u.URL)
 		}
-	*/
+	} else {
+		logger.Errorf("Failed to Clone %s", u.URL)
+	}
+
 	return r, err
 }
 
 func EzCollect(u *url.RepoURL) (*gogit.Repository, error) {
 	r, err := MemClone(u)
+
+	if err != nil {
+		logger.Errorf("Failed to Clone %s", u.URL)
+	}
+
 	return r, err
 }
 
 func Clone(u *url.RepoURL) (*gogit.Repository, error) {
 	path := fmt.Sprintf("%s/%s%s", config.STORAGE_PATH, u.Resource, u.Pathname)
+
 	r, err := gogit.PlainClone(path, false, &gogit.CloneOptions{
 		URL: u.URL,
 		// Progress:     os.Stdout,
 		SingleBranch: false,
 	})
+
 	return r, err
 }
 
 func BriefClone(u *url.RepoURL) (*gogit.Repository, error) {
 	path := fmt.Sprintf("%s/%s%s", config.STORAGE_PATH, u.Resource, u.Pathname)
+
 	r, err := gogit.PlainClone(path, true, &gogit.CloneOptions{
 		URL: u.URL,
 		// Progress:     os.Stdout,
 		SingleBranch: false,
 	})
+
 	return r, err
 }
 
@@ -61,6 +82,7 @@ func MemClone(u *url.RepoURL) (*gogit.Repository, error) {
 		// Progress:     os.Stdout,
 		SingleBranch: false,
 	})
+
 	return r, err
 }
 
@@ -71,9 +93,17 @@ func Open(path string) (*gogit.Repository, error) {
 
 func Pull(r *gogit.Repository, path string) error {
 	wt, err := r.Worktree()
-	utils.CheckIfError(err)
+
+	if err != nil {
+		return err
+	}
+
 	remotes, err := r.Remotes()
-	utils.CheckIfError(err)
+
+	if err != nil {
+		return err
+	}
+
 	var remote, u string
 
 	if len(remotes) > 0 {
@@ -129,13 +159,20 @@ func Fetch(r *gogit.Repository, path string) error {
 
 func Update(u *url.RepoURL) (*gogit.Repository, error) {
 	r, err := Open(config.STORAGE_PATH + u.Pathname)
+
 	if err != nil {
+		logger.Errorf("Failed to open %s", u.Pathname)
 		return r, err
 	}
+
 	err = Pull(r, u.Pathname)
+
 	// err := fetch(r)
 	if err == gogit.NoErrAlreadyUpToDate {
 		err = nil
+	} else {
+		logger.Errorf("Failed to pull %s", u.Pathname)
 	}
+
 	return r, err
 }

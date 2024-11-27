@@ -1,7 +1,7 @@
 /*
  * @Author: 7erry
  * @Date: 2024-08-31 03:50:13
- * @LastEditTime: 2024-09-29 16:38:22
+ * @LastEditTime: 2024-11-27 21:37:32
  * @Description:
  */
 package git
@@ -14,7 +14,6 @@ import (
 
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/collector"
 	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/url"
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/utils"
 
 	"github.com/stretchr/testify/require"
 )
@@ -88,9 +87,13 @@ func TestGetMetrics(t *testing.T) {
 		t.Run(strconv.Itoa(n), func(t *testing.T) {
 			u := url.ParseURL(test.input)
 			r, err := collector.EzCollect(&u)
-			err = utils.HandleErr(err, u.URL)
-			utils.CheckIfError(err)
-			m := GetMetrics(r)
+			if err != nil {
+				t.Fatal(err)
+			}
+			m, err := GetMetrics(r)
+			if err != nil {
+				t.Fatal(err)
+			}
 			require.Equal(t, test.expected, *m)
 		})
 	}
@@ -111,9 +114,13 @@ func TestParseGitRepo(t *testing.T) {
 		t.Run(strconv.Itoa(n), func(t *testing.T) {
 			u := url.ParseURL(test.input)
 			r, err := collector.EzCollect(&u)
-			err = utils.HandleErr(err, u.URL)
-			utils.CheckIfError(err)
-			repo := ParseGitRepo(r)
+			if err != nil {
+				t.Fatal(err)
+			}
+			repo, err := ParseGitRepo(r)
+			if err != nil {
+				t.Fatal(err)
+			}
 			require.Equal(t, test.expected, *repo)
 		})
 	}
@@ -141,9 +148,13 @@ func TestGetLicense(t *testing.T) {
 		t.Run(strconv.Itoa(n), func(t *testing.T) {
 			u := url.ParseURL(test.input)
 			r, err := collector.EzCollect(&u)
-			err = utils.HandleErr(err, u.URL)
-			utils.CheckIfError(err)
-			l := GetLicense(r)
+			if err != nil {
+				t.Fatal(err)
+			}
+			l, err := GetLicense(r)
+			if err != nil {
+				t.Fatal(err)
+			}
 			fmt.Println(l)
 			require.Equal(t, test.expected, l)
 		})
@@ -172,9 +183,13 @@ func TestGetLanguages(t *testing.T) {
 		t.Run(strconv.Itoa(n), func(t *testing.T) {
 			u := url.ParseURL(test.input)
 			r, err := collector.EzCollect(&u)
-			err = utils.HandleErr(err, u.URL)
-			utils.CheckIfError(err)
-			l := GetLanguages(r)
+			if err != nil {
+				t.Fatal(err)
+			}
+			l, err := GetLanguages(r)
+			if err != nil {
+				t.Fatal(err)
+			}
 			require.Equal(t, test.expected, *l)
 		})
 	}
@@ -197,9 +212,13 @@ func TestGetEcosystem(t *testing.T) {
 		t.Run(strconv.Itoa(n), func(t *testing.T) {
 			u := url.ParseURL(test.input)
 			r, err := collector.EzCollect(&u)
-			err = utils.HandleErr(err, u.URL)
-			utils.CheckIfError(err)
-			eco := GetEcosystem(r)
+			if err != nil {
+				t.Fatal(err)
+			}
+			eco, err := GetEcosystem(r)
+			if err != nil {
+				t.Fatal(err)
+			}
 			require.Equal(t, test.expected, eco)
 		})
 	}
@@ -220,9 +239,13 @@ func TestGetURL(t *testing.T) {
 		t.Run(strconv.Itoa(n), func(t *testing.T) {
 			u := url.ParseURL(test.url)
 			r, err := collector.EzCollect(&u)
-			err = utils.HandleErr(err, u.URL)
-			utils.CheckIfError(err)
-			result := GetURL(r)
+			if err != nil {
+				t.Fatal(err)
+			}
+			result, err := GetURL(r)
+			if err != nil {
+				t.Fatal(err)
+			}
 			require.Equal(t, test.url, result)
 		})
 	}

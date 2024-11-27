@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-09-07 16:30:21
- * @LastEditTime: 2024-09-29 14:29:34
+ * @LastEditTime: 2024-11-27 20:22:56
  * @Description:
  */
 package psql
@@ -10,15 +10,15 @@ import (
 
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/config"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/io/database"
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/utils"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-func InitDBFromStorageConfig() *gorm.DB {
+func InitDBFromStorageConfig() (*gorm.DB, error) {
 	config := storage.GetGlobalConfig()
+
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
 		config.Host,
@@ -30,11 +30,11 @@ func InitDBFromStorageConfig() *gorm.DB {
 	)
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	utils.CheckIfError(err)
-	return db
+
+	return db, err
 }
 
-func InitDB() *gorm.DB {
+func InitDB() (*gorm.DB, error) {
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
 		config.PSQL_HOST,
@@ -46,13 +46,12 @@ func InitDB() *gorm.DB {
 	)
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	utils.CheckIfError(err)
-	return db
+
+	return db, err
 }
 
-func CreateTable(db *gorm.DB) {
-	err := db.AutoMigrate(&database.GitMetrics{})
-	utils.CheckIfError(err)
+func CreateTable(db *gorm.DB) error {
+	return db.AutoMigrate(&database.GitMetrics{})
 }
 
 func InsertTable(db *gorm.DB, metrics *database.GitMetrics) {
@@ -67,7 +66,7 @@ func InsertTable(db *gorm.DB, metrics *database.GitMetrics) {
 		Source:           metrics.Source,
 		URL:              metrics.URL,
 		Ecosystems:       metrics.Ecosystems,
-		NeedUpdate:	      metrics.NeedUpdate,
+		NeedUpdate:       metrics.NeedUpdate,
 	}).FirstOrCreate(metrics)
 }
 

@@ -1,6 +1,6 @@
 /*
  * @Date: 2023-11-11 22:44:26
- * @LastEditTime: 2024-09-29 17:37:23
+ * @LastEditTime: 2024-11-27 21:40:17
  * @Description:
  */
 package main
@@ -15,9 +15,9 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/collector"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/io/database"
 	psql "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/io/database/psql"
+	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/logger"
 	git "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/git"
 	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/url"
-	utils "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/utils"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/workerpool"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 )
@@ -32,7 +32,7 @@ func getUrls() ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	
+
 	var sqlStatement string
 
 	if *flagForceUpdateAll {
@@ -65,63 +65,53 @@ func main() {
 	}
 
 	var wg sync.WaitGroup
-	utils.Info("%d urls in total", len(urls))
+	logger.Infof("%d urls in total", len(urls))
 	wg.Add(len(urls))
-	// var output [database.BATCH_SIZE]database.Metrics
 
-	db := psql.InitDBFromStorageConfig()
+	db, err := psql.InitDBFromStorageConfig()
+	if err != nil {
+		logger.Fatal("Connecting Database Failed")
+	}
 	// psql.CreateTable(db)
 	workerpool.SetCap(int32(*flagJobsCount))
 
-	for _, input := range urls {
-		// for index , url := range urls {
+	for index, input := range urls {
+		if index%10 == 0 {
+			time.Sleep(5 * time.Second)
+		} else {
+			time.Sleep(2 * time.Second)
+		}
 
-		// time.Sleep(time.Second)
 		workerpool.Go(func() {
 			defer wg.Done()
-			// fmt.Printf("Collecting %s\n", url[0])
 			u := url.ParseURL(input)
-
 			r, err := collector.Collect(&u)
-			utils.HandleErr(err, u.URL)
 			if err != nil {
-				r = nil
+				logger.Panicf("Collecting %s Failed", u.URL)
 			}
-			if r == nil {
-				utils.Warning("[*] Cloning %s Failed at %s", input, time.Now().String())
-			} else {
-				utils.Info("[*] %s Cloned at %s", input, time.Now().String())
-				repo := git.ParseGitRepo(r)
-				if repo == nil {
-					utils.Warning("[!] %s Collect Failed", input)
-					return
-				}
-				// output[index] = database.NewMetrics(
-				output := database.NewGitMetrics(
-					repo.Name,
-					repo.Owner,
-					repo.Source,
-					repo.URL,
-					repo.Ecosystems,
-					repo.Metrics.CreatedSince,
-					repo.Metrics.UpdatedSince,
-					repo.Metrics.ContributorCount,
-					repo.Metrics.OrgCount,
-					repo.Metrics.CommitFrequency,
-					false,
-				)
+			logger.Infof("[*] %s Collected", input)
 
-				psql.InsertTable(db, &output)
+			repo, err := git.ParseGitRepo(r)
+			if err != nil {
+				logger.Panicf("Parsing %s Failed", input)
 			}
-			// utils.Info("[*] %s Collected at %s", url,time.Now().String())
+
+			output := database.NewGitMetrics(
+				repo.Name,
+				repo.Owner,
+				repo.Source,
+				repo.URL,
+				repo.Ecosystems,
+				repo.Metrics.CreatedSince,
+				repo.Metrics.UpdatedSince,
+				repo.Metrics.ContributorCount,
+				repo.Metrics.OrgCount,
+				repo.Metrics.CommitFrequency,
+				false,
+			)
+
+			psql.InsertTable(db, &output)
 		})
 	}
 	wg.Wait()
-	/*
-		 if err := psql.BatchInsertMetrics(db,output) ; err != nil {
-			 utils.Warning("Insert Failed")
-			 utils.CheckIfError(err)
-		 }
-		 utils.Info("%d metrics inserted!",len(output))
-	*/
 }

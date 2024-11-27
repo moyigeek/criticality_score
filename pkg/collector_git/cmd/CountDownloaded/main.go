@@ -1,6 +1,6 @@
 /*
  * @Date: 2023-11-11 22:44:26
- * @LastEditTime: 2024-09-29 17:17:04
+ * @LastEditTime: 2024-11-27 21:19:38
  * @Description: Just Count downloaded repos
  */
 package main
@@ -11,8 +11,8 @@ import (
 
 	config "github.com/HUSTSecLab/criticality_score/pkg/collector_git/config"
 	csv "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/io/file/csv"
+	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/logger"
 	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/url"
-	utils "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/utils"
 
 	"github.com/go-git/go-git/v5"
 	//"fmt"
@@ -25,15 +25,17 @@ func main() {
 	} else {
 		path = ""
 	}
-	inputs := csv.GetCSVInput(path)
+	inputs, err := csv.GetCSVInput(path)
+	if err != nil {
+		logger.Fatalf("Reading %s Failed", path)
+	}
 	var count int
 	for _, input := range inputs {
 		u := url.ParseURL(input[0])
 		path = config.STORAGE_PATH + u.Pathname
-		//fmt.Println(path)
 		_, err := git.PlainOpen(path)
 		if err == git.ErrRepositoryNotExists {
-			utils.Info("%s Not Collected", input[0])
+			logger.Infof("%s Not Collected", input[0])
 			continue
 		}
 		count++
