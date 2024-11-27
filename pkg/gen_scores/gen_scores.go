@@ -137,7 +137,7 @@ func CalculateScore(data ProjectData) float64 {
 		}
 	}
 	if data.deps_distro != nil {
-		normalized := math.Log(float64(*data.deps_distro) + 1) / math.Log(math.Max(float64(*data.deps_distro), thresholds["deps_distro"]) + 1))
+		normalized := math.Log(float64(*data.deps_distro) + 1) / math.Log(math.Max(float64(*data.deps_distro), thresholds["deps_distro"]) + 1)
 		score += weights["deps_distro"] * normalized
 	}
 
