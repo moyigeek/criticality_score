@@ -100,7 +100,7 @@ func main() {
 				repo.Name,
 				repo.Owner,
 				repo.Source,
-				repo.URL,
+				input,
 				repo.Ecosystems,
 				repo.Metrics.CreatedSince,
 				repo.Metrics.UpdatedSince,
