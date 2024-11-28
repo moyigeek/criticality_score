@@ -158,10 +158,11 @@ func Fetch(r *gogit.Repository, path string) error {
 */
 
 func Update(u *url.RepoURL) (*gogit.Repository, error) {
-	r, err := Open(config.STORAGE_PATH + u.Pathname)
+	path := fmt.Sprintf("%s/%s%s", config.STORAGE_PATH, u.Resource, u.Pathname)
+	r, err := Open(path)
 
 	if err != nil {
-		logger.Errorf("Failed to open %s", u.Pathname)
+		logger.Errorf("Failed to open %s, %v", path, err)
 		return r, err
 	}
 
