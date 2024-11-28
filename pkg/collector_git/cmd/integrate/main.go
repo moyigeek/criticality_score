@@ -13,8 +13,6 @@ import (
 
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/config"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/collector"
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/io/database"
-	psql "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/io/database/psql"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/logger"
 	git "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/git"
 	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/url"
@@ -68,7 +66,7 @@ func main() {
 	logger.Infof("%d urls in total", len(urls))
 	wg.Add(len(urls))
 
-	db, err := psql.InitDBFromStorageConfig()
+	db, err := storage.GetDatabaseConnection()
 	if err != nil {
 		logger.Fatal("Connecting Database Failed")
 	}
@@ -96,21 +94,41 @@ func main() {
 				logger.Panicf("Parsing %s Failed", input)
 			}
 
-			output := database.NewGitMetrics(
+			result, err := db.Exec(`UPDATE git_metrics SET
+				_name = $1,
+				_owner = $2,
+				_source = $3,
+				ecosystem = $4,
+				created_since = $5,
+				updated_since = $6,
+				contributor_count = $7,
+				commit_frequency = $8,
+				need_update = FALSE WHERE git_link = $9`,
 				repo.Name,
 				repo.Owner,
 				repo.Source,
-				input,
 				repo.Ecosystems,
 				repo.Metrics.CreatedSince,
 				repo.Metrics.UpdatedSince,
 				repo.Metrics.ContributorCount,
-				repo.Metrics.OrgCount,
 				repo.Metrics.CommitFrequency,
-				false,
-			)
+				input)
 
-			psql.InsertTable(db, &output)
+			if err != nil {
+				logger.Errorf("Update database for %s Failed: %v", input, err)
+				return
+			}
+
+			rowAffected, err := result.RowsAffected()
+
+			if err != nil {
+				logger.Errorf("Get RowsAffected for %s Failed: %v", input, err)
+				return
+			}
+
+			if rowAffected == 0 {
+				logger.Errorf("Update %s Failed", input)
+			}
 		})
 	}
 	wg.Wait()
