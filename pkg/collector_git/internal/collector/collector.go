@@ -166,13 +166,13 @@ func Update(u *url.RepoURL) (*gogit.Repository, error) {
 		return r, err
 	}
 
-	err = Pull(r, u.Pathname)
+	err = Pull(r, path)
 
 	// err := fetch(r)
 	if err == gogit.NoErrAlreadyUpToDate {
 		err = nil
 	} else {
-		logger.Errorf("Failed to pull %s", u.Pathname)
+		logger.Errorf("Failed to pull %s", path)
 	}
 
 	return r, err
