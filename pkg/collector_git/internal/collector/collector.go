@@ -18,10 +18,10 @@ func Collect(u *url.RepoURL) (*gogit.Repository, error) {
 	if err == gogit.ErrRepositoryAlreadyExists {
 		r, err = Update(u)
 		if err != nil {
-			logger.Errorf("Failed to Update %s", u.URL)
+			logger.Errorf("Failed to Update %s, %v", u.URL, err)
 		}
 	} else if err != nil {
-		logger.Errorf("Failed to Clone %s", u.URL)
+		logger.Errorf("Failed to Clone %s, %v", u.URL, err)
 	}
 
 	return r, err
@@ -91,7 +91,7 @@ func Open(path string) (*gogit.Repository, error) {
 	return r, err
 }
 
-func Pull(r *gogit.Repository, path string) error {
+func Pull(r *gogit.Repository, url string) error {
 	wt, err := r.Worktree()
 
 	if err != nil {
@@ -119,7 +119,7 @@ func Pull(r *gogit.Repository, path string) error {
 	}
 
 	if u == "" {
-		u = "https://" + parser.DEFAULT_SOURCE + path
+		u = url
 	}
 
 	err = wt.Pull(&gogit.PullOptions{
@@ -159,6 +159,7 @@ func Fetch(r *gogit.Repository, path string) error {
 
 func Update(u *url.RepoURL) (*gogit.Repository, error) {
 	path := fmt.Sprintf("%s/%s%s", config.STORAGE_PATH, u.Resource, u.Pathname)
+	url := u.URL
 	r, err := Open(path)
 
 	if err != nil {
@@ -166,13 +167,13 @@ func Update(u *url.RepoURL) (*gogit.Repository, error) {
 		return r, err
 	}
 
-	err = Pull(r, path)
+	err = Pull(r, url)
 
 	// err := fetch(r)
 	if err == gogit.NoErrAlreadyUpToDate {
 		err = nil
 	} else {
-		logger.Errorf("Failed to pull %s", path)
+		logger.Errorf("Failed to pull %s, %v", path, err)
 	}
 
 	return r, err
