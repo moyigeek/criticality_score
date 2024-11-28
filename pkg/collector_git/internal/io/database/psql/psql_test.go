@@ -1,3 +1,9 @@
+/*
+ * @Author: 7erry
+ * @Date: 2024-10-18 20:26:31
+ * @LastEditTime: 2024-11-27 21:24:10
+ * @Description:
+ */
 package psql
 
 import (
@@ -8,7 +14,6 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/io/database"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/git"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/url"
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/utils"
 )
 
 func TestInsertTable(t *testing.T) {
@@ -23,9 +28,17 @@ func TestInsertTable(t *testing.T) {
 		t.Run(strconv.Itoa(n), func(t *testing.T) {
 			u := url.ParseURL(test.input)
 			r, err := collector.EzCollect(&u)
-			utils.CheckIfError(err)
-			repo := git.ParseGitRepo(r)
-			db := InitDB()
+			if err != nil {
+				panic(err)
+			}
+			repo, err := git.ParseGitRepo(r)
+			if err != nil {
+				t.Fatal(err)
+			}
+			db, err := InitDB()
+			if err != nil {
+				panic(err)
+			}
 			CreateTable(db)
 			InsertTable(db, &database.GitMetrics{
 				Name:             repo.Name,

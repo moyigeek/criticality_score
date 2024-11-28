@@ -20,7 +20,7 @@ FROM ubuntu:24.04
 
 RUN apt-get update && apt-get install -y ca-certificates && \
     curl -sSfL http://mirrors.hust.edu.cn/get | sh -s -- deploy ubuntu && \
-    apt-get update && apt-get install -y git cron make
+    apt-get update && apt-get install -y git cron make curl xz-utils build-essential
 
 ENV TZ=Asia/Shanghai
 ENV PATH=/app:$PATH
@@ -45,6 +45,10 @@ RUN echo '#!/bin/bash' > /update.sh && \
 
 # install nix package manager
 RUN bash -c 'sh <(curl -L https://nixos.org/nix/install) --daemon'
+
+# add nix to the path
+ENV NIX_PROFILES="/nix/var/nix/profiles/default /root/.nix-profile"
+ENV PATH=/root/.nix-profile/bin:$PATH
 
 COPY --from=builder /app /app
 

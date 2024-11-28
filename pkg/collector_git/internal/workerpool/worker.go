@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-08-31 03:34:38
- * @LastEditTime: 2024-09-27 22:02:54
+ * @LastEditTime: 2024-11-27 19:13:35
  * @Description:
  */
 package workerpool
@@ -11,7 +11,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/logger"
+	"github.com/sirupsen/logrus"
 )
 
 var workerPool sync.Pool
@@ -53,7 +53,7 @@ func (w *worker) run() {
 							w.pool.panicHandler(t.ctx, r)
 						} else {
 							msg := fmt.Sprintf("WORKERPOOL: panic in pool: %s: %v: %s", w.pool.name, r, debug.Stack())
-							logger.CtxErrorf(t.ctx, msg)
+							logrus.Error(t.ctx, msg)
 						}
 					}
 				}()

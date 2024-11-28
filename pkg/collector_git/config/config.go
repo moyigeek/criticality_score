@@ -1,12 +1,17 @@
 /*
  * @Author: 7erry
  * @Date: 2024-08-31 03:44:46
- * @LastEditTime: 2024-09-29 17:20:51
+ * @LastEditTime: 2024-11-27 19:02:05
  * @Description:
  */
 package config
 
+import "github.com/sirupsen/logrus"
+
 const (
+	// Log Config
+	LOG_LEVEL = logrus.InfoLevel
+
 	// I/O Config
 	INPUT_CSV_PATH  string = "./input/input.csv"
 	OUTPUT_CSV_PATH string = "./output/output.csv"

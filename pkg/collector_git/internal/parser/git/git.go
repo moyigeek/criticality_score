@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/logger"
 	parser "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser"
 	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/url"
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/utils"
 
 	"github.com/go-git/go-git/v5"
 	gitconfig "github.com/go-git/go-git/v5/config"
@@ -41,17 +41,6 @@ func NewRepo() Repo {
 	}
 }
 
-func (r *Repo) Show() {
-	utils.Info("Repo Name: %s", r.Name)
-	utils.Info("Repo Owner: %s", r.Owner)
-	utils.Info("Repo Source: %s", r.Source)
-	utils.Info("Repo URL: %s", r.URL)
-	utils.Info("Repo License: %s", r.License)
-	utils.Info("Repo Languages: %s", r.Languages)
-	utils.Info("Repo Ecosystems: %s", r.Ecosystems)
-	r.Metrics.Show()
-}
-
 type RepoMetrics struct {
 	CreatedSince     time.Time
 	UpdatedSince     time.Time
@@ -70,147 +59,222 @@ func NewRepoMetrics() RepoMetrics {
 	}
 }
 
-func (rm *RepoMetrics) Show() {
-	utils.Info("Created Since: %s", rm.CreatedSince)
-	utils.Info("Updated Since: %s", rm.UpdatedSince)
-	utils.Info("Contributors Count: %d", rm.ContributorCount)
-	utils.Info("Orgs Count: %d", rm.OrgCount)
-	utils.Info("Commit Frequency: %f", rm.CommitFrequency)
-}
-
-func GetBlobs(r *git.Repository) *[]*object.Blob {
+func GetBlobs(r *git.Repository) (*[]*object.Blob, error) {
 	bIter, err := r.BlobObjects()
-	utils.CheckIfError(err)
-	var blobs []*object.Blob
+
+	if err != nil {
+		return nil, err
+	}
+
+	blobs := make([]*object.Blob, 0)
+
 	err = bIter.ForEach(func(b *object.Blob) error {
 		// fmt.Println(b)
 		blobs = append(blobs, b)
 		return nil
 	})
-	utils.CheckIfError(err)
-	return &blobs
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &blobs, nil
 }
 
-func GetBranches(r *git.Repository) *[]*plumbing.Reference {
+func GetBranches(r *git.Repository) (*[]*plumbing.Reference, error) {
 	rIter, err := r.Branches()
-	utils.CheckIfError(err)
-	var refs []*plumbing.Reference
+
+	if err != nil {
+		return nil, err
+	}
+
+	refs := make([]*plumbing.Reference, 0)
 	err = rIter.ForEach(func(r *plumbing.Reference) error {
 		// fmt.Println(r)
 		refs = append(refs, r)
 		return nil
 	})
-	utils.CheckIfError(err)
-	return &refs
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &refs, nil
 }
 
-func GetCommits(r *git.Repository) *[]*object.Commit {
+func GetCommits(r *git.Repository) (*[]*object.Commit, error) {
 	cIter, err := r.CommitObjects()
-	utils.CheckIfError(err)
-	var commits []*object.Commit
+
+	if err != nil {
+		return nil, err
+	}
+
+	commits := make([]*object.Commit, 0)
 	err = cIter.ForEach(func(c *object.Commit) error {
 		// fmt.Println(c)
 		commits = append(commits, c)
 		return nil
 	})
-	utils.CheckIfError(err)
-	return &commits
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &commits, nil
 }
 
-func GetConfig(r *git.Repository) *gitconfig.Config {
+func GetConfig(r *git.Repository) (*gitconfig.Config, error) {
 	c, err := r.Config()
-	utils.CheckIfError(err)
-	return c
+	if err != nil {
+		return nil, err
+	}
+	return c, nil
 }
 
-func GetObjects(r *git.Repository) *[]*object.Object {
+func GetObjects(r *git.Repository) (*[]*object.Object, error) {
 	oIter, err := r.Objects()
-	utils.CheckIfError(err)
-	var objs []*object.Object
+
+	if err != nil {
+		return nil, err
+	}
+
+	objs := make([]*object.Object, 0)
 	err = oIter.ForEach(func(o object.Object) error {
 		// fmt.Println(o)
 		objs = append(objs, &o)
 		return nil
 	})
-	utils.CheckIfError(err)
-	return &objs
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &objs, nil
 }
 
-func GetReferences(r *git.Repository) *[]*plumbing.Reference {
+func GetReferences(r *git.Repository) (*[]*plumbing.Reference, error) {
 	rIter, err := r.References()
-	utils.CheckIfError(err)
-	var refs []*plumbing.Reference
+
+	if err != nil {
+		return nil, err
+	}
+
+	refs := make([]*plumbing.Reference, 0)
 	err = rIter.ForEach(func(r *plumbing.Reference) error {
 		// fmt.Println(r)
 		refs = append(refs, r)
 		return nil
 	})
-	utils.CheckIfError(err)
-	return &refs
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &refs, nil
 }
 
-func GetRemotes(r *git.Repository) *[]*git.Remote {
+func GetRemotes(r *git.Repository) (*[]*git.Remote, error) {
 	remotes, err := r.Remotes()
-	utils.CheckIfError(err)
-	return &remotes
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &remotes, nil
 }
 
-func GetTags(r *git.Repository) *[]*object.Tag {
+func GetTags(r *git.Repository) (*[]*object.Tag, error) {
 	tIter, err := r.TagObjects()
-	utils.CheckIfError(err)
-	var tags []*object.Tag
+
+	if err != nil {
+		return nil, err
+	}
+
+	tags := make([]*object.Tag, 0)
 	err = tIter.ForEach(func(t *object.Tag) error {
 		// fmt.Println(t)
 		tags = append(tags, t)
 		return nil
 	})
-	utils.CheckIfError(err)
-	return &tags
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &tags, nil
 }
 
-func GetTagRefs(r *git.Repository) *[]*plumbing.Reference {
+func GetTagRefs(r *git.Repository) (*[]*plumbing.Reference, error) {
 	rIter, err := r.Tags()
-	utils.CheckIfError(err)
-	var refs []*plumbing.Reference
+
+	if err != nil {
+		return nil, err
+	}
+
+	refs := make([]*plumbing.Reference, 0)
 	err = rIter.ForEach(func(r *plumbing.Reference) error {
 		// fmt.Println(r)
 		refs = append(refs, r)
 		return nil
 	})
-	utils.CheckIfError(err)
-	return &refs
+
+	if err != nil {
+		return nil, err
+	}
+
+	return &refs, nil
 }
 
-func GetTrees(r *git.Repository) *[]*object.Tree {
+func GetTrees(r *git.Repository) (*[]*object.Tree, error) {
 	tIter, err := r.TreeObjects()
-	utils.CheckIfError(err)
-	var trees []*object.Tree
+
+	if err != nil {
+		return nil, err
+	}
+
+	trees := make([]*object.Tree, 0)
 	err = tIter.ForEach(func(t *object.Tree) error {
 		// fmt.Println(t)
 		trees = append(trees, t)
 		return nil
 	})
-	utils.CheckIfError(err)
-	return &trees
-}
 
-func GetWorkTree(r *git.Repository) *git.Worktree {
-	wt, err := r.Worktree()
-	utils.CheckIfError(err)
-	return wt
-}
-
-func GetURL(r *git.Repository) string {
-	//? Git Fetch 和 Git Push 的 Remote URL 大部分情况下应该是相同的
-	//? 但 Git Fetch 的 Remote URL 会被优先考虑作为这一仓库的 URL
-	remotes := GetRemotes(r)
-	if len(*remotes) == 0 {
-		return ""
+	if err != nil {
+		return nil, err
 	}
+
+	return &trees, nil
+}
+
+func GetWorkTree(r *git.Repository) (*git.Worktree, error) {
+	wt, err := r.Worktree()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return wt, nil
+}
+
+func GetURL(r *git.Repository) (string, error) {
+	//? In most cases, the Remote URLs of Git Fetch and Git Push are the same, but we take the former one
+	remotes, err := GetRemotes(r)
+
+	if err != nil {
+		logger.Error(err)
+		return "", err
+	}
+
+	if len(*remotes) == 0 {
+		return "", nil
+	}
+
 	var u string
+
 	if len((*remotes)[0].Config().URLs) > 0 {
 		u = (*remotes)[0].Config().URLs[0]
 	}
+
 	for _, remote := range *remotes {
 		if remote.Config().Name == parser.DEFAULT_REMOTE_NAME {
 			if len(remote.Config().URLs) > 0 {
@@ -219,22 +283,32 @@ func GetURL(r *git.Repository) string {
 			}
 		}
 	}
-	return u
+
+	return u, nil
 }
 
-func GetLicense(r *git.Repository) string {
+func GetLicense(r *git.Repository) (string, error) {
 
-	// ToDO 尝试实现为 https://github.com/licensee/licensee
+	// ToDO https://github.com/licensee/licensee
 
 	//* Maybe multiple licenses
 	//* l := []string{}
 	l := parser.UNKNOWN_LICENSE
+
 	ref, err := r.Head()
-	utils.CheckIfError(err)
+	if err != nil {
+		return "", err
+	}
+
 	commit, err := r.CommitObject(ref.Hash())
-	utils.CheckIfError(err)
+	if err != nil {
+		return "", err
+	}
+
 	tree, err := commit.Tree()
-	utils.CheckIfError(err)
+	if err != nil {
+		return "", err
+	}
 
 	f, err := tree.File("LICENSE")
 	if err != nil {
@@ -245,7 +319,9 @@ func GetLicense(r *git.Repository) string {
 	}
 	if err == nil {
 		content, err := f.Lines()
-		utils.CheckIfError(err)
+		if err != nil {
+			return "", err
+		}
 
 		for k, v := range parser.LICENSE_KEYWORD {
 			if strings.Contains(content[0], k) {
@@ -254,19 +330,28 @@ func GetLicense(r *git.Repository) string {
 			}
 		}
 	}
-	return l
+	return l, nil
 }
 
 //! GetLanguages and GetEcosystem could be merged into one function if needed
 
-func GetLanguages(r *git.Repository) *[]string {
-	l := map[string]int{}
+func GetLanguages(r *git.Repository) (*[]string, error) {
+	l := make(map[string]int, 0)
 	ref, err := r.Head()
-	utils.CheckIfError(err)
+	if err != nil {
+		return nil, err
+	}
+
 	commit, err := r.CommitObject(ref.Hash())
-	utils.CheckIfError(err)
+	if err != nil {
+		return nil, err
+	}
+
 	tree, err := commit.Tree()
-	utils.CheckIfError(err)
+	if err != nil {
+		return nil, err
+	}
+
 	fIter := tree.Files()
 	err = fIter.ForEach(func(f *object.File) error {
 		filename := filepath.Base(f.Name)
@@ -282,25 +367,36 @@ func GetLanguages(r *git.Repository) *[]string {
 		}
 		return nil
 	})
-	utils.CheckIfError(err)
-	var languages []string
+	if err != nil {
+		return nil, err
+	}
+
+	languages := make([]string, 0)
 	for k, v := range l {
 		if v >= parser.LANGUAGE_THRESHOLD {
 			languages = append(languages, k)
 		}
 	}
-	return &languages
+
+	return &languages, nil
 }
 
-func GetEcosystem(r *git.Repository) string {
-	// eco := []string{}
+func GetEcosystem(r *git.Repository) (string, error) {
 	eco := ""
 	ref, err := r.Head()
-	utils.CheckIfError(err)
+	if err != nil {
+		return "", err
+	}
+
 	commit, err := r.CommitObject(ref.Hash())
-	utils.CheckIfError(err)
+	if err != nil {
+		return "", err
+	}
+
 	tree, err := commit.Tree()
-	utils.CheckIfError(err)
+	if err != nil {
+		return "", err
+	}
 
 	//* emap := map[string]int{}
 	fIter := tree.Files()
@@ -313,17 +409,14 @@ func GetEcosystem(r *git.Repository) string {
 		}
 		return nil
 	})
-	utils.CheckIfError(err)
-	/*
-		for k := range emap {
-			eco = append(eco, k)
-		}
-	*/
-	return eco
+
+	if err != nil {
+		return "", err
+	}
+	return eco, nil
 }
 
-func GetMetrics(r *git.Repository) *RepoMetrics {
-	//* 不直接使用 GetCommits 的目的在于 Log 可选择起止时间
+func GetMetrics(r *git.Repository) (*RepoMetrics, error) {
 	cIter, err := r.Log(&git.LogOptions{
 		//* From:  ref.Hash(),
 		All:   true,
@@ -331,21 +424,19 @@ func GetMetrics(r *git.Repository) *RepoMetrics {
 		Until: &parser.END_TIME,
 		Order: git.LogOrderCommitterTime,
 	})
-	utils.CheckIfError(err)
+	if err != nil {
+		return nil, err
+	}
 
 	metrics := NewRepoMetrics()
-	contributors := map[string]int{}
-	orgs := map[string]int{}
+	contributors := make(map[string]int, 0)
+	orgs := make(map[string]int, 0)
 	var commit_count float64 = 0
 
 	latest_commit, err := cIter.Next()
-	/*
-		如果下载的仓库不完整就会导致迭代器为空的错误
-			if err == io.EOF {
-				return nil
-			}
-	*/
-	utils.CheckIfError(err)
+	if err != nil {
+		return nil, err
+	}
 
 	author := fmt.Sprintf("%s(%s)", latest_commit.Author.Name, latest_commit.Author.Email)
 	e := strings.Split(latest_commit.Author.Email, "@")
@@ -381,21 +472,28 @@ func GetMetrics(r *git.Repository) *RepoMetrics {
 
 		return nil
 	})
-	utils.CheckIfError(err)
+	if err != nil {
+		return nil, err
+	}
 
 	metrics.CreatedSince = created_since
 	metrics.ContributorCount = len(contributors)
 	metrics.OrgCount = len(orgs)
 	metrics.CommitFrequency = commit_count / 52
 
-	return &metrics
+	return &metrics, nil
 }
 
-func ParseGitRepo(r *git.Repository) *Repo {
+func ParseGitRepo(r *git.Repository) (*Repo, error) {
 
 	repo := NewRepo()
 
-	u := GetURL(r)
+	u, err := GetURL(r)
+	if err != nil {
+		logger.Error(err)
+		return nil, err
+	}
+
 	var name, owner, source string
 	if u == "" {
 		source = parser.UNKNOWN_SOURCE
@@ -417,7 +515,7 @@ func ParseGitRepo(r *git.Repository) *Repo {
 	license := ""
 	//license = GetLicense(r)
 
-	languages := &[]string{}
+	languages := make([]string, 0)
 	/*
 		languages := GetLanguages(r)
 		if languages == nil {
@@ -425,9 +523,17 @@ func ParseGitRepo(r *git.Repository) *Repo {
 		}
 	*/
 
-	eco := GetEcosystem(r)
+	eco, err := GetEcosystem(r)
+	if err != nil {
+		logger.Error(err)
+		return nil, err
+	}
 
-	metrics := GetMetrics(r)
+	metrics, err := GetMetrics(r)
+	if err != nil {
+		logger.Error(err)
+		return nil, err
+	}
 	if metrics == nil {
 		m := NewRepoMetrics()
 		metrics = &m
@@ -438,9 +544,9 @@ func ParseGitRepo(r *git.Repository) *Repo {
 	repo.Source = source
 	repo.URL = u
 	repo.License = license
-	repo.Languages = *languages
+	repo.Languages = languages
 	repo.Ecosystems = eco
 	repo.Metrics = metrics
 
-	return &repo
+	return &repo, nil
 }

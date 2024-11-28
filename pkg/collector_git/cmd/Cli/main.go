@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-09-06 21:09:14
- * @LastEditTime: 2024-09-29 17:17:33
+ * @LastEditTime: 2024-11-27 21:18:04
  * @Description: The Cli for collector
  */
 package main
@@ -12,9 +12,9 @@ import (
 	"sync"
 
 	collector "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/collector"
+	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/logger"
 	git "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/git"
 	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/url"
-	utils "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/utils"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/workerpool"
 
 	gogit "github.com/go-git/go-git/v5"
@@ -34,7 +34,7 @@ func main() {
 			var wg sync.WaitGroup
 			wg.Add(len(paths))
 
-			output := [][]string{}
+			output := make([][]string, 0)
 
 			for _, path := range paths {
 				workerpool.Go(func() {
@@ -45,20 +45,19 @@ func main() {
 					if strings.Contains(path, "://") {
 						u := url.ParseURL(path)
 						r, err = collector.EzCollect(&u)
-						err = utils.HandleErr(err, u.URL)
 						if err != nil {
-							return
+							logger.Panicf("Collecting %s Failed", u.URL)
 						}
 					} else {
 						r, err = collector.Open(path)
-						err = utils.HandleErr(err, path)
 						if err != nil {
-							return
+							logger.Panicf("Opening %s Failed", path)
 						}
 					}
-					repo := git.ParseGitRepo(r)
-					//repo.Show()
-
+					repo, err := git.ParseGitRepo(r)
+					if err != nil {
+						logger.Panicf("Parsing %s Failed", path)
+					}
 					output = append(output, []string{
 						repo.URL,
 						repo.Name,
@@ -73,7 +72,7 @@ func main() {
 						fmt.Sprintf("%d", repo.Metrics.OrgCount),
 						fmt.Sprintf("%f", repo.Metrics.CommitFrequency),
 					})
-					utils.Info("%s Collected", repo.Name)
+					logger.Infof("%s Collected", repo.Name)
 				})
 			}
 
@@ -95,5 +94,7 @@ func main() {
 			return nil
 		}}
 	err := app.Run(os.Args)
-	utils.CheckIfError(err)
+	if err != nil {
+		logger.Fatal(err)
+	}
 }

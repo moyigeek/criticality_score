@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-09-07 19:55:19
- * @LastEditTime: 2024-09-27 22:00:17
+ * @LastEditTime: 2024-11-27 20:28:18
  * @Description:
  */
 package csv
@@ -10,33 +10,42 @@ import (
 	"os"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/config"
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/utils"
 )
 
-func GetCSVInput(path string) [][]string {
+func GetCSVInput(path string) ([][]string, error) {
 	if path == "" {
 		path = config.INPUT_CSV_PATH
 	}
+
 	file, err := os.Open(path)
-	utils.CheckIfError(err)
+
+	if err != nil {
+		return nil, err
+	}
+
 	defer file.Close()
-	// for _, item := range record {
-	// 	fmt.Println(item)
-	//}
 	reader := csv.NewReader(file)
 	reader.FieldsPerRecord = -1
 	urls, err := reader.ReadAll()
-	utils.CheckIfError(err)
-	return urls
+
+	if err != nil {
+		return nil, err
+	}
+
+	return urls, nil
 }
 
-func SaveToCSV(content [][]string) {
+func SaveToCSV(content [][]string) error {
 	file, err := os.Create(config.OUTPUT_CSV_PATH)
-	utils.CheckIfError(err)
+	if err != nil {
+		return err
+	}
 	defer file.Close()
 
 	writer := csv.NewWriter(file)
 	defer writer.Flush()
 
 	writer.WriteAll(content)
+
+	return nil
 }
