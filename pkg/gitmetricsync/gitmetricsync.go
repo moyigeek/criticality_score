@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"regexp"
 	"strings"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
@@ -38,7 +37,6 @@ func Run() {
 
 func fetchGitLinks(db *sql.DB, from int) map[string]bool {
 	gitLinks := make(map[string]bool)
-	githubRegex := regexp.MustCompile(`https?://github\.com/[^\s/]+/[^\s/]+`)
 	for _, table := range unionTables[from] {
 		rows, err := db.Query(fmt.Sprintf("SELECT git_link FROM %s", table))
 		if err != nil {
@@ -51,7 +49,7 @@ func fetchGitLinks(db *sql.DB, from int) map[string]bool {
 			if err := rows.Scan(&gitLink); err != nil {
 				log.Fatal(err)
 			}
-			if gitLink.Valid && githubRegex.MatchString(gitLink.String) {
+			if gitLink.Valid{
 				gitLinks[gitLink.String] = true
 			}
 		}
@@ -60,22 +58,11 @@ func fetchGitLinks(db *sql.DB, from int) map[string]bool {
 }
 
 func syncGitMetrics(db *sql.DB, gitLinks map[string]bool, from int) {
-	githubRegex := regexp.MustCompile(`https?://github\.com/([^/\s]+/[^/\s]+)`)
-
-	// 规范化输入链接：保留原始大小写但根据情况添加或不添加 .git，存储用于插入；用小写化链接用于比较
-	normalizedLinks := make(map[string]string) // key 为小写化的链接，用于比较；值为原始大小写的链接
+	normalizedLinks := make(map[string]string)
 	for link := range gitLinks {
-		if matches := githubRegex.FindStringSubmatch(link); len(matches) > 1 {
-			originalLink := matches[0] // 使用捕获到的完整链接
-			if !strings.HasSuffix(originalLink, ".git") {
-				originalLink += ".git"
-			}
-			lowercaseLink := strings.ToLower(originalLink)
-			normalizedLinks[lowercaseLink] = originalLink
-		}
+			lowercaseLink := strings.ToLower(link)
+			normalizedLinks[lowercaseLink] = link
 	}
-
-	// 获取数据库中所有 git_links 的当前状态，用于比较（小写化比较）
 	dbLinks := make(map[string]string)
 	query := `SELECT git_link FROM git_metrics WHERE "from" = $1`
 	rows, err := db.Query(query, from)
@@ -92,9 +79,8 @@ func syncGitMetrics(db *sql.DB, gitLinks map[string]bool, from int) {
 		dbLinks[strings.ToLower(gitLink)] = gitLink
 	}
 
-	// 检查哪些需要删除
-	for dbLinkLower, dbLinkOriginal := range dbLinks {
-		if _, exists := normalizedLinks[dbLinkLower]; !exists {
+	for dbLinkLower, dbLinkOriginal := range normalizedLinks {
+		if _, exists := gitLinks[dbLinkLower]; !exists {
 			_, err := db.Exec(`DELETE FROM git_metrics WHERE LOWER(git_link) = $1 AND "from" = $2`, dbLinkLower, from)
 			if err != nil {
 				log.Printf("Failed to delete git_link %s: %v", dbLinkOriginal, err)
@@ -102,8 +88,7 @@ func syncGitMetrics(db *sql.DB, gitLinks map[string]bool, from int) {
 		}
 	}
 
-	// 检查哪些需要添加
-	for normLinkLower, normLinkOriginal := range normalizedLinks {
+	for normLinkLower, normLinkOriginal := range dbLinks {
 		if _, exists := dbLinks[normLinkLower]; !exists {
 			parts := strings.Split(normLinkOriginal, "/")
 			if len(parts) >= 5 {
@@ -119,7 +104,7 @@ func syncGitMetrics(db *sql.DB, gitLinks map[string]bool, from int) {
 func getKeys(m map[string]bool) []string {
 	keys := make([]string, 0, len(m))
 	for k := range m {
-		if k != "" { // 确保不处理空字符串
+		if k != "" {
 			keys = append(keys, k)
 		}
 	}
