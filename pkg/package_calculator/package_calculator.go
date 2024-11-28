@@ -62,7 +62,7 @@ func CalculatePackages(rows *sql.Rows, method string, count int) error {
 		visited[pkg] = struct{}{}
 		level := 0
 
-		for queue.Len() > 0 && level < 1 {
+		for queue.Len() > 0 && level < 2 {
 			levelSize := queue.Len()
 			for i := 0; i < levelSize; i++ {
 				element := queue.Front()
