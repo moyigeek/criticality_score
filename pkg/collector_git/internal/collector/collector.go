@@ -20,7 +20,7 @@ func Collect(u *url.RepoURL) (*gogit.Repository, error) {
 		if err != nil {
 			logger.Errorf("Failed to Update %s", u.URL)
 		}
-	} else {
+	} else if err != nil {
 		logger.Errorf("Failed to Clone %s", u.URL)
 	}
 
