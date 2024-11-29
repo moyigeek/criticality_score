@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-09-06 21:09:14
- * @LastEditTime: 2024-11-27 21:18:04
+ * @LastEditTime: 2024-11-29 17:27:44
  * @Description: The Cli for collector
  */
 package main
@@ -15,8 +15,7 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/logger"
 	git "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/git"
 	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/url"
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/workerpool"
-
+	"github.com/bytedance/gopkg/util/gopool"
 	gogit "github.com/go-git/go-git/v5"
 	"github.com/urfave/cli/v2"
 )
@@ -37,7 +36,7 @@ func main() {
 			output := make([][]string, 0)
 
 			for _, path := range paths {
-				workerpool.Go(func() {
+				gopool.Go(func() {
 					defer wg.Done()
 					fmt.Printf("Collecting %s\n", path)
 					r := &gogit.Repository{}

@@ -1,6 +1,6 @@
 /*
  * @Date: 2023-11-11 22:44:26
- * @LastEditTime: 2024-11-27 21:40:17
+ * @LastEditTime: 2024-11-29 17:26:22
  * @Description:
  */
 package main
@@ -16,8 +16,8 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/logger"
 	git "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/git"
 	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/url"
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/workerpool"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
+	"github.com/bytedance/gopkg/util/gopool"
 )
 
 var flagConfigPath = flag.String("config", "config.json", "path to the config file")
@@ -71,7 +71,7 @@ func main() {
 		logger.Fatal("Connecting Database Failed")
 	}
 	// psql.CreateTable(db)
-	workerpool.SetCap(int32(*flagJobsCount))
+	gopool.SetCap(int32(*flagJobsCount))
 
 	for index, input := range urls {
 		if index%10 == 0 {
@@ -80,7 +80,7 @@ func main() {
 			time.Sleep(2 * time.Second)
 		}
 
-		workerpool.Go(func() {
+		gopool.Go(func() {
 			defer wg.Done()
 			u := url.ParseURL(input)
 			r, err := collector.Collect(&u)

@@ -1,6 +1,6 @@
 /*
  * @Date: 2023-11-11 22:44:26
- * @LastEditTime: 2024-11-27 21:16:28
+ * @LastEditTime: 2024-11-29 17:26:01
  * @Description: Collect Local Repo
  */
 package main
@@ -17,7 +17,7 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/logger"
 	git "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/git"
 	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/url"
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/workerpool"
+	"github.com/bytedance/gopkg/util/gopool"
 
 	//"fmt"
 	"sync"
@@ -52,7 +52,7 @@ func main() {
 			time.Sleep(2 * time.Second)
 		}
 
-		workerpool.Go(func() {
+		gopool.Go(func() {
 			defer wg.Done()
 			u := url.ParseURL(input[0])
 			r, err := collector.Collect(&u)

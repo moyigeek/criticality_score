@@ -442,7 +442,7 @@ func GetMetrics(r *git.Repository) (*RepoMetrics, error) {
 	e := strings.Split(latest_commit.Author.Email, "@")
 	org := e[len(e)-1]
 
-	metrics.UpdatedSince = latest_commit.Author.When
+	metrics.UpdatedSince = latest_commit.Committer.When
 	contributors[author]++
 	orgs[org]++
 
@@ -451,14 +451,17 @@ func GetMetrics(r *git.Repository) (*RepoMetrics, error) {
 	}
 
 	flag := true
-	created_since := time.Time{}
+	created_since := latest_commit.Committer.When
 
 	err = cIter.ForEach(func(c *object.Commit) error {
 		author := fmt.Sprintf("%s(%s)", c.Author.Name, c.Author.Email)
 		e = strings.Split(c.Author.Email, "@")
 		org := e[len(e)-1]
 
-		created_since = c.Author.When
+		//! It made sense that this if statement is not necessary but sometimes there are errors
+		if created_since.After(c.Committer.When) {
+			created_since = c.Committer.When
+		}
 		contributors[author]++
 		orgs[org]++
 
