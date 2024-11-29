@@ -49,28 +49,6 @@ Each metric is assigned a specific weight and a maximum threshold value used for
 3. **Calculate Score**: Uses the `CalculateScore` function to compute the criticality score using retrieved and calculated metrics.
 4. **Update Database**: `UpdateDepsdistro` and `UpdateScore` functions update the calculated dependency ratios and the final score in the database.
 
-## How to Use the Scores Module
-
-### Build and Installation
-
-First, you need to build the project using the `make` command. Run the following command from the project's root directory to compile and install:
-
-```
-make
-```
-
-### Execution Command
-
-After building, you can run the Scores module using the following command:
-
-```
-./bin/gen_scores -config=config.json
-```
-
-### Parameter Explanation
-
-- `-config`: Specifies the path to the configuration file. The configuration file typically includes database connection details like host, port, username, password, etc. The default is `config.json`, but you can provide a different file if needed.
-
 ## Summary
 
 The scores module provides a robust framework for calculating a criticality score for open source projects, using detailed metrics to rank and analyze their importance and health within the ecosystem.
