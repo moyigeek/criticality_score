@@ -93,6 +93,16 @@ This section provides a comprehensive overview of each action represented by the
   - Triggered by the **Fetch and Update Software Dependencies** action to ensure any dependency changes are reflected in the metrics.
   - Triggered by the **Update from deps.dev** action to incorporate the latest dependency data into the metrics calculations.
 
+## System Implementation
+
+The whole system is organiazed in a Makefile and running in a cron job.
+
+All the tasks are considered as targets in the Makefile, which is used to define the dependencies between the tasks and the commands to execute them. `make` is a tool that can be used to manage the dependencies of the tasks.
+
+Every single task is usually implemented in Golang as a executable (some other tasks are implemented in Python). When some update task need to be triggered, the corresponding file is touched, (e.g. `packaged_updated` or `git_updated`) and then run `make` to update the ultimate task, `gen_scores`, and the whole system will be updated.
+
+To update periodically, the system is running in a cron job. The cron job is a time-based job scheduler in Unix-like operating systems. After setting up the cron job, the system will update automatically at the specified time. Some jobs are running every 6 hours, some are running every 3 days, and some are running every week.
+
 ## Summary
 
 This project uses an automated workflow to optimize software development tasks, focusing on Git platform and Git metrics collection, as well as dependency management, ensuring up-to-date metrics, improved productivity, and consistent code quality by automating tasks like fetching release information, updating dependencies, Git platform enumeration, and metrics updates.
