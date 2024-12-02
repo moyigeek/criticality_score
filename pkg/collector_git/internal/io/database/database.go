@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-09-07 20:46:04
- * @LastEditTime: 2024-09-29 14:31:08
+ * @LastEditTime: 2024-12-02 16:05:30
  * @Description:
  */
 package database
@@ -27,13 +27,13 @@ type GitMetrics struct {
 	ContributorCount int       `gorm:"column:contributor_count;not null"`
 	OrgCount         int       `gorm:"column:org_count;not null"`
 	CommitFrequency  float64   `gorm:"column:commit_frequency;not null"`
+	License          string    `gorm:"column:license;not null"`
 	NeedUpdate       bool      `gorm:"column:need_update;not null"`
-	// License          string    `gorm:"not null"`
 	//Languages []string `gorm:"not null"`
 }
 
 func NewGitMetrics(
-	Name, Owner, Source, URL /*, License*/ string,
+	Name, Owner, Source, URL, License /*, License*/ string,
 	Ecosystems string,
 	CreatedSince, UpdatedSince time.Time,
 	ContributorCount, OrgCount int,
@@ -52,6 +52,7 @@ func NewGitMetrics(
 		ContributorCount,
 		OrgCount,
 		CommitFrequency,
+		License,
 		NeedUpdate,
 		//		License,
 	}

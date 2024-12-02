@@ -1,7 +1,7 @@
 /*
  * @Author: 7erry
  * @Date: 2024-08-31 03:44:46
- * @LastEditTime: 2024-11-27 19:02:05
+ * @LastEditTime: 2024-12-02 14:59:16
  * @Description:
  */
 package config
@@ -17,7 +17,7 @@ const (
 	OUTPUT_CSV_PATH string = "./output/output.csv"
 
 	// Database Config
-
+	BATCH_SIZE                = 256
 	PSQL_HOST          string = ""
 	PSQL_USER          string = ""
 	PSQL_PASSWORD      string = ""

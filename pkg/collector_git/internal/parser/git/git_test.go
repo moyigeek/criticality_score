@@ -1,13 +1,12 @@
 /*
  * @Author: 7erry
  * @Date: 2024-08-31 03:50:13
- * @LastEditTime: 2024-11-27 21:37:32
+ * @LastEditTime: 2024-12-02 17:24:27
  * @Description:
  */
 package git
 
 import (
-	"fmt"
 	"strconv"
 	"testing"
 	"time"
@@ -129,19 +128,19 @@ func TestParseGitRepo(t *testing.T) {
 func TestGetLicense(t *testing.T) {
 	tests := []struct {
 		input    string
-		expected []string
+		expected string
 	}{
 		{
-			input:    "https://gitee.com/goldpankit/goldpankit.git",
-			expected: []string{"GPL-2.0"},
-		}, /*
-			{
-				input:    "https://github.com/gin-gonic/gin.git",
-				expected: []string{"MIT license"},
-			},*/
+			input:    "https://github.com/gin-gonic/gin.git",
+			expected: "MIT",
+		},
 		{
-			input:    "https://bitbucket.org/evolution536/crysearch-memory-scanner.git",
-			expected: []string{"MIT license"},
+			input:    "https://github.com/cyrus-and/gdb-dashboard.git",
+			expected: "MIT",
+		},
+		{
+			input:    "https://github.com/pingcap/autoflow",
+			expected: "Apache-2.0",
 		},
 	}
 	for n, test := range tests {
@@ -155,7 +154,6 @@ func TestGetLicense(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			fmt.Println(l)
 			require.Equal(t, test.expected, l)
 		})
 	}

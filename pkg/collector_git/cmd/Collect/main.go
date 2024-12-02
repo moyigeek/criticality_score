@@ -1,6 +1,6 @@
 /*
  * @Date: 2023-11-11 22:44:26
- * @LastEditTime: 2024-11-29 17:26:01
+ * @LastEditTime: 2024-12-02 16:31:41
  * @Description: Collect Local Repo
  */
 package main
@@ -10,6 +10,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/config"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/collector"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/io/database"
 	psql "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/io/database/psql"
@@ -23,21 +24,27 @@ import (
 	"sync"
 )
 
-func main() {
+func getPath() string {
 	var path string
 	if len(os.Args) == 2 {
 		path = os.Args[1]
 	} else {
 		path = ""
 	}
+	return path
+}
+
+func main() {
+	path := getPath()
 	urls, err := csv.GetCSVInput(path)
 	if err != nil {
 		logger.Fatalf("Failed to read %s", path)
 	}
+
 	var wg sync.WaitGroup
 	logger.Infof("%d urls in total", len(urls))
-	wg.Add(len(urls))
-	// var output [database.BATCH_SIZE]database.Metrics
+
+	ch := make(chan database.GitMetrics, config.BATCH_SIZE)
 
 	db, err := psql.InitDB()
 	if err != nil {
@@ -45,6 +52,21 @@ func main() {
 	}
 	psql.CreateTable(db)
 
+	wg.Add(1)
+	gopool.Go(func() {
+		defer wg.Done()
+		var data database.GitMetrics
+		var ok bool
+		for {
+			data, ok = <-ch
+			if !ok {
+				break
+			}
+			psql.InsertTable(db, &data)
+		}
+	})
+
+	wg.Add(len(urls))
 	for index, input := range urls {
 		if index%10 == 0 {
 			time.Sleep(5 * time.Second)
@@ -70,6 +92,7 @@ func main() {
 				repo.Owner,
 				repo.Source,
 				repo.URL,
+				repo.License,
 				repo.Ecosystems,
 				repo.Metrics.CreatedSince,
 				repo.Metrics.UpdatedSince,
@@ -78,9 +101,9 @@ func main() {
 				repo.Metrics.CommitFrequency,
 				false,
 			)
-			psql.InsertTable(db, &output)
-
+			ch <- output
 		})
 	}
 	wg.Wait()
+	close(ch)
 }

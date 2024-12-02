@@ -1,8 +1,17 @@
 package api
 
+import (
+	"encoding/json"
+
+	"github.com/HUSTSecLab/criticality_score/pkg/enumerator/internal/api/bitbucket"
+	"github.com/HUSTSecLab/criticality_score/pkg/enumerator/internal/api/cargo"
+	"github.com/HUSTSecLab/criticality_score/pkg/enumerator/internal/api/gitlab"
+	"github.com/imroc/req/v3"
+)
+
 const (
 	PER_PAGE      = 100
-	TIME_INTERVAL = 0.7
+	TIME_INTERVAL = 2
 	TIMEOUT       = 1000
 
 	BITBUCKET_ENUMERATE_API_URL = "https://api.bitbucket.org/2.0/repositories"
@@ -18,3 +27,27 @@ const (
 	GITEE_ENUMERATE_PAGE     = 20 //* repo_num = page * 100
 	CRATES_IO_ENUMERATE_PAGE = 20
 )
+
+func FromGitlab(res *req.Response) (*gitlab.Response, error) {
+	resp := &gitlab.Response{}
+	if err := json.Unmarshal(res.Bytes(), resp); err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func FromBitbucket(res *req.Response) (*bitbucket.Response, error) {
+	resp := &bitbucket.Response{}
+	if err := json.Unmarshal(res.Bytes(), resp); err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func FromCargo(res *req.Response) (*cargo.Response, error) {
+	resp := &cargo.Response{}
+	if err := json.Unmarshal(res.Bytes(), resp); err != nil {
+		return nil, err
+	}
+	return resp, nil
+}

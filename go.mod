@@ -6,12 +6,14 @@ toolchain go1.23.0
 
 require (
 	github.com/blendle/zapdriver v1.3.1
+	github.com/bytedance/gopkg v0.1.1
 	github.com/emicklei/go-restful v2.16.0+incompatible
 	github.com/go-git/go-git/v5 v5.5.2
 	github.com/go-logr/zapr v1.3.0
 	github.com/google/go-cmp v0.6.0
 	github.com/google/go-github v17.0.0+incompatible
 	github.com/google/go-github/v47 v47.1.0
+	github.com/google/licensecheck v0.3.1
 	github.com/hasura/go-graphql-client v0.12.2
 	github.com/imroc/req/v3 v3.48.0
 	github.com/lib/pq v1.10.9
@@ -62,7 +64,6 @@ require (
 	github.com/aws/smithy-go v1.20.1 // indirect
 	github.com/bombsimon/logrusr/v2 v2.0.1 // indirect
 	github.com/bradleyfalzon/ghinstallation/v2 v2.8.0 // indirect
-	github.com/bytedance/gopkg v0.1.1 // indirect
 	github.com/cloudflare/circl v1.4.0 // indirect
 	github.com/cpuguy83/go-md2man/v2 v2.0.4 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect

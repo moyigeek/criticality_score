@@ -9,11 +9,11 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/logger"
 	parser "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser"
 	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/url"
-
 	"github.com/go-git/go-git/v5"
 	gitconfig "github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
+	"github.com/google/licensecheck"
 )
 
 type Repo struct {
@@ -288,13 +288,6 @@ func GetURL(r *git.Repository) (string, error) {
 }
 
 func GetLicense(r *git.Repository) (string, error) {
-
-	// ToDO https://github.com/licensee/licensee
-
-	//* Maybe multiple licenses
-	//* l := []string{}
-	l := parser.UNKNOWN_LICENSE
-
 	ref, err := r.Head()
 	if err != nil {
 		return "", err
@@ -310,27 +303,22 @@ func GetLicense(r *git.Repository) (string, error) {
 		return "", err
 	}
 
-	f, err := tree.File("LICENSE")
-	if err != nil {
-		f, err = tree.File("LICENSE.md")
+	for _, filename := range parser.LICENSE_FILENAMES {
+		f, err := tree.File(filename)
 		if err != nil {
-			f, err = tree.File("LICENSE.txt")
+			continue
 		}
-	}
-	if err == nil {
-		content, err := f.Lines()
+
+		text, err := f.Contents()
 		if err != nil {
 			return "", err
 		}
-
-		for k, v := range parser.LICENSE_KEYWORD {
-			if strings.Contains(content[0], k) {
-				//* l = append(l, v)
-				l = v
-			}
-		}
+		cov := licensecheck.Scan([]byte(text))
+		license := cov.Match[0].ID
+		return license, nil
 	}
-	return l, nil
+
+	return "", nil
 }
 
 //! GetLanguages and GetEcosystem could be merged into one function if needed
@@ -515,8 +503,11 @@ func ParseGitRepo(r *git.Repository) (*Repo, error) {
 		}
 	}
 
-	license := ""
-	//license = GetLicense(r)
+	license, err := GetLicense(r)
+	if err != nil {
+		logger.Error(err)
+		return nil, err
+	}
 
 	languages := make([]string, 0)
 	/*
