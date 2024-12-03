@@ -22,6 +22,7 @@ services:
       - ${DATA_DIR}/rec:/data/rec
       - ${DATA_DIR}/log:/data/log
       - ${STORAGE_DIR}:/storage
+      - ${GENTOO_PREFIX_DIR}:/root/gentoo
   apiserver:
     build: .
     restart: always
