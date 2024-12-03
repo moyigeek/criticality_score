@@ -18,9 +18,27 @@ prepare() {
     ensure_exists github_updated.src
 }
 
+LOCK_FILE="/var/lock/csflow.lock"
 
 run() {
     touch "$1_updated.src"
+
+    # check if lock exists
+    if [ -f "$LOCK_FILE" ]; then
+        echo "Lock file exists, another process is running, or the previous process was killed."
+        echo "Please remove the lock file: $LOCK_FILE"
+        echo "* Update by triggering $1"
+        echo "** Target: $1_updated"
+        echo "** Time: $(date '+%Y-%m-%d %H:%M:%S (%Z)')"
+        echo "** Status: Failed (Lock file exists)"
+        exit 1
+    fi
+
+    # create lock file
+    touch "$LOCK_FILE"
+
+    # when the script is interrupted, remove the lock file
+    trap 'rm -f "$LOCK_FILE"; exit 1' INT TERM EXIT
 
     echo "* Update by triggering $1"
     echo "** Target: $1_updated"
