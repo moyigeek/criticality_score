@@ -496,7 +496,7 @@ func updateOrInsertNixPackages(packages map[DepInfo][]DepInfo) error {
 
         if !exists {
             // 插入新包信息
-            _, err := db.Exec("INSERT INTO nix_packages (name, version, homepage, description, dependency_count) VALUES ($1, $2, $3, $4, $5)",
+            _, err := db.Exec("INSERT INTO nix_packages (package, version, homepage, description, depends_count) VALUES ($1, $2, $3, $4, $5)",
                 pkg.Name, pkg.Version, pkg.Homepage, pkg.Description, pkg.DepCount)
             if err != nil {
                 return err
