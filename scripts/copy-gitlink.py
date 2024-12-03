@@ -21,7 +21,6 @@ parser.add_argument("--debug", help="Debug mode", action="store_true")
 
 args = parser.parse_args()
 logging.basicConfig(level=logging.INFO if not args.debug else logging.DEBUG)
-
 logging.info("Connecting to database...")
 
 conn = psycopg2.connect(
@@ -58,6 +57,7 @@ conn_dest = psycopg2.connect(
 
 
 def copy_table(table_name):
+    logging.info(f"Copying {table_name}...")
     curr = conn.cursor()
     logging.info("Fetching data from source database...")
     curr.execute("SELECT package, git_link FROM {}".format(table_name))
@@ -78,10 +78,11 @@ def copy_table(table_name):
     conn_dest.commit()
     curr.close()
 
-logging.info("Copying debian_packages...")
 copy_table("debian_packages")
-logging.info("Copying arch_packages...")
 copy_table("arch_packages")
+copy_table("gentoo_packages")
+copy_table("homebrew_packages")
+copy_table("nix_packages")
 
 conn.close()
 conn_dest.close()
