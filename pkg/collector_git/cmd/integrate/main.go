@@ -103,7 +103,8 @@ func main() {
 				updated_since = $6,
 				contributor_count = $7,
 				commit_frequency = $8,
-				need_update = FALSE WHERE git_link = $9`,
+				license = $9,
+				need_update = FALSE WHERE git_link = $10`,
 				repo.Name,
 				repo.Owner,
 				repo.Source,
@@ -112,6 +113,7 @@ func main() {
 				repo.Metrics.UpdatedSince,
 				repo.Metrics.ContributorCount,
 				repo.Metrics.CommitFrequency,
+				repo.License,
 				input)
 
 			if err != nil {
