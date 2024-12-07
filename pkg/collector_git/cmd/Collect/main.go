@@ -1,6 +1,6 @@
 /*
  * @Date: 2023-11-11 22:44:26
- * @LastEditTime: 2024-12-02 16:31:41
+ * @LastEditTime: 2024-12-07 18:33:57
  * @Description: Collect Local Repo
  */
 package main
@@ -82,7 +82,7 @@ func main() {
 				logger.Panicf("Collecting %s Failed", input)
 			}
 
-			repo, err := git.ParseGitRepo(r)
+			repo, err := git.ParseRepo(r)
 			if err != nil {
 				logger.Panicf("[!] Paring %s Failed", input)
 			}
@@ -94,11 +94,11 @@ func main() {
 				repo.URL,
 				repo.License,
 				repo.Ecosystems,
-				repo.Metrics.CreatedSince,
-				repo.Metrics.UpdatedSince,
-				repo.Metrics.ContributorCount,
-				repo.Metrics.OrgCount,
-				repo.Metrics.CommitFrequency,
+				repo.CreatedSince,
+				repo.UpdatedSince,
+				repo.ContributorCount,
+				repo.OrgCount,
+				repo.CommitFrequency,
 				false,
 			)
 			ch <- output

@@ -31,7 +31,7 @@ func TestInsertTable(t *testing.T) {
 			if err != nil {
 				panic(err)
 			}
-			repo, err := git.ParseGitRepo(r)
+			repo, err := git.ParseRepo(r)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -46,11 +46,11 @@ func TestInsertTable(t *testing.T) {
 				Source:           repo.Source,
 				URL:              repo.URL,
 				Ecosystems:       repo.Ecosystems,
-				CreatedSince:     repo.Metrics.CreatedSince,
-				UpdatedSince:     repo.Metrics.UpdatedSince,
-				ContributorCount: repo.Metrics.ContributorCount,
-				OrgCount:         repo.Metrics.OrgCount,
-				CommitFrequency:  repo.Metrics.CommitFrequency,
+				CreatedSince:     repo.CreatedSince,
+				UpdatedSince:     repo.UpdatedSince,
+				ContributorCount: repo.ContributorCount,
+				OrgCount:         repo.OrgCount,
+				CommitFrequency:  repo.CommitFrequency,
 			})
 		})
 	}

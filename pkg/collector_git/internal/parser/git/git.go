@@ -23,25 +23,8 @@ type Repo struct {
 	URL     string
 	License string
 	// is_maintained bool
-	Languages  []string
-	Ecosystems string
-	Metrics    *RepoMetrics
-}
-
-func NewRepo() Repo {
-	return Repo{
-		Name:       "",
-		Owner:      "",
-		Source:     "",
-		URL:        "",
-		License:    "",
-		Languages:  []string{},
-		Ecosystems: "",
-		Metrics:    &RepoMetrics{},
-	}
-}
-
-type RepoMetrics struct {
+	Languages        string
+	Ecosystems       string
 	CreatedSince     time.Time
 	UpdatedSince     time.Time
 	ContributorCount int
@@ -49,13 +32,20 @@ type RepoMetrics struct {
 	CommitFrequency  float64
 }
 
-func NewRepoMetrics() RepoMetrics {
-	return RepoMetrics{
-		CreatedSince:     time.Time{},
-		UpdatedSince:     time.Time{},
-		ContributorCount: 0,
-		OrgCount:         0,
-		CommitFrequency:  0,
+func NewRepo() Repo {
+	return Repo{
+		Name:             parser.UNKNOWN_NAME,
+		Owner:            parser.UNKNOWN_OWNER,
+		Source:           parser.UNKNOWN_SOURCE,
+		URL:              parser.UNKNOWN_URL,
+		License:          parser.UNKNOWN_LICENSE,
+		Languages:        parser.UNKNOWN_LANGUAGES,
+		Ecosystems:       parser.UNKNOWN_ECOSYSTEMS,
+		CreatedSince:     parser.UNKNOWN_TIME,
+		UpdatedSince:     parser.UNKNOWN_TIME,
+		ContributorCount: parser.UNKNOWN_COUNT,
+		OrgCount:         parser.UNKNOWN_COUNT,
+		CommitFrequency:  parser.UNKNOWN_FREQUENCY,
 	}
 }
 
@@ -287,124 +277,38 @@ func GetURL(r *git.Repository) (string, error) {
 	return u, nil
 }
 
-func GetLicense(r *git.Repository) (string, error) {
-	ref, err := r.Head()
-	if err != nil {
-		return "", err
-	}
-
-	commit, err := r.CommitObject(ref.Hash())
-	if err != nil {
-		return "", err
-	}
-
-	tree, err := commit.Tree()
-	if err != nil {
-		return "", err
-	}
-
-	for _, filename := range parser.LICENSE_FILENAMES {
-		f, err := tree.File(filename)
-		if err != nil {
-			continue
-		}
-
-		text, err := f.Contents()
-		if err != nil {
-			return "", err
-		}
-		cov := licensecheck.Scan([]byte(text))
-		license := cov.Match[0].ID
-		return license, nil
-	}
-
-	return "", nil
-}
-
-//! GetLanguages and GetEcosystem could be merged into one function if needed
-
-func GetLanguages(r *git.Repository) (*[]string, error) {
-	l := make(map[string]int, 0)
-	ref, err := r.Head()
-	if err != nil {
-		return nil, err
-	}
-
-	commit, err := r.CommitObject(ref.Hash())
-	if err != nil {
-		return nil, err
-	}
-
-	tree, err := commit.Tree()
-	if err != nil {
-		return nil, err
-	}
-
-	fIter := tree.Files()
-	err = fIter.ForEach(func(f *object.File) error {
-		filename := filepath.Base(f.Name)
-		v, ok := parser.LANGUAGE_FILENAMES[filename]
+func GetLanguages(filename string, l *map[string]int) {
+	v, ok := parser.LANGUAGE_FILENAMES[filename]
+	if ok {
+		(*l)[v] += 1
+	} else {
+		ex := filepath.Ext(filename)
+		v, ok = parser.LANGUAGE_EXTENSIONS[ex]
 		if ok {
-			l[v] += 1
-		} else {
-			ex := filepath.Ext(f.Name)
-			v, ok = parser.LANGUAGE_EXTENSIONS[ex]
-			if ok {
-				l[v] += 1
-			}
-		}
-		return nil
-	})
-	if err != nil {
-		return nil, err
-	}
-
-	languages := make([]string, 0)
-	for k, v := range l {
-		if v >= parser.LANGUAGE_THRESHOLD {
-			languages = append(languages, k)
+			(*l)[v] += 1
 		}
 	}
-
-	return &languages, nil
 }
 
-func GetEcosystem(r *git.Repository) (string, error) {
-	eco := ""
-	ref, err := r.Head()
-	if err != nil {
-		return "", err
+func GetEcosystem(filename string, e *map[string]int) {
+	v, ok := parser.ECOSYSTEM_MAP[filename]
+	if ok {
+		(*e)[v] += 1
 	}
-
-	commit, err := r.CommitObject(ref.Hash())
-	if err != nil {
-		return "", err
-	}
-
-	tree, err := commit.Tree()
-	if err != nil {
-		return "", err
-	}
-
-	//* emap := map[string]int{}
-	fIter := tree.Files()
-	err = fIter.ForEach(func(f *object.File) error {
-		filename := filepath.Base(f.Name)
-		v, ok := parser.ECOSYSTEM_MAP[filename]
-		if ok {
-			// emap[v] += 1
-			eco = v
-		}
-		return nil
-	})
-
-	if err != nil {
-		return "", err
-	}
-	return eco, nil
 }
 
-func GetMetrics(r *git.Repository) (*RepoMetrics, error) {
+func GetLicense(f *object.File) (string, error) {
+	text, err := f.Contents()
+	if err != nil {
+		return "", err
+	}
+	cov := licensecheck.Scan([]byte(text))
+	license := cov.Match[0].ID
+
+	return license, nil
+}
+
+func (repo *Repo) WalkLog(r *git.Repository) error {
 	cIter, err := r.Log(&git.LogOptions{
 		//* From:  ref.Hash(),
 		All:   true,
@@ -413,24 +317,23 @@ func GetMetrics(r *git.Repository) (*RepoMetrics, error) {
 		Order: git.LogOrderCommitterTime,
 	})
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	metrics := NewRepoMetrics()
 	contributors := make(map[string]int, 0)
 	orgs := make(map[string]int, 0)
 	var commit_count float64 = 0
 
 	latest_commit, err := cIter.Next()
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	author := fmt.Sprintf("%s(%s)", latest_commit.Author.Name, latest_commit.Author.Email)
 	e := strings.Split(latest_commit.Author.Email, "@")
 	org := e[len(e)-1]
 
-	metrics.UpdatedSince = latest_commit.Committer.When
+	repo.UpdatedSince = latest_commit.Committer.When
 	contributors[author]++
 	orgs[org]++
 
@@ -446,7 +349,7 @@ func GetMetrics(r *git.Repository) (*RepoMetrics, error) {
 		e = strings.Split(c.Author.Email, "@")
 		org := e[len(e)-1]
 
-		//! It made sense that this if statement is not necessary but sometimes there are errors
+		//! It made sense that this `if`` statement is not necessary but sometimes there are errors
 		if created_since.After(c.Committer.When) {
 			created_since = c.Committer.When
 		}
@@ -464,25 +367,90 @@ func GetMetrics(r *git.Repository) (*RepoMetrics, error) {
 		return nil
 	})
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	metrics.CreatedSince = created_since
-	metrics.ContributorCount = len(contributors)
-	metrics.OrgCount = len(orgs)
-	metrics.CommitFrequency = commit_count / 52
+	repo.CreatedSince = created_since
+	repo.ContributorCount = len(contributors)
+	repo.OrgCount = len(orgs)
+	repo.CommitFrequency = commit_count / 52
 
-	return &metrics, nil
+	return nil
 }
 
-func ParseGitRepo(r *git.Repository) (*Repo, error) {
+func (repo *Repo) WalkRepo(r *git.Repository) error {
+
+	ref, err := r.Head()
+	if err != nil {
+		return err
+	}
+
+	commit, err := r.CommitObject(ref.Hash())
+	if err != nil {
+		return err
+	}
+
+	tree, err := commit.Tree()
+	if err != nil {
+		return err
+	}
+
+	languages := make(map[string]int, 0)
+	ecosystems := make(map[string]int, 0)
+
+	fIter := tree.Files()
+	err = fIter.ForEach(func(f *object.File) error {
+		filename := filepath.Base(f.Name)
+		GetLanguages(filename, &languages)
+		GetEcosystem(filename, &ecosystems)
+		if repo.License != parser.UNKNOWN_LICENSE {
+			if _, ok := parser.LICENSE_FILENAMES[filename]; ok {
+				license, err := GetLicense(f)
+				if err != nil {
+					logger.Error(err)
+				} else {
+					repo.License = license
+				}
+			}
+		}
+		return nil
+	})
+
+	if err != nil {
+		return err
+	}
+
+	l := ""
+	for k, v := range languages {
+		if v >= parser.LANGUAGE_THRESHOLD {
+			l += fmt.Sprintf("%s ", k)
+		}
+	}
+
+	e := ""
+	for k, v := range ecosystems {
+		if v >= parser.ECOSYSTEM_THRESHOLD {
+			e += fmt.Sprintf("%s ", k)
+		}
+	}
+
+	if len(l) != 0 {
+		repo.Languages = l[:len(l)-1]
+	}
+	if len(e) != 0 {
+		repo.Ecosystems = e[:len(e)-1]
+	}
+
+	return nil
+}
+
+func ParseRepo(r *git.Repository) (*Repo, error) {
 
 	repo := NewRepo()
 
 	u, err := GetURL(r)
 	if err != nil {
-		logger.Error(err)
-		return nil, err
+		logger.Errorf("Failed to Get RepoURL for %v", err)
 	}
 
 	var name, owner, source string
@@ -493,9 +461,16 @@ func ParseGitRepo(r *git.Repository) (*Repo, error) {
 		owner = parser.UNKNOWN_OWNER
 	} else {
 		uu := url.ParseURL(u)
-		path := strings.Split(uu.Pathname, "/")
-		name = strings.Split(path[len(path)-1], ".")[0]
-		owner = path[len(path)-2]
+
+		if uu.Pathname == "" {
+			name = parser.UNKNOWN_NAME
+			owner = parser.UNKNOWN_OWNER
+		} else {
+			path := strings.Split(uu.Pathname, "/")
+			name = strings.Split(path[len(path)-1], ".")[0]
+			owner = path[len(path)-2]
+		}
+
 		if uu.Resource == "" {
 			source = parser.UNKNOWN_SOURCE
 		} else {
@@ -503,44 +478,20 @@ func ParseGitRepo(r *git.Repository) (*Repo, error) {
 		}
 	}
 
-	license, err := GetLicense(r)
+	err = repo.WalkRepo(r)
 	if err != nil {
-		logger.Error(err)
-		return nil, err
+		logger.Errorf("Failed to Walk Repo for %v", err)
 	}
 
-	languages := make([]string, 0)
-	/*
-		languages := GetLanguages(r)
-		if languages == nil {
-			languages = &[]string{}
-		}
-	*/
-
-	eco, err := GetEcosystem(r)
+	err = repo.WalkLog(r)
 	if err != nil {
-		logger.Error(err)
-		return nil, err
-	}
-
-	metrics, err := GetMetrics(r)
-	if err != nil {
-		logger.Error(err)
-		return nil, err
-	}
-	if metrics == nil {
-		m := NewRepoMetrics()
-		metrics = &m
+		logger.Errorf("Failed to Walk Log for %v", err)
 	}
 
 	repo.Name = name
 	repo.Owner = owner
 	repo.Source = source
 	repo.URL = u
-	repo.License = license
-	repo.Languages = languages
-	repo.Ecosystems = eco
-	repo.Metrics = metrics
 
 	return &repo, nil
 }

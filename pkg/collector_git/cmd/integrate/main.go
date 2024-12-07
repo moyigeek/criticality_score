@@ -1,6 +1,6 @@
 /*
  * @Date: 2023-11-11 22:44:26
- * @LastEditTime: 2024-11-29 17:26:22
+ * @LastEditTime: 2024-12-07 18:34:04
  * @Description:
  */
 package main
@@ -89,7 +89,7 @@ func main() {
 			}
 			logger.Infof("[*] %s Collected", input)
 
-			repo, err := git.ParseGitRepo(r)
+			repo, err := git.ParseRepo(r)
 			if err != nil {
 				logger.Panicf("Parsing %s Failed", input)
 			}
@@ -109,10 +109,10 @@ func main() {
 				repo.Owner,
 				repo.Source,
 				repo.Ecosystems,
-				repo.Metrics.CreatedSince,
-				repo.Metrics.UpdatedSince,
-				repo.Metrics.ContributorCount,
-				repo.Metrics.CommitFrequency,
+				repo.CreatedSince,
+				repo.UpdatedSince,
+				repo.ContributorCount,
+				repo.CommitFrequency,
 				repo.License,
 				input)
 

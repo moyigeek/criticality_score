@@ -3,17 +3,26 @@ package parser
 import "time"
 
 const (
-	UNKNOWN_URL         string = "Unknown URL"
-	UNKNOWN_NAME        string = "Unknown Name"
-	UNKNOWN_OWNER       string = "Unknown Owner"
-	UNKNOWN_SOURCE      string = "Unknown Source"
-	UNKNOWN_LICENSE     string = "Unlicense"
+	UNKNOWN_URL        string  = ""
+	UNKNOWN_NAME       string  = ""
+	UNKNOWN_OWNER      string  = ""
+	UNKNOWN_SOURCE     string  = ""
+	UNKNOWN_LICENSE    string  = ""
+	UNKNOWN_LANGUAGES  string  = ""
+	UNKNOWN_ECOSYSTEMS string  = ""
+	UNKNOWN_COUNT      int     = 0
+	UNKNOWN_FREQUENCY  float64 = 0
+
 	DEFAULT_REMOTE_NAME string = "origin"
 	DEFAULT_SOURCE      string = "github.com"
-	LANGUAGE_THRESHOLD  int    = 0
+
+	LANGUAGE_THRESHOLD  int = 0
+	ECOSYSTEM_THRESHOLD int = 0
 )
 
 var (
+	UNKNOWN_TIME = time.Time{}
+
 	BEGIN_TIME   = time.Date(1970, 1, 1, 0, 0, 0, 0, time.UTC)
 	END_TIME     = time.Now()
 	NOW          = time.Now()
@@ -22,10 +31,10 @@ var (
 )
 
 // ToDo Try to cover more
-var LICENSE_FILENAMES = []string{
-	"LICENSE",
-	"LICENSE.md",
-	"LICENSE.txt",
+var LICENSE_FILENAMES = map[string]bool{
+	"LICENSE":     true,
+	"LICENSE.md":  true,
+	"LICENSE.txt": true,
 }
 
 // * 扩展名和特殊文件名参考了 https://github.com/github-linguist/linguist/blob/master/lib/linguist/languages.yml

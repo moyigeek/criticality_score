@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-09-06 21:09:14
- * @LastEditTime: 2024-11-29 17:27:44
+ * @LastEditTime: 2024-12-07 18:33:49
  * @Description: The Cli for collector
  */
 package main
@@ -53,7 +53,7 @@ func main() {
 							logger.Panicf("Opening %s Failed", path)
 						}
 					}
-					repo, err := git.ParseGitRepo(r)
+					repo, err := git.ParseRepo(r)
 					if err != nil {
 						logger.Panicf("Parsing %s Failed", path)
 					}
@@ -65,11 +65,11 @@ func main() {
 						repo.License,
 						fmt.Sprintf("%s", repo.Languages),
 						fmt.Sprintf("%s", repo.Ecosystems),
-						repo.Metrics.CreatedSince.String(),
-						repo.Metrics.UpdatedSince.String(),
-						fmt.Sprintf("%d", repo.Metrics.ContributorCount),
-						fmt.Sprintf("%d", repo.Metrics.OrgCount),
-						fmt.Sprintf("%f", repo.Metrics.CommitFrequency),
+						repo.CreatedSince.String(),
+						repo.UpdatedSince.String(),
+						fmt.Sprintf("%d", repo.ContributorCount),
+						fmt.Sprintf("%d", repo.OrgCount),
+						fmt.Sprintf("%f", repo.CommitFrequency),
 					})
 					logger.Infof("%s Collected", repo.Name)
 				})
