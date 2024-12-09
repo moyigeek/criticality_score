@@ -2,118 +2,133 @@ CREATE DATABASE criticality_score;
 
 \c criticality_score
 
--- ----------------------------
--- Table structure for arch_packages
--- ----------------------------
-CREATE TABLE IF NOT EXISTS "public"."arch_packages" (
-  "package" text COLLATE "pg_catalog"."default" NOT NULL,
-  "version" text COLLATE "pg_catalog"."default",
-  "depends_count" int8,
-  "homepage" text COLLATE "pg_catalog"."default",
-  "description" text COLLATE "pg_catalog"."default",
-  "git_link" text COLLATE "pg_catalog"."default",
-  "comment" text COLLATE "pg_catalog"."default",
-  "link_confidence" float4
-)
-;
+create table if not exists public.arch_packages
+(
+    package       text not null
+        primary key,
+    version       text,
+    depends_count bigint,
+    homepage      text,
+    description   text,
+    git_link      text,
+    comment       text
+);
 
--- ----------------------------
--- Table structure for debian_packages
--- ----------------------------
-CREATE TABLE IF NOT EXISTS "public"."debian_packages" (
-  "package" text COLLATE "pg_catalog"."default" NOT NULL,
-  "version" text COLLATE "pg_catalog"."default",
-  "homepage" text COLLATE "pg_catalog"."default",
-  "description" text COLLATE "pg_catalog"."default",
-  "depends_count" int8,
-  "git_link" text COLLATE "pg_catalog"."default",
-  "comment" text COLLATE "pg_catalog"."default",
-  "link_confidence" float4
-)
-;
+create table if not exists public.debian_packages
+(
+    package       text not null
+        primary key,
+    version       text,
+    homepage      text,
+    description   text,
+    depends_count bigint,
+    git_link      text,
+    comment       text
+);
 
--- ----------------------------
--- Table structure for github_links
--- ----------------------------
-CREATE TABLE IF NOT EXISTS "public"."github_links" (
-  "git_link" text COLLATE "pg_catalog"."default" NOT NULL
-)
-;
+create table if not exists public.git_metrics
+(
+    git_link          varchar(255) not null
+        primary key,
+    ecosystem         varchar(255),
+    "from"            integer      not null,
+    created_since     date,
+    updated_since     date,
+    contributor_count integer          default 0,
+    commit_frequency  double precision default 0,
+    depsdev_count     integer          default 0,
+    deps_distro       double precision default 0,
+    scores            double precision default 0,
+    org_count         integer          default 0,
+    _name             varchar(255),
+    _owner            varchar(255),
+    _source           varchar(255),
+    need_update       boolean,
+    license           varchar(255)
+);
 
-ALTER TABLE "public"."github_links" ADD CONSTRAINT "github_links_pkey" PRIMARY KEY ("git_link");
+create table if not exists public.nix_packages
+(
+    package       text not null
+        constraint arch_packages_copy1_pkey
+            primary key,
+    version       text,
+    depends_count bigint,
+    homepage      text,
+    description   text,
+    git_link      text,
+    alias_link    text
+);
 
--- ----------------------------
--- Table structure for git_metrics
--- ----------------------------
-CREATE TABLE IF NOT EXISTS "public"."git_metrics" (
-  "git_link" varchar(255) COLLATE "pg_catalog"."default" NOT NULL,
-  "ecosystem" varchar(255) COLLATE "pg_catalog"."default",
-  "from" int4 NOT NULL, -- from 0: package manager 1: enumerate_github
-  "created_since" date,
-  "updated_since" date,
-  "contributor_count" int4,
-  "commit_frequency" float8,
-  "depsdev_count" int4,
-  "deps_distro" float8,
-  "scores" float8,
-  "org_count" int4,
-  "need_update" bool,
-  "_name" varchar(255) COLLATE "pg_catalog"."default",
-  "_owner" varchar(255) COLLATE "pg_catalog"."default",
-  "_source" varchar(255) COLLATE "pg_catalog"."default"
-)
-;
+create table if not exists public.homebrew_packages
+(
+    package       text not null
+        constraint debian_packages_copy1_pkey
+            primary key,
+    homepage      text,
+    description   text,
+    depends_count bigint,
+    git_link      text,
+    alias_link    text
+);
 
--- ----------------------------
--- Table structure for nix_packages
--- ----------------------------
-CREATE TABLE IF NOT EXISTS "public"."nix_packages" (
-  "package" text COLLATE "pg_catalog"."default" NOT NULL,
-  "version" text COLLATE "pg_catalog"."default",
-  "depends_count" int8,
-  "homepage" text COLLATE "pg_catalog"."default",
-  "description" text COLLATE "pg_catalog"."default",
-  "git_link" text COLLATE "pg_catalog"."default",
-  "alias_link" text COLLATE "pg_catalog"."default",
-  "link_confidence" float4
-)
-;
+create table if not exists public.github_links
+(
+    git_link text not null
+        primary key
+);
 
-CREATE TABLE IF NOT EXISTS "public"."homebrew_packages" (
-  "package" text COLLATE "pg_catalog"."default" NOT NULL,
-  "version" text COLLATE "pg_catalog"."default",
-  "homepage" text COLLATE "pg_catalog"."default",
-  "description" text COLLATE "pg_catalog"."default",
-  "depends_count" int8,
-  "git_link" text COLLATE "pg_catalog"."default",
-  "alias_link" text COLLATE "pg_catalog"."default",
-  "link_confidence" float4
-)
-;
+create table if not exists public.arch_relationships
+(
+    frompackage varchar(255) not null
+        references public.arch_packages,
+    topackage   varchar(255) not null,
+    primary key (frompackage, topackage)
+);
 
--- ----------------------------
--- Primary Key structure for table homebrew_packages
--- ----------------------------
-ALTER TABLE "public"."homebrew_packages" ADD CONSTRAINT "debian_packages_copy1_pkey" PRIMARY KEY ("package");
+create table if not exists public.debian_relationships
+(
+    frompackage varchar(255) not null
+        references public.debian_packages,
+    topackage   varchar(255) not null,
+    primary key (frompackage, topackage)
+);
 
--- ----------------------------
--- Primary Key structure for table arch_packages
--- ----------------------------
-ALTER TABLE "public"."arch_packages" ADD CONSTRAINT "arch_packages_pkey" PRIMARY KEY ("package");
+create table if not exists public.gentoo_packages
+(
+    package         text not null
+        constraint homebrew_packages_copy1_pkey
+            primary key,
+    version         text,
+    homepage        text,
+    description     text,
+    depends_count   bigint,
+    git_link        text,
+    alias_link      text,
+    link_confidence real
+);
 
--- ----------------------------
--- Primary Key structure for table debian_packages
--- ----------------------------
-ALTER TABLE "public"."debian_packages" ADD CONSTRAINT "debian_packages_pkey" PRIMARY KEY ("package");
+create table if not exists public.gentoo_relationships
+(
+    frompackage varchar(255) not null
+        references public.gentoo_packages,
+    topackage   varchar(255) not null,
+    primary key (frompackage, topackage)
+);
 
--- ----------------------------
--- Primary Key structure for table git_metrics
--- ----------------------------
-ALTER TABLE "public"."git_metrics" ADD CONSTRAINT "git_metrics_pkey" PRIMARY KEY ("git_link");
+create table if not exists public.homebrew_relationships
+(
+    frompackage varchar(255) not null
+        references public.homebrew_packages,
+    topackage   varchar(255) not null,
+    primary key (frompackage, topackage)
+);
 
-
--- ----------------------------
--- Primary Key structure for table nix_packages
--- ----------------------------
-ALTER TABLE "public"."nix_packages" ADD CONSTRAINT "arch_packages_copy1_pkey" PRIMARY KEY ("package");
+create table if not exists public.nix_relationships
+(
+    frompackage varchar(255) not null
+        references public.nix_packages,
+    topackage   varchar(255) not null,
+    primary key (frompackage, topackage)
+);
 
