@@ -76,6 +76,9 @@ func syncGitMetrics(db *sql.DB, gitLinks map[string]bool, from int) {
 		if err := rows.Scan(&gitLink); err != nil {
 			log.Fatalf("Failed to scan git_link from git_metrics: %v", err)
 		}
+		if gitLink == "" || gitLink == "NA" || gitLink == "NaN" {
+			continue
+		}
 		dbLinks[strings.ToLower(gitLink)] = gitLink
 	}
 
@@ -92,6 +95,7 @@ func syncGitMetrics(db *sql.DB, gitLinks map[string]bool, from int) {
 		if _, exists := dbLinks[normLinkLower]; !exists {
 			parts := strings.Split(normLinkOriginal, "/")
 			if len(parts) >= 5 {
+				fmt.Println(normLinkOriginal)
 				_, err := db.Exec(`INSERT INTO git_metrics (git_link, "from", need_update) VALUES ($1, $2, $3)`, normLinkOriginal, from, true)
 				if err != nil {
 					log.Printf("Failed to insert git_link %s: %v", normLinkOriginal, err)

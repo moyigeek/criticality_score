@@ -28,15 +28,11 @@ func main() {
 	}
 	for _, link := range links{
 		scores.CalculateDepsdistro(db, link)
-	}
-
-	for _, link := range links {
 		data, err := scores.FetchProjectData(db, link)
 		if err != nil {
 			log.Printf("Failed to fetch project data for %s: %v", link, err)
 			continue
 		}
-
 		score := scores.CalculateScore(*data)
 		if err := scores.UpdateScore(db, link, score * 100); err != nil {
 			log.Printf("Failed to update score for %s: %v", link, err)

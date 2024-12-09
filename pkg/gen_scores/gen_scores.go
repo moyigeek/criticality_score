@@ -141,7 +141,7 @@ func CalculateScore(data ProjectData) float64 {
 		score += weights["deps_distro"] * normalized
 	}
 
-	return score / 10 * 100
+	return score / 10
 }
 
 func UpdateDepsdistro(db *sql.DB, link string, totalRatio float64) error {
