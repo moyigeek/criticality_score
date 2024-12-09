@@ -1,12 +1,11 @@
 /*
  * @Date: 2024-09-06 21:09:14
- * @LastEditTime: 2024-12-07 18:33:49
+ * @LastEditTime: 2024-12-09 19:31:36
  * @Description: The Cli for collector
  */
 package main
 
 import (
-	"fmt"
 	"os"
 	"strings"
 	"sync"
@@ -33,14 +32,16 @@ func main() {
 			var wg sync.WaitGroup
 			wg.Add(len(paths))
 
-			output := make([][]string, 0)
+			repos := make([]*git.Repo, 0)
 
 			for _, path := range paths {
 				gopool.Go(func() {
 					defer wg.Done()
-					fmt.Printf("Collecting %s\n", path)
+					logger.Infof("Collecting %s\n", path)
+
 					r := &gogit.Repository{}
 					var err error
+
 					if strings.Contains(path, "://") {
 						u := url.ParseURL(path)
 						r, err = collector.EzCollect(&u)
@@ -53,42 +54,20 @@ func main() {
 							logger.Panicf("Opening %s Failed", path)
 						}
 					}
+
 					repo, err := git.ParseRepo(r)
 					if err != nil {
 						logger.Panicf("Parsing %s Failed", path)
 					}
-					output = append(output, []string{
-						repo.URL,
-						repo.Name,
-						repo.Owner,
-						repo.Source,
-						repo.License,
-						fmt.Sprintf("%s", repo.Languages),
-						fmt.Sprintf("%s", repo.Ecosystems),
-						repo.CreatedSince.String(),
-						repo.UpdatedSince.String(),
-						fmt.Sprintf("%d", repo.ContributorCount),
-						fmt.Sprintf("%d", repo.OrgCount),
-						fmt.Sprintf("%f", repo.CommitFrequency),
-					})
+
+					repos = append(repos, repo)
 					logger.Infof("%s Collected", repo.Name)
 				})
 			}
 
 			wg.Wait()
-			for _, o := range output {
-				fmt.Printf("Repo URL: %s\n", o[0])
-				fmt.Printf("Repo Name: %s   ", o[1])
-				fmt.Printf("Owner: %s   ", o[2])
-				fmt.Printf("Source: %s\n", o[3])
-				fmt.Printf("License: %s\n", o[4])
-				fmt.Printf("Languages: %s\n", o[5])
-				fmt.Printf("Ecosystems: %s\n", o[6])
-				fmt.Printf("Created Since: %s\n", o[7])
-				fmt.Printf("Updated Since: %s\n", o[8])
-				fmt.Printf("Contributor Count: %s   ", o[9])
-				fmt.Printf("Org Count: %s   ", o[10])
-				fmt.Printf("Commit Frequency: %s\n\n", o[11])
+			for _, repo := range repos {
+				repo.Show()
 			}
 			return nil
 		}}

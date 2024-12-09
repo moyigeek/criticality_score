@@ -1,6 +1,6 @@
 /*
  * @Date: 2023-11-11 22:44:26
- * @LastEditTime: 2024-11-27 21:19:38
+ * @LastEditTime: 2024-12-09 19:32:35
  * @Description: Just Count downloaded repos
  */
 package main
@@ -15,7 +15,6 @@ import (
 	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/url"
 
 	"github.com/go-git/go-git/v5"
-	//"fmt"
 )
 
 func main() {

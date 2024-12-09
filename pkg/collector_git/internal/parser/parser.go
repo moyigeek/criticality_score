@@ -37,7 +37,7 @@ var LICENSE_FILENAMES = map[string]bool{
 	"LICENSE.txt": true,
 }
 
-// * 扩展名和特殊文件名参考了 https://github.com/github-linguist/linguist/blob/master/lib/linguist/languages.yml
+// * https://github.com/github-linguist/linguist/blob/master/lib/linguist/languages.yml
 var LANGUAGE_EXTENSIONS = map[string]string{
 	".4dm":             "4D",
 	".abap":            "ABAP",

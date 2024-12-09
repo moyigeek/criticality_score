@@ -444,6 +444,32 @@ func (repo *Repo) WalkRepo(r *git.Repository) error {
 	return nil
 }
 
+func (repo *Repo) Show() {
+	fmt.Printf(
+		"[%v]: %v\n"+
+			"[%v]: %v    [%v]: %v    [%v]: %v\n"+
+			"[%v]: %v\n"+
+			"[%v]: %v\n"+
+			"[%v]: %v\n"+
+			"[%v]: %v\n"+
+			"[%v]: %v\n"+
+			"[%v]: %v    [%v]: %v\n"+
+			"[%v]: %v\n",
+		"Repository Name", repo.Name,
+		"Source", repo.Source,
+		"Owner", repo.Owner,
+		"License", repo.License,
+		"URL", repo.URL,
+		"Languages", repo.Languages,
+		"Ecosystems", repo.Ecosystems,
+		"Created at", repo.CreatedSince,
+		"Updated at", repo.UpdatedSince,
+		"Contributor Count", repo.ContributorCount,
+		"Organization Count", repo.OrgCount,
+		"Commit Frequency", repo.CommitFrequency,
+	)
+}
+
 func ParseRepo(r *git.Repository) (*Repo, error) {
 
 	repo := NewRepo()

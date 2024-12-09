@@ -1,6 +1,6 @@
 /*
  * @Date: 2023-11-11 22:44:26
- * @LastEditTime: 2024-12-07 18:33:57
+ * @LastEditTime: 2024-12-09 19:32:13
  * @Description: Collect Local Repo
  */
 package main
@@ -87,20 +87,7 @@ func main() {
 				logger.Panicf("[!] Paring %s Failed", input)
 			}
 
-			output := database.NewGitMetrics(
-				repo.Name,
-				repo.Owner,
-				repo.Source,
-				repo.URL,
-				repo.License,
-				repo.Ecosystems,
-				repo.CreatedSince,
-				repo.UpdatedSince,
-				repo.ContributorCount,
-				repo.OrgCount,
-				repo.CommitFrequency,
-				false,
-			)
+			output := database.Repo2Metrics(repo)
 			ch <- output
 		})
 	}
