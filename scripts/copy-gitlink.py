@@ -72,8 +72,8 @@ def copy_table(table_name):
             "UPDATE {} SET git_link = %s WHERE package = %s".format(table_name),
             (row[1], row[0]),
         )
-        if curr_dst.rowcount == 0:
-            logging.warning("No row updated for package %s", row[0])
+        # if curr_dst.rowcount == 0:
+        #     logging.warning("No row updated for package %s", row[0])
         curr_dst.close()
     conn_dest.commit()
     curr.close()
