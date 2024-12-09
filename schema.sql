@@ -132,3 +132,11 @@ create table if not exists public.nix_relationships
     primary key (frompackage, topackage)
 );
 
+create table if not exists public.git_repositories
+(
+    git_link varchar(255) not null
+        primary key,
+    industry integer,
+    domestic boolean
+);
+
