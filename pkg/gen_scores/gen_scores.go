@@ -32,8 +32,8 @@ var weights = map[string]float64{
 	"updated_since":     -1,
 	"contributor_count": 2,
 	"commit_frequency":  1,
-	"depsdev_ratios":    3,
-	"deps_distro":       3,
+	"depsdev_ratios":    6,
+	"deps_distro":       6,
 	"org_count":		 1,
 }
 
@@ -141,7 +141,11 @@ func CalculateScore(data ProjectData) float64 {
 		score += weights["deps_distro"] * normalized
 	}
 
-	return score / 10
+	var totalnum int
+	for _, weight := weights{
+		totalnum += weight
+	} 
+	return score / totalnum
 }
 
 func UpdateDepsdistro(db *sql.DB, link string, totalRatio float64) error {
