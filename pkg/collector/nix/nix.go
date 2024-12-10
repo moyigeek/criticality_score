@@ -332,7 +332,7 @@ func mergeDependencies(packages map[DepInfo][]DepInfo) map[DepInfo][]DepInfo {
 	return mergedPackages
 }
 
-func getAllDep(packages map[DepInfo][]DepInfo, pkgName string, visited map[string]bool, deps []string) []string {
+func getAllDep(packages map[string][]string, pkgName string, visited map[string]bool, deps []string) []string {
 	if visited[pkgName] {
 		return deps
 	}
@@ -340,14 +340,9 @@ func getAllDep(packages map[DepInfo][]DepInfo, pkgName string, visited map[strin
 	visited[pkgName] = true
 	deps = append(deps, pkgName)
 
-	for pkg, depsList := range packages {
-		if pkg.Name == pkgName {
-			for _, dep := range depsList {
-				pkgname := dep.Name
-				if !visited[pkgname] {
-					deps = getAllDep(packages, pkgname, visited, deps)
-				}
-			}
+	for _, dep := range packages[pkgName] {
+		if !visited[dep] {
+			deps = getAllDep(packages, dep, visited, deps)
 		}
 	}
 	return deps
@@ -437,29 +432,29 @@ func reverseDependencies(deps map[DepInfo][]DepInfo) map[DepInfo][]DepInfo {
 }
 
 func Nix() {
-    // // 检查是否存在缓存文件
-    // packages, err := LoadPackage()
-    // if err != nil {
-    //     fmt.Printf("Error loading package list: %v\n", err)
-    //     return
-    // }
+    // 检查是否存在缓存文件
+    packages, err := LoadPackage()
+    if err != nil {
+        fmt.Printf("Error loading package list: %v\n", err)
+        return
+    }
 
-    // if packages == nil {
-        // 如果没有缓存，则获取新的包列表
+    if packages == nil {
         packages, err := GetAllNixPackages()
         if err != nil {
             fmt.Printf("Error retrieving Nix packages: %v\n", err)
             return
         }
 
-        // 存储到文件
-        // if err := SavePackage(packages); err != nil {
-        //     fmt.Printf("Error saving package list: %v\n", err)
-        //     return
-        // }
-    // }
+        if err := SavePackage(packages); err != nil {
+            fmt.Printf("Error saving package list: %v\n", err)
+            return
+        }
+    }
 
     countDependencies(packages)
+	
+	fmt.Println("Nix package information updated successfully")
 
     if err := updateOrInsertNixPackages(packages); err != nil {
         fmt.Printf("Error updating or inserting Nix packages into database: %v\n", err)
@@ -592,9 +587,17 @@ func countDependencies(packages map[DepInfo][]DepInfo) {
 	countMap := make(map[string]int)
 	depMap := make(map[string][]string)
 
+	deporigMap := make(map[string][]string)
+
+	for key, list := range packages {
+		for _, value := range list {
+			deporigMap[key.Name] = append(deporigMap[key.Name], value.Name)
+		}
+	}
+
 	for pkgInfo := range packages {
 		visited := make(map[string]bool)
-		deps := getAllDep(packages, pkgInfo.Name, visited, []string{})
+		deps := getAllDep(deporigMap, pkgInfo.Name, visited, []string{})
 		depMap[pkgInfo.Name] = deps
 	}
 
