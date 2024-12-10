@@ -3,34 +3,65 @@ package main
 import (
 	"encoding/csv"
 	"fmt"
-	"io"
 	"os"
-	"strings"
+	"flag"
+	"net/http"
+	"time"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/home2git"
+	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 )
-
-func main() {
-	if len(os.Args) < 3 {
-		fmt.Println("Usage: go run main.go <input_csv_file> <output_csv_file>")
-		return
+var flagConfigPath = flag.String("config", "config.json", "path to the config file")
+func check(githubURL string)string{
+	client := &http.Client{
+		Timeout: 30 * time.Second,
 	}
 
-	inputCSV := os.Args[1]
-	outputCSV := os.Args[2]
-
-	// 打开输入文件
-	inFile, err := os.Open(inputCSV)
+	resp, err := client.Get(githubURL)
 	if err != nil {
-		fmt.Printf("Failed to open input file %s: %v\n", inputCSV, err)
+		return ""
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode == http.StatusOK {
+		return githubURL
+	}
+	return ""
+}
+
+func fetchAllLinks() ([][]string, error) {
+	db, err := storage.GetDatabaseConnection()
+	rows, err := db.Query("SELECT package, homepage FROM gentoo_packages union select package, homepage from homebrew_packages union select package, homepage from nix_packages")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var links [][]string
+	for rows.Next() {
+		var packageName, link string
+		if err := rows.Scan(&packageName, &link); err != nil {
+			return nil, err
+		}
+		links = append(links, []string{link, packageName})
+	}
+	fmt.Println("Fetched", len(links), "links")
+	return links, nil
+}
+func main() {
+	flag.Parse()
+	err := storage.InitializeDatabase(*flagConfigPath)
+	if err != nil {
+		fmt.Printf("Error initializing database: %v\n", err)
 		return
 	}
-	defer inFile.Close()
+	if len(os.Args) < 2 {
+		fmt.Println("Usage: go run main.go <output_csv_file>")
+		return
+	}
+	outputCSV := os.Args[1]
+	var PackageList [][]string
+	PackageList, _ = fetchAllLinks()
 
-	// 创建CSV读取器
-	reader := csv.NewReader(inFile)
-
-	// 打开输出文件
 	outFile, err := os.Create(outputCSV)
 	if err != nil {
 		fmt.Printf("Failed to create output file %s: %v\n", outputCSV, err)
@@ -38,46 +69,37 @@ func main() {
 	}
 	defer outFile.Close()
 
-	// 创建CSV写入器
 	writer := csv.NewWriter(outFile)
-	defer writer.Flush()
 
-	// 写入标题行到输出文件
-	writer.Write([]string{"PackageName", "Homepage", "GitHub Repository"})
+	if err := writer.Write([]string{"PackageName", "Homepage", "GitHub Repository"}); err != nil {
+		fmt.Printf("Error writing header: %v\n", err)
+		return
+	}
+	writer.Flush()
 
-	// 读取每一行输入
-	for {
-		record, err := reader.Read()
-		if err != nil {
-			if err == io.EOF {
-				break
-			}
-			fmt.Printf("Failed to read from input file %s: %v\n", inputCSV, err)
-			continue
-		}
+	for i := 0; i < len(PackageList); i++ {
+		homepageURL := PackageList[i][0]
+		packageName := PackageList[i][1]
 
-		if len(record) < 2 {
-			continue // 跳过无效的行
-		}
-
-		packageName := record[0]
-		homepageURL := record[1]
 		htmlContent, err := home2git.DownloadHTML(homepageURL)
 		if err != nil {
 			continue
 		}
-		if strings.HasPrefix(homepageURL, "https://github.com") {
-			writer.Write([]string{packageName, homepageURL, homepageURL})
+
+		links, _ := home2git.FindLinksInHTML(homepageURL, htmlContent, 1)
+		githubURL := home2git.ProcessHomepage(packageName, links, homepageURL)
+		res := check(githubURL)
+		if res == "" {
 			continue
 		}
-		links, _ := home2git.FindLinksInHTML(homepageURL, htmlContent, 1)
-		// fmt.Println(links)
-		// 调用 ProcessHomepage 函数处理主页 URL
-		githubURL := home2git.ProcessHomepage(packageName, links, homepageURL)
-		// fmt.Println(githubURL)
-		// 将结果写入到输出文件
-		writer.Write([]string{packageName, homepageURL, githubURL})
+
+		if err := writer.Write([]string{packageName, homepageURL, res}); err != nil {
+			fmt.Printf("Error writing row: %v\n", err)
+			continue
+		}
+		writer.Flush()
 	}
 
 	fmt.Println("Processing complete. Results saved to", outputCSV)
 }
+
