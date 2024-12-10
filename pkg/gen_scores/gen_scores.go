@@ -141,8 +141,8 @@ func CalculateScore(data ProjectData) float64 {
 		score += weights["deps_distro"] * normalized
 	}
 
-	var totalnum int
-	for _, weight := weights{
+	var totalnum float64
+	for _, weight := range weights{
 		totalnum += weight
 	} 
 	return score / totalnum
