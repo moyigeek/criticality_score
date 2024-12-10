@@ -2,7 +2,7 @@
 
 [English](./README.md) | 简体中文
 
-## 描述
+## 简介
 
 Criticality Score 项目旨在评估和排名开源项目在生态系统中的重要性和维护状态。与仅依赖 GitHub 指标的传统方法不同，该项目结合了来自各种 Linux 发行版的数据，以提供更全面的分析。
 
@@ -19,12 +19,12 @@ Criticality Score 项目旨在评估和排名开源项目在生态系统中的�
 
 ## 快速开始
 
-如果您想使用 Gentoo 前缀进行设置，请参阅 [如何设置 Gentoo prefix](./docs/setup/gentoo.zh_CN.md)。
+如果您想收集 gentoo 的设计，请参阅 [如何设置 Gentoo prefix](./docs/setup/gentoo.zh_CN.md) 设置 Gentoo prefix。
 
 然后确保已安装 `docker` 和 `docker-compose-v2`，并运行以下命令。
 
 ```sh
-export GENTOO_PREFIX_DIR=<你的 Gentoo prefix 路径>
+export GENTOO_PREFIX_DIR=<你的 Gentoo prefix 路径> # 如果没有设置 Gentoo prefix，请忽略
 export GITHUB_TOKEN=<你的 GitHub Token>
 ./setup.sh
 ```

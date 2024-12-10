@@ -19,12 +19,12 @@ By collecting and analyzing metrics from multiple sources, this project offers a
 
 ## Quick Start
 
-If you want to setup with Gentoo prefix, please refer to [How to setup Gentoo prefix](./docs/setup/gentoo.md).
+If you want to collect data from Gentoo, go to setup with Gentoo prefix, and please refer to [How to setup Gentoo prefix](./docs/setup/gentoo.md).
 
 Then make sure `docker` and `docker-compose-v2` is installed, and run the following.
 
 ```sh
-export GENTOO_PREFIX_DIR=<your Gentoo prefix location>
+export GENTOO_PREFIX_DIR=<your Gentoo prefix location> # If you don't have Gentoo prefix set, ignore
 export GITHUB_TOKEN=<your GitHub token>
 ./setup.sh
 ```
