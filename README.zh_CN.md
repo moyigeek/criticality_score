@@ -19,7 +19,7 @@ Criticality Score 项目旨在评估和排名开源项目在生态系统中的�
 
 ## 快速开始
 
-如果您想收集 gentoo 的设计，请参阅 [如何设置 Gentoo prefix](./docs/setup/gentoo.zh_CN.md) 设置 Gentoo prefix。
+如果您想收集 gentoo 的数据，请参阅 [如何设置 Gentoo prefix](./docs/setup/gentoo.zh_CN.md) 设置 Gentoo prefix。
 
 然后确保已安装 `docker` 和 `docker-compose-v2`，并运行以下命令。
 
