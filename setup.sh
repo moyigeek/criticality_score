@@ -108,6 +108,32 @@ if [ -f ".env" ]; then
     fi
 fi
 
+if [ -z "$GITHUB_TOKEN" ]; then
+    echo_red "It seems that you haven't set the GITHUB_TOKEN."
+    echo_red "enumerate_github will not work without it."
+    echo
+    echo -n "Do you want to ignore it and continue setup? [y/N] "
+
+    read -r answer
+    if [ "$answer" != "y" ] && [ "$answer" != "Y" ]; then
+        exit 0
+    fi
+fi
+
+if [ -z "$GENTOO_PREFIX_DIR" ]; then
+    echo_red "It seems that you haven't set the GENTOO_PREFIX_DIR."
+    echo_red "enumerate_gentoo will not work without it."
+    echo
+    echo "About how to set GENTOO_PREFIX_DIR, please refer to the `docs/setup/gentoo.md`."
+    echo
+    echo -n "Do you want to ignore it and continue setup? [y/N] "
+
+    read -r answer
+    if [ "$answer" != "y" ] && [ "$answer" != "Y" ]; then
+        exit 0
+    fi
+fi
+
 # 1. Create dirs and files
 
 echo "Setting up files..."
@@ -132,6 +158,8 @@ DB_PASSWD=$DB_PASSWD
 WEB_HOST_PORT=$WEB_HOST_PORT
 APISERVER_HOST_PORT=$APISERVER_HOST_PORT
 STORAGE_DIR=$STORAGE_DIR
+GITHUB_TOKEN=$GITHUB_TOKEN
+GENTOO_PREFIX_DIR=$GENTOO_PREFIX_DIR
 EOF
 
 # 2. Start docker compose
