@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 	"io"
+	"strings"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 )
@@ -14,17 +15,16 @@ import (
 var visitedLinks = make(map[string]bool)
 
 
-func Home2git(flagConfigPath *string){
-	err := storage.InitializeDatabase(*flagConfigPath)
+func Home2git(flagConfigPath string, outputCSV string, url string){
+	err := storage.InitializeDatabase(flagConfigPath)
 	if err != nil {
 		fmt.Printf("Error initializing database: %v\n", err)
 		return
 	}
-	if len(os.Args) < 2 {
-		fmt.Println("Usage: go run main.go <output_csv_file>")
+	if url == ""{
+		fmt.Println("Please provide a LLM URL.")
 		return
 	}
-	outputCSV := os.Args[1]
 	var PackageList [][]string
 	PackageList, _ = FetchAllLinks()
 
@@ -53,7 +53,7 @@ func Home2git(flagConfigPath *string){
 		}
 
 		links, _ := FindLinksInHTML(homepageURL, htmlContent, 1)
-		githubURL := ProcessHomepage(packageName, links, homepageURL)
+		githubURL := ProcessHomepage(packageName, links, homepageURL, url)
 		res := Check(githubURL)
 		if res == "" {
 			continue
@@ -206,4 +206,34 @@ func FindLinksInHTML(url string, htmlContent string, depth int) ([]string, error
 
 	// traverse(doc)
 	return links, nil
+}
+
+func FindGitRepository(homepageURL string, links []string, packageName string, attempts int, url string) string {
+	var prompt string
+	linksString := strings.Join(links, ", ")
+	if len(links) > 0 {
+		prompt = fmt.Sprintf(PROMPT["home2git_link"], linksString, packageName)
+	} else {
+		prompt = fmt.Sprintf(PROMPT["home2git_nolink"], homepageURL)
+	}
+	fullResponse := InvokeModel(prompt, attempts, url)
+	if strings.Contains(fullResponse, "does not exist") {
+		if attempts < 3 {
+			return FindGitRepository(homepageURL, links, packageName, attempts+1, url)
+		}
+		return "does not exist"
+	} else if strings.Contains(fullResponse, "URL is:") {
+		potentialURL := strings.Split(strings.Split(fullResponse, "URL is:")[1], "\n")[0]
+		patten := gitLinkPatterns[0]
+		if matches := patten.FindStringSubmatch(potentialURL); len(matches) > 0 {
+			return matches[0]
+		}
+		return potentialURL
+	}
+	return "does not exist"
+}
+
+func ProcessHomepage(packageName string, links []string, homepageURL string,url string) string {
+	githubURL := FindGitRepository(homepageURL, links, packageName, 3, url)
+	return githubURL
 }

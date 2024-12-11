@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"flag"
 	"log"
 
@@ -11,6 +10,7 @@ import (
 )
 
 var flagConfigPath = flag.String("config", "config.json", "path to the config file")
+var batchSize = flag.Int("batch", 1000, "batch size")
 
 func main() {
 	flag.Parse()
@@ -22,38 +22,30 @@ func main() {
 
 	defer db.Close()
 
-	links, err := fetchAllLinks(db)
+	links, err := scores.FetchAllLinks(db)
 	if err != nil {
 		log.Fatalf("Failed to fetch git links: %v", err)
 	}
+	scores.CalculaterepoCount(db)
+	packageScore := make(map[string]scores.LinkScore)
+	linkCount := make(map[string]map[string]int)
+	for repo := range scores.PackageList{
+		linkCount[repo] = scores.FetchdLinkCount(repo, db)
+	}
 	for _, link := range links{
-		scores.CalculateDepsdistro(db, link)
+		distro_scores := scores.CalculateDepsdistro(link, linkCount)
 		data, err := scores.FetchProjectData(db, link)
 		if err != nil {
 			log.Printf("Failed to fetch project data for %s: %v", link, err)
 			continue
 		}
-		score := scores.CalculateScore(*data)
-		if err := scores.UpdateScore(db, link, score * 100); err != nil {
-			log.Printf("Failed to update score for %s: %v", link, err)
+		score := scores.CalculateScore(*data, distro_scores)
+		packageScore[link] = scores.LinkScore{
+			Distro_scores: distro_scores,
+			Score:         score,
 		}
 	}
+	log.Println("Updating database...")
+	scores.UpdateScore(db, packageScore, *batchSize)
 }
 
-func fetchAllLinks(db *sql.DB) ([]string, error) {
-	rows, err := db.Query("SELECT git_link FROM git_metrics")
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	var links []string
-	for rows.Next() {
-		var link string
-		if err := rows.Scan(&link); err != nil {
-			return nil, err
-		}
-		links = append(links, link)
-	}
-	return links, nil
-}
