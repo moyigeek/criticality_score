@@ -24,7 +24,7 @@ func FindGitRepository(homepageURL string, links []string, packageName string, a
 		prompt = fmt.Sprintf("Check if there is a git repository for %s hosted on platforms like GitHub, GitLab, or Gitee. If it exists, respond in the format 'URL is: [url]'. If no repository exists, respond with 'does not exist'.", homepageURL)
 	}
 
-	url := "http://222.20.126.129:11434/api/generate"
+	url := ""
 	headers := map[string]string{
 		"Content-Type": "application/json",
 	}
@@ -81,7 +81,6 @@ func FindGitRepository(homepageURL string, links []string, packageName string, a
 }
 
 func ProcessHomepage(packageName string, links []string, homepageURL string) string {
-	// 调用已经存在的 FindGitRepository 函数，并直接返回其结果
 	githubURL := FindGitRepository(homepageURL, links, packageName, 3)
 	return githubURL
 }

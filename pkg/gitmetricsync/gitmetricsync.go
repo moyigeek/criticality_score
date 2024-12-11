@@ -35,8 +35,8 @@ func Run() {
 
 }
 
-func fetchGitLinks(db *sql.DB, from int) map[string]bool {
-	gitLinks := make(map[string]bool)
+func fetchGitLinks(db *sql.DB, from int) map[string]string {
+	gitLinks := make(map[string]string)
 	for _, table := range unionTables[from] {
 		rows, err := db.Query(fmt.Sprintf("SELECT git_link FROM %s", table))
 		if err != nil {
@@ -50,18 +50,28 @@ func fetchGitLinks(db *sql.DB, from int) map[string]bool {
 				log.Fatal(err)
 			}
 			if gitLink.Valid{
-				gitLinks[gitLink.String] = true
+				link := strings.TrimSpace(gitLink.String)
+				if link == "" || link == "NA" || link == "NaN" {
+					continue
+				}
+				if !strings.HasPrefix(link, "git://") && !strings.HasPrefix(link, "https://") && !strings.HasPrefix(link, "http://") {
+					continue
+				}
+				if !strings.HasSuffix(link, ".git") {
+					link += ".git"
+				}
+				gitLinks[strings.ToLower(link)] = link
 			}
 		}
 	}
 	return gitLinks
 }
 
-func syncGitMetrics(db *sql.DB, gitLinks map[string]bool, from int) {
+func syncGitMetrics(db *sql.DB, gitLinks map[string]string, from int) {
 	normalizedLinks := make(map[string]string)
 	for link := range gitLinks {
-			lowercaseLink := strings.ToLower(link)
-			normalizedLinks[lowercaseLink] = link
+			lowercaseLink := strings.ToLower(gitLinks[link])
+			normalizedLinks[lowercaseLink] = gitLinks[link]
 	}
 	dbLinks := make(map[string]string)
 	query := `SELECT git_link FROM git_metrics WHERE "from" = $1`
@@ -76,30 +86,40 @@ func syncGitMetrics(db *sql.DB, gitLinks map[string]bool, from int) {
 		if err := rows.Scan(&gitLink); err != nil {
 			log.Fatalf("Failed to scan git_link from git_metrics: %v", err)
 		}
-		if gitLink == "" || gitLink == "NA" || gitLink == "NaN" {
-			continue
-		}
 		dbLinks[strings.ToLower(gitLink)] = gitLink
 	}
 
 	for dbLinkLower, dbLinkOriginal := range normalizedLinks {
-		if _, exists := gitLinks[dbLinkLower]; !exists {
-			_, err := db.Exec(`DELETE FROM git_metrics WHERE LOWER(git_link) = $1 AND "from" = $2`, dbLinkLower, from)
-			if err != nil {
-				log.Printf("Failed to delete git_link %s: %v", dbLinkOriginal, err)
+		if _, exists := dbLinks[dbLinkLower]; !exists {
+			if from == 0 {
+				_, err := db.Exec(`
+					INSERT INTO git_metrics (git_link, "from", need_update)
+					VALUES ($1, $2, $3)
+					ON CONFLICT (git_link) 
+					DO UPDATE SET "from" = EXCLUDED."from"`,
+					dbLinkOriginal, from, true)
+				if err != nil {
+					log.Printf("Failed to insert or update git_link %s: %v", dbLinkOriginal, err)
+				}
+			} else {
+				_, err := db.Exec(`
+					INSERT INTO git_metrics (git_link, "from", need_update)
+					VALUES ($1, $2, $3)
+					ON CONFLICT (git_link) DO NOTHING`,
+					dbLinkOriginal, from, true)
+				if err != nil {
+					log.Printf("Failed to insert git_link %s: %v", dbLinkOriginal, err)
+				}
 			}
 		}
 	}
+	
 
 	for normLinkLower, normLinkOriginal := range dbLinks {
-		if _, exists := dbLinks[normLinkLower]; !exists {
-			parts := strings.Split(normLinkOriginal, "/")
-			if len(parts) >= 5 {
-				fmt.Println(normLinkOriginal)
-				_, err := db.Exec(`INSERT INTO git_metrics (git_link, "from", need_update) VALUES ($1, $2, $3)`, normLinkOriginal, from, true)
-				if err != nil {
-					log.Printf("Failed to insert git_link %s: %v", normLinkOriginal, err)
-				}
+		if _, exists := normalizedLinks[normLinkLower]; !exists {
+			_, err := db.Exec(`DELETE FROM git_metrics WHERE LOWER(git_link) = $1 AND "from" = $2`, normLinkLower, from)
+			if err != nil {
+				log.Printf("Failed to delete git_link %s: %v", normLinkOriginal, err)
 			}
 		}
 	}

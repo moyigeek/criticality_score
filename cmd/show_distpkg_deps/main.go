@@ -16,6 +16,8 @@ var (
 	flagConfigPath = flag.String("config", "config.json", "path to the config file")
 	flagType       = flag.String("type", "", "type of the distribution")
 	flagGenDot     = flag.String("gendot", "", "output dot file")
+	workerCount   = flag.Int("worker", 1, "number of workers")
+	batchSize     = flag.Int("batch", 1000, "batch size")
 )
 
 func main() {
@@ -31,7 +33,7 @@ func main() {
 		if *flagGenDot == "" {
 			fmt.Errorf("Nix not support gendot")
 		}
-		nix.Nix()
+		nix.Nix(*workerCount, *batchSize)
 	case "homebrew":
 		homebrew.Homebrew(*flagGenDot)	
 	case "gentoo":

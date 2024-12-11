@@ -11,6 +11,8 @@ import (
 	"regexp"
 	"strings"
 	"unicode"
+	"sync"
+	"database/sql"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	"github.com/lib/pq"
@@ -74,7 +76,7 @@ func attributePathToNixExpression(attributePath string) string {
 }
 
 // getAllNixPackages retrieves all Nix packages as DepInfo and their dependencies
-func GetAllNixPackages() (map[DepInfo][]DepInfo, error) {
+func GetAllNixPackages(poolsize int) (map[DepInfo][]DepInfo, error) {
 	cmd := exec.Command("nix-env", "-qaP")
 	out, err := cmd.Output()
 	if err != nil {
@@ -84,63 +86,78 @@ func GetAllNixPackages() (map[DepInfo][]DepInfo, error) {
 	packages := make(map[DepInfo][]DepInfo)
 	lines := strings.Split(string(out), "\n")
 
+	var mu sync.Mutex
 	re := regexp.MustCompile(`^nixpkgs\.(.+?)\s+([^\s]+)$`)
-
-	for _, line := range lines {
-		if strings.TrimSpace(line) == "" || strings.Contains(line, "evaluation warning") {
-			continue
+	chunksize := (len(lines) + poolsize - 1) / poolsize
+	linechunks := make([][]string, 0, poolsize)
+	for i := 0; i < len(lines); i += chunksize {
+		end := i + chunksize
+		if end > len(lines) {
+			end = len(lines)
 		}
-
-		matches := re.FindStringSubmatch(line)
-		if len(matches) == 3 {
-			attributePath := matches[1]
-			packageFullName := matches[2]
-
-			parts := strings.Split(packageFullName, "-")
-
-			versionIndex := -1
-			for i := 1; i < len(parts); i++ {
-				if len(parts[i]) > 0 && unicode.IsDigit(rune(parts[i][0])) {
-					versionIndex = i
-					break
-				}
-			}
-
-			var packageName, packageVersion string
-			if versionIndex != -1 {
-				packageName = strings.Join(parts[:versionIndex], "-")
-				packageVersion = strings.Join(parts[versionIndex:], "-")
-			} else {
-				packageName = packageFullName
-				packageVersion = ""
-			}
-
-			packageInfo, err := GetNixPackageInfo(attributePath)
-			if err != nil {
-				fmt.Printf("Error getting info for %s: %v\n", attributePath, err)
-				continue
-			}
-
-			pkgDepInfo := DepInfo{
-				Name:        packageName,
-				Version:     packageVersion,
-				Homepage:    packageInfo.Homepage,
-				Description: packageInfo.Description,
-				GitLink:     packageInfo.GitLink,
-			}
-
-			dependencies, err := GetNixPackageDependencies(attributePath)
-			if err != nil {
-				fmt.Printf("Error getting dependencies for %s: %v\n", attributePath, err)
-				continue
-			}
-
-			packages[pkgDepInfo] = dependencies
-			fmt.Println(pkgDepInfo)
-			fmt.Println(dependencies)
-		}
+		linechunks = append(linechunks, lines[i:end])
 	}
 
+	wg := WorkerPool(poolsize, func(worker int){
+		if worker > len(linechunks){
+			return
+		}
+		chunk := linechunks[worker]
+		for _, line := range chunk {
+			if strings.TrimSpace(line) == "" || strings.Contains(line, "evaluation warning") {
+				continue
+			}
+	
+			matches := re.FindStringSubmatch(line)
+			if len(matches) == 3 {
+				attributePath := matches[1]
+				packageFullName := matches[2]
+				parts := strings.Split(packageFullName, "-")
+				versionIndex := -1
+				for i := 1; i < len(parts); i++ {
+					if len(parts[i]) > 0 && unicode.IsDigit(rune(parts[i][0])) {
+						versionIndex = i
+						break
+					}
+				}
+
+				var packageName, packageVersion string
+				if versionIndex != -1 {
+					packageName = strings.Join(parts[:versionIndex], "-")
+					packageVersion = strings.Join(parts[versionIndex:], "-")
+				} else {
+					packageName = packageFullName
+					packageVersion = ""
+				}
+
+				packageInfo, err := GetNixPackageInfo(attributePath)
+				if err != nil {
+					fmt.Printf("Error getting info for %s: %v\n", attributePath, err)
+					continue
+				}
+	
+				pkgDepInfo := DepInfo{
+					Name:        packageName,
+					Version:     packageVersion,
+					Homepage:    packageInfo.Homepage,
+					Description: packageInfo.Description,
+					GitLink:     packageInfo.GitLink,
+				}
+
+				dependencies, err := GetNixPackageDependencies(attributePath)
+				if err != nil {
+					fmt.Printf("Error getting dependencies for %s: %v\n", attributePath, err)
+					continue
+				}
+				mu.Lock()
+				packages[pkgDepInfo] = dependencies
+				mu.Unlock()
+			}
+		}
+	})
+
+
+	wg()
 	return packages, nil
 }
 
@@ -379,7 +396,7 @@ func LoadPackage() (map[DepInfo][]DepInfo, error) {
     file, err := os.Open("packages.gob")
     if err != nil {
         if os.IsNotExist(err) {
-            return nil, nil // 文件不存在，返回 nil
+            return nil, nil
         }
         return nil, err
     }
@@ -423,40 +440,38 @@ func reverseDependencies(deps map[DepInfo][]DepInfo) map[DepInfo][]DepInfo {
     reversed := make(map[DepInfo][]DepInfo)
     for key, values := range deps {
         for _, dep := range values {
-            simplifiedDep := DepInfo{Name: dep.Name} // 只保留 Name 字段
-			// fmt.Println(key)
+            simplifiedDep := DepInfo{Name: dep.Name}
             reversed[simplifiedDep] = append(reversed[simplifiedDep], key)
         }
     }
     return reversed
 }
 
-func Nix() {
-    // 检查是否存在缓存文件
-    packages, err := LoadPackage()
-    if err != nil {
-        fmt.Printf("Error loading package list: %v\n", err)
-        return
-    }
+func Nix(workerCount int, batchSize int) {
+    // packages, err := LoadPackage()
+    // if err != nil {
+    //     fmt.Printf("Error loading package list: %v\n", err)
+    //     return
+    // }
 
-    if packages == nil {
-        packages, err := GetAllNixPackages()
+    // if packages == nil {
+        packages, err := GetAllNixPackages(workerCount)
         if err != nil {
             fmt.Printf("Error retrieving Nix packages: %v\n", err)
             return
         }
 
-        if err := SavePackage(packages); err != nil {
-            fmt.Printf("Error saving package list: %v\n", err)
-            return
-        }
-    }
-
+    //     if err := SavePackage(packages); err != nil {
+    //         fmt.Printf("Error saving package list: %v\n", err)
+    //         return
+    //     }
+    // }
+	fmt.Println("Nix package information retrieved successfully")
     countDependencies(packages)
 	
 	fmt.Println("Nix package information updated successfully")
 
-    if err := updateOrInsertNixPackages(packages); err != nil {
+    if err := batchupdateOrInsertNixPackages(packages, batchSize); err != nil {
         fmt.Printf("Error updating or inserting Nix packages into database: %v\n", err)
         return
     }
@@ -473,41 +488,65 @@ func Nix() {
     fmt.Println("Successfully updated package information in the database")
 }
 
-// 新增函数：将 Nix 包信息存储到数据库
-func updateOrInsertNixPackages(packages map[DepInfo][]DepInfo) error {
-    db, err := storage.GetDatabaseConnection()
-    if err != nil {
-        return err
-    }
-    defer db.Close()
+func batchupdateOrInsertNixPackages(packages map[DepInfo][]DepInfo, batchSize int) error {
+	db, err := storage.GetDatabaseConnection()
+	if err != nil {
+		return fmt.Errorf("error connecting to database: %w", err)
+	}
+	defer db.Close()
 
-    for pkg,_ := range packages {
-        // 假设我们只存储包名和依赖数量
-        var exists bool
-        err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM nix_packages WHERE package = $1)", pkg.Name).Scan(&exists)
-        if err != nil {
-            return err
-        }
+	var packageList []DepInfo
+	seen := make(map[string]bool)
 
-        if !exists {
-            // 插入新包信息
-            _, err := db.Exec("INSERT INTO nix_packages (package, version, homepage, description, depends_count) VALUES ($1, $2, $3, $4, $5)",
-                pkg.Name, pkg.Version, pkg.Homepage, pkg.Description, pkg.DepCount)
-            if err != nil {
-                return err
-            }
-        } else {
-            _, err = db.Exec("UPDATE nix_packages SET version = $1, homepage = $2, description = $3, depends_count = $4 WHERE package = $5",
-                pkg.Version, pkg.Homepage, pkg.Description, pkg.DepCount, pkg.Name)
-            if err != nil {
-                return err
-            }
-        }
-    }
-    return nil
+	for pkg := range packages {
+		if !seen[pkg.Name] {
+			packageList = append(packageList, pkg)
+			seen[pkg.Name] = true
+		}
+	}
+
+	for i := 0; i < len(packageList); i += batchSize {
+		end := i + batchSize
+		if end > len(packageList) {
+			end = len(packageList)
+		}
+		batch := packageList[i:end]
+
+		if err := updateOrInsertBatch(db, batch); err != nil {
+			return fmt.Errorf("error processing batch: %w", err)
+		}
+	}
+
+	return nil
 }
 
-// findDepInfoByName 根据包名在包列表中查找对应的 DepInfo
+func updateOrInsertBatch(db *sql.DB, batch []DepInfo) error {
+	tx, err := db.Begin()
+	if err != nil {
+		return fmt.Errorf("failed to begin transaction: %w", err)
+	}
+	defer tx.Rollback()
+
+	query := `
+		INSERT INTO nix_packages (package, version, homepage, description, depends_count)
+		VALUES ($1, $2, $3, $4, $5)
+		ON CONFLICT (package) DO UPDATE
+		SET version = EXCLUDED.version,
+			homepage = EXCLUDED.homepage,
+			description = EXCLUDED.description,
+			depends_count = EXCLUDED.depends_count
+	`
+
+	for _, pkg := range batch {
+		_, err := tx.Exec(query, pkg.Name, pkg.Version, pkg.Homepage, pkg.Description, pkg.DepCount)
+		if err != nil {
+			return fmt.Errorf("error inserting or updating package %s: %w", pkg.Name, err)
+		}
+	}
+
+	return tx.Commit()
+}
+
 func findDepInfoByName(packages map[DepInfo][]DepInfo, name string) (DepInfo, bool) {
     for dep := range packages {
         if dep.Name == name {
@@ -619,4 +658,17 @@ func isUniqueViolation(err error) bool {
 		return pqErr.Code == "23505"
 	}
 	return false
+}
+
+type WorkerFunc func(worker int)
+func WorkerPool(n int, w WorkerFunc) (waitFunc func()) {
+	wg := &sync.WaitGroup{}
+	wg.Add(n)
+	for i := 0; i < n; i++ {
+		go func(worker int) {
+			defer wg.Done()
+			w(worker)
+		}(i)
+	}
+	return wg.Wait
 }
