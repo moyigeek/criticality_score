@@ -9,6 +9,7 @@ import (
 )
 
 var flagConfigPath = flag.String("config", "config.json", "path to the config file")
+var batchSize = flag.Int("batch", 1000, "batch size")
 
 func main() {
 	flag.Parse()
@@ -17,4 +18,5 @@ func main() {
 	log.Println("Starting synchronization...")
 	gitmetricsync.Run()
 	log.Println("Synchronization complete.")
+	gitmetricsync.Union_repo(*batchSize)
 }
