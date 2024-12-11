@@ -24,6 +24,17 @@ type ProjectData struct {
 	Org_Count		 *int
 }
 
+type LinkScore struct{
+	Distro_scores 	float64
+	Score 			float64
+}
+
+type UpdateData struct {
+	Link         string
+	DistroScores float64
+	Score        float64
+}
+
 // Define weights (αi) and max thresholds (Ti)
 var weights = map[string]float64{
 	// "star_count":        1,
@@ -58,23 +69,31 @@ var PackageManagerData = map[string]int{
 	"cargo": 155000,
 }
 
-func CalculateDependencyRatio(db *sql.DB, link, packageType string) (float64, error) {
-	var packageDependencies, totalPackages int
-	err := db.QueryRow(fmt.Sprintf("SELECT COALESCE(SUM(depends_count), 0) FROM %s WHERE git_link like $1", packageType), strings.TrimSuffix(link, ".git")).Scan(&packageDependencies)
-	if err != nil {
-		return 0.0, err
-	}
+var PackageList = map[string]int{
+	"debian_packages":   0,
+	"arch_packages":     0,
+	"nix_packages":      0,
+	"homebrew_packages": 0,
+	"gentoo_packages":   0,
+}
 
-	err = db.QueryRow(fmt.Sprintf("SELECT COUNT(*) FROM %s", packageType)).Scan(&totalPackages)
-	if err != nil {
-		return 0.0, err
+func CalculateDependencyRatio(link, packageType string, linkCount map[string]map[string]int) (float64, error) {
+	if _,exist := linkCount[packageType][strings.ToLower(link)]; !exist {
+		return 0, nil
 	}
+	return float64(linkCount[packageType][strings.ToLower(link)]) / float64(PackageList[packageType]), nil
+}
 
-	if totalPackages == 0 {
-		return 0.0, nil
+func CalculaterepoCount(db *sql.DB){
+	for repo := range PackageList {
+		var count int
+		err := db.QueryRow(fmt.Sprintf("SELECT COUNT(*) FROM %s", repo)).Scan(&count)
+		if err != nil {
+			fmt.Println("Error querying project type:", err)
+			return
+		}
+		PackageList[repo] = count
 	}
-
-	return float64(packageDependencies) / float64(totalPackages), nil
 }
 
 func GetProjectTypeFromDB(link string) string {
@@ -94,7 +113,7 @@ func GetProjectTypeFromDB(link string) string {
 	return projectType
 }
 
-func CalculateScore(data ProjectData) float64 {
+func CalculateScore(data ProjectData, distro_scores float64) float64 {
 	score := 0.0
 
 	var createdSinceScore, updatedSinceScore, contributorCountScore, commitFrequencyScore, Org_CountScore float64
@@ -137,7 +156,7 @@ func CalculateScore(data ProjectData) float64 {
 		}
 	}
 	if data.deps_distro != nil {
-		normalized := math.Log(float64(*data.deps_distro) + 1) / math.Log(math.Max(float64(*data.deps_distro), thresholds["deps_distro"]) + 1)
+		normalized := math.Log(distro_scores + 1) / math.Log(math.Max(distro_scores, thresholds["deps_distro"]) + 1)
 		score += weights["deps_distro"] * normalized
 	}
 
@@ -148,20 +167,56 @@ func CalculateScore(data ProjectData) float64 {
 	return score / totalnum
 }
 
-func UpdateDepsdistro(db *sql.DB, link string, totalRatio float64) error {
-	_, err := db.Exec("UPDATE git_metrics SET deps_distro = $1 WHERE git_link = $2", totalRatio, link)
-	return err
-}
+func UpdateScore(db *sql.DB, packageScore map[string]LinkScore, batchSize int) error {
+	updates := make([]UpdateData, 0, len(packageScore))
 
-func UpdateScore(db *sql.DB, gitLink string, score float64) error {
-	_, err := db.Exec("UPDATE git_metrics SET scores = $1 WHERE git_link = $2", score, gitLink)
-	return err
+	for link, score := range packageScore {
+		updates = append(updates, UpdateData{
+			Link:         link,
+			DistroScores: score.Distro_scores,
+			Score:        score.Score,
+		})
+	}
+
+	for i := 0; i < len(updates); i += batchSize {
+		end := i + batchSize
+		if end > len(updates) {
+			end = len(updates)
+		}
+		batch := updates[i:end]
+
+		query := "UPDATE git_metrics SET deps_distro = CASE git_link"
+		args := []interface{}{}
+		for j, update := range batch {
+			query += fmt.Sprintf(" WHEN $%d THEN $%d", j*3+1, j*3+2)
+			args = append(args, update.Link, update.DistroScores)
+		}
+		query += " END, score = CASE git_link"
+		for j, update := range batch {
+			query += fmt.Sprintf(" WHEN $%d THEN $%d", j*3+1, j*3+3)
+			args = append(args, update.Link, update.Score)
+		}
+		query += " END WHERE git_link IN ("
+		for j, _ := range batch {
+			if j > 0 {
+				query += ", "
+			}
+			query += fmt.Sprintf("$%d", j*3+1)
+		}
+		query += ")"
+
+		if _, err := db.Exec(query, args...); err != nil {
+			return fmt.Errorf("failed to update batch: %w", err)
+		}
+	}
+
+	return nil
 }
 
 func FetchProjectData(db *sql.DB, gitLink string) (*ProjectData, error) {
-	row := db.QueryRow("SELECT created_since, updated_since, contributor_count, commit_frequency, depsdev_count, deps_distro, ecosystem, org_count FROM git_metrics WHERE git_link = $1", gitLink)
+	row := db.QueryRow("SELECT created_since, updated_since, contributor_count, commit_frequency, depsdev_count, ecosystem, org_count FROM git_metrics WHERE git_link = $1", gitLink)
 	var data ProjectData
-	err := row.Scan(&data.CreatedSince, &data.UpdatedSince, &data.ContributorCount, &data.CommitFrequency, &data.DepsdevCount, &data.deps_distro, &data.Pkg_Manager, &data.Org_Count)
+	err := row.Scan(&data.CreatedSince, &data.UpdatedSince, &data.ContributorCount, &data.CommitFrequency, &data.DepsdevCount, &data.Pkg_Manager, &data.Org_Count)
 	if err != nil {
 		log.Printf("Failed to fetch data for git link %s: %v", gitLink, err)
 		return nil, err
@@ -169,36 +224,63 @@ func FetchProjectData(db *sql.DB, gitLink string) (*ProjectData, error) {
 	return &data, nil
 }
 
-func CalculateDepsdistro(db *sql.DB, link string) float64{
+func CalculateDepsdistro(link string, linkCount map[string]map[string]int) float64{
 	totalRatio := 0.0
-	depRatio, err := CalculateDependencyRatio(db, link, "debian_packages")
-	if err == nil {
-		totalRatio += depRatio
-	}
-	
-	depRatio, err = CalculateDependencyRatio(db, link, "arch_packages")
-	if err == nil {
+	for repo := range PackageList {
+		depRatio, err := CalculateDependencyRatio(link, repo, linkCount)
+		if err == nil {
 			totalRatio += depRatio
-	}
-
-	depRatio, err = CalculateDependencyRatio(db, link, "nix_packages")
-	if err == nil {
-			totalRatio += depRatio
-	}
-
-	depRatio, err = CalculateDependencyRatio(db, link, "homebrew_packages")
-	if err == nil {
-			totalRatio += depRatio
-	}
-
-	depRatio, err = CalculateDependencyRatio(db, link, "gentoo_packages")
-	if err == nil {
-			totalRatio += depRatio
-	}
-
-	err = UpdateDepsdistro(db, link, totalRatio)
-	if err != nil {
-		log.Printf("Failed to update database for %s: %v", link, err)
+		}
 	}
 	return totalRatio
+}
+
+func FetchdLinkCount(repo string, db *sql.DB) map[string]int {
+	rows, err := db.Query("SELECT git_link, depends_count FROM " + repo)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	gitLinks := make(map[string]int)
+	for rows.Next() {
+		var gitLink sql.NullString
+		var dependsCount int
+
+		err := rows.Scan(&gitLink, &dependsCount)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if gitLink.Valid {
+			link := strings.ToLower(gitLink.String)
+			if !strings.HasSuffix(link, ".git") {
+				link += ".git"
+			}
+
+			if _, exist := gitLinks[link]; !exist {
+				gitLinks[link] = dependsCount
+			}
+			gitLinks[link] += dependsCount
+		}
+	}
+	return gitLinks
+}
+
+func FetchAllLinks(db *sql.DB) ([]string, error) {
+	rows, err := db.Query("SELECT git_link FROM git_metrics")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var links []string
+	for rows.Next() {
+		var link string
+		if err := rows.Scan(&link); err != nil {
+			return nil, err
+		}
+		links = append(links, link)
+	}
+	return links, nil
 }

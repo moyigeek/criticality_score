@@ -13,6 +13,7 @@ import (
 var flagConfigPath = flag.String("config", "config.json", "path to the config file")
 
 func TestCalculateScore(t *testing.T) {
+	fmt.Println("Testing CalculateScore")
 	flag.Parse()
 	storage.InitializeDatabase(*flagConfigPath)
 	db, err := storage.GetDatabaseConnection()
@@ -21,13 +22,17 @@ func TestCalculateScore(t *testing.T) {
 	}
 
 	defer db.Close()
-	link := "https://github.com/wcchoi/libunrar-js.git"
-	CalculateDepsdistro(db, link)
+	link := "https://github.com/WangYves/Tinyblog.git"
+	linkCount := make(map[string]map[string]int)
+	for repo := range PackageList{
+		linkCount[repo] = FetchdLinkCount(repo, db)
+	}
+	CalculateDepsdistro(link, linkCount)
 	data, err := FetchProjectData(db, link)
 	if err != nil {
 		log.Printf("Failed to fetch project data for %s: %v", link, err)
 		return
 	}
-	score := CalculateScore(*data) * 100
+	score := CalculateScore(*data, 0) * 100
 	fmt.Println(score)
 }
