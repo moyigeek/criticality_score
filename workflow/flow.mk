@@ -24,7 +24,13 @@ update_dependents.rec: package_updated.src union_gitlink.rec
 	$(APP_BIN)/show_distpkg_deps -config $(CFG_FILE) -type debian
 	$(APP_BIN)/show_distpkg_deps -config $(CFG_FILE) -type nix
 	$(APP_BIN)/show_distpkg_deps -config $(CFG_FILE) -type homebrew
-	# $(APP_BIN)/show_distpkg_deps -config $(CFG_FILE) nix
+
+ifneq ($(GENTOO_PREFIX),)
+	$(GENTOO_PREFIX)/usr/bin/env $(GENTOO_PREFIX)/bin/bash -l -c $(APP_BIN)/show_distpkg_deps -config $(CFG_FILE) -type gentoo
+else
+	echo "! Gentoo prefix not set, skipping Gentoo"
+endif
+
 	touch $@
 
 update_git_metrics_partial.rec: union_gitlink.rec
@@ -59,7 +65,13 @@ enumerate_github.rec: github_updated.src
 	# Enumerate the GitHub repositories
 	echo "* Enumerating the GitHub repositories..."
 	rm -f /tmp/github.txt
+
+ifneq ($(GITHUB_TOKEN),)
 	$(APP_BIN)/enumerate_github -config $(CFG_FILE) -min-stars 50 -out /tmp/github.txt -workers 20
+else
+	echo "! GitHub token not set, skipping GitHub enumeration"
+endif
+
 	touch $@
 
 

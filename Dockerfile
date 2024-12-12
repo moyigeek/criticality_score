@@ -31,7 +31,7 @@ ENV CFG_FILE=/config/config.json
 ENV APP_BIN=/app
 ENV STORAGE_DIR=/storage
 
-RUN /workflow/gen_crontab.sh -o /data/log/app.log -r /data/rec > /tmp/update.cron && \
+RUN /workflow/gen_crontab.sh -o /data/log/app.log -r /data/rec -g /root/gentoo > /tmp/update.cron && \
     crontab /tmp/update.cron && \
     rm /tmp/update.cron
 

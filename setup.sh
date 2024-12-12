@@ -124,7 +124,7 @@ if [ -z "$GENTOO_PREFIX_DIR" ]; then
     echo_red "It seems that you haven't set the GENTOO_PREFIX_DIR."
     echo_red "enumerate_gentoo will not work without it."
     echo
-    echo "About how to set GENTOO_PREFIX_DIR, please refer to the `docs/setup/gentoo.md`."
+    echo 'About how to set GENTOO_PREFIX_DIR, please refer to the `docs/setup/gentoo.md`.'
     echo
     echo -n "Do you want to ignore it and continue setup? [y/N] "
 
@@ -132,13 +132,14 @@ if [ -z "$GENTOO_PREFIX_DIR" ]; then
     if [ "$answer" != "y" ] && [ "$answer" != "Y" ]; then
         exit 0
     fi
+    GENTOO_PREFIX_DIR="$DATA_DIR/gentoo"
 fi
 
 # 1. Create dirs and files
 
 echo "Setting up files..."
 
-mkdir -p "$DATA_DIR/db" "$DATA_DIR/rec" "$DATA_DIR/config" "$DATA_DIR/git" "$DATA_DIR/log"
+mkdir -p "$DATA_DIR/db" "$DATA_DIR/rec" "$DATA_DIR/config" "$DATA_DIR/git" "$DATA_DIR/log" "$DATA_DIR/gentoo"
 
 cat <<EOF >"$DATA_DIR/config/config.json"
 {
