@@ -43,6 +43,11 @@ type metricsVO struct {
 	OrgCount         *int       `json:"orgCount"`
 	CommitFrequency  *float64   `json:"commitFrequency"`
 	DepsDevCount     *int       `json:"depsDevCount"`
+	DepsDistroScore  *float64   `json:"depsDistroScore"`
+	License          *string    `json:"license"`
+	Language         *string    `json:"language"`
+	Industry         *string    `json:"industry"`
+	Domestic         *bool      `json:"domestic"`
 	Score            *float64   `json:"score"`
 	// Rank             int       `json:"rank"`
 }
@@ -87,7 +92,31 @@ func getMetrics(request *restful.Request, response *restful.Response) {
 	}
 	r.Scan(&total)
 
-	rows, err := conn.Query(`SELECT git_link, ecosystem, created_since, updated_since, contributor_count, org_count, commit_frequency, depsdev_count, scores FROM git_metrics WHERE scores IS NOT NULL ORDER BY scores DESC OFFSET $1 LIMIT $2`, start, take)
+	rows, err := conn.Query(`SELECT
+		gm.git_link AS git_link,
+		ecosystem,
+		created_since,
+		updated_since,
+		contributor_count,
+		org_count,
+		commit_frequency,
+		depsdev_count,
+		deps_distro,
+		license,
+		language,
+		CASE WHEN industry IS NULL
+			THEN 'unknown'
+			WHEN industry = 0
+			THEN 'test0'
+			ELSE 'other'
+		END AS industry,
+		gr.domestic AS domestic,
+		scores
+	FROM git_metrics gm
+	LEFT JOIN git_repositories gr ON gm.git_link = gr.git_link
+	WHERE scores IS NOT NULL
+	ORDER BY scores DESC
+	OFFSET $1 LIMIT $2`, start, take)
 
 	if err != nil {
 		response.WriteErrorString(http.StatusInternalServerError, "Fetch data error")
@@ -109,7 +138,21 @@ func getMetrics(request *restful.Request, response *restful.Response) {
 		first = false
 
 		var metrics metricsVO
-		err = rows.Scan(&metrics.GitLink, &metrics.Ecosystems, &metrics.CreatedSince, &metrics.UpdatedSince, &metrics.ContributorCount, &metrics.OrgCount, &metrics.CommitFrequency, &metrics.DepsDevCount, &metrics.Score)
+		err = rows.Scan(
+			&metrics.GitLink,
+			&metrics.Ecosystems,
+			&metrics.CreatedSince,
+			&metrics.UpdatedSince,
+			&metrics.ContributorCount,
+			&metrics.OrgCount,
+			&metrics.CommitFrequency,
+			&metrics.DepsDevCount,
+			&metrics.DepsDistroScore,
+			&metrics.License,
+			&metrics.Language,
+			&metrics.Industry,
+			&metrics.Domestic,
+			&metrics.Score)
 		if err != nil {
 			log.Print("err at scan: ", err)
 			return
