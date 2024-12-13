@@ -18,7 +18,7 @@ This project aims to evaluate and rank open-source projects based on their criti
 - **指标定制友好**: 可定制任意用于关键性评估算法的指标，而不是仅使用 Github API 中收集到的 metrics。
 - **无需依赖 Google Cloud 或 BigQuery**：`ossf/criticality_score` 依赖于 Google Cloud 服务，难以迁移到其他平台。该项目独立于特定云服务运行，确保易于部署。
 - **简易部署**：只需运行一个脚本，系统将通过 Docker 自动建立数据库，完成设置。
-- **提供附加信息**：提供额外的信息，例如项目和依赖关系之间的关系。
+- **提供附加信息**：提供额外的信息，例如各个仓库（依赖项）之间的关系。
 
 ## 快速开始
 
