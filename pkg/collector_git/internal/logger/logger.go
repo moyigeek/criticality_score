@@ -1,8 +1,8 @@
 /*
  * @Author: 7erry
  * @Date: 2024-10-10 11:55:09
- * @LastEditTime: 2024-11-27 19:37:42
- * @Description:
+ * @LastEditTime: 2024-12-14 16:50:32
+ * @Description: Log with logrus
  */
 package logger
 
