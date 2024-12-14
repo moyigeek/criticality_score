@@ -1,10 +1,10 @@
 /*
  * @Author: 7erry
  * @Date: 2024-10-18 20:26:31
- * @LastEditTime: 2024-11-27 21:24:10
+ * @LastEditTime: 2024-12-14 16:39:48
  * @Description:
  */
-package psql
+package sqlite
 
 import (
 	"strconv"

@@ -1,3 +1,9 @@
+/*
+ * @Author: 7erry
+ * @Date: 2024-09-29 14:41:35
+ * @LastEditTime: 2024-12-14 16:30:24
+ * @Description: Parse Input to make sure the provided URL is correct
+ */
 package url
 
 import (

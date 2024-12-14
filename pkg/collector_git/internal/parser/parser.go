@@ -1,3 +1,10 @@
+/*
+ * @Author: 7erry
+ * @Date: 2024-09-29 14:41:35
+ * @LastEditTime: 2024-12-14 16:30:24
+ * @Description: Config for Parser
+ */
+
 package parser
 
 import "time"

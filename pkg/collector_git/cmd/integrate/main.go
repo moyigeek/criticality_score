@@ -1,7 +1,7 @@
 /*
  * @Date: 2023-11-11 22:44:26
- * @LastEditTime: 2024-12-07 18:34:04
- * @Description:
+ * @LastEditTime: 2024-12-14 16:48:46
+ * @Description: Integrate into Criticality Score system
  */
 package main
 
