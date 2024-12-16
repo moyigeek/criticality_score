@@ -9,6 +9,7 @@ import (
 	"io/ioutil"
 	"log"
 	"strings"
+	"time"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/githubmetrics"
 	_ "github.com/lib/pq"
@@ -74,6 +75,11 @@ func main() {
 			log.Printf("Failed to update metrics for %s/%s: %v", owner, repo, err)
 		}
 	}
+
+	// 复制为生产表
+	db.Exec(fmt.Sprintf("ALTER TABLE IF EXISTS git_metrics_prod RENAME TO git_metrics_old_%s", time.Now().Format("20060102_150405")))
+	db.Exec("CREATE TABLE git_metrics_prod AS SELECT * FROM git_metrics")
+
 }
 
 // 读取配置文件

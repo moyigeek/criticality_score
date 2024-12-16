@@ -85,7 +85,7 @@ func getMetrics(request *restful.Request, response *restful.Response) {
 		response.WriteErrorString(http.StatusBadRequest, "take parameter is too large")
 	}
 
-	r := conn.QueryRow(`SELECT COUNT(*) FROM git_metrics`)
+	r := conn.QueryRow(`SELECT COUNT(*) FROM git_metrics_prod WHERE scores IS NOT NULL`)
 	if r == nil {
 		response.WriteErrorString(http.StatusInternalServerError, "No data found")
 		return
@@ -112,7 +112,7 @@ func getMetrics(request *restful.Request, response *restful.Response) {
 		END AS industry,
 		gr.domestic AS domestic,
 		scores
-	FROM git_metrics gm
+	FROM git_metrics_prod gm
 	LEFT JOIN git_repositories gr ON gm.git_link = gr.git_link
 	WHERE scores IS NOT NULL
 	ORDER BY scores DESC
