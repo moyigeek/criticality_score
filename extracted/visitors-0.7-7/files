@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/iis2apache.pl
+usr/bin/visitors
+usr/share/
+usr/share/licenses/
+usr/share/licenses/visitors/
+usr/share/licenses/visitors/COPYING
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/visitors.1.gz

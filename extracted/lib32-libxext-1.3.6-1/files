@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libXext.so
+usr/lib32/libXext.so.6
+usr/lib32/libXext.so.6.4.0
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/xext.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-libxext

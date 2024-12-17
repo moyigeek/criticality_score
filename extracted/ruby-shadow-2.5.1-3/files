@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/ruby/
+usr/lib/ruby/vendor_ruby/
+usr/lib/ruby/vendor_ruby/3.3.0/
+usr/lib/ruby/vendor_ruby/3.3.0/x86_64-linux/
+usr/lib/ruby/vendor_ruby/3.3.0/x86_64-linux/shadow.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/ruby-shadow/
+usr/share/licenses/ruby-shadow/LICENSE

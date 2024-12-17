@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/yamlfmt
+usr/share/
+usr/share/licenses/
+usr/share/licenses/yamlfmt/
+usr/share/licenses/yamlfmt/LICENSE

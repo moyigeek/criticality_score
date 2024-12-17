@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/imaginary
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/imaginary.service
+usr/share/
+usr/share/doc/
+usr/share/doc/imaginary/
+usr/share/doc/imaginary/README.md
+usr/share/licenses/
+usr/share/licenses/imaginary/
+usr/share/licenses/imaginary/LICENSE

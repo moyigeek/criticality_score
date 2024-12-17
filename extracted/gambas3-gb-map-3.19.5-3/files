@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/gambas3/
+usr/lib/gambas3/gb.map.component
+usr/lib/gambas3/gb.map.gambas
+usr/share/
+usr/share/gambas3/
+usr/share/gambas3/control/
+usr/share/gambas3/control/gb.map/
+usr/share/gambas3/control/gb.map/mapview.png
+usr/share/gambas3/info/
+usr/share/gambas3/info/gb.map.info
+usr/share/gambas3/info/gb.map.list

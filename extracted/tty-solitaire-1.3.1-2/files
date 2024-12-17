@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/ttysolitaire
+usr/share/
+usr/share/licenses/
+usr/share/licenses/tty-solitaire/
+usr/share/licenses/tty-solitaire/LICENSE

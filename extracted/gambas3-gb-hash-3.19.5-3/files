@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/gambas3/
+usr/lib/gambas3/gb.hash.component
+usr/lib/gambas3/gb.hash.la
+usr/lib/gambas3/gb.hash.so
+usr/lib/gambas3/gb.hash.so.0
+usr/lib/gambas3/gb.hash.so.0.0.0
+usr/share/
+usr/share/gambas3/
+usr/share/gambas3/info/
+usr/share/gambas3/info/gb.hash.info
+usr/share/gambas3/info/gb.hash.list

@@ -1,0 +1,13 @@
+%FILES%
+etc/
+etc/i3status.conf
+usr/
+usr/bin/
+usr/bin/i3status
+usr/share/
+usr/share/licenses/
+usr/share/licenses/i3status/
+usr/share/licenses/i3status/LICENSE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/i3status.1.gz

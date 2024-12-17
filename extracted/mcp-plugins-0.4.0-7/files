@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/ladspa/
+usr/lib/ladspa/cs_chorus.so
+usr/lib/ladspa/cs_phaser.so
+usr/lib/ladspa/mvchpf24.so
+usr/lib/ladspa/mvclpf24.so
+usr/share/
+usr/share/doc/
+usr/share/doc/mcp-plugins/
+usr/share/doc/mcp-plugins/AUTHORS
+usr/share/doc/mcp-plugins/README

@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/ssh/
+usr/lib/ssh/ssh-askpass
+usr/lib/ssh/x11-ssh-askpass
+usr/share/
+usr/share/X11/
+usr/share/X11/app-defaults/
+usr/share/X11/app-defaults/SshAskpass
+usr/share/licenses/
+usr/share/licenses/x11-ssh-askpass/
+usr/share/licenses/x11-ssh-askpass/LICENSE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/ssh-askpass.1x.gz
+usr/share/man/man1/x11-ssh-askpass.1x.gz

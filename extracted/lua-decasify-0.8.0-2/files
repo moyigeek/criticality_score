@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/lua/
+usr/lib/lua/5.4/
+usr/lib/lua/5.4/decasify.so
+usr/lib/luarocks/
+usr/lib/luarocks/rocks-5.4/
+usr/lib/luarocks/rocks-5.4/decasify/
+usr/lib/luarocks/rocks-5.4/decasify/0.8.0-1/
+usr/lib/luarocks/rocks-5.4/decasify/0.8.0-1/decasify-0.8.0-1.rockspec
+usr/lib/luarocks/rocks-5.4/decasify/0.8.0-1/doc/
+usr/lib/luarocks/rocks-5.4/decasify/0.8.0-1/doc/CHANGELOG.md
+usr/lib/luarocks/rocks-5.4/decasify/0.8.0-1/doc/LICENSE.md
+usr/lib/luarocks/rocks-5.4/decasify/0.8.0-1/doc/README.md
+usr/lib/luarocks/rocks-5.4/decasify/0.8.0-1/rock_manifest

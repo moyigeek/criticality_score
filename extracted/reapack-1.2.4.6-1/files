@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/REAPER/
+usr/lib/REAPER/Plugins/
+usr/lib/REAPER/Plugins/reaper_reapack-x86_64.so
+usr/share/
+usr/share/doc/
+usr/share/doc/reapack/
+usr/share/doc/reapack/README.md

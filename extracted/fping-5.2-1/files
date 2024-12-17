@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/fping
+usr/share/
+usr/share/licenses/
+usr/share/licenses/fping/
+usr/share/licenses/fping/COPYING
+usr/share/man/
+usr/share/man/man8/
+usr/share/man/man8/fping.8.gz

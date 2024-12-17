@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libtiff.so.4
+usr/lib32/libtiff.so.4.3.7
+usr/lib32/libtiffxx.so.4
+usr/lib32/libtiffxx.so.4.3.7
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-libtiff4

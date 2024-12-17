@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/mtpaint
+usr/share/
+usr/share/applications/
+usr/share/applications/mtpaint.desktop
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/mtpaint.1.gz
+usr/share/pixmaps/
+usr/share/pixmaps/mtpaint.png

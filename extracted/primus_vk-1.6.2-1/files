@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/primus_vk_diag
+usr/bin/pvkrun
+usr/lib/
+usr/lib/libnv_vulkan_wrapper.so.1
+usr/lib/libprimus_vk.so.1
+usr/share/
+usr/share/licenses/
+usr/share/licenses/primus_vk/
+usr/share/licenses/primus_vk/LICENSE
+usr/share/vulkan/
+usr/share/vulkan/icd.d/
+usr/share/vulkan/icd.d/nv_vulkan_wrapper.json
+usr/share/vulkan/implicit_layer.d/
+usr/share/vulkan/implicit_layer.d/primus_vk.json

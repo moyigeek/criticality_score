@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/include/
+usr/include/fftw3-mpi.f03
+usr/include/fftw3-mpi.h
+usr/include/fftw3l-mpi.f03
+usr/lib/
+usr/lib/libfftw3_mpi.so
+usr/lib/libfftw3_mpi.so.3
+usr/lib/libfftw3_mpi.so.3.6.10
+usr/lib/libfftw3f_mpi.so
+usr/lib/libfftw3f_mpi.so.3
+usr/lib/libfftw3f_mpi.so.3.6.10
+usr/lib/libfftw3l_mpi.so
+usr/lib/libfftw3l_mpi.so.3
+usr/lib/libfftw3l_mpi.so.3.6.10

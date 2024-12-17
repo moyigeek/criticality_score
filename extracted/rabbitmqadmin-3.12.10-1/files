@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/rabbitmqadmin
+usr/share/
+usr/share/licenses/
+usr/share/licenses/rabbitmqadmin/
+usr/share/licenses/rabbitmqadmin/LICENSE-MPL-RabbitMQ

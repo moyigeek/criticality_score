@@ -1,0 +1,6 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/Swift-MesonLSP
+usr/bin/mesonlint
+usr/bin/mesonlsp

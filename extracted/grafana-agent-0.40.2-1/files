@@ -1,0 +1,14 @@
+%FILES%
+etc/
+etc/grafana-agent.yaml
+usr/
+usr/bin/
+usr/bin/grafana-agent
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/grafana-agent.service
+usr/lib/sysusers.d/
+usr/lib/sysusers.d/grafana-agent.conf
+usr/lib/tmpfiles.d/
+usr/lib/tmpfiles.d/grafana-agent.conf

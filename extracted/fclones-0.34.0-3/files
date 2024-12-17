@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/fclones
+usr/share/
+usr/share/doc/
+usr/share/doc/fclones/
+usr/share/doc/fclones/README.md
+usr/share/licenses/
+usr/share/licenses/fclones/
+usr/share/licenses/fclones/LICENSE

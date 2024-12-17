@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/share/
+usr/share/fonts/
+usr/share/fonts/TTF/
+usr/share/fonts/TTF/IosevkaCurly-Bold.ttc
+usr/share/fonts/TTF/IosevkaCurly-ExtraBold.ttc
+usr/share/fonts/TTF/IosevkaCurly-ExtraLight.ttc
+usr/share/fonts/TTF/IosevkaCurly-Heavy.ttc
+usr/share/fonts/TTF/IosevkaCurly-Light.ttc
+usr/share/fonts/TTF/IosevkaCurly-Medium.ttc
+usr/share/fonts/TTF/IosevkaCurly-Regular.ttc
+usr/share/fonts/TTF/IosevkaCurly-SemiBold.ttc
+usr/share/fonts/TTF/IosevkaCurly-Thin.ttc
+usr/share/licenses/
+usr/share/licenses/ttc-iosevka-curly/
+usr/share/licenses/ttc-iosevka-curly/LICENSE.md

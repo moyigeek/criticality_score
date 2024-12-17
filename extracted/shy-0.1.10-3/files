@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/shy
+usr/share/
+usr/share/doc/
+usr/share/doc/shy/
+usr/share/doc/shy/README.md
+usr/share/licenses/
+usr/share/licenses/shy/
+usr/share/licenses/shy/LICENSE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/shy.1.gz

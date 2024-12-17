@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/arduino-fwuploader
+usr/share/
+usr/share/bash-completion/
+usr/share/bash-completion/completions/
+usr/share/bash-completion/completions/arduino-fwuploader
+usr/share/doc/
+usr/share/doc/arduino-fwuploader/
+usr/share/doc/arduino-fwuploader/README.md
+usr/share/fish/
+usr/share/fish/vendor_completions.d/
+usr/share/fish/vendor_completions.d/arduino-fwuploader.fish
+usr/share/zsh/
+usr/share/zsh/site-functions/
+usr/share/zsh/site-functions/_arduino-fwuploader

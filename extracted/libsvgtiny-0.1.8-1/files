@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/include/
+usr/include/svgtiny.h
+usr/lib/
+usr/lib/libsvgtiny.so
+usr/lib/libsvgtiny.so.0
+usr/lib/libsvgtiny.so.0.1.8
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/libsvgtiny.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/libsvgtiny/
+usr/share/licenses/libsvgtiny/COPYING

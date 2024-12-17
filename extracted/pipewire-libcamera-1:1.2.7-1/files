@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/spa-0.2/
+usr/lib/spa-0.2/libcamera/
+usr/lib/spa-0.2/libcamera/libspa-libcamera.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/pipewire-libcamera/
+usr/share/licenses/pipewire-libcamera/COPYING

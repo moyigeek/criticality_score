@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/e3
+usr/bin/e3em
+usr/bin/e3ne
+usr/bin/e3pi
+usr/bin/e3vi
+usr/bin/e3ws
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/e3.1.gz
+usr/src/
+usr/src/debug/
+usr/src/debug/e3/

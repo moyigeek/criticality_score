@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/tbadapters
+usr/bin/tbauth
+usr/bin/tbdump
+usr/bin/tbget
+usr/bin/tblist
+usr/bin/tbman
+usr/bin/tbmargin
+usr/bin/tbpd
+usr/bin/tbset
+usr/bin/tbtrace
+usr/share/
+usr/share/licenses/
+usr/share/licenses/tbtools/
+usr/share/licenses/tbtools/LICENSE

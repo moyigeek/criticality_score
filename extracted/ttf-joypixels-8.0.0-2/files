@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/share/
+usr/share/fonts/
+usr/share/fonts/joypixels/
+usr/share/fonts/joypixels/JoyPixels.ttf
+usr/share/licenses/
+usr/share/licenses/ttf-joypixels/
+usr/share/licenses/ttf-joypixels/LICENSE.appendix.pdf
+usr/share/licenses/ttf-joypixels/LICENSE.pdf

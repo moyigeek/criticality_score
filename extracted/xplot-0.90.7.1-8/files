@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/tcpdump2xplot
+usr/bin/xplot
+usr/share/
+usr/share/licenses/
+usr/share/licenses/xplot/
+usr/share/licenses/xplot/LICENSE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/tcpdump2xplot.1.gz
+usr/share/man/man1/xplot.1.gz

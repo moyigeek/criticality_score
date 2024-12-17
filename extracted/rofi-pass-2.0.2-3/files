@@ -1,0 +1,12 @@
+%FILES%
+etc/
+etc/rofi-pass.conf
+usr/
+usr/bin/
+usr/bin/addpass
+usr/bin/rofi-pass
+usr/share/
+usr/share/doc/
+usr/share/doc/rofi-pass/
+usr/share/doc/rofi-pass/README.md
+usr/share/doc/rofi-pass/config.example

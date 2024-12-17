@@ -1,0 +1,9 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/gimagereader-qt6
+usr/share/
+usr/share/applications/
+usr/share/applications/gimagereader-qt6.desktop
+usr/share/metainfo/
+usr/share/metainfo/gimagereader-qt6.appdata.xml

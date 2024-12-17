@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/ocaml/
+usr/lib/ocaml/augeas/
+usr/lib/ocaml/augeas/META
+usr/lib/ocaml/augeas/augeas.cmi
+usr/lib/ocaml/augeas/augeas.cmx
+usr/lib/ocaml/augeas/augeas.mli
+usr/lib/ocaml/augeas/libmlaugeas.a
+usr/lib/ocaml/augeas/mlaugeas.a
+usr/lib/ocaml/augeas/mlaugeas.cma
+usr/lib/ocaml/augeas/mlaugeas.cmxa
+usr/lib/ocaml/stublibs/
+usr/lib/ocaml/stublibs/dllmlaugeas.so
+usr/lib/ocaml/stublibs/dllmlaugeas.so.owner

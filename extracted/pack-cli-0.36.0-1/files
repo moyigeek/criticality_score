@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/pack-cli
+usr/share/
+usr/share/licenses/
+usr/share/licenses/pack-cli/
+usr/share/licenses/pack-cli/LICENSE

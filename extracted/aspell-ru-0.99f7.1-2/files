@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/aspell-0.60/
+usr/lib/aspell-0.60/ru-ye.multi
+usr/lib/aspell-0.60/ru-ye.rws
+usr/lib/aspell-0.60/ru-yeyo.multi
+usr/lib/aspell-0.60/ru-yo.multi
+usr/lib/aspell-0.60/ru-yo.rws
+usr/lib/aspell-0.60/ru.dat
+usr/lib/aspell-0.60/ru.multi
+usr/lib/aspell-0.60/ru_affix.dat
+usr/share/
+usr/share/licenses/
+usr/share/licenses/aspell-ru/
+usr/share/licenses/aspell-ru/Copyright

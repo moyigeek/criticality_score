@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/kbt
+usr/share/
+usr/share/doc/
+usr/share/doc/kbt/
+usr/share/doc/kbt/README.md
+usr/share/licenses/
+usr/share/licenses/kbt/
+usr/share/licenses/kbt/LICENSE

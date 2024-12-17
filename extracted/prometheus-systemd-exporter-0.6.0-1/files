@@ -1,0 +1,17 @@
+%FILES%
+etc/
+etc/conf.d/
+etc/conf.d/prometheus-systemd-exporter
+usr/
+usr/bin/
+usr/bin/prometheus-systemd-exporter
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/prometheus-systemd-exporter.service
+usr/lib/sysusers.d/
+usr/lib/sysusers.d/prometheus-systemd-exporter.conf
+usr/share/
+usr/share/licenses/
+usr/share/licenses/prometheus-systemd-exporter/
+usr/share/licenses/prometheus-systemd-exporter/LICENSE

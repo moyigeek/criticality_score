@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/dfmt
+usr/share/
+usr/share/licenses/
+usr/share/licenses/dfmt/
+usr/share/licenses/dfmt/LICENSE

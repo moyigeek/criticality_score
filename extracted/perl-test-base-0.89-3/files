@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/share/
+usr/share/man/
+usr/share/man/man3/
+usr/share/man/man3/Test::Base.3pm.gz
+usr/share/man/man3/Test::Base::Filter.3pm.gz
+usr/share/perl5/
+usr/share/perl5/vendor_perl/
+usr/share/perl5/vendor_perl/Test/
+usr/share/perl5/vendor_perl/Test/Base.pm
+usr/share/perl5/vendor_perl/Test/Base/
+usr/share/perl5/vendor_perl/Test/Base/Filter.pm

@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/aspell-0.60/
+usr/lib/aspell-0.60/de-common.rws
+usr/lib/aspell-0.60/de.dat
+usr/lib/aspell-0.60/de.multi
+usr/lib/aspell-0.60/de_AT-only.rws
+usr/lib/aspell-0.60/de_AT.multi
+usr/lib/aspell-0.60/de_CH-only.rws
+usr/lib/aspell-0.60/de_CH.multi
+usr/lib/aspell-0.60/de_DE-only.rws
+usr/lib/aspell-0.60/de_DE.multi
+usr/lib/aspell-0.60/de_affix.dat
+usr/lib/aspell-0.60/de_phonet.dat
+usr/lib/aspell-0.60/deutsch.alias
+usr/lib/aspell-0.60/german.alias

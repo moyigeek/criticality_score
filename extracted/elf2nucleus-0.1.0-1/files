@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/elf2nucleus
+usr/share/
+usr/share/bash-completion/
+usr/share/bash-completion/completions/
+usr/share/bash-completion/completions/elf2nucleus
+usr/share/fish/
+usr/share/fish/vendor_completions.d/
+usr/share/fish/vendor_completions.d/elf2nucleus.fish
+usr/share/licenses/
+usr/share/licenses/elf2nucleus/
+usr/share/licenses/elf2nucleus/LICENSE
+usr/share/zsh/
+usr/share/zsh/site-functions/
+usr/share/zsh/site-functions/_elf2nucleus

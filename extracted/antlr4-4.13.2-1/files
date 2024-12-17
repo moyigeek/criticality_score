@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/antlr4
+usr/bin/grun
+usr/share/
+usr/share/java/
+usr/share/java/antlr-4.13.2-complete.jar
+usr/share/java/antlr-complete.jar
+usr/share/licenses/
+usr/share/licenses/antlr4/
+usr/share/licenses/antlr4/LICENSE.txt

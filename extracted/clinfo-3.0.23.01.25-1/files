@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/clinfo
+usr/share/
+usr/share/licenses/
+usr/share/licenses/clinfo/
+usr/share/licenses/clinfo/LICENSE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/clinfo.1.gz

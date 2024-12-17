@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/gvfsd-wsdd
+usr/share/
+usr/share/glib-2.0/
+usr/share/glib-2.0/schemas/
+usr/share/glib-2.0/schemas/org.gnome.system.wsdd.gschema.xml
+usr/share/gvfs/
+usr/share/gvfs/mounts/
+usr/share/gvfs/mounts/wsdd.mount

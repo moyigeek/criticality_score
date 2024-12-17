@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/heimdall
+usr/bin/heimdall-frontend
+usr/lib/
+usr/lib/udev/
+usr/lib/udev/rules.d/
+usr/lib/udev/rules.d/60-heimdall.rules
+usr/share/
+usr/share/applications/
+usr/share/applications/heimdall.desktop
+usr/share/licenses/
+usr/share/licenses/heimdall/
+usr/share/licenses/heimdall/LICENSE

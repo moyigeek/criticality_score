@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/tv
+usr/share/
+usr/share/doc/
+usr/share/doc/television/
+usr/share/doc/television/README.md
+usr/share/licenses/
+usr/share/licenses/television/
+usr/share/licenses/television/LICENSE

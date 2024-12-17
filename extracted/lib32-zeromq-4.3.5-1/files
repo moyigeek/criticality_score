@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/cmake/
+usr/lib32/cmake/ZeroMQ/
+usr/lib32/cmake/ZeroMQ/ZeroMQConfig.cmake
+usr/lib32/cmake/ZeroMQ/ZeroMQConfigVersion.cmake
+usr/lib32/cmake/ZeroMQ/ZeroMQTargets-release.cmake
+usr/lib32/cmake/ZeroMQ/ZeroMQTargets.cmake
+usr/lib32/libzmq.so
+usr/lib32/libzmq.so.5
+usr/lib32/libzmq.so.5.2.5
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/libzmq.pc

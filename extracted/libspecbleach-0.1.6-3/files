@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/include/
+usr/include/specbleach_adenoiser.h
+usr/include/specbleach_denoiser.h
+usr/lib/
+usr/lib/libspecbleach.so
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/libspecbleach.pc
+usr/share/
+usr/share/doc/
+usr/share/doc/libspecbleach/
+usr/share/doc/libspecbleach/README.md
+usr/share/doc/libspecbleach/example/
+usr/share/doc/libspecbleach/example/adenoiser_demo.c

@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/clap/
+usr/lib/clap/DragonflyEarlyReflections.clap
+usr/lib/clap/DragonflyHallReverb.clap
+usr/lib/clap/DragonflyPlateReverb.clap
+usr/lib/clap/DragonflyRoomReverb.clap

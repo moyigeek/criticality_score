@@ -1,0 +1,11 @@
+%FILES%
+etc/
+etc/php/
+etc/php/conf.d/
+etc/php/conf.d/snuffleupagus.ini
+etc/php/conf.d/snuffleupagus.rules
+usr/
+usr/lib/
+usr/lib/php/
+usr/lib/php/modules/
+usr/lib/php/modules/snuffleupagus.so

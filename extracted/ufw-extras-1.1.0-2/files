@@ -1,0 +1,17 @@
+%FILES%
+etc/
+etc/ufw/
+etc/ufw/applications.d/
+etc/ufw/applications.d/ufw-cups
+etc/ufw/applications.d/ufw-dropbox
+etc/ufw/applications.d/ufw-hplip
+etc/ufw/applications.d/ufw-kdeconnect
+etc/ufw/applications.d/ufw-llmnr
+etc/ufw/applications.d/ufw-lxd
+etc/ufw/applications.d/ufw-mdns
+etc/ufw/applications.d/ufw-megasync
+etc/ufw/applications.d/ufw-mpd
+etc/ufw/applications.d/ufw-samba
+etc/ufw/applications.d/ufw-scream
+etc/ufw/applications.d/ufw-synergy
+etc/ufw/applications.d/ufw-tailscale

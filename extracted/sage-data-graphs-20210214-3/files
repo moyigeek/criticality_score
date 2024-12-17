@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/share/
+usr/share/graphs/
+usr/share/graphs/brouwer_srg_database.json
+usr/share/graphs/graphs.db
+usr/share/graphs/isgci_sage.xml
+usr/share/graphs/smallgraphs.txt

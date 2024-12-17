@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/mlc
+usr/share/
+usr/share/doc/
+usr/share/doc/markuplinkchecker/
+usr/share/doc/markuplinkchecker/README.md
+usr/share/licenses/
+usr/share/licenses/markuplinkchecker/
+usr/share/licenses/markuplinkchecker/LICENSE

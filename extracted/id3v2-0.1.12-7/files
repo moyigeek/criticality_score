@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/id3v2
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/id3v2.1.gz

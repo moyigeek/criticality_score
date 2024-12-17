@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/share/
+usr/share/sounds/
+usr/share/sounds/elementary/
+usr/share/sounds/elementary/index.theme
+usr/share/sounds/elementary/stereo/
+usr/share/sounds/elementary/stereo/audio-volume-change.wav
+usr/share/sounds/elementary/stereo/bell.wav
+usr/share/sounds/elementary/stereo/dialog-error.ogg
+usr/share/sounds/elementary/stereo/dialog-information.oga
+usr/share/sounds/elementary/stereo/dialog-warning.ogg

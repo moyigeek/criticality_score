@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/python3.12/
+usr/lib/python3.12/site-packages/
+usr/lib/python3.12/site-packages/opencamlib/
+usr/lib/python3.12/site-packages/opencamlib/STLTools.py
+usr/lib/python3.12/site-packages/opencamlib/__init__.py
+usr/lib/python3.12/site-packages/opencamlib/camvtk.py
+usr/lib/python3.12/site-packages/opencamlib/ocl.so
+usr/lib/python3.12/site-packages/opencamlib/procmemory.py
+usr/lib/python3.12/site-packages/opencamlib/pyocl.py

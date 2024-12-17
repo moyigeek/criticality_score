@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/k9s
+usr/share/
+usr/share/bash-completion/
+usr/share/bash-completion/completions/
+usr/share/bash-completion/completions/k9s
+usr/share/fish/
+usr/share/fish/vendor_completions.d/
+usr/share/fish/vendor_completions.d/k9s.fish
+usr/share/licenses/
+usr/share/licenses/k9s/
+usr/share/licenses/k9s/LICENSE
+usr/share/zsh/
+usr/share/zsh/site-functions/
+usr/share/zsh/site-functions/_k9s

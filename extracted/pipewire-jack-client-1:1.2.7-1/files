@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/pipewire-0.3/
+usr/lib/pipewire-0.3/libpipewire-module-jack-tunnel.so
+usr/lib/pipewire-0.3/libpipewire-module-jackdbus-detect.so
+usr/lib/spa-0.2/
+usr/lib/spa-0.2/jack/
+usr/lib/spa-0.2/jack/libspa-jack.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/pipewire-jack-client/
+usr/share/licenses/pipewire-jack-client/COPYING
+usr/share/man/
+usr/share/man/man7/
+usr/share/man/man7/libpipewire-module-jack-tunnel.7.gz
+usr/share/man/man7/libpipewire-module-jackdbus-detect.7.gz

@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/dnsperf
+usr/bin/resperf
+usr/bin/resperf-report
+usr/share/
+usr/share/doc/
+usr/share/doc/dnsperf/
+usr/share/doc/dnsperf/CHANGES
+usr/share/doc/dnsperf/LICENSE
+usr/share/doc/dnsperf/README.md
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/dnsperf.1.gz
+usr/share/man/man1/resperf.1.gz

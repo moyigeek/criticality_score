@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cargo-kani
+usr/bin/kani
+usr/bin/kani-compiler
+usr/bin/kani-driver
+usr/share/
+usr/share/doc/
+usr/share/doc/kani/
+usr/share/doc/kani/README.md
+usr/share/licenses/
+usr/share/licenses/kani/
+usr/share/licenses/kani/LICENSE-MIT

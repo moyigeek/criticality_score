@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/share/
+usr/share/doc/
+usr/share/doc/dexed-docs/
+usr/share/doc/dexed-docs/DexedTheme.md
+usr/share/doc/dexed-docs/GreenLight_28x28.png
+usr/share/doc/dexed-docs/Keybindings.md
+usr/share/doc/dexed-docs/README.md
+usr/share/doc/dexed-docs/TX802-SYSEX.pdf
+usr/share/doc/dexed-docs/sysex-format.txt

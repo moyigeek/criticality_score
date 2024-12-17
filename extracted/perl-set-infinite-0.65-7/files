@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/share/
+usr/share/man/
+usr/share/man/man3/
+usr/share/man/man3/Set::Infinite.3pm.gz
+usr/share/man/man3/Set::Infinite::Arithmetic.3pm.gz
+usr/share/man/man3/Set::Infinite::Basic.3pm.gz
+usr/share/perl5/
+usr/share/perl5/vendor_perl/
+usr/share/perl5/vendor_perl/Set/
+usr/share/perl5/vendor_perl/Set/Infinite.pm
+usr/share/perl5/vendor_perl/Set/Infinite/
+usr/share/perl5/vendor_perl/Set/Infinite/Arithmetic.pm
+usr/share/perl5/vendor_perl/Set/Infinite/Basic.pm

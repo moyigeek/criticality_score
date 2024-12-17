@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/bbpager
+usr/share/
+usr/share/bbtools/
+usr/share/bbtools/README.bbpager
+usr/share/bbtools/bbpager.rc

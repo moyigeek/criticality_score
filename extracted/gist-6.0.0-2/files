@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/gist
+usr/share/
+usr/share/doc/
+usr/share/doc/gist/
+usr/share/doc/gist/README.md
+usr/share/licenses/
+usr/share/licenses/gist/
+usr/share/licenses/gist/LICENSE.MIT
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/gist.1.gz

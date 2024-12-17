@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/artist_to_albumartist
+usr/bin/ncmpcpp
+usr/share/
+usr/share/doc/
+usr/share/doc/ncmpcpp/
+usr/share/doc/ncmpcpp/AUTHORS
+usr/share/doc/ncmpcpp/CHANGELOG.md
+usr/share/doc/ncmpcpp/COPYING
+usr/share/doc/ncmpcpp/bindings
+usr/share/doc/ncmpcpp/config
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/ncmpcpp.1.gz

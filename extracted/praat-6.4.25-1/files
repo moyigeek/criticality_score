@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/praat
+usr/share/
+usr/share/applications/
+usr/share/applications/praat.desktop
+usr/share/icons/
+usr/share/icons/hicolor/
+usr/share/icons/hicolor/scalable/
+usr/share/icons/hicolor/scalable/apps/
+usr/share/icons/hicolor/scalable/apps/praat.svg
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/praat.1.gz
+usr/share/pixmaps/
+usr/share/pixmaps/praat.xpm

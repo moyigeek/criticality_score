@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cargo-rdme
+usr/share/
+usr/share/doc/
+usr/share/doc/cargo-rdme/
+usr/share/doc/cargo-rdme/README.md

@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/include/
+usr/include/libappindicator-0.1/
+usr/include/libappindicator-0.1/libappindicator/
+usr/include/libappindicator-0.1/libappindicator/app-indicator-enum-types.h
+usr/include/libappindicator-0.1/libappindicator/app-indicator.h
+usr/lib/
+usr/lib/libappindicator.so
+usr/lib/libappindicator.so.1
+usr/lib/libappindicator.so.1.0.0
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/appindicator-0.1.pc

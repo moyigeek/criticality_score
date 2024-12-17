@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libXcursor.so
+usr/lib32/libXcursor.so.1
+usr/lib32/libXcursor.so.1.0.2
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/xcursor.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-libxcursor

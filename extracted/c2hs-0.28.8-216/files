@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/c2hs
+usr/share/
+usr/share/c2hs/
+usr/share/c2hs/C2HS.hs
+usr/share/doc/
+usr/share/doc/c2hs/
+usr/share/doc/c2hs/COPYING

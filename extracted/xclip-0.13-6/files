@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/xclip
+usr/bin/xclip-copyfile
+usr/bin/xclip-cutfile
+usr/bin/xclip-pastefile
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/xclip-copyfile.1.gz
+usr/share/man/man1/xclip.1.gz

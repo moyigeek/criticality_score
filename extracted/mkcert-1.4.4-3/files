@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/mkcert
+usr/share/
+usr/share/licenses/
+usr/share/licenses/mkcert/
+usr/share/licenses/mkcert/LICENSE

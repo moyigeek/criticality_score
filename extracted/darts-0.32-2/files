@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/include/
+usr/include/darts.h
+usr/lib/
+usr/lib/darts/
+usr/lib/darts/darts
+usr/lib/darts/mkdarts
+usr/share/
+usr/share/licenses/
+usr/share/licenses/darts/
+usr/share/licenses/darts/BSD
+usr/share/licenses/darts/COPYING

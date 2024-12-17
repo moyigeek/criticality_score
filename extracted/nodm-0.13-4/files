@@ -1,0 +1,10 @@
+%FILES%
+etc/
+etc/nodm.conf
+usr/
+usr/bin/
+usr/bin/nodm
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/nodm.service

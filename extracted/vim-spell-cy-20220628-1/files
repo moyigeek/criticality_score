@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/vim-spell-cy/
+usr/share/licenses/vim-spell-cy/README_cy.txt
+usr/share/vim/
+usr/share/vim/vimfiles/
+usr/share/vim/vimfiles/spell/
+usr/share/vim/vimfiles/spell/cy.iso-8859-14.spl
+usr/share/vim/vimfiles/spell/cy.utf-8.spl

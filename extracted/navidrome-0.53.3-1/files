@@ -1,0 +1,15 @@
+%FILES%
+etc/
+etc/navidrome/
+etc/navidrome/navidrome.toml
+usr/
+usr/bin/
+usr/bin/navidrome
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/navidrome.service
+usr/lib/sysusers.d/
+usr/lib/sysusers.d/navidrome.conf
+usr/lib/tmpfiles.d/
+usr/lib/tmpfiles.d/navidrome.conf

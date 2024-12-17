@@ -1,0 +1,135 @@
+%FILENAME%
+buildbot-4.2.0-1-any.pkg.tar.zst
+
+%NAME%
+buildbot
+
+%BASE%
+buildbot
+
+%VERSION%
+4.2.0-1
+
+%DESC%
+The Continuous Integration Framework
+
+%CSIZE%
+1696554
+
+%ISIZE%
+10895187
+
+%SHA256SUM%
+8641d00edf88bc2ff7f958a7d5ea2efe9da31d88a4f6fcdc44ef5cfed13f77d3
+
+%PGPSIG%
+iHUEABYKAB0WIQQNmeQ7UMKtIbreRjJJPeIcgk6VQQUCZ16IwgAKCRBJPeIcgk6VQe5IAP9PmR0im0KKpNwH3UmR4kkKYKfI0QAUunnpS/wB6QbtVAEA+WBXBsv1MDX7fOfK/dTU/kgDOvPQyVROnlPPbTlF0AE=
+
+%URL%
+https://buildbot.net
+
+%LICENSE%
+GPL-2.0-only
+
+%ARCH%
+any
+
+%BUILDDATE%
+1734248085
+
+%PACKAGER%
+Chih-Hsuan Yen <yan12125@archlinux.org>
+
+%DEPENDS%
+buildbot-common=4.2.0-1
+python
+python-twisted
+python-treq
+python-jinja
+python-msgpack
+python-zope-interface
+python-sqlalchemy
+python-alembic
+python-dateutil
+python-txaio
+python-autobahn
+python-pyjwt
+python-yaml
+python-croniter
+python-unidiff
+python-packaging
+
+%OPTDEPENDS%
+python-pyopenssl: to use SSL/TLS in mail or IRC notifiers
+pass: to use SecretInPass provider
+vault: to use HashiCorpVaultSecretProvider or HashiCorpVaultKvSecretProvider provider
+python-hvac: to use HashiCorpVaultKvSecretProvider provider
+python-subunit: for SubunitShellCommand
+python-requests: for using HTTP requests as steps
+python-txrequests: for using HTTP requests as steps
+python-evalidate: for configurable steps
+buildbot-worker: for local worker
+libvirt-python: for libvirt worker
+python-boto3: for AWS EC2 latent worker
+python-botocore: for AWS EC2 latent worker
+python-docker: for Docker latent worker
+python-novaclient: for OpenStack latent worker
+python-keystoneauth1: for OpenStack latent worker
+python-graphql-core: GraphQL API for buildbot
+python-ldap3: to authenticate users via LDAP
+python-pypugjs: to use custom Pug.js templates
+python-brotli: for compressing REST API responses
+python-zstandard: for compressing REST API responses
+python-lz4: to compress logs using lz4
+python-aiohttp: for dev-proxy
+python-markdown: for descriptions in markdown
+
+%MAKEDEPENDS%
+python-build
+python-installer
+python-wheel
+python-twisted
+python-treq
+python-jinja
+python-msgpack
+python-zope-interface
+python-sqlalchemy
+python-alembic
+python-dateutil
+python-txaio
+python-autobahn
+python-pyjwt
+python-yaml
+python-croniter
+python-unidiff
+python-packaging
+python-graphql-core
+python-hvac
+libvirt-python
+python-novaclient
+python-pypugjs
+python-aiohttp
+python-setuptools
+python-sphinx-jinja
+python-sphinx_rtd_theme
+git
+yarn
+
+%CHECKDEPENDS%
+python-boto3
+python-ldap3
+python-lz4
+python-txrequests
+python-moto
+python-docker
+python-parameterized
+python-subunit
+python-psutil
+python-ruamel-yaml
+python-markdown
+python-brotli
+python-zstandard
+python-evalidate
+openssh
+chromium
+

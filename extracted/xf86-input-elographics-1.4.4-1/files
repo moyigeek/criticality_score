@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/xorg/
+usr/lib/xorg/modules/
+usr/lib/xorg/modules/input/
+usr/lib/xorg/modules/input/elographics_drv.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/xf86-input-elographics/
+usr/share/licenses/xf86-input-elographics/COPYING
+usr/share/man/
+usr/share/man/man4/
+usr/share/man/man4/elographics.4.gz

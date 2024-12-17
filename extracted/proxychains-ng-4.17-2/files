@@ -1,0 +1,10 @@
+%FILES%
+etc/
+etc/proxychains.conf
+usr/
+usr/bin/
+usr/bin/proxychains
+usr/bin/proxychains4
+usr/bin/proxychains4-daemon
+usr/lib/
+usr/lib/libproxychains4.so

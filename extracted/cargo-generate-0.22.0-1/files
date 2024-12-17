@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cargo-generate
+usr/share/
+usr/share/doc/
+usr/share/doc/cargo-generate/
+usr/share/doc/cargo-generate/README.md
+usr/share/licenses/
+usr/share/licenses/cargo-generate/
+usr/share/licenses/cargo-generate/LICENSE-MIT

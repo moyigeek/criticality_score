@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libarchive.so
+usr/lib32/libarchive.so.13
+usr/lib32/libarchive.so.13.7.7
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/libarchive.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-libarchive/
+usr/share/licenses/lib32-libarchive/BSD-2-Clause.txt
+usr/share/licenses/lib32-libarchive/BSD-4-Clause-UC.txt

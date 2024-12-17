@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/include/
+usr/include/kColorPicker-Qt6/
+usr/include/kColorPicker-Qt6/kColorPicker/
+usr/include/kColorPicker-Qt6/kColorPicker/KColorPicker.h
+usr/include/kColorPicker-Qt6/kColorPicker/KColorPickerExport.h
+usr/lib/
+usr/lib/cmake/
+usr/lib/cmake/kColorPicker-Qt6/
+usr/lib/cmake/kColorPicker-Qt6/kColorPicker-Qt6Config-version.cmake
+usr/lib/cmake/kColorPicker-Qt6/kColorPicker-Qt6Config.cmake
+usr/lib/cmake/kColorPicker-Qt6/kColorPicker-targets-noconfig.cmake
+usr/lib/cmake/kColorPicker-Qt6/kColorPicker-targets.cmake
+usr/lib/libkColorPicker.so
+usr/lib/libkColorPicker.so.0
+usr/lib/libkColorPicker.so.0.3.1

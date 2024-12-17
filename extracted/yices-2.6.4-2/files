@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/yices
+usr/bin/yices-sat
+usr/bin/yices-smt
+usr/bin/yices-smt2
+usr/include/
+usr/include/yices.h
+usr/include/yices_exit_codes.h
+usr/include/yices_limits.h
+usr/include/yices_types.h
+usr/lib/
+usr/lib/libyices.so
+usr/lib/libyices.so.2.6
+usr/lib/libyices.so.2.6.4

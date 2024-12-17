@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/samply
+usr/share/
+usr/share/doc/
+usr/share/doc/samply/
+usr/share/doc/samply/README.md
+usr/share/licenses/
+usr/share/licenses/samply/
+usr/share/licenses/samply/LICENSE-MIT

@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/rhit
+usr/share/
+usr/share/doc/
+usr/share/doc/rhit/
+usr/share/doc/rhit/README.md
+usr/share/licenses/
+usr/share/licenses/rhit/
+usr/share/licenses/rhit/LICENSE

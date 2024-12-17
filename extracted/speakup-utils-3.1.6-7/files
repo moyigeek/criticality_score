@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/speakupconf
+usr/bin/talkwith
+usr/share/
+usr/share/doc/
+usr/share/doc/speakup-utils/
+usr/share/doc/speakup-utils/README
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/speakupconf.1.gz
+usr/share/man/man1/talkwith.1.gz

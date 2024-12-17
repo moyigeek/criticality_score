@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/acme-post
+usr/bin/acme-renew
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/acme.service
+usr/lib/systemd/system/acme.timer
+usr/lib/sysusers.d/
+usr/lib/sysusers.d/acme.conf
+usr/lib/tmpfiles.d/
+usr/lib/tmpfiles.d/acme.conf

@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/acme-tiny
+usr/share/
+usr/share/licenses/
+usr/share/licenses/acme-tiny/
+usr/share/licenses/acme-tiny/LICENSE

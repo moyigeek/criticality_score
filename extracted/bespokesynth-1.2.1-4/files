@@ -1,0 +1,245 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/BespokeSynth
+usr/share/
+usr/share/BespokeSynth/
+usr/share/BespokeSynth/resource/
+usr/share/BespokeSynth/resource/frabk.ttf
+usr/share/BespokeSynth/resource/frabk_m.ttf
+usr/share/BespokeSynth/resource/help.txt
+usr/share/BespokeSynth/resource/iosevka-type-light.ttf
+usr/share/BespokeSynth/resource/noise.jpg
+usr/share/BespokeSynth/resource/osc_support.txt
+usr/share/BespokeSynth/resource/python_stubs/
+usr/share/BespokeSynth/resource/python_stubs/bespoke/
+usr/share/BespokeSynth/resource/python_stubs/bespoke/__init__.pyi
+usr/share/BespokeSynth/resource/python_stubs/drumplayer/
+usr/share/BespokeSynth/resource/python_stubs/drumplayer/__init__.pyi
+usr/share/BespokeSynth/resource/python_stubs/drumsequencer/
+usr/share/BespokeSynth/resource/python_stubs/drumsequencer/__init__.pyi
+usr/share/BespokeSynth/resource/python_stubs/envelope/
+usr/share/BespokeSynth/resource/python_stubs/envelope/__init__.pyi
+usr/share/BespokeSynth/resource/python_stubs/grid/
+usr/share/BespokeSynth/resource/python_stubs/grid/__init__.pyi
+usr/share/BespokeSynth/resource/python_stubs/linnstrument/
+usr/share/BespokeSynth/resource/python_stubs/linnstrument/__init__.pyi
+usr/share/BespokeSynth/resource/python_stubs/me/
+usr/share/BespokeSynth/resource/python_stubs/me/__init__.pyi
+usr/share/BespokeSynth/resource/python_stubs/midicontroller/
+usr/share/BespokeSynth/resource/python_stubs/midicontroller/__init__.pyi
+usr/share/BespokeSynth/resource/python_stubs/module/
+usr/share/BespokeSynth/resource/python_stubs/module/__init__.pyi
+usr/share/BespokeSynth/resource/python_stubs/notecanvas/
+usr/share/BespokeSynth/resource/python_stubs/notecanvas/__init__.pyi
+usr/share/BespokeSynth/resource/python_stubs/notesequencer/
+usr/share/BespokeSynth/resource/python_stubs/notesequencer/__init__.pyi
+usr/share/BespokeSynth/resource/python_stubs/osccontroller/
+usr/share/BespokeSynth/resource/python_stubs/osccontroller/__init__.pyi
+usr/share/BespokeSynth/resource/python_stubs/oscoutput/
+usr/share/BespokeSynth/resource/python_stubs/oscoutput/__init__.pyi
+usr/share/BespokeSynth/resource/python_stubs/sampleplayer/
+usr/share/BespokeSynth/resource/python_stubs/sampleplayer/__init__.pyi
+usr/share/BespokeSynth/resource/python_stubs/vstplugin/
+usr/share/BespokeSynth/resource/python_stubs/vstplugin/__init__.pyi
+usr/share/BespokeSynth/resource/scripting_reference.txt
+usr/share/BespokeSynth/resource/tooltips_deu.txt
+usr/share/BespokeSynth/resource/tooltips_eng.txt
+usr/share/BespokeSynth/resource/tooltips_esp.txt
+usr/share/BespokeSynth/resource/tooltips_ru.txt
+usr/share/BespokeSynth/resource/tooltips_tr.txt
+usr/share/BespokeSynth/resource/userdata_original/
+usr/share/BespokeSynth/resource/userdata_original/controllers/
+usr/share/BespokeSynth/resource/userdata_original/controllers/APC Key 25 MIDI 1.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/APC Mini.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/Ableton Push 2 Live Port.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/Akai MIDImix.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/Akai MPD232 - Generic Preset.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/Alesis VMini.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/Arturia BeatStep.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/Arturia MiniLab mkII MIDI 1.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/Arturia MiniLab mkII MIDI 1_PADS.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/Axiom AIR Mini 32 MIDI In.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/BCF2000.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/CMD LC-1.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/FCB1010_1.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/FCB1010_4.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/FCB1010_9.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/Generic 4x4.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/LPX MIDI.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/Launch Control.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/Launchpad Mini.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/Launchpad S.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/Launchpad.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/Lightpad BLOCK.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/LinnStrument MIDI.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/MPD218 Port A.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/Maschine Jam.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/Maschine Mikro MK2 In.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/Midi Fighter Twister.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/MiniFreak MiniFreak MIDI.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/PANORAMA P4.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/QUNEO.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/SL MkII MIDI 1.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/Seaboard RISE.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/TB-3 MIDI 1.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/TB-3 MIDI 2.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/Traktor Kontrol F1 - 1.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/VMeter 1.30 A.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/monome.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/monome128split.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/monome64.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/nanoKONTROL2 SLIDERKNOB.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/nanoKONTROL2.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/nanoPAD2 PAD.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/nanoPAD2.json
+usr/share/BespokeSynth/resource/userdata_original/controllers/osccontroller.json
+usr/share/BespokeSynth/resource/userdata_original/drums/
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Clap/
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Clap/Clap [cadet].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Clap/Clap [congratulations].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Clap/Clap [luger].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Clap/Clap [money].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Clap/Clap [rico].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Clap/Clap [savage].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Clap/Clap [swag].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Clap/Clap [team].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/FX/
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/FX/FX [808 bill].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/FX/FX [A].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/FX/FX [crowd].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/FX/FX [flex].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/FX/FX [glock].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/FX/FX [horse].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/FX/FX [leon].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/FX/FX [lighter].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/FX/FX [nextel].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/FX/FX [signal].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/FX/FX [staple].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/FX/FX [track].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/FX/FX [vitas].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatClosed/
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatClosed/HH [brutal].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatClosed/HH [c4].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatClosed/HH [cardiak].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatClosed/HH [copter].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatClosed/HH [death].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatClosed/HH [digital].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatClosed/HH [dist].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatClosed/HH [finesse].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatClosed/HH [hit 1].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatClosed/HH [laura].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatClosed/HH [legend].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatClosed/HH [love].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatClosed/HH [meal].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatClosed/HH [pump].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatClosed/HH [rockstar].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatClosed/HH [short].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatOpen/
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatOpen/OH [backwoods].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatOpen/OH [cargo].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatOpen/OH [drug].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatOpen/OH [flang].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatOpen/OH [metro].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatOpen/OH [pack].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatOpen/OH [retro].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatOpen/OH [weather].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/HatOpen/OH [wrist].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Kick/
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Kick/Kick [argo].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Kick/Kick [deadline].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Kick/Kick [finger].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Kick/Kick [haley].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Kick/Kick [killa].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Kick/Kick [mango].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Kick/Kick [maze].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Kick/Kick [mind].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Kick/Kick [moon].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Kick/Kick [racg].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Kick/Kick [rack].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Kick/Kick [snake].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Kick/Kick [zzz].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Perc/
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Perc/Perc [classic].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Perc/Perc [dash].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Perc/Perc [dragon].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Perc/Perc [gang].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Perc/Perc [gangsta].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Perc/Perc [intuition].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Perc/Perc [thot].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Perc/Perc [z].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Snare/
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Snare/Snare [antidote].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Snare/Snare [boomin].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Snare/Snare [bwz].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Snare/Snare [chop].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Snare/Snare [cobra].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Snare/Snare [dirty].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Snare/Snare [fast].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Snare/Snare [fat].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Snare/Snare [keke].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Snare/Snare [london].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Snare/Snare [mob].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Snare/Snare [more].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Snare/Snare [mozart].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Snare/Snare [origins].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Snare/Snare [pf].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Snare/Snare [roll].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Snare/Snare [saviour].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Snare/Snare [shorty].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Snare/Snare [vybe].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/808kit/Snare/Snare [zip].wav
+usr/share/BespokeSynth/resource/userdata_original/drums/drums.json
+usr/share/BespokeSynth/resource/userdata_original/layouts/
+usr/share/BespokeSynth/resource/userdata_original/layouts/blank.json
+usr/share/BespokeSynth/resource/userdata_original/prefabs/
+usr/share/BespokeSynth/resource/userdata_original/prefabs/mixer.pfb
+usr/share/BespokeSynth/resource/userdata_original/prefabs/multibandcompressor.pfb
+usr/share/BespokeSynth/resource/userdata_original/prefabs/randompan.pfb
+usr/share/BespokeSynth/resource/userdata_original/savestate/
+usr/share/BespokeSynth/resource/userdata_original/savestate/example__arpeggiation.bsk
+usr/share/BespokeSynth/resource/userdata_original/savestate/example__dj_turntables.bsk
+usr/share/BespokeSynth/resource/userdata_original/savestate/example__drumsynth_chance_sequence.bsk
+usr/share/BespokeSynth/resource/userdata_original/savestate/example__feedback.bsk
+usr/share/BespokeSynth/resource/userdata_original/savestate/example__feedback_distortion_pluck_bass_echo.bsk
+usr/share/BespokeSynth/resource/userdata_original/savestate/example__looper_recorder.bsk
+usr/share/BespokeSynth/resource/userdata_original/savestate/example__scripting.bsk
+usr/share/BespokeSynth/resource/userdata_original/savestate/example__sequencing_sequencers.bsk
+usr/share/BespokeSynth/resource/userdata_original/scales.json
+usr/share/BespokeSynth/resource/userdata_original/scripts/
+usr/share/BespokeSynth/resource/userdata_original/scripts/arpeggiate_input.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/chord_mutation.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/chord_tools.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/chordprogression.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/clappingmusic_hats.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/dozenal.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/drum_mutate.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/drum_patternlist.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/drumplayerrandomizer.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/drumseq_randomize.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/drumsynth_randomize.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/echo.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/euclid.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/lpx_programmer_mode.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/midicontroller_input.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/modulecreation.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/nanokontrol_to_m185.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/note_echo.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/passing_tones.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/randomcanvas.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/sampleplayer_chop.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/sampleplayer_to_drumplayer.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/schedule_sequence.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/tension_layers.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/transcribe_to_canvas.py
+usr/share/BespokeSynth/resource/userdata_original/scripts/walk.py
+usr/share/BespokeSynth/resource/userdata_original/scriptstyles.json
+usr/share/BespokeSynth/resource/userdata_original/userdata_version.txt
+usr/share/applications/
+usr/share/applications/BespokeSynth.desktop
+usr/share/icons/
+usr/share/icons/hicolor/
+usr/share/icons/hicolor/512x512/
+usr/share/icons/hicolor/512x512/apps/
+usr/share/icons/hicolor/512x512/apps/bespoke_icon.png

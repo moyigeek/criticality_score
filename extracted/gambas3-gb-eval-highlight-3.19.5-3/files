@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/gambas3/
+usr/lib/gambas3/gb.eval.highlight.component
+usr/lib/gambas3/gb.eval.highlight.gambas
+usr/share/
+usr/share/gambas3/
+usr/share/gambas3/info/
+usr/share/gambas3/info/gb.eval.highlight.info
+usr/share/gambas3/info/gb.eval.highlight.list

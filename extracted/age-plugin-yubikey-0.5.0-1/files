@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/age-plugin-yubikey
+usr/share/
+usr/share/licenses/
+usr/share/licenses/age-plugin-yubikey/
+usr/share/licenses/age-plugin-yubikey/LICENSE-MIT

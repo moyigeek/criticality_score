@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/mastodon-twitter-sync
+usr/share/
+usr/share/doc/
+usr/share/doc/mastodon-twitter-sync/
+usr/share/doc/mastodon-twitter-sync/README.md

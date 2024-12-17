@@ -1,0 +1,316 @@
+%FILES%
+usr/
+usr/share/
+usr/share/doc/
+usr/share/doc/yoshimi/
+usr/share/doc/yoshimi/1stReadMe.txt
+usr/share/doc/yoshimi/Changelog
+usr/share/doc/yoshimi/Colour_Themes.txt
+usr/share/doc/yoshimi/Dependencies
+usr/share/doc/yoshimi/Formant_Filter
+usr/share/doc/yoshimi/Formant_Filter_Design.txt
+usr/share/doc/yoshimi/Formant_Filter_Extension.txt
+usr/share/doc/yoshimi/Histories/
+usr/share/doc/yoshimi/Histories/ALSA_Setup.txt
+usr/share/doc/yoshimi/Histories/AddSynthModulation.txt
+usr/share/doc/yoshimi/Histories/Aftertouch.txt
+usr/share/doc/yoshimi/Histories/Banks.txt
+usr/share/doc/yoshimi/Histories/Banks_Presets_Update.txt
+usr/share/doc/yoshimi/Histories/Channel_Switcher.txt
+usr/share/doc/yoshimi/Histories/Command_Line.txt
+usr/share/doc/yoshimi/Histories/Command_line_Config_Roots_Banks.txt
+usr/share/doc/yoshimi/Histories/Direct_Part_Control.txt
+usr/share/doc/yoshimi/Histories/Instrument_Kits.txt
+usr/share/doc/yoshimi/Histories/Jack_Audio_Destination.txt
+usr/share/doc/yoshimi/Histories/Kit_Mode_Access.txt
+usr/share/doc/yoshimi/Histories/MIDI.txt
+usr/share/doc/yoshimi/Histories/MIDI_Learn.txt
+usr/share/doc/yoshimi/Histories/NRPN_System_Settings.txt
+usr/share/doc/yoshimi/Histories/Output_Levels.txt
+usr/share/doc/yoshimi/Histories/Part_Kit_Crossfade.txt
+usr/share/doc/yoshimi/Histories/README.txt
+usr/share/doc/yoshimi/Histories/Scales.txt
+usr/share/doc/yoshimi/Histories/Selection_Structure.txt
+usr/share/doc/yoshimi/Histories/Shortform_NRPN.txt
+usr/share/doc/yoshimi/Histories/Solo.txt
+usr/share/doc/yoshimi/Histories/Using_More_Parts.txt
+usr/share/doc/yoshimi/Histories/Using_NRPNs.txt
+usr/share/doc/yoshimi/Histories/Vector_Control.txt
+usr/share/doc/yoshimi/Histories/Voice_Mod_Oscillators.txt
+usr/share/doc/yoshimi/Histories/Yoshi-Zyn_Sound_Differences.txt
+usr/share/doc/yoshimi/Histories/Yoshi_Zyn_NRPNs.txt
+usr/share/doc/yoshimi/Histories/Yoshimi CCs and NRPNs.pdf
+usr/share/doc/yoshimi/Histories/Yoshimi_1.3.5-features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_1.3.6-features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_1.3.7-features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_1.3.8-features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_1.3.9-features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_1.4.0-features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_1.4.1-features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_1.5.0-features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_1.5.1-features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_1.5.10_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_1.5.11_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_1.5.2-features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_1.5.3-features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_1.5.4_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_1.5.5_1.5.6_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_1.5.7_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_1.5.8_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_1.5.9_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_1.6.0_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_1.6.1_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_1.7.0_features
+usr/share/doc/yoshimi/Histories/Yoshimi_1.7.1_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_1.7.2_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_1.7.3_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_1.7.4_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_2.0.1_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_2.0.2_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_2.0_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_2.1.0_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_2.1.1_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_2.1.2_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_2.2.0_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_2.2.1_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_2.2.2_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_2.2.3_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_2.3.0_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_2.3.1.2_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_2.3.1_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_2.3.2_features.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_Early_History.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_License_History.txt
+usr/share/doc/yoshimi/Histories/Yoshimi_Only_NRPNs.txt
+usr/share/doc/yoshimi/Histories/Zyn_ChangeLog
+usr/share/doc/yoshimi/Histories/Zyn_HISTORY.txt
+usr/share/doc/yoshimi/Note_Envelopes.txt
+usr/share/doc/yoshimi/README.txt
+usr/share/doc/yoshimi/The Short Yoshimi Guide.odt
+usr/share/doc/yoshimi/Yoshimi_2.3.3_features.txt
+usr/share/doc/yoshimi/Yoshimi_Helpers
+usr/share/doc/yoshimi/Yoshimi_License_History.txt
+usr/share/doc/yoshimi/Yoshimi_Quote.txt
+usr/share/doc/yoshimi/examples/
+usr/share/doc/yoshimi/examples/Arram_Koth_Finale.mid
+usr/share/doc/yoshimi/examples/Arram_Koth_Finale.txt
+usr/share/doc/yoshimi/examples/CoolSound.txt
+usr/share/doc/yoshimi/examples/CoolSound.xvy
+usr/share/doc/yoshimi/examples/CrossFade.txt
+usr/share/doc/yoshimi/examples/CrossFade.xiz
+usr/share/doc/yoshimi/examples/Microtonal Keymap Demo.kbm
+usr/share/doc/yoshimi/examples/Microtonal Ratio Scale.xsz
+usr/share/doc/yoshimi/examples/Microtonal Tuning Demo.scl
+usr/share/doc/yoshimi/examples/Microtonal_Demo.txt
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/0km.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Arpeggio 1.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Arpeggio 2.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Arpeggio 3.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Arpeggio 4.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Arpeggio 5.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Arpeggio 6.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Arpeggio Dist 1.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Arpeggio Dist 2.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Arpeggio Flange 1.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Arpeggio Flange 2.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Choir Reeds.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Choir Strings SynthBrass.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Dist Guitar Strings 1.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Dist Guitar Strings 2.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Drop.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Fantasy 1.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Fantasy 2.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Glass Choir.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/HighPass Saw Strings.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Ice Rhodes Strings.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Legatto 1.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Legatto 2.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Legatto Strings.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Octave Strings.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Organ Choir Strings.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Saw.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Space 1.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Space 2.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Split_keyboard.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/String Reverb.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Strings Reeds 1.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Strings Reeds 2.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Struck String Big Reverb 1.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Struck String Big Reverb 2.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Supersaw.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Synth Bells Choir Reverb.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Synth Piano Reverb.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/Synth.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/bent_synth.xmz
+usr/share/doc/yoshimi/examples/Original Zyn Patchsets/photons.xmz
+usr/share/doc/yoshimi/examples/Out_There.mid
+usr/share/doc/yoshimi/examples/Out_There.txt
+usr/share/doc/yoshimi/examples/Out_There.xmz
+usr/share/doc/yoshimi/examples/synth_prelude.txt
+usr/share/doc/yoshimi/examples/themes/
+usr/share/doc/yoshimi/examples/themes/blue_tint.clr
+usr/share/doc/yoshimi/examples/themes/demo.clr
+usr/share/doc/yoshimi/examples/themes/gray-dark-01.clr
+usr/share/doc/yoshimi/examples/themes/green_tint.clr
+usr/share/doc/yoshimi/examples/themes/largosdark.clr
+usr/share/doc/yoshimi/examples/themes/red_tint.clr
+usr/share/doc/yoshimi/examples/themes/retro_classic.clr
+usr/share/doc/yoshimi/yoshimi_user_guide/
+usr/share/doc/yoshimi/yoshimi_user_guide/add/
+usr/share/doc/yoshimi/yoshimi_user_guide/add/add.html
+usr/share/doc/yoshimi/yoshimi_user_guide/add/images/
+usr/share/doc/yoshimi/yoshimi_user_guide/add/images/global.png
+usr/share/doc/yoshimi/yoshimi_user_guide/add/images/voice.png
+usr/share/doc/yoshimi/yoshimi_user_guide/add/images/voicelist.png
+usr/share/doc/yoshimi/yoshimi_user_guide/add/voice.html
+usr/share/doc/yoshimi/yoshimi_user_guide/add/voicelist.html
+usr/share/doc/yoshimi/yoshimi_user_guide/appendix.html
+usr/share/doc/yoshimi/yoshimi_user_guide/bank/
+usr/share/doc/yoshimi/yoshimi_user_guide/bank/bank.html
+usr/share/doc/yoshimi/yoshimi_user_guide/bank/images/
+usr/share/doc/yoshimi/yoshimi_user_guide/bank/images/banks.png
+usr/share/doc/yoshimi/yoshimi_user_guide/bank/images/instruments.png
+usr/share/doc/yoshimi/yoshimi_user_guide/bank/images/roots.png
+usr/share/doc/yoshimi/yoshimi_user_guide/bank/images/search.png
+usr/share/doc/yoshimi/yoshimi_user_guide/bank/search.html
+usr/share/doc/yoshimi/yoshimi_user_guide/basic_example_page/
+usr/share/doc/yoshimi/yoshimi_user_guide/basic_example_page/example.html
+usr/share/doc/yoshimi/yoshimi_user_guide/cc_nrpn.html
+usr/share/doc/yoshimi/yoshimi_user_guide/config/
+usr/share/doc/yoshimi/yoshimi_user_guide/config/config.html
+usr/share/doc/yoshimi/yoshimi_user_guide/config/images/
+usr/share/doc/yoshimi/yoshimi_user_guide/config/images/alsa.png
+usr/share/doc/yoshimi/yoshimi_user_guide/config/images/jack.png
+usr/share/doc/yoshimi/yoshimi_user_guide/config/images/midi.png
+usr/share/doc/yoshimi/yoshimi_user_guide/config/images/settings.png
+usr/share/doc/yoshimi/yoshimi_user_guide/config/images/switches.png
+usr/share/doc/yoshimi/yoshimi_user_guide/config/images/theme.png
+usr/share/doc/yoshimi/yoshimi_user_guide/dev_notes.txt
+usr/share/doc/yoshimi/yoshimi_user_guide/effects/
+usr/share/doc/yoshimi/yoshimi_user_guide/effects/effects.html
+usr/share/doc/yoshimi/yoshimi_user_guide/effects/images/
+usr/share/doc/yoshimi/yoshimi_user_guide/effects/images/alienwah.png
+usr/share/doc/yoshimi/yoshimi_user_guide/effects/images/chorus.png
+usr/share/doc/yoshimi/yoshimi_user_guide/effects/images/distortion.png
+usr/share/doc/yoshimi/yoshimi_user_guide/effects/images/dynfilter.png
+usr/share/doc/yoshimi/yoshimi_user_guide/effects/images/dynfilter_filter_params.png
+usr/share/doc/yoshimi/yoshimi_user_guide/effects/images/echo.png
+usr/share/doc/yoshimi/yoshimi_user_guide/effects/images/eq.png
+usr/share/doc/yoshimi/yoshimi_user_guide/effects/images/phaser.png
+usr/share/doc/yoshimi/yoshimi_user_guide/effects/images/reverb.png
+usr/share/doc/yoshimi/yoshimi_user_guide/envelope/
+usr/share/doc/yoshimi/yoshimi_user_guide/envelope/envelope.html
+usr/share/doc/yoshimi/yoshimi_user_guide/envelope/images/
+usr/share/doc/yoshimi/yoshimi_user_guide/envelope/images/ampenv.png
+usr/share/doc/yoshimi/yoshimi_user_guide/envelope/images/bandenv.png
+usr/share/doc/yoshimi/yoshimi_user_guide/envelope/images/filtenv.png
+usr/share/doc/yoshimi/yoshimi_user_guide/envelope/images/freemode_edit.png
+usr/share/doc/yoshimi/yoshimi_user_guide/envelope/images/freqenv.png
+usr/share/doc/yoshimi/yoshimi_user_guide/files/
+usr/share/doc/yoshimi/yoshimi_user_guide/files/style.css
+usr/share/doc/yoshimi/yoshimi_user_guide/files/yoshimi_user_guide_version
+usr/share/doc/yoshimi/yoshimi_user_guide/filter/
+usr/share/doc/yoshimi/yoshimi_user_guide/filter/filter.html
+usr/share/doc/yoshimi/yoshimi_user_guide/filter/images/
+usr/share/doc/yoshimi/yoshimi_user_guide/filter/images/filter.png
+usr/share/doc/yoshimi/yoshimi_user_guide/filter/images/formant.png
+usr/share/doc/yoshimi/yoshimi_user_guide/images/
+usr/share/doc/yoshimi/yoshimi_user_guide/images/boundry.png
+usr/share/doc/yoshimi/yoshimi_user_guide/images/insertion.png
+usr/share/doc/yoshimi/yoshimi_user_guide/images/instrument.png
+usr/share/doc/yoshimi/yoshimi_user_guide/images/main.png
+usr/share/doc/yoshimi/yoshimi_user_guide/images/notes.txt
+usr/share/doc/yoshimi/yoshimi_user_guide/images/patch.png
+usr/share/doc/yoshimi/yoshimi_user_guide/images/path.png
+usr/share/doc/yoshimi/yoshimi_user_guide/images/scale.png
+usr/share/doc/yoshimi/yoshimi_user_guide/images/state.png
+usr/share/doc/yoshimi/yoshimi_user_guide/images/syseffsend.png
+usr/share/doc/yoshimi/yoshimi_user_guide/images/system.png
+usr/share/doc/yoshimi/yoshimi_user_guide/images/vu.png
+usr/share/doc/yoshimi/yoshimi_user_guide/images/yoshimi.png
+usr/share/doc/yoshimi/yoshimi_user_guide/index.html
+usr/share/doc/yoshimi/yoshimi_user_guide/install/
+usr/share/doc/yoshimi/yoshimi_user_guide/install/install.html
+usr/share/doc/yoshimi/yoshimi_user_guide/introduction/
+usr/share/doc/yoshimi/yoshimi_user_guide/introduction/introduction.html
+usr/share/doc/yoshimi/yoshimi_user_guide/lfo/
+usr/share/doc/yoshimi/yoshimi_user_guide/lfo/images/
+usr/share/doc/yoshimi/yoshimi_user_guide/lfo/images/lfo.png
+usr/share/doc/yoshimi/yoshimi_user_guide/lfo/lfo.html
+usr/share/doc/yoshimi/yoshimi_user_guide/main.html
+usr/share/doc/yoshimi/yoshimi_user_guide/miscellany.html
+usr/share/doc/yoshimi/yoshimi_user_guide/mlearn/
+usr/share/doc/yoshimi/yoshimi_user_guide/mlearn/images/
+usr/share/doc/yoshimi/yoshimi_user_guide/mlearn/images/cantlearn.png
+usr/share/doc/yoshimi/yoshimi_user_guide/mlearn/images/learning.png
+usr/share/doc/yoshimi/yoshimi_user_guide/mlearn/images/mlearn.png
+usr/share/doc/yoshimi/yoshimi_user_guide/mlearn/mlearn.html
+usr/share/doc/yoshimi/yoshimi_user_guide/navigation/
+usr/share/doc/yoshimi/yoshimi_user_guide/navigation/images/
+usr/share/doc/yoshimi/yoshimi_user_guide/navigation/images/bank_export.png
+usr/share/doc/yoshimi/yoshimi_user_guide/navigation/images/bank_import.png
+usr/share/doc/yoshimi/yoshimi_user_guide/navigation/images/bank_root.png
+usr/share/doc/yoshimi/yoshimi_user_guide/navigation/images/defaults.png
+usr/share/doc/yoshimi/yoshimi_user_guide/navigation/images/favourites.png
+usr/share/doc/yoshimi/yoshimi_user_guide/navigation/images/filer.png
+usr/share/doc/yoshimi/yoshimi_user_guide/navigation/images/gui_big.png
+usr/share/doc/yoshimi/yoshimi_user_guide/navigation/images/gui_normal.png
+usr/share/doc/yoshimi/yoshimi_user_guide/navigation/images/tuning_import.png
+usr/share/doc/yoshimi/yoshimi_user_guide/navigation/navigation.html
+usr/share/doc/yoshimi/yoshimi_user_guide/pad/
+usr/share/doc/yoshimi/yoshimi_user_guide/pad/images/
+usr/share/doc/yoshimi/yoshimi_user_guide/pad/images/padenvelope.png
+usr/share/doc/yoshimi/yoshimi_user_guide/pad/images/padharmonic.png
+usr/share/doc/yoshimi/yoshimi_user_guide/pad/images/padrandom.png
+usr/share/doc/yoshimi/yoshimi_user_guide/pad/pad.html
+usr/share/doc/yoshimi/yoshimi_user_guide/pad/random.html
+usr/share/doc/yoshimi/yoshimi_user_guide/part/
+usr/share/doc/yoshimi/yoshimi_user_guide/part/controllers.html
+usr/share/doc/yoshimi/yoshimi_user_guide/part/images/
+usr/share/doc/yoshimi/yoshimi_user_guide/part/images/aftertouch.png
+usr/share/doc/yoshimi/yoshimi_user_guide/part/images/controllers.png
+usr/share/doc/yoshimi/yoshimi_user_guide/part/images/edit.png
+usr/share/doc/yoshimi/yoshimi_user_guide/part/images/effects.png
+usr/share/doc/yoshimi/yoshimi_user_guide/part/images/kit.png
+usr/share/doc/yoshimi/yoshimi_user_guide/part/images/midiCCs.png
+usr/share/doc/yoshimi/yoshimi_user_guide/part/images/mixer.png
+usr/share/doc/yoshimi/yoshimi_user_guide/part/images/section.png
+usr/share/doc/yoshimi/yoshimi_user_guide/part/images/solo.png
+usr/share/doc/yoshimi/yoshimi_user_guide/part/part.html
+usr/share/doc/yoshimi/yoshimi_user_guide/part/solo.html
+usr/share/doc/yoshimi/yoshimi_user_guide/preset/
+usr/share/doc/yoshimi/yoshimi_user_guide/preset/images/
+usr/share/doc/yoshimi/yoshimi_user_guide/preset/images/copy.png
+usr/share/doc/yoshimi/yoshimi_user_guide/preset/images/paste.png
+usr/share/doc/yoshimi/yoshimi_user_guide/preset/preset.html
+usr/share/doc/yoshimi/yoshimi_user_guide/resonance/
+usr/share/doc/yoshimi/yoshimi_user_guide/resonance/images/
+usr/share/doc/yoshimi/yoshimi_user_guide/resonance/images/resonance.png
+usr/share/doc/yoshimi/yoshimi_user_guide/resonance/resonance.html
+usr/share/doc/yoshimi/yoshimi_user_guide/scale/
+usr/share/doc/yoshimi/yoshimi_user_guide/scale/images/
+usr/share/doc/yoshimi/yoshimi_user_guide/scale/images/pietro.png
+usr/share/doc/yoshimi/yoshimi_user_guide/scale/scale.html
+usr/share/doc/yoshimi/yoshimi_user_guide/starting/
+usr/share/doc/yoshimi/yoshimi_user_guide/starting/images/
+usr/share/doc/yoshimi/yoshimi_user_guide/starting/images/keyboard.png
+usr/share/doc/yoshimi/yoshimi_user_guide/starting/images/virtual.png
+usr/share/doc/yoshimi/yoshimi_user_guide/starting/starting.html
+usr/share/doc/yoshimi/yoshimi_user_guide/sub/
+usr/share/doc/yoshimi/yoshimi_user_guide/sub/images/
+usr/share/doc/yoshimi/yoshimi_user_guide/sub/images/sub.png
+usr/share/doc/yoshimi/yoshimi_user_guide/sub/sub.html
+usr/share/doc/yoshimi/yoshimi_user_guide/vector/
+usr/share/doc/yoshimi/yoshimi_user_guide/vector/images/
+usr/share/doc/yoshimi/yoshimi_user_guide/vector/images/vector.png
+usr/share/doc/yoshimi/yoshimi_user_guide/vector/vector.html
+usr/share/doc/yoshimi/yoshimi_user_guide/volume/
+usr/share/doc/yoshimi/yoshimi_user_guide/volume/images/
+usr/share/doc/yoshimi/yoshimi_user_guide/volume/images/volume.png
+usr/share/doc/yoshimi/yoshimi_user_guide/volume/volume.html
+usr/share/doc/yoshimi/yoshimi_user_guide/wave/
+usr/share/doc/yoshimi/yoshimi_user_guide/wave/images/
+usr/share/doc/yoshimi/yoshimi_user_guide/wave/images/wave.png
+usr/share/doc/yoshimi/yoshimi_user_guide/wave/wave.html
+usr/share/doc/yoshimi/yoshimi_user_guide/yoshimi_cli.html

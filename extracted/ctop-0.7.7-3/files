@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/ctop
+usr/share/
+usr/share/licenses/
+usr/share/licenses/ctop/
+usr/share/licenses/ctop/LICENSE

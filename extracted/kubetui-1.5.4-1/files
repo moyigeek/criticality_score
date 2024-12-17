@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/kubetui
+usr/share/
+usr/share/doc/
+usr/share/doc/kubetui/
+usr/share/doc/kubetui/README.md
+usr/share/licenses/
+usr/share/licenses/kubetui/
+usr/share/licenses/kubetui/LICENSE

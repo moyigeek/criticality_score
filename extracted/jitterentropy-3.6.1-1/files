@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/include/
+usr/include/jitterentropy-base-user.h
+usr/include/jitterentropy.h
+usr/lib/
+usr/lib/libjitterentropy.so
+usr/lib/libjitterentropy.so.3
+usr/lib/libjitterentropy.so.3.6.1
+usr/share/
+usr/share/licenses/
+usr/share/licenses/jitterentropy/
+usr/share/licenses/jitterentropy/LICENSE
+usr/share/licenses/jitterentropy/LICENSE.bsd
+usr/share/man/
+usr/share/man/man3/
+usr/share/man/man3/jitterentropy.3.gz

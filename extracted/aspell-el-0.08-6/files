@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/aspell-0.60/
+usr/lib/aspell-0.60/el.dat
+usr/lib/aspell-0.60/el.kbd
+usr/lib/aspell-0.60/el.multi
+usr/lib/aspell-0.60/el.rws
+usr/lib/aspell-0.60/el_phonet.dat
+usr/lib/aspell-0.60/gr.alias
+usr/lib/aspell-0.60/greek.alias

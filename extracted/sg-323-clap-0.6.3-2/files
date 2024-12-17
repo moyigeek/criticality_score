@@ -1,0 +1,5 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/clap/
+usr/lib/clap/SG-323.clap

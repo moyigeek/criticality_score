@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/vim-jad/
+usr/share/licenses/vim-jad/LICENSE
+usr/share/vim/
+usr/share/vim/vimfiles/
+usr/share/vim/vimfiles/plugin/
+usr/share/vim/vimfiles/plugin/jad.vim

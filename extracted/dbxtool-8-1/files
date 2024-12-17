@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/dbxtool
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/dbxtool.service
+usr/share/
+usr/share/dbxtool/
+usr/share/dbxtool/DBXUpdate-2016-08-09-13-16-00.bin
+usr/share/doc/
+usr/share/doc/dbxtool/
+usr/share/doc/dbxtool/COPYING
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/dbxtool.1.gz

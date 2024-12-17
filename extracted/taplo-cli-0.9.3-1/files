@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/taplo
+usr/share/
+usr/share/licenses/
+usr/share/licenses/taplo-cli/
+usr/share/licenses/taplo-cli/LICENSE.md

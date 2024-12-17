@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/perl5/
+usr/lib/perl5/5.40/
+usr/lib/perl5/5.40/vendor_perl/
+usr/lib/perl5/5.40/vendor_perl/Devel/
+usr/lib/perl5/5.40/vendor_perl/Devel/Leak.pm
+usr/lib/perl5/5.40/vendor_perl/auto/
+usr/lib/perl5/5.40/vendor_perl/auto/Devel/
+usr/lib/perl5/5.40/vendor_perl/auto/Devel/Leak/
+usr/lib/perl5/5.40/vendor_perl/auto/Devel/Leak/Leak.so
+usr/share/
+usr/share/man/
+usr/share/man/man3/
+usr/share/man/man3/Devel::Leak.3pm.gz

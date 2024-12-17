@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/Xdummy
+usr/bin/rx11vnc
+usr/bin/x11vnc
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/x11vnc.service
+usr/share/
+usr/share/applications/
+usr/share/applications/x11vnc.desktop
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/x11vnc.1.gz

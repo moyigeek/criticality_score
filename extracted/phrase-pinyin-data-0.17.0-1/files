@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/phrase-pinyin-data/
+usr/share/licenses/phrase-pinyin-data/LICENSE
+usr/share/phrase-pinyin-data/
+usr/share/phrase-pinyin-data/pinyin.txt

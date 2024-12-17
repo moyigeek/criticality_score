@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/rshijack
+usr/share/
+usr/share/doc/
+usr/share/doc/rshijack/
+usr/share/doc/rshijack/README.md
+usr/share/licenses/
+usr/share/licenses/rshijack/
+usr/share/licenses/rshijack/LICENSE

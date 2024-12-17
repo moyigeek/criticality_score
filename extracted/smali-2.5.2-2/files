@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/baksmali
+usr/bin/smali
+usr/share/
+usr/share/java/
+usr/share/java/smali/
+usr/share/java/smali/baksmali
+usr/share/java/smali/baksmali.jar
+usr/share/java/smali/smali
+usr/share/java/smali/smali.jar
+usr/share/licenses/
+usr/share/licenses/smali/
+usr/share/licenses/smali/NOTICE

@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/hx
+usr/share/
+usr/share/doc/
+usr/share/doc/hex/
+usr/share/doc/hex/README.md
+usr/share/licenses/
+usr/share/licenses/hex/
+usr/share/licenses/hex/LICENSE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/hx.1.gz

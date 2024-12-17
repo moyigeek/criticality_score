@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/share/
+usr/share/distro-info/
+usr/share/distro-info/debian.csv
+usr/share/distro-info/ubuntu.csv
+usr/share/doc/
+usr/share/doc/distro-info-data/
+usr/share/doc/distro-info-data/README.md
+usr/share/licenses/
+usr/share/licenses/distro-info-data/
+usr/share/licenses/distro-info-data/LICENSE

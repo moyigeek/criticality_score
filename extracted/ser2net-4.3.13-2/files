@@ -1,0 +1,17 @@
+%FILES%
+etc/
+etc/ser2net/
+etc/ser2net/ser2net.yaml
+usr/
+usr/bin/
+usr/bin/ser2net
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/ser2net.service
+usr/share/
+usr/share/man/
+usr/share/man/man5/
+usr/share/man/man5/ser2net.yaml.5.gz
+usr/share/man/man8/
+usr/share/man/man8/ser2net.8.gz

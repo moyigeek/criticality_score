@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/png2svg
+usr/share/
+usr/share/licenses/
+usr/share/licenses/png2svg/
+usr/share/licenses/png2svg/LICENSE

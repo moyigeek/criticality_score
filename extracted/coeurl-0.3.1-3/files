@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/include/
+usr/include/coeurl/
+usr/include/coeurl/client.hpp
+usr/include/coeurl/errors.hpp
+usr/include/coeurl/headers.hpp
+usr/include/coeurl/request.hpp
+usr/lib/
+usr/lib/libcoeurl.so
+usr/lib/libcoeurl.so.0.3
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/coeurl.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/coeurl/
+usr/share/licenses/coeurl/LICENSE

@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/include/
+usr/include/boxed-cpp/
+usr/include/boxed-cpp/boxed.hpp
+usr/lib/
+usr/lib/cmake/
+usr/lib/cmake/boxed-cpp/
+usr/lib/cmake/boxed-cpp/boxed-cpp-config-version.cmake
+usr/lib/cmake/boxed-cpp/boxed-cpp-config.cmake
+usr/lib/cmake/boxed-cpp/boxed-cpp-targets.cmake

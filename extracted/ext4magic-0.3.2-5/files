@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/ext4magic
+usr/share/
+usr/share/man/
+usr/share/man/man8/
+usr/share/man/man8/ext4magic.8.gz

@@ -1,0 +1,12 @@
+%FILES%
+etc/
+etc/vulkan/
+etc/vulkan/implicit_layer.d/
+etc/vulkan/implicit_layer.d/renderdoc_capture.32.json
+usr/
+usr/lib32/
+usr/lib32/librenderdoc.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-renderdoc/
+usr/share/licenses/lib32-renderdoc/LICENSE

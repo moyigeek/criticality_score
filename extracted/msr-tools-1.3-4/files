@@ -1,0 +1,6 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cpuid
+usr/bin/rdmsr
+usr/bin/wrmsr

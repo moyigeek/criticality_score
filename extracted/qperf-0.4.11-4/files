@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/qperf
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/qperf.1.gz

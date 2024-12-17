@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/OPNplug
+usr/share/
+usr/share/applications/
+usr/share/applications/OPNplug.desktop
+usr/share/icons/
+usr/share/icons/hicolor/
+usr/share/icons/hicolor/32x32/
+usr/share/icons/hicolor/32x32/apps/
+usr/share/icons/hicolor/32x32/apps/OPNplug.png
+usr/share/icons/hicolor/96x96/
+usr/share/icons/hicolor/96x96/apps/
+usr/share/icons/hicolor/96x96/apps/OPNplug.png
+usr/share/pixmaps/
+usr/share/pixmaps/OPNplug.png

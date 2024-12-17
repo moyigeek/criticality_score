@@ -1,0 +1,6 @@
+%FILES%
+usr/
+usr/share/
+usr/share/swcatalog/
+usr/share/swcatalog/xml/
+usr/share/swcatalog/xml/org.gnome.App-list.xml

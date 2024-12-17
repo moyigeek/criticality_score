@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/vbam
+usr/etc/
+usr/etc/vbam.cfg
+usr/share/
+usr/share/man/
+usr/share/man/man6/
+usr/share/man/man6/vbam.6.gz

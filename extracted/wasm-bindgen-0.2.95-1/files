@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/wasm-bindgen
+usr/bin/wasm-bindgen-test-runner
+usr/bin/wasm2es6js
+usr/share/
+usr/share/doc/
+usr/share/doc/wasm-bindgen/
+usr/share/doc/wasm-bindgen/README.md
+usr/share/licenses/
+usr/share/licenses/wasm-bindgen/
+usr/share/licenses/wasm-bindgen/LICENSE-MIT

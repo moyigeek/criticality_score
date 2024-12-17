@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/rebuilderd-website/
+usr/share/licenses/rebuilderd-website/LICENSE
+usr/share/webapps/
+usr/share/webapps/rebuilderd-website/
+usr/share/webapps/rebuilderd-website/archlogo-0.6.1.svg
+usr/share/webapps/rebuilderd-website/bundle-0.6.1.css
+usr/share/webapps/rebuilderd-website/bundle-0.6.1.js
+usr/share/webapps/rebuilderd-website/favicon.ico
+usr/share/webapps/rebuilderd-website/icons/
+usr/share/webapps/rebuilderd-website/icons/note-16.svg
+usr/share/webapps/rebuilderd-website/icons/search-16.svg
+usr/share/webapps/rebuilderd-website/index.html

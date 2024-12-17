@@ -1,0 +1,5 @@
+%FILES%
+usr/
+usr/share/
+usr/share/v2ray/
+usr/share/v2ray/geoip.dat

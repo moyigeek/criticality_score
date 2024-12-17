@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/cmake/
+usr/lib32/cmake/libxml2/
+usr/lib32/cmake/libxml2/libxml2-config.cmake
+usr/lib32/libxml2.so
+usr/lib32/libxml2.so.2
+usr/lib32/libxml2.so.2.13.5
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/libxml-2.0.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-libxml2/
+usr/share/licenses/lib32-libxml2/Copyright

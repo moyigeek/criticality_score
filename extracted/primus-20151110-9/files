@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/primusrun
+usr/lib/
+usr/lib/primus/
+usr/lib/primus/libGL.so.1
+usr/share/
+usr/share/bash-completion/
+usr/share/bash-completion/completions/
+usr/share/bash-completion/completions/primusrun
+usr/share/licenses/
+usr/share/licenses/primus/
+usr/share/licenses/primus/LICENSE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/primusrun.1.gz

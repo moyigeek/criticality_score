@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/gambas3/
+usr/lib/gambas3/gb.web.component
+usr/lib/gambas3/gb.web.gambas
+usr/share/
+usr/share/gambas3/
+usr/share/gambas3/info/
+usr/share/gambas3/info/gb.web.info
+usr/share/gambas3/info/gb.web.list

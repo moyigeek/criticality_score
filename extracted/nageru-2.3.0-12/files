@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/futatabi
+usr/bin/kaeru
+usr/bin/nageru
+usr/lib/
+usr/lib/nageru/
+usr/lib/nageru/nageru
+usr/share/
+usr/share/nageru/
+usr/share/nageru/akai_midimix.midimapping
+usr/share/nageru/behringer_cmd_pl1.midimapping
+usr/share/nageru/bg.jpeg
+usr/share/nageru/simple.lua
+usr/share/nageru/theme.lua

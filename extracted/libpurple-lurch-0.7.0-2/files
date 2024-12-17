@@ -1,0 +1,5 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/purple-2/
+usr/lib/purple-2/lurch.so

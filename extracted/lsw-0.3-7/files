@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/lsw
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lsw/
+usr/share/licenses/lsw/COPYING
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/lsw.1.gz

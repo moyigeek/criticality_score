@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/fwupd/
+usr/lib/fwupd/efi/
+usr/lib/fwupd/efi/fwupdx64.efi
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/fwupd-efi.pc

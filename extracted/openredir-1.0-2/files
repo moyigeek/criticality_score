@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/openredir
+usr/bin/openredir-cli
+usr/lib/
+usr/lib/libopenredir.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/openredir/
+usr/share/licenses/openredir/LICENSE

@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/share/
+usr/share/fonts/
+usr/share/fonts/TTF/
+usr/share/fonts/TTF/monof55.ttf
+usr/share/fonts/TTF/monof56.ttf
+usr/share/licenses/
+usr/share/licenses/ttf-monofur/
+usr/share/licenses/ttf-monofur/license.txt

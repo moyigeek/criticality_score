@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/ipcalc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/ipcalc/
+usr/share/licenses/ipcalc/license
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/ipcalc.1.gz

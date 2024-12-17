@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/include/
+usr/include/shhopt.h
+usr/lib/
+usr/lib/libshhopt.a
+usr/share/
+usr/share/doc/
+usr/share/doc/shhopt/
+usr/share/doc/shhopt/CREDITS
+usr/share/doc/shhopt/ChangeLog
+usr/share/doc/shhopt/INSTALL
+usr/share/doc/shhopt/README

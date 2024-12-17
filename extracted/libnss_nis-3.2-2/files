@@ -1,0 +1,6 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/libnss_nis.so
+usr/lib/libnss_nis.so.2
+usr/lib/libnss_nis.so.2.0.0

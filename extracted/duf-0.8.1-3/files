@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/duf
+usr/share/
+usr/share/licenses/
+usr/share/licenses/duf/
+usr/share/licenses/duf/LICENSE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/duf.1.gz

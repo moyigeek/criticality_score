@@ -1,0 +1,7 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/rga
+usr/bin/rga-fzf
+usr/bin/rga-fzf-open
+usr/bin/rga-preproc

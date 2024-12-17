@@ -1,0 +1,14 @@
+%FILES%
+etc/
+etc/vaultwarden.env
+usr/
+usr/bin/
+usr/bin/vaultwarden
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/vaultwarden.service
+usr/lib/sysusers.d/
+usr/lib/sysusers.d/vaultwarden.conf
+usr/lib/tmpfiles.d/
+usr/lib/tmpfiles.d/vaultwarden.conf

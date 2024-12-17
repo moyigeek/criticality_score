@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libduktape.so
+usr/lib32/libduktape.so.207
+usr/lib32/libduktape.so.207.20700
+usr/lib32/libduktaped.so
+usr/lib32/libduktaped.so.207
+usr/lib32/libduktaped.so.207.20700
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/duktape.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-duktape/
+usr/share/licenses/lib32-duktape/LICENSE.txt

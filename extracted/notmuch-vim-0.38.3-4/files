@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/share/
+usr/share/vim/
+usr/share/vim/vimfiles/
+usr/share/vim/vimfiles/doc/
+usr/share/vim/vimfiles/doc/notmuch.txt
+usr/share/vim/vimfiles/plugin/
+usr/share/vim/vimfiles/plugin/notmuch.vim
+usr/share/vim/vimfiles/syntax/
+usr/share/vim/vimfiles/syntax/notmuch-compose.vim
+usr/share/vim/vimfiles/syntax/notmuch-folders.vim
+usr/share/vim/vimfiles/syntax/notmuch-git-diff.vim
+usr/share/vim/vimfiles/syntax/notmuch-search.vim
+usr/share/vim/vimfiles/syntax/notmuch-show.vim

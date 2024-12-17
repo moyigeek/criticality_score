@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/htmlq
+usr/share/
+usr/share/doc/
+usr/share/doc/htmlq/
+usr/share/doc/htmlq/README.md
+usr/share/licenses/
+usr/share/licenses/htmlq/
+usr/share/licenses/htmlq/LICENSE.md

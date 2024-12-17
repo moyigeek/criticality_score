@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cargo-feature
+usr/share/
+usr/share/licenses/
+usr/share/licenses/cargo-feature/
+usr/share/licenses/cargo-feature/LICENSE

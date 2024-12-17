@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cargo-dist
+usr/bin/dist
+usr/share/
+usr/share/doc/
+usr/share/doc/cargo-dist/
+usr/share/doc/cargo-dist/README.md
+usr/share/licenses/
+usr/share/licenses/cargo-dist/
+usr/share/licenses/cargo-dist/LICENSE-MIT

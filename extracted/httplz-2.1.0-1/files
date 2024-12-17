@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/httplz
+usr/share/
+usr/share/doc/
+usr/share/doc/httplz/
+usr/share/doc/httplz/README.md
+usr/share/licenses/
+usr/share/licenses/httplz/
+usr/share/licenses/httplz/LICENSE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/httplz.1.gz

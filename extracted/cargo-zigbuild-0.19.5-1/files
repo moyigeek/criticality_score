@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cargo-zigbuild
+usr/share/
+usr/share/doc/
+usr/share/doc/cargo-zigbuild/
+usr/share/doc/cargo-zigbuild/README.md
+usr/share/licenses/
+usr/share/licenses/cargo-zigbuild/
+usr/share/licenses/cargo-zigbuild/LICENSE

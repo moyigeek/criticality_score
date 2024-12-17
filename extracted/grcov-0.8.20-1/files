@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/grcov
+usr/share/
+usr/share/doc/
+usr/share/doc/grcov/
+usr/share/doc/grcov/README.md

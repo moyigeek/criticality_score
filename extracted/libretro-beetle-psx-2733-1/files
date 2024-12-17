@@ -1,0 +1,5 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/libretro/
+usr/lib/libretro/mednafen_psx_libretro.so

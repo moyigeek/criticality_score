@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/luarocks/
+usr/lib/luarocks/rocks-5.4/
+usr/lib/luarocks/rocks-5.4/loadkit/
+usr/lib/luarocks/rocks-5.4/loadkit/1.1.0-1/
+usr/lib/luarocks/rocks-5.4/loadkit/1.1.0-1/doc/
+usr/lib/luarocks/rocks-5.4/loadkit/1.1.0-1/doc/README.md
+usr/lib/luarocks/rocks-5.4/loadkit/1.1.0-1/loadkit-1.1.0-1.rockspec
+usr/lib/luarocks/rocks-5.4/loadkit/1.1.0-1/rock_manifest
+usr/share/
+usr/share/lua/
+usr/share/lua/5.4/
+usr/share/lua/5.4/loadkit.lua

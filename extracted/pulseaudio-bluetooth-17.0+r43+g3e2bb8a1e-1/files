@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/pulseaudio/
+usr/lib/pulseaudio/modules/
+usr/lib/pulseaudio/modules/libbluez5-util.so
+usr/lib/pulseaudio/modules/module-bluetooth-discover.so
+usr/lib/pulseaudio/modules/module-bluetooth-policy.so
+usr/lib/pulseaudio/modules/module-bluez5-device.so
+usr/lib/pulseaudio/modules/module-bluez5-discover.so

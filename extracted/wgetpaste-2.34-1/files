@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/wgetpaste
+usr/share/
+usr/share/licenses/
+usr/share/licenses/wgetpaste/
+usr/share/licenses/wgetpaste/LICENSE
+usr/share/wgetpaste/
+usr/share/wgetpaste/wgetpaste.example
+usr/share/zsh/
+usr/share/zsh/site-functions/
+usr/share/zsh/site-functions/_wgetpaste

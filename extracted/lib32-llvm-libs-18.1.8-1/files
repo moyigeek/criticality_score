@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/LLVMgold.so
+usr/lib32/bfd-plugins/
+usr/lib32/bfd-plugins/LLVMgold.so
+usr/lib32/libLLVM-18.so
+usr/lib32/libLLVM.so
+usr/lib32/libLLVM.so.18.1
+usr/lib32/libLTO.so
+usr/lib32/libLTO.so.18.1
+usr/lib32/libRemarks.so
+usr/lib32/libRemarks.so.18.1
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-llvm-libs/
+usr/share/licenses/lib32-llvm-libs/LICENSE

@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/fnlfmt
+usr/share/
+usr/share/doc/
+usr/share/doc/fnlfmt/
+usr/share/doc/fnlfmt/README.md
+usr/share/licenses/
+usr/share/licenses/fnlfmt/
+usr/share/licenses/fnlfmt/LICENSE

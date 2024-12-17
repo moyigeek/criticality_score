@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/psalm
+usr/share/
+usr/share/licenses/
+usr/share/licenses/psalm/
+usr/share/licenses/psalm/LICENSE

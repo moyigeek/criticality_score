@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/qconf
+usr/share/
+usr/share/qconf/
+usr/share/qconf/conf/
+usr/share/qconf/conf/conf.cpp
+usr/share/qconf/conf/conf.pro
+usr/share/qconf/conf/conf4.cpp
+usr/share/qconf/conf/conf4.h
+usr/share/qconf/conf/conf4.pro
+usr/share/qconf/modules/
+usr/share/qconf/modules/qt41.qcm

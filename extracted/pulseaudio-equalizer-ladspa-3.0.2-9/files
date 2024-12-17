@@ -1,0 +1,51 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/pulseaudio-equalizer
+usr/bin/pulseaudio-equalizer-gtk
+usr/lib/
+usr/lib/python3.12/
+usr/lib/python3.12/site-packages/
+usr/lib/python3.12/site-packages/pulseeq/
+usr/lib/python3.12/site-packages/pulseeq/__init__.py
+usr/lib/python3.12/site-packages/pulseeq/__pycache__/
+usr/lib/python3.12/site-packages/pulseeq/__pycache__/__init__.cpython-312.opt-1.pyc
+usr/lib/python3.12/site-packages/pulseeq/__pycache__/__init__.cpython-312.pyc
+usr/lib/python3.12/site-packages/pulseeq/__pycache__/constants.cpython-312.opt-1.pyc
+usr/lib/python3.12/site-packages/pulseeq/__pycache__/constants.cpython-312.pyc
+usr/lib/python3.12/site-packages/pulseeq/__pycache__/equalizer.cpython-312.opt-1.pyc
+usr/lib/python3.12/site-packages/pulseeq/__pycache__/equalizer.cpython-312.pyc
+usr/lib/python3.12/site-packages/pulseeq/constants.py
+usr/lib/python3.12/site-packages/pulseeq/equalizer.py
+usr/share/
+usr/share/applications/
+usr/share/applications/com.github.pulseaudio-equalizer-ladspa.Equalizer.desktop
+usr/share/pulseaudio-equalizer-ladspa/
+usr/share/pulseaudio-equalizer-ladspa/com.github.pulseaudio-equalizer-ladspa.Equalizer.gresource
+usr/share/pulseaudio-equalizer-ladspa/presets/
+usr/share/pulseaudio-equalizer-ladspa/presets/Bass Boost.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Big Bass Boost.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Boosted.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Bose QuietComfort 35.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Classical.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Club.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Dance.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Flat.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Full Bass & Treble.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Full Bass.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Full Treble.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Headphones.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Laptop.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Large Hall.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Live.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Party.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Perfect EQ.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Pop.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Reggae.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Rock.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Ska.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Soft Rock.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Soft.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Super Bass Boost.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/Techno.preset
+usr/share/pulseaudio-equalizer-ladspa/presets/jjo-sony-MDR-V300.preset

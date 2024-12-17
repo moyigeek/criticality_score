@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/pacrunner
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/pacrunner.service
+usr/share/
+usr/share/dbus-1/
+usr/share/dbus-1/system-services/
+usr/share/dbus-1/system-services/org.pacrunner.service
+usr/share/dbus-1/system.d/
+usr/share/dbus-1/system.d/pacrunner.conf

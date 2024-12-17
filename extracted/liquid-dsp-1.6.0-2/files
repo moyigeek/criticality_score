@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/include/
+usr/include/liquid/
+usr/include/liquid/liquid.h
+usr/lib/
+usr/lib/libliquid.so
+usr/lib/libliquid.so.1
+usr/lib/libliquid.so.1.6
+usr/share/
+usr/share/licenses/
+usr/share/licenses/liquid-dsp/
+usr/share/licenses/liquid-dsp/LICENSE

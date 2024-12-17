@@ -1,0 +1,5 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/libretro/
+usr/lib/libretro/mesen-s_libretro.so

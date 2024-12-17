@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/vokoscreenNG
+usr/share/
+usr/share/applications/
+usr/share/applications/vokoscreenNG.desktop
+usr/share/icons/
+usr/share/icons/hicolor/
+usr/share/icons/hicolor/256x256/
+usr/share/icons/hicolor/256x256/apps/
+usr/share/icons/hicolor/256x256/apps/vokoscreenNG.png
+usr/share/metainfo/
+usr/share/metainfo/vokoscreenNG.appdata.xml

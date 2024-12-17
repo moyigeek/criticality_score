@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/modules-load.d/
+usr/lib/modules-load.d/virtualbox-host-modules-lts.conf
+usr/lib/modules/
+usr/lib/modules/6.6.66-1-lts/
+usr/lib/modules/6.6.66-1-lts/extramodules/
+usr/lib/modules/6.6.66-1-lts/extramodules/Module.symvers
+usr/lib/modules/6.6.66-1-lts/extramodules/vboxdrv.ko.zst
+usr/lib/modules/6.6.66-1-lts/extramodules/vboxnetadp.ko.zst
+usr/lib/modules/6.6.66-1-lts/extramodules/vboxnetflt.ko.zst

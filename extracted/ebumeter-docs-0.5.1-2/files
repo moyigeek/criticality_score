@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/share/
+usr/share/doc/
+usr/share/doc/ebumeter/
+usr/share/doc/ebumeter/AUTHORS
+usr/share/doc/ebumeter/README
+usr/share/doc/ebumeter/html/
+usr/share/doc/ebumeter/html/ebumeter.png
+usr/share/doc/ebumeter/html/quickguide.html
+usr/share/doc/ebumeter/html/redzita.png
+usr/share/doc/ebumeter/loudness-meter-pres.pdf
+usr/share/doc/ebumeter/loudness-meter.pdf

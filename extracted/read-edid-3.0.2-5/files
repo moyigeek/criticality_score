@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/get-edid
+usr/bin/parse-edid
+usr/share/
+usr/share/doc/
+usr/share/doc/read-edid/
+usr/share/doc/read-edid/AUTHORS
+usr/share/doc/read-edid/ChangeLog
+usr/share/doc/read-edid/LICENSE
+usr/share/doc/read-edid/README
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/get-edid.1.gz

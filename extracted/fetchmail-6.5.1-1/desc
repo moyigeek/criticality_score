@@ -1,0 +1,52 @@
+%FILENAME%
+fetchmail-6.5.1-1-x86_64.pkg.tar.zst
+
+%NAME%
+fetchmail
+
+%BASE%
+fetchmail
+
+%VERSION%
+6.5.1-1
+
+%DESC%
+A remote-mail retrieval utility
+
+%CSIZE%
+390091
+
+%ISIZE%
+1618802
+
+%SHA256SUM%
+79d3626df708727513482cad1c31d9a68ef06d76ecbfd569df04d1fca662269b
+
+%PGPSIG%
+iNUEABYKAH0WIQQFx3danouXdAf+COadTFqhVCbaCgUCZz3NU18UgAAAAAAuAChpc3N1ZXItZnByQG5vdGF0aW9ucy5vcGVucGdwLmZpZnRoaG9yc2VtYW4ubmV0MDVDNzc3NUE5RThCOTc3NDA3RkUwOEU2OUQ0QzVBQTE1NDI2REEwQQAKCRCdTFqhVCbaCg4bAQD6rhRZiGcDWYAmC4eVW/RRykYs0z5lYB+qCz3Id9xD1wD6ArRU1+inJjudiolHlL6NoMX69D3YcBlQN4xyvW0T0A4=
+
+%URL%
+https://www.fetchmail.info
+
+%LICENSE%
+GPL
+
+%ARCH%
+x86_64
+
+%BUILDDATE%
+1732103481
+
+%PACKAGER%
+Frederik Schwan <freswa@archlinux.org>
+
+%DEPENDS%
+openssl
+
+%OPTDEPENDS%
+tk: for using fetchmailconf
+python-future: for using fetchmailconf
+
+%MAKEDEPENDS%
+python
+

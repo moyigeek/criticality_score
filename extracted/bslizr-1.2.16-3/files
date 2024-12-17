@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/lv2/
+usr/lib/lv2/BSlizr.lv2/
+usr/lib/lv2/BSlizr.lv2/BSlizr.so
+usr/lib/lv2/BSlizr.lv2/BSlizr.ttl
+usr/lib/lv2/BSlizr.lv2/BSlizr_GUI.so
+usr/lib/lv2/BSlizr.lv2/manifest.ttl
+usr/lib/lv2/BSlizr.lv2/surface.png
+usr/share/
+usr/share/doc/
+usr/share/doc/bslizr/
+usr/share/doc/bslizr/README.md

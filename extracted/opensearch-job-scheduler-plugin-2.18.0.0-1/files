@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/opensearch-job-scheduler-plugin/
+usr/share/licenses/opensearch-job-scheduler-plugin/LICENSE.txt
+usr/share/opensearch/
+usr/share/opensearch/plugins/
+usr/share/opensearch/plugins/opensearch-job-scheduler/
+usr/share/opensearch/plugins/opensearch-job-scheduler/failureaccess-1.0.2.jar
+usr/share/opensearch/plugins/opensearch-job-scheduler/google-java-format-1.24.0.jar
+usr/share/opensearch/plugins/opensearch-job-scheduler/guava-32.1.3-jre.jar
+usr/share/opensearch/plugins/opensearch-job-scheduler/opensearch-job-scheduler-2.18.0.0.jar
+usr/share/opensearch/plugins/opensearch-job-scheduler/opensearch-job-scheduler-spi-2.18.0.0.jar
+usr/share/opensearch/plugins/opensearch-job-scheduler/plugin-descriptor.properties

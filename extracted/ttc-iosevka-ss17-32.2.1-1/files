@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/share/
+usr/share/fonts/
+usr/share/fonts/TTF/
+usr/share/fonts/TTF/IosevkaSS17-Bold.ttc
+usr/share/fonts/TTF/IosevkaSS17-ExtraBold.ttc
+usr/share/fonts/TTF/IosevkaSS17-ExtraLight.ttc
+usr/share/fonts/TTF/IosevkaSS17-Heavy.ttc
+usr/share/fonts/TTF/IosevkaSS17-Light.ttc
+usr/share/fonts/TTF/IosevkaSS17-Medium.ttc
+usr/share/fonts/TTF/IosevkaSS17-Regular.ttc
+usr/share/fonts/TTF/IosevkaSS17-SemiBold.ttc
+usr/share/fonts/TTF/IosevkaSS17-Thin.ttc
+usr/share/licenses/
+usr/share/licenses/ttc-iosevka-ss17/
+usr/share/licenses/ttc-iosevka-ss17/LICENSE.md

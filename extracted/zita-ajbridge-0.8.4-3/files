@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/zita-a2j
+usr/bin/zita-j2a
+usr/share/
+usr/share/doc/
+usr/share/doc/zita-ajbridge/
+usr/share/doc/zita-ajbridge/AUTHORS
+usr/share/doc/zita-ajbridge/README
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/zita-a2j.1.gz
+usr/share/man/man1/zita-ajbridge.1.gz
+usr/share/man/man1/zita-j2a.1.gz

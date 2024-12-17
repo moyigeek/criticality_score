@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/tlsh
+usr/bin/tlsh_unittest
+usr/include/
+usr/include/tlsh/
+usr/include/tlsh/tlsh.h
+usr/include/tlsh/tlsh_version.h
+usr/lib/
+usr/lib/libtlsh.so
+usr/lib/libtlsh.so.4
+usr/lib/libtlsh.so.4.11.2
+usr/share/
+usr/share/doc/
+usr/share/doc/tlsh/
+usr/share/doc/tlsh/README.md

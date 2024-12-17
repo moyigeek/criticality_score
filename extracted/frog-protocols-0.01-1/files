@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/share/
+usr/share/frog-protocols/
+usr/share/frog-protocols/frog-color-management-v1.xml
+usr/share/frog-protocols/frog-fifo-v1.xml
+usr/share/licenses/
+usr/share/licenses/frog-protocols/
+usr/share/licenses/frog-protocols/LICENSE.md
+usr/share/pkgconfig/
+usr/share/pkgconfig/frog-protocols.pc

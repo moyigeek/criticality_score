@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/qemu/
+usr/lib/qemu/block-curl.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/qemu-block-curl/
+usr/share/licenses/qemu-block-curl/BSD-2-Clause.txt
+usr/share/licenses/qemu-block-curl/LICENSE
+usr/share/licenses/qemu-block-curl/audio.LICENSE.ISC.txt
+usr/share/licenses/qemu-block-curl/edk2-licenses.txt
+usr/share/licenses/qemu-block-curl/fuse.LICENSE.BSD-2-Clause.txt
+usr/share/licenses/qemu-block-curl/tcg-arm.LICENSE.MIT.txt
+usr/share/licenses/qemu-block-curl/tcg.LICENSE.MIT.txt
+usr/share/licenses/qemu-block-curl/tci.LICENSE.MIT.txt

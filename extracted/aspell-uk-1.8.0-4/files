@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/aspell-0.60/
+usr/lib/aspell-0.60/koi8-u-nl.cmap
+usr/lib/aspell-0.60/koi8-u-nl.cset
+usr/lib/aspell-0.60/uk.dat
+usr/lib/aspell-0.60/uk.multi
+usr/lib/aspell-0.60/uk.rws
+usr/lib/aspell-0.60/uk_affix.dat
+usr/lib/aspell-0.60/ukrainian.alias
+usr/lib/aspell-0.60/ukrainian.kbd

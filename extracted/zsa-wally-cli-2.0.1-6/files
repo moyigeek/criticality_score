@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/wally-cli
+usr/share/
+usr/share/licenses/
+usr/share/licenses/zsa-wally-cli/
+usr/share/licenses/zsa-wally-cli/license.md

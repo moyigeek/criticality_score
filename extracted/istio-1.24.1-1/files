@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/istioctl
+usr/share/
+usr/share/bash-completion/
+usr/share/bash-completion/completions/
+usr/share/bash-completion/completions/istioctl
+usr/share/zsh/
+usr/share/zsh/site-functions/
+usr/share/zsh/site-functions/_istioctl

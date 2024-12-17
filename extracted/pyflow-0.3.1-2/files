@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/pyflow
+usr/share/
+usr/share/licenses/
+usr/share/licenses/pyflow/
+usr/share/licenses/pyflow/LICENSE

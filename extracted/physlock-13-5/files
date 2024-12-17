@@ -1,0 +1,11 @@
+%FILES%
+etc/
+etc/pam.d/
+etc/pam.d/physlock
+usr/
+usr/bin/
+usr/bin/physlock
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/physlock.1.gz

@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/arbtt-capture
+usr/bin/arbtt-dump
+usr/bin/arbtt-import
+usr/bin/arbtt-recover
+usr/bin/arbtt-stats
+usr/share/
+usr/share/doc/
+usr/share/doc/arbtt/
+usr/share/licenses/
+usr/share/licenses/arbtt/
+usr/share/licenses/arbtt/LICENSE

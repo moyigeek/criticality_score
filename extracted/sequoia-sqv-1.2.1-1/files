@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/sqv
+usr/share/
+usr/share/bash-completion/
+usr/share/bash-completion/completions/
+usr/share/bash-completion/completions/sqv
+usr/share/doc/
+usr/share/doc/sequoia-sqv/
+usr/share/doc/sequoia-sqv/README.md
+usr/share/fish/
+usr/share/fish/vendor_completions.d/
+usr/share/fish/vendor_completions.d/sqv.fish
+usr/share/zsh/
+usr/share/zsh/site-functions/
+usr/share/zsh/site-functions/_sqv

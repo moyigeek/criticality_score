@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/masscan
+usr/share/
+usr/share/doc/
+usr/share/doc/masscan/
+usr/share/doc/masscan/README.md
+usr/share/doc/masscan/masscan.8.markdown
+usr/share/man/
+usr/share/man/man8/
+usr/share/man/man8/masscan.8.gz

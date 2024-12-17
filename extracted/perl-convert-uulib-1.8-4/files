@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/perl5/
+usr/lib/perl5/5.40/
+usr/lib/perl5/5.40/vendor_perl/
+usr/lib/perl5/5.40/vendor_perl/Convert/
+usr/lib/perl5/5.40/vendor_perl/Convert/UUlib.pm
+usr/lib/perl5/5.40/vendor_perl/auto/
+usr/lib/perl5/5.40/vendor_perl/auto/Convert/
+usr/lib/perl5/5.40/vendor_perl/auto/Convert/UUlib/
+usr/lib/perl5/5.40/vendor_perl/auto/Convert/UUlib/UUlib.so
+usr/share/
+usr/share/man/
+usr/share/man/man3/
+usr/share/man/man3/Convert::UUlib.3pm.gz

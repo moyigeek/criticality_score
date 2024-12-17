@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/vim-spell-uk/
+usr/share/licenses/vim-spell-uk/README_uk.txt
+usr/share/vim/
+usr/share/vim/vimfiles/
+usr/share/vim/vimfiles/spell/
+usr/share/vim/vimfiles/spell/uk.koi8-u.spl
+usr/share/vim/vimfiles/spell/uk.utf-8.spl

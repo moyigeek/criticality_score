@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/share/
+usr/share/doc/
+usr/share/doc/haskell-gi-overloading/
+usr/share/haskell/
+usr/share/haskell/register/
+usr/share/haskell/register/haskell-gi-overloading.sh
+usr/share/haskell/unregister/
+usr/share/haskell/unregister/haskell-gi-overloading.sh

@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/qemu/
+usr/lib/qemu/audio-pipewire.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/qemu-audio-pipewire/
+usr/share/licenses/qemu-audio-pipewire/BSD-2-Clause.txt
+usr/share/licenses/qemu-audio-pipewire/LICENSE
+usr/share/licenses/qemu-audio-pipewire/audio.LICENSE.ISC.txt
+usr/share/licenses/qemu-audio-pipewire/edk2-licenses.txt
+usr/share/licenses/qemu-audio-pipewire/fuse.LICENSE.BSD-2-Clause.txt
+usr/share/licenses/qemu-audio-pipewire/tcg-arm.LICENSE.MIT.txt
+usr/share/licenses/qemu-audio-pipewire/tcg.LICENSE.MIT.txt
+usr/share/licenses/qemu-audio-pipewire/tci.LICENSE.MIT.txt

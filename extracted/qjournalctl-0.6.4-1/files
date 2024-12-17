@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/qjournalctl
+usr/share/
+usr/share/applications/
+usr/share/applications/qjournalctl.desktop
+usr/share/icons/
+usr/share/icons/hicolor/
+usr/share/icons/hicolor/64x64/
+usr/share/icons/hicolor/64x64/apps/
+usr/share/icons/hicolor/64x64/apps/qjournalctl.png
+usr/share/icons/hicolor/96x96/
+usr/share/icons/hicolor/96x96/apps/
+usr/share/icons/hicolor/96x96/apps/qjournalctl.png
+usr/share/metainfo/
+usr/share/metainfo/qjournalctl.appdata.xml

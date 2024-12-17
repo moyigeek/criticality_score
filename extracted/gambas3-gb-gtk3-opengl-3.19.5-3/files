@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/gambas3/
+usr/lib/gambas3/gb.gtk3.opengl.component
+usr/lib/gambas3/gb.gtk3.opengl.la
+usr/lib/gambas3/gb.gtk3.opengl.so
+usr/lib/gambas3/gb.gtk3.opengl.so.0
+usr/lib/gambas3/gb.gtk3.opengl.so.0.0.0
+usr/share/
+usr/share/gambas3/
+usr/share/gambas3/info/
+usr/share/gambas3/info/gb.gtk3.opengl.info
+usr/share/gambas3/info/gb.gtk3.opengl.list

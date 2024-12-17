@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/include/
+usr/include/tevent.h
+usr/lib/
+usr/lib/libtevent.so
+usr/lib/libtevent.so.0
+usr/lib/libtevent.so.0.16.1
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/tevent.pc
+usr/lib/python3.12/
+usr/lib/python3.12/site-packages/
+usr/lib/python3.12/site-packages/_tevent.cpython-312-x86_64-linux-gnu.so
+usr/lib/python3.12/site-packages/tevent.py

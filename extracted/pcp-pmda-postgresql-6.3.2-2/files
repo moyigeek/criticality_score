@@ -1,0 +1,6 @@
+%FILES%
+usr/
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/pmdapostgresql.1.gz

@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/pandoc
+usr/share/
+usr/share/bash-completion/
+usr/share/bash-completion/completions/
+usr/share/bash-completion/completions/pandoc
+usr/share/doc/
+usr/share/doc/pandoc-cli/
+usr/share/licenses/
+usr/share/licenses/pandoc-cli/
+usr/share/licenses/pandoc-cli/COPYING.md
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/pandoc.1.gz

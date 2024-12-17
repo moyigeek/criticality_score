@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/include/
+usr/include/gumbo.h
+usr/include/tag_enum.h
+usr/lib/
+usr/lib/libgumbo.so
+usr/lib/libgumbo.so.2
+usr/lib/libgumbo.so.2.0.1
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/gumbo.pc

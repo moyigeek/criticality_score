@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/lrzsz-rb
+usr/bin/lrzsz-rx
+usr/bin/lrzsz-rz
+usr/bin/lrzsz-sb
+usr/bin/lrzsz-sx
+usr/bin/lrzsz-sz
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/lrzsz-rz.1.gz
+usr/share/man/man1/lrzsz-sz.1.gz

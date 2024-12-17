@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libspeexdsp.so
+usr/lib32/libspeexdsp.so.1
+usr/lib32/libspeexdsp.so.1.5.2
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/speexdsp.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-speexdsp/
+usr/share/licenses/lib32-speexdsp/COPYING

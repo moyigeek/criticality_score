@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/src/
+usr/src/deepin-anything-5.0.18/
+usr/src/deepin-anything-5.0.18/Makefile
+usr/src/deepin-anything-5.0.18/arg_extractor.c
+usr/src/deepin-anything-5.0.18/arg_extractor.h
+usr/src/deepin-anything-5.0.18/dkms.conf
+usr/src/deepin-anything-5.0.18/vfs_change.c
+usr/src/deepin-anything-5.0.18/vfs_change.h
+usr/src/deepin-anything-5.0.18/vfs_change_consts.h
+usr/src/deepin-anything-5.0.18/vfs_change_uapi.h
+usr/src/deepin-anything-5.0.18/vfs_kretprobes.c
+usr/src/deepin-anything-5.0.18/vfs_utils.c
+usr/src/deepin-anything-5.0.18/vfs_utils.h

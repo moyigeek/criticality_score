@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/presenterm
+usr/share/
+usr/share/doc/
+usr/share/doc/presenterm/
+usr/share/doc/presenterm/README.md
+usr/share/licenses/
+usr/share/licenses/presenterm/
+usr/share/licenses/presenterm/LICENSE

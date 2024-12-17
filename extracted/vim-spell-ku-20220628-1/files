@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/vim-spell-ku/
+usr/share/licenses/vim-spell-ku/README_ku.txt
+usr/share/vim/
+usr/share/vim/vimfiles/
+usr/share/vim/vimfiles/spell/
+usr/share/vim/vimfiles/spell/ku.iso-8859-9.spl
+usr/share/vim/vimfiles/spell/ku.utf-8.spl

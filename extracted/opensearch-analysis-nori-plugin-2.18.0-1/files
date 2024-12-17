@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/opensearch-analysis-nori-plugin/
+usr/share/licenses/opensearch-analysis-nori-plugin/LICENSE.txt
+usr/share/licenses/opensearch-analysis-nori-plugin/NOTICE.txt
+usr/share/opensearch/
+usr/share/opensearch/plugins/
+usr/share/opensearch/plugins/analysis-nori/
+usr/share/opensearch/plugins/analysis-nori/analysis-nori-2.18.0.jar
+usr/share/opensearch/plugins/analysis-nori/lucene-analysis-nori-9.12.0.jar
+usr/share/opensearch/plugins/analysis-nori/plugin-descriptor.properties

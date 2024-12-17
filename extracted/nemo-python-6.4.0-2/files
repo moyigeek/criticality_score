@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/nemo/
+usr/lib/nemo/extensions-3.0/
+usr/lib/nemo/extensions-3.0/libnemo-python.so
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/nemo-python.pc

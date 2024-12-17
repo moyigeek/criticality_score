@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/mailgraph.pl
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/mailgraph.service
+usr/share/
+usr/share/webapps/
+usr/share/webapps/mailgraph/
+usr/share/webapps/mailgraph/mailgraph.cgi
+usr/share/webapps/mailgraph/mailgraph.css
+var/
+var/lib/
+var/lib/mailgraph/

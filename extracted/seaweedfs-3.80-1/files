@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/weed
+usr/share/
+usr/share/bash-completion/
+usr/share/bash-completion/completions/
+usr/share/bash-completion/completions/weed
+usr/share/doc/
+usr/share/doc/seaweedfs/
+usr/share/doc/seaweedfs/README.md

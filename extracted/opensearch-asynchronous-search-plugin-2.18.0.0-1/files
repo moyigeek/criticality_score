@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/opensearch-asynchronous-search-plugin/
+usr/share/licenses/opensearch-asynchronous-search-plugin/LICENSE
+usr/share/opensearch/
+usr/share/opensearch/plugins/
+usr/share/opensearch/plugins/opensearch-asynchronous-search/
+usr/share/opensearch/plugins/opensearch-asynchronous-search/common-utils-2.18.0.0.jar
+usr/share/opensearch/plugins/opensearch-asynchronous-search/opensearch-asynchronous-search-2.18.0.0.jar
+usr/share/opensearch/plugins/opensearch-asynchronous-search/plugin-descriptor.properties
+usr/share/opensearch/plugins/opensearch-asynchronous-search/plugin-security.policy

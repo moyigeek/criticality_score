@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/include/
+usr/include/sieve2.h
+usr/include/sieve2_error.h
+usr/lib/
+usr/lib/libsieve.so
+usr/lib/libsieve.so.1
+usr/lib/libsieve.so.1.0.5
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/libsieve.pc

@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/yank
+usr/share/
+usr/share/doc/
+usr/share/doc/yank/
+usr/share/doc/yank/README.md
+usr/share/licenses/
+usr/share/licenses/yank/
+usr/share/licenses/yank/LICENSE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/yank.1.gz

@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/share/
+usr/share/fontconfig/
+usr/share/fontconfig/conf.avail/
+usr/share/fontconfig/conf.avail/62-carlito.conf
+usr/share/fontconfig/conf.default/
+usr/share/fontconfig/conf.default/62-carlito.conf
+usr/share/fonts/
+usr/share/fonts/carlito/
+usr/share/fonts/carlito/Carlito-Bold.ttf
+usr/share/fonts/carlito/Carlito-BoldItalic.ttf
+usr/share/fonts/carlito/Carlito-Italic.ttf
+usr/share/fonts/carlito/Carlito-Regular.ttf
+usr/share/licenses/
+usr/share/licenses/ttf-carlito/
+usr/share/licenses/ttf-carlito/LICENSE

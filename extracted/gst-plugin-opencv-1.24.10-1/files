@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/include/
+usr/include/gstreamer-1.0/
+usr/include/gstreamer-1.0/gst/
+usr/include/gstreamer-1.0/gst/opencv/
+usr/include/gstreamer-1.0/gst/opencv/gstopencvutils.h
+usr/include/gstreamer-1.0/gst/opencv/gstopencvvideofilter.h
+usr/include/gstreamer-1.0/gst/opencv/opencv-prelude.h
+usr/lib/
+usr/lib/gstreamer-1.0/
+usr/lib/gstreamer-1.0/libgstopencv.so
+usr/lib/libgstopencv-1.0.so
+usr/lib/libgstopencv-1.0.so.0
+usr/lib/libgstopencv-1.0.so.0.2410.0

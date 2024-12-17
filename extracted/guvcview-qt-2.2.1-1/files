@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/guvcview-qt
+usr/share/
+usr/share/applications/
+usr/share/applications/guvcview-qt.desktop
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/guvcview-qt.1.gz
+usr/share/metainfo/
+usr/share/metainfo/guvcview-qt.appdata.xml

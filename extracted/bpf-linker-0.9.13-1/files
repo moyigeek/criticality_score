@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/bpf-linker
+usr/share/
+usr/share/doc/
+usr/share/doc/bpf-linker/
+usr/share/doc/bpf-linker/README.md
+usr/share/licenses/
+usr/share/licenses/bpf-linker/
+usr/share/licenses/bpf-linker/LICENSE-APACHE
+usr/share/licenses/bpf-linker/LICENSE-MIT

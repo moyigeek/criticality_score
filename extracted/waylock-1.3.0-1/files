@@ -1,0 +1,17 @@
+%FILES%
+etc/
+etc/pam.d/
+etc/pam.d/waylock
+usr/
+usr/bin/
+usr/bin/waylock
+usr/share/
+usr/share/doc/
+usr/share/doc/waylock/
+usr/share/doc/waylock/README.md
+usr/share/licenses/
+usr/share/licenses/waylock/
+usr/share/licenses/waylock/LICENSE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/waylock.1.gz

@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/ghc-9.2.8/
+usr/lib/ghc-9.2.8/site-local/
+usr/lib/ghc-9.2.8/site-local/tamarin-prover-export-1.10.0/
+usr/lib/ghc-9.2.8/site-local/tamarin-prover-export-1.10.0/Export.dyn_hi
+usr/lib/ghc-9.2.8/site-local/tamarin-prover-export-1.10.0/RuleTranslation.dyn_hi
+usr/lib/libHStamarin-prover-export-1.10.0-8SQLtjP2MUQI5jmRQSxsey-ghc9.2.8.so
+usr/share/
+usr/share/doc/
+usr/share/doc/haskell-tamarin-prover-export/
+usr/share/haskell/
+usr/share/haskell/register/
+usr/share/haskell/register/haskell-tamarin-prover-export.sh
+usr/share/haskell/unregister/
+usr/share/haskell/unregister/haskell-tamarin-prover-export.sh

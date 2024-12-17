@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/ophcrack
+usr/share/
+usr/share/applications/
+usr/share/applications/ophcrack.desktop
+usr/share/ophcrack/
+usr/share/ophcrack/pixmaps/
+usr/share/ophcrack/pixmaps/os.xpm

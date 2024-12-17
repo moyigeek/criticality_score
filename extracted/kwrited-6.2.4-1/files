@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/qt6/
+usr/lib/qt6/plugins/
+usr/lib/qt6/plugins/kf6/
+usr/lib/qt6/plugins/kf6/kded/
+usr/lib/qt6/plugins/kf6/kded/kwrited.so
+usr/share/
+usr/share/knotifications6/
+usr/share/knotifications6/kwrited.notifyrc

@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/bchunk
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/bchunk.1.gz

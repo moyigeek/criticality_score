@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/elf2uf2-rs
+usr/share/
+usr/share/licenses/
+usr/share/licenses/elf2uf2-rs/
+usr/share/licenses/elf2uf2-rs/LICENSE

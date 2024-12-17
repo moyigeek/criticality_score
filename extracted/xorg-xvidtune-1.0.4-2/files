@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/xvidtune
+usr/share/
+usr/share/X11/
+usr/share/X11/app-defaults/
+usr/share/X11/app-defaults/Xvidtune
+usr/share/licenses/
+usr/share/licenses/xorg-xvidtune/
+usr/share/licenses/xorg-xvidtune/COPYING
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/xvidtune.1.gz

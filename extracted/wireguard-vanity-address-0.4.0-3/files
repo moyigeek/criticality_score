@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/wireguard-vanity-address
+usr/share/
+usr/share/licenses/
+usr/share/licenses/wireguard-vanity-address/
+usr/share/licenses/wireguard-vanity-address/LICENSE

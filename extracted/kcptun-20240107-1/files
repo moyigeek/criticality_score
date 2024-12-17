@@ -1,0 +1,16 @@
+%FILES%
+etc/
+etc/kcptun/
+usr/
+usr/bin/
+usr/bin/kcptun-client
+usr/bin/kcptun-server
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/kcptun-server@.service
+usr/lib/systemd/system/kcptun@.service
+usr/share/
+usr/share/licenses/
+usr/share/licenses/kcptun/
+usr/share/licenses/kcptun/LICENSE.md

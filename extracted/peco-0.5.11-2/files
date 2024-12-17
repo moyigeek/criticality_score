@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/peco
+usr/share/
+usr/share/doc/
+usr/share/doc/peco/
+usr/share/doc/peco/README.md
+usr/share/licenses/
+usr/share/licenses/peco/
+usr/share/licenses/peco/LICENSE

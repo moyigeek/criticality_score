@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/share/
+usr/share/fonts/
+usr/share/fonts/TTF/
+usr/share/fonts/TTF/HAN NOM A.ttf
+usr/share/fonts/TTF/HAN NOM B.ttf
+usr/share/licenses/
+usr/share/licenses/ttf-hannom/
+usr/share/licenses/ttf-hannom/COPYING

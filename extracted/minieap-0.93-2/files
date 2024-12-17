@@ -1,0 +1,14 @@
+%FILES%
+etc/
+etc/minieap.conf
+usr/
+usr/bin/
+usr/bin/minieap
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/minieap.service
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/minieap.1.gz

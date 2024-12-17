@@ -1,0 +1,9 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/tokei
+usr/share/
+usr/share/licenses/
+usr/share/licenses/tokei/
+usr/share/licenses/tokei/LICENSE-APACHE
+usr/share/licenses/tokei/LICENSE-MIT

@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/bam
+usr/share/
+usr/share/licenses/
+usr/share/licenses/bam/
+usr/share/licenses/bam/LICENSE

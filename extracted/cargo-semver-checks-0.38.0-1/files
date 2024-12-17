@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cargo-semver-checks
+usr/share/
+usr/share/doc/
+usr/share/doc/cargo-semver-checks/
+usr/share/doc/cargo-semver-checks/README.md
+usr/share/licenses/
+usr/share/licenses/cargo-semver-checks/
+usr/share/licenses/cargo-semver-checks/LICENSE-MIT

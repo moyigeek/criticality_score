@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/share/
+usr/share/doc/
+usr/share/doc/hyphen-hu/
+usr/share/doc/hyphen-hu/README_hyph_hu_HU.txt
+usr/share/hyphen/
+usr/share/hyphen/hyph_hu_HU.dic
+usr/share/myspell/
+usr/share/myspell/dicts/
+usr/share/myspell/dicts/hyph_hu_HU.dic

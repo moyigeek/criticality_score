@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/wasm-component-ld
+usr/share/
+usr/share/doc/
+usr/share/doc/wasm-component-ld/
+usr/share/doc/wasm-component-ld/README.md
+usr/share/licenses/
+usr/share/licenses/wasm-component-ld/
+usr/share/licenses/wasm-component-ld/LICENSE-APACHE
+usr/share/licenses/wasm-component-ld/LICENSE-Apache-2.0_WITH_LLVM-exception
+usr/share/licenses/wasm-component-ld/LICENSE-MIT

@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/signon-ui
+usr/share/
+usr/share/applications/
+usr/share/applications/signon-ui.desktop
+usr/share/dbus-1/
+usr/share/dbus-1/services/
+usr/share/dbus-1/services/com.canonical.indicators.webcredentials.service
+usr/share/dbus-1/services/com.nokia.singlesignonui.service

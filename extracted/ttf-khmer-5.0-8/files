@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/share/
+usr/share/fonts/
+usr/share/fonts/TTF/
+usr/share/fonts/TTF/KhmerOS .ttf
+usr/share/fonts/TTF/KhmerOS_battambang.ttf
+usr/share/fonts/TTF/KhmerOS_bokor.ttf
+usr/share/fonts/TTF/KhmerOS_content.ttf
+usr/share/fonts/TTF/KhmerOS_fasthand.ttf
+usr/share/fonts/TTF/KhmerOS_freehand.ttf
+usr/share/fonts/TTF/KhmerOS_metalchrieng.ttf
+usr/share/fonts/TTF/KhmerOS_muol.ttf
+usr/share/fonts/TTF/KhmerOS_muollight.ttf
+usr/share/fonts/TTF/KhmerOS_muolpali.ttf
+usr/share/fonts/TTF/KhmerOS_siemreap.ttf
+usr/share/fonts/TTF/KhmerOS_sys.ttf

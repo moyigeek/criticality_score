@@ -1,0 +1,5 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/gtklock/
+usr/lib/gtklock/powerbar-module.so

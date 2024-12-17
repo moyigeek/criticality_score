@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/include/
+usr/include/unuran.h
+usr/include/unuran_tests.h
+usr/include/unuran_urng_gsl.h
+usr/include/unuran_urng_prng.h
+usr/include/unuran_urng_rngstreams.h
+usr/lib/
+usr/lib/libunuran.so
+usr/lib/libunuran.so.16
+usr/lib/libunuran.so.16.0.1
+usr/share/
+usr/share/info/
+usr/share/info/unuran.info.gz
+usr/share/info/unuran_win32.info.gz

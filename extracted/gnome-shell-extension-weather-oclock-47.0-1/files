@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/share/
+usr/share/glib-2.0/
+usr/share/glib-2.0/schemas/
+usr/share/glib-2.0/schemas/org.gnome.shell.weather-oclock.gschema.xml
+usr/share/gnome-shell/
+usr/share/gnome-shell/extensions/
+usr/share/gnome-shell/extensions/weatheroclock@CleoMenezesJr.github.io/
+usr/share/gnome-shell/extensions/weatheroclock@CleoMenezesJr.github.io/extension.js
+usr/share/gnome-shell/extensions/weatheroclock@CleoMenezesJr.github.io/metadata.json
+usr/share/gnome-shell/extensions/weatheroclock@CleoMenezesJr.github.io/prefs.js
+usr/share/gnome-shell/extensions/weatheroclock@CleoMenezesJr.github.io/prefs.ui
+usr/share/gnome-shell/extensions/weatheroclock@CleoMenezesJr.github.io/stylesheet.css

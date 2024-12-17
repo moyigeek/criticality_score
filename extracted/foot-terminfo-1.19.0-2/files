@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/foot-terminfo/
+usr/share/licenses/foot-terminfo/LICENSE
+usr/share/terminfo/
+usr/share/terminfo/f/
+usr/share/terminfo/f/foot-extra
+usr/share/terminfo/f/foot-extra-direct

@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/opensearch-mapper-annotated-text-plugin/
+usr/share/licenses/opensearch-mapper-annotated-text-plugin/LICENSE.txt
+usr/share/licenses/opensearch-mapper-annotated-text-plugin/NOTICE.txt
+usr/share/opensearch/
+usr/share/opensearch/plugins/
+usr/share/opensearch/plugins/mapper-annotated-text/
+usr/share/opensearch/plugins/mapper-annotated-text/mapper-annotated-text-2.18.0.jar
+usr/share/opensearch/plugins/mapper-annotated-text/plugin-descriptor.properties

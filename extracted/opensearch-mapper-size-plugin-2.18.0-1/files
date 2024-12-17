@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/opensearch-mapper-size-plugin/
+usr/share/licenses/opensearch-mapper-size-plugin/LICENSE.txt
+usr/share/licenses/opensearch-mapper-size-plugin/NOTICE.txt
+usr/share/opensearch/
+usr/share/opensearch/plugins/
+usr/share/opensearch/plugins/mapper-size/
+usr/share/opensearch/plugins/mapper-size/mapper-size-2.18.0.jar
+usr/share/opensearch/plugins/mapper-size/plugin-descriptor.properties

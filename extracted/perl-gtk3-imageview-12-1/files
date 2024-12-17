@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/share/
+usr/share/man/
+usr/share/man/man3/
+usr/share/man/man3/Gtk3::ImageView.3pm.gz
+usr/share/perl5/
+usr/share/perl5/vendor_perl/
+usr/share/perl5/vendor_perl/Gtk3/
+usr/share/perl5/vendor_perl/Gtk3/ImageView.pm
+usr/share/perl5/vendor_perl/Gtk3/ImageView/
+usr/share/perl5/vendor_perl/Gtk3/ImageView/Tool.pm
+usr/share/perl5/vendor_perl/Gtk3/ImageView/Tool/
+usr/share/perl5/vendor_perl/Gtk3/ImageView/Tool/Dragger.pm
+usr/share/perl5/vendor_perl/Gtk3/ImageView/Tool/Selector.pm
+usr/share/perl5/vendor_perl/Gtk3/ImageView/Tool/SelectorDragger.pm

@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/xcape
+usr/share/
+usr/share/doc/
+usr/share/doc/xcape/
+usr/share/doc/xcape/README.md
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/xcape.1.gz

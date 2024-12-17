@@ -1,0 +1,10 @@
+%FILES%
+etc/
+etc/adguardhome.yaml
+usr/
+usr/bin/
+usr/bin/adguardhome
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/adguardhome.service

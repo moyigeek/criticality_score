@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/lv2/
+usr/lib/lv2/sherlock.lv2/
+usr/lib/lv2/sherlock.lv2/Cousine-Regular.ttf
+usr/lib/lv2/sherlock.lv2/manifest.ttl
+usr/lib/lv2/sherlock.lv2/sherlock.so
+usr/lib/lv2/sherlock.lv2/sherlock.ttl
+usr/lib/lv2/sherlock.lv2/sherlock_nk.so
+usr/lib/lv2/sherlock.lv2/sherlock_ui.ttl
+usr/share/
+usr/share/doc/
+usr/share/doc/sherlock.lv2/
+usr/share/doc/sherlock.lv2/ChangeLog
+usr/share/doc/sherlock.lv2/README.md

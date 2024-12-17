@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/docbook-sgml31/
+usr/share/licenses/docbook-sgml31/LICENSE
+usr/share/sgml/
+usr/share/sgml/docbook-sgml-3.1/
+usr/share/sgml/docbook-sgml-3.1/cals-tbl.dtd
+usr/share/sgml/docbook-sgml-3.1/catalog
+usr/share/sgml/docbook-sgml-3.1/dbcent.mod
+usr/share/sgml/docbook-sgml-3.1/dbgenent.mod
+usr/share/sgml/docbook-sgml-3.1/dbhier.mod
+usr/share/sgml/docbook-sgml-3.1/dbnotn.mod
+usr/share/sgml/docbook-sgml-3.1/dbpool.mod
+usr/share/sgml/docbook-sgml-3.1/docbook.dcl
+usr/share/sgml/docbook-sgml-3.1/docbook.dtd

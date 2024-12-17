@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/aarch64-linux-gnu-gdb
+usr/bin/aarch64-linux-gnu-gdb-add-index
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/aarch64-linux-gnu-gdb-add-index.1.gz
+usr/share/man/man1/aarch64-linux-gnu-gdb.1.gz
+usr/share/man/man1/aarch64-linux-gnu-gdbserver.1.gz

@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libpcap.so
+usr/lib32/libpcap.so.1
+usr/lib32/libpcap.so.1.10.5
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/libpcap.pc
+usr/share/
+usr/share/doc/
+usr/share/doc/lib32-libpcap/
+usr/share/doc/lib32-libpcap/CHANGES
+usr/share/doc/lib32-libpcap/CONTRIBUTING.md
+usr/share/doc/lib32-libpcap/README.md
+usr/share/licenses/
+usr/share/licenses/lib32-libpcap/
+usr/share/licenses/lib32-libpcap/LICENSE

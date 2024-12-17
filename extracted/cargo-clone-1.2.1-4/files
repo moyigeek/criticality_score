@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cargo-clone
+usr/share/
+usr/share/doc/
+usr/share/doc/cargo-clone/
+usr/share/doc/cargo-clone/README.md
+usr/share/licenses/
+usr/share/licenses/cargo-clone/
+usr/share/licenses/cargo-clone/LICENSE-MIT

@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/node_modules/
+usr/lib/node_modules/stylelint-config-standard/
+usr/lib/node_modules/stylelint-config-standard/index.js
+usr/share/
+usr/share/doc/
+usr/share/doc/stylelint-config-standard/
+usr/share/doc/stylelint-config-standard/CHANGELOG.md
+usr/share/doc/stylelint-config-standard/README.md
+usr/share/licenses/
+usr/share/licenses/stylelint-config-standard/
+usr/share/licenses/stylelint-config-standard/LICENSE

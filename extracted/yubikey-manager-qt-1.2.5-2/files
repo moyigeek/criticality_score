@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/ykman-gui
+usr/share/
+usr/share/applications/
+usr/share/applications/ykman-gui.desktop
+usr/share/licenses/
+usr/share/licenses/yubikey-manager-qt/
+usr/share/licenses/yubikey-manager-qt/copyright
+usr/share/pixmaps/
+usr/share/pixmaps/ykman.png

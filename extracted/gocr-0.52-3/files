@@ -1,0 +1,9 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/gocr
+usr/bin/gocr.tcl
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/gocr.1.gz

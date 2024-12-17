@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/xlogo
+usr/share/
+usr/share/X11/
+usr/share/X11/app-defaults/
+usr/share/X11/app-defaults/XLogo
+usr/share/X11/app-defaults/XLogo-color
+usr/share/licenses/
+usr/share/licenses/xorg-xlogo/
+usr/share/licenses/xorg-xlogo/COPYING
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/xlogo.1.gz

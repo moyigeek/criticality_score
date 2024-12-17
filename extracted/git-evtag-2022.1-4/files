@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/git-evtag
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/git-evtag.1.gz

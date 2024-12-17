@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/include/
+usr/include/discid/
+usr/include/discid/discid.h
+usr/lib/
+usr/lib/libdiscid.so
+usr/lib/libdiscid.so.0
+usr/lib/libdiscid.so.0.6.4
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/libdiscid.pc

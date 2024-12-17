@@ -1,0 +1,65 @@
+%FILENAME%
+python-internetarchive-5.0.4-2-any.pkg.tar.zst
+
+%NAME%
+python-internetarchive
+
+%BASE%
+python-internetarchive
+
+%VERSION%
+5.0.4-2
+
+%DESC%
+A Python and Command-Line Interface to Archive.org
+
+%CSIZE%
+162322
+
+%ISIZE%
+957837
+
+%SHA256SUM%
+33304539c6f017375c08fb64af9d3e4dc09eb36936b78dc4d8f9b39d6504714f
+
+%PGPSIG%
+iQEzBAABCgAdFiEE5JnHn1PJalTlcv7hwGCGM3xQdz4FAmdLVeYACgkQwGCGM3xQdz5qHQgArCqo4UAA4qNUIZlx6JY7Hsn7Hw4xkhuxayio/zUqOshANuZc00AUTDEjBUds/ksoHde0e5mVpPr8DQOAde1xpH1+QG2l8K6z6TA3E6romUWQb8rHrh+OxbZvQ+VCQFAv+Xb1uUbGGH3Atw+LqhkKAMn0xKAud/GYG+xXL4isLWj0fBpN1VWct6qWVpX6V4ogd7/NKaCQv9CZ1ReNwDNFMFHz5TnSlPs3zfVF5si1p/DC06P5clwDAQ0P/Ov5Ni9956V51EtdCe33vdt7/3xXdxExjwYZKekjBWD6YK/xGI/vz4O9c5VEm7ezY3Pxki0H6b8ImS6L/yCeUPsNEwDP4w==
+
+%URL%
+https://github.com/jjjake/internetarchive
+
+%LICENSE%
+AGPL-3.0-or-later
+
+%ARCH%
+any
+
+%BUILDDATE%
+1732990323
+
+%PACKAGER%
+Jelle van der Waa <jelle@archlinux.org>
+
+%DEPENDS%
+python
+python-jsonpatch
+python-requests
+python-schema
+python-tqdm
+python-urllib3
+
+%OPTDEPENDS%
+cython: speedups
+python-gevent: concurrent downloads
+python-ujson: faster json parsing
+
+%MAKEDEPENDS%
+python-build
+python-installer
+python-setuptools
+python-wheel
+
+%CHECKDEPENDS%
+python-pytest
+python-responses
+

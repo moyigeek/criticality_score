@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/include/
+usr/include/bdd.h
+usr/include/bvec.h
+usr/include/fdd.h
+usr/lib/
+usr/lib/libbdd.so
+usr/lib/libbdd.so.0
+usr/lib/libbdd.so.0.0.0
+usr/share/
+usr/share/licenses/
+usr/share/licenses/buddy/
+usr/share/licenses/buddy/README

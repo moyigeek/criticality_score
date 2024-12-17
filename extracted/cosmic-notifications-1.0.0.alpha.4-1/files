@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cosmic-notifications
+usr/share/
+usr/share/applications/
+usr/share/applications/com.system76.CosmicNotifications.desktop
+usr/share/icons/
+usr/share/icons/hicolor/
+usr/share/icons/hicolor/scalable/
+usr/share/icons/hicolor/scalable/apps/
+usr/share/icons/hicolor/scalable/apps/com.system76.CosmicNotifications.svg
+usr/share/metainfo/
+usr/share/metainfo/com.system76.CosmicNotifications.metainfo.xml

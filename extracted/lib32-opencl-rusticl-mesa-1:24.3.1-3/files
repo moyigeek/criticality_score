@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libRusticlOpenCL.so
+usr/lib32/libRusticlOpenCL.so.1
+usr/lib32/libRusticlOpenCL.so.1.0.0
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-opencl-rusticl-mesa/
+usr/share/licenses/lib32-opencl-rusticl-mesa/license.rst

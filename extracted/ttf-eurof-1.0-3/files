@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/share/
+usr/share/fonts/
+usr/share/fonts/TTF/
+usr/share/fonts/TTF/eurof35.ttf
+usr/share/fonts/TTF/eurof36.ttf
+usr/share/fonts/TTF/eurof55.ttf
+usr/share/fonts/TTF/eurof56.ttf
+usr/share/fonts/TTF/eurof75.ttf
+usr/share/fonts/TTF/eurof76.ttf
+usr/share/licenses/
+usr/share/licenses/ttf-eurof/
+usr/share/licenses/ttf-eurof/license.txt

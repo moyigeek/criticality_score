@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/ueberzug
+usr/bin/ueberzugpp
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/ueberzug.1.gz
+usr/share/man/man1/ueberzugpp.1.gz

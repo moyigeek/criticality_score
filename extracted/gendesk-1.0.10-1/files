@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/gendesk
+usr/share/
+usr/share/licenses/
+usr/share/licenses/gendesk/
+usr/share/licenses/gendesk/LICENSE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/gendesk.1.gz
+usr/share/pixmaps/
+usr/share/pixmaps/gendesk.png

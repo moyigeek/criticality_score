@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/ruby/
+usr/lib/ruby/gems/
+usr/lib/ruby/gems/3.3.0/
+usr/lib/ruby/gems/3.3.0/gems/
+usr/lib/ruby/gems/3.3.0/gems/thread-local-1.1.0/
+usr/lib/ruby/gems/3.3.0/gems/thread-local-1.1.0/lib/
+usr/lib/ruby/gems/3.3.0/gems/thread-local-1.1.0/lib/thread/
+usr/lib/ruby/gems/3.3.0/gems/thread-local-1.1.0/lib/thread/local.md
+usr/lib/ruby/gems/3.3.0/gems/thread-local-1.1.0/lib/thread/local.rb
+usr/lib/ruby/gems/3.3.0/gems/thread-local-1.1.0/lib/thread/local/
+usr/lib/ruby/gems/3.3.0/gems/thread-local-1.1.0/lib/thread/local/version.rb
+usr/lib/ruby/gems/3.3.0/specifications/
+usr/lib/ruby/gems/3.3.0/specifications/thread-local-1.1.0.gemspec

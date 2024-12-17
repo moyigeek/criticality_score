@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/qemu/
+usr/lib/qemu/ui-opengl.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/qemu-ui-opengl/
+usr/share/licenses/qemu-ui-opengl/BSD-2-Clause.txt
+usr/share/licenses/qemu-ui-opengl/LICENSE
+usr/share/licenses/qemu-ui-opengl/audio.LICENSE.ISC.txt
+usr/share/licenses/qemu-ui-opengl/edk2-licenses.txt
+usr/share/licenses/qemu-ui-opengl/fuse.LICENSE.BSD-2-Clause.txt
+usr/share/licenses/qemu-ui-opengl/tcg-arm.LICENSE.MIT.txt
+usr/share/licenses/qemu-ui-opengl/tcg.LICENSE.MIT.txt
+usr/share/licenses/qemu-ui-opengl/tci.LICENSE.MIT.txt

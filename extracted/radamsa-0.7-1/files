@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/radamsa
+usr/share/
+usr/share/doc/
+usr/share/doc/radamsa/
+usr/share/doc/radamsa/README.md
+usr/share/licenses/
+usr/share/licenses/radamsa/
+usr/share/licenses/radamsa/LICENCE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/radamsa.1.gz

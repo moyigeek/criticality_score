@@ -1,0 +1,71 @@
+%FILENAME%
+linux-lts-docs-6.6.66-1-x86_64.pkg.tar.zst
+
+%NAME%
+linux-lts-docs
+
+%BASE%
+linux-lts
+
+%VERSION%
+6.6.66-1
+
+%DESC%
+Documentation for the LTS Linux kernel
+
+%CSIZE%
+25270945
+
+%ISIZE%
+210328477
+
+%SHA256SUM%
+499762c5fcff6659d3b298e2cf3abb7b3eb0ebc5d514eae0be8c3b96032d89bb
+
+%PGPSIG%
+iQEzBAABCAAdFiEErcih/MFeAdRTEEGelGV6sg8qCSsFAmdgkKcACgkQlGV6sg8qCSszAQf9HBYPPfPF9SsWRDZVbYbp4TCRPZ3k3s3UQoq20JG4ih8+eVc8Kbly+Ublv8R/9OhEJhDvJY6Zys0bCZTLXHlRkykBI06mqtn1dVwH3iW8q8u8abVaX/jRMP0qSPMV9pmAeN05eZHSzCTRMD6i7tgK2kAwIOf9XiHEJSFupxFud+qc4Y2W86By2m5CLfLped6moTgGY2HxYrynbI405Pyq+vB8e83/1qb6vQX26xS9gIQ9i07q6PNth3Q3AXd0bMlxxJUUfhTpHKRbxLiYZG2hhHP36gbna35thqbC2tG724pV+Db58YYIc3eJ79Z9y64E4EDvAS6JP40YwObK02Sd8Q==
+
+%URL%
+https://www.kernel.org
+
+%LICENSE%
+BSD-3-Clause
+GFDL-1.1-no-invariants-or-later
+GPL-2.0-only
+GPL-2.0-only OR BSD-2-Clause
+GPL-2.0-only OR BSD-3-Clause
+GPL-2.0-only OR GFDL-1.1-no-invariants-or-later
+GPL-2.0-only OR GFDL-1.2-no-invariants-only
+GPL-2.0-only OR MIT
+GPL-2.0-or-later
+GPL-2.0-or-later OR BSD-2-Clause
+GPL-2.0-or-later OR CC-BY-4.0
+GPL-2.0-or-later OR MIT
+GPL-2.0-or-later OR X11
+LGPL-2.1-only OR BSD-2-Clause
+MIT
+
+%ARCH%
+x86_64
+
+%BUILDDATE%
+1734380855
+
+%PACKAGER%
+Andreas Radke <andyrtr@archlinux.org>
+
+%MAKEDEPENDS%
+bc
+cpio
+gettext
+libelf
+pahole
+perl
+python
+tar
+xz
+graphviz
+imagemagick
+python-sphinx
+texlive-latexextra
+

@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/liborc-0.4.so
+usr/lib32/liborc-0.4.so.0
+usr/lib32/liborc-0.4.so.0.40.0
+usr/lib32/liborc-test-0.4.so
+usr/lib32/liborc-test-0.4.so.0
+usr/lib32/liborc-test-0.4.so.0.40.0
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/orc-0.4.pc
+usr/lib32/pkgconfig/orc-test-0.4.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-orc/
+usr/share/licenses/lib32-orc/COPYING

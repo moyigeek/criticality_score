@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/include/
+usr/include/squish.h
+usr/lib/
+usr/lib/libsquish.so
+usr/lib/libsquish.so.0
+usr/lib/libsquish.so.0.0
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/libsquish.pc
+usr/share/
+usr/share/cmake/
+usr/share/cmake/Modules/
+usr/share/cmake/Modules/FindlibSquish.cmake
+usr/share/licenses/
+usr/share/licenses/libsquish/
+usr/share/licenses/libsquish/LICENSE

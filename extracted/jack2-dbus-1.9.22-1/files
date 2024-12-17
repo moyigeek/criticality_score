@@ -1,0 +1,9 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/jack_control
+usr/bin/jackdbus
+usr/share/
+usr/share/dbus-1/
+usr/share/dbus-1/services/
+usr/share/dbus-1/services/org.jackaudio.service

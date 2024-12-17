@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cartridge
+usr/share/
+usr/share/licenses/
+usr/share/licenses/cartridge-cli/
+usr/share/licenses/cartridge-cli/LICENSE

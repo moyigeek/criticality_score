@@ -1,0 +1,9 @@
+%FILES%
+etc/
+etc/ld.so.conf.d/
+etc/ld.so.conf.d/lib32-fakeroot.conf
+usr/
+usr/lib32/
+usr/lib32/libfakeroot/
+usr/lib32/libfakeroot/libfakeroot-0.so
+usr/lib32/libfakeroot/libfakeroot.so

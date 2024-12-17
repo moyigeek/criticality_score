@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/lego
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lego/
+usr/share/licenses/lego/LICENSE

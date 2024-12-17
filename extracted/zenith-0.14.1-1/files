@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/zenith
+usr/share/
+usr/share/applications/
+usr/share/applications/zenith.desktop
+usr/share/doc/
+usr/share/doc/zenith/
+usr/share/doc/zenith/README.md
+usr/share/licenses/
+usr/share/licenses/zenith/
+usr/share/licenses/zenith/LICENSE
+usr/share/pixmaps/
+usr/share/pixmaps/zenith.png

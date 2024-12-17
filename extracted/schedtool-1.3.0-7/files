@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/schedtool
+usr/share/
+usr/share/doc/
+usr/share/doc/schedtool/
+usr/share/doc/schedtool/INSTALL
+usr/share/doc/schedtool/LICENSE
+usr/share/doc/schedtool/README
+usr/share/doc/schedtool/SCHED_DESIGN
+usr/share/man/
+usr/share/man/man8/
+usr/share/man/man8/schedtool.8.gz

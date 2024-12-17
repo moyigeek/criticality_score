@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/muraster
+usr/bin/mutool
+usr/share/
+usr/share/doc/
+usr/share/doc/mupdf-tools/
+usr/share/doc/mupdf-tools/CHANGES
+usr/share/doc/mupdf-tools/COPYING
+usr/share/doc/mupdf-tools/README
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/mutool.1.gz

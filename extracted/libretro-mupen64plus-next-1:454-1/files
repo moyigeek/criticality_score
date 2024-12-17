@@ -1,0 +1,5 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/libretro/
+usr/lib/libretro/mupen64plus_next_libretro.so

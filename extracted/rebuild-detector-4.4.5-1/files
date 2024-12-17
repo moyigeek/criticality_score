@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/checkrebuild
+usr/share/
+usr/share/libalpm/
+usr/share/libalpm/hooks/
+usr/share/libalpm/hooks/rebuild-detector.hook
+usr/share/licenses/
+usr/share/licenses/rebuild-detector/
+usr/share/licenses/rebuild-detector/LICENSE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/checkrebuild.1.gz
+usr/share/man/man7/
+usr/share/man/man7/rebuild-detector.7.gz

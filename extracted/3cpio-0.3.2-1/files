@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/3cpio
+usr/share/
+usr/share/licenses/
+usr/share/licenses/3cpio/
+usr/share/licenses/3cpio/LICENSE

@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/libnvidia-egl-xcb.so
+usr/lib/libnvidia-egl-xcb.so.1
+usr/lib/libnvidia-egl-xcb.so.1.0.0
+usr/lib/libnvidia-egl-xlib.so
+usr/lib/libnvidia-egl-xlib.so.1
+usr/lib/libnvidia-egl-xlib.so.1.0.0
+usr/share/
+usr/share/egl/
+usr/share/egl/egl_external_platform.d/
+usr/share/egl/egl_external_platform.d/20_nvidia_xcb.json
+usr/share/egl/egl_external_platform.d/20_nvidia_xlib.json

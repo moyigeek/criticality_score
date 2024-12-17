@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/hdr10plus_tool
+usr/share/
+usr/share/licenses/
+usr/share/licenses/hdr10plus-tool/
+usr/share/licenses/hdr10plus-tool/LICENSE

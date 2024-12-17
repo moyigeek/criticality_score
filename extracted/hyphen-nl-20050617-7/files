@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/share/
+usr/share/doc/
+usr/share/doc/hyphen-nl/
+usr/share/doc/hyphen-nl/README_hyph_nl_NL.txt
+usr/share/hyphen/
+usr/share/hyphen/hyph_nl_AW.dic
+usr/share/hyphen/hyph_nl_BE.dic
+usr/share/hyphen/hyph_nl_NL.dic
+usr/share/myspell/
+usr/share/myspell/dicts/
+usr/share/myspell/dicts/hyph_nl_AW.dic
+usr/share/myspell/dicts/hyph_nl_BE.dic
+usr/share/myspell/dicts/hyph_nl_NL.dic

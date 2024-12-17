@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/gnugo
+usr/share/
+usr/share/info/
+usr/share/info/gnugo.info-1.gz
+usr/share/info/gnugo.info-2.gz
+usr/share/info/gnugo.info-3.gz
+usr/share/info/gnugo.info.gz
+usr/share/man/
+usr/share/man/man6/
+usr/share/man/man6/gnugo.6.gz

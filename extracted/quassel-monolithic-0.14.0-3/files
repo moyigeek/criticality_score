@@ -1,0 +1,9 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/quassel
+usr/share/
+usr/share/applications/
+usr/share/applications/quassel.desktop
+usr/share/metainfo/
+usr/share/metainfo/quassel.appdata.xml

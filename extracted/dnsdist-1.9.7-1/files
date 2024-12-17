@@ -1,0 +1,17 @@
+%FILES%
+etc/
+etc/dnsdist.conf-dist
+usr/
+usr/bin/
+usr/bin/dnsdist
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/dnsdist.service
+usr/lib/systemd/system/dnsdist@.service
+usr/lib/sysusers.d/
+usr/lib/sysusers.d/dnsdist.conf
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/dnsdist.1.gz

@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/vim-spell-zu/
+usr/share/licenses/vim-spell-zu/README_zu.txt
+usr/share/vim/
+usr/share/vim/vimfiles/
+usr/share/vim/vimfiles/spell/
+usr/share/vim/vimfiles/spell/zu.ascii.spl
+usr/share/vim/vimfiles/spell/zu.latin1.spl
+usr/share/vim/vimfiles/spell/zu.utf-8.spl

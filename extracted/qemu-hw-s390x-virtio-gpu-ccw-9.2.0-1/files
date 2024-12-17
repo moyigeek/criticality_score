@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/qemu/
+usr/lib/qemu/hw-s390x-virtio-gpu-ccw.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/qemu-hw-s390x-virtio-gpu-ccw/
+usr/share/licenses/qemu-hw-s390x-virtio-gpu-ccw/BSD-2-Clause.txt
+usr/share/licenses/qemu-hw-s390x-virtio-gpu-ccw/LICENSE
+usr/share/licenses/qemu-hw-s390x-virtio-gpu-ccw/audio.LICENSE.ISC.txt
+usr/share/licenses/qemu-hw-s390x-virtio-gpu-ccw/edk2-licenses.txt
+usr/share/licenses/qemu-hw-s390x-virtio-gpu-ccw/fuse.LICENSE.BSD-2-Clause.txt
+usr/share/licenses/qemu-hw-s390x-virtio-gpu-ccw/tcg-arm.LICENSE.MIT.txt
+usr/share/licenses/qemu-hw-s390x-virtio-gpu-ccw/tcg.LICENSE.MIT.txt
+usr/share/licenses/qemu-hw-s390x-virtio-gpu-ccw/tci.LICENSE.MIT.txt

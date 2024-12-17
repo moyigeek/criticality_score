@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/glide
+usr/share/
+usr/share/applications/
+usr/share/applications/net.base_art.Glide.desktop
+usr/share/icons/
+usr/share/icons/hicolor/
+usr/share/icons/hicolor/scalable/
+usr/share/icons/hicolor/scalable/apps/
+usr/share/icons/hicolor/scalable/apps/net.base_art.Glide.svg
+usr/share/licenses/
+usr/share/licenses/glide/
+usr/share/licenses/glide/LICENSE
+usr/share/metainfo/
+usr/share/metainfo/net.base_art.Glide.metainfo.xml

@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/changestool
+usr/bin/reprepro
+usr/bin/rredtool
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/changestool.1.gz
+usr/share/man/man1/reprepro.1.gz
+usr/share/man/man1/rredtool.1.gz

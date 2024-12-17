@@ -1,0 +1,9 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/jnoisemeter
+usr/share/
+usr/share/doc/
+usr/share/doc/jnoisemeter/
+usr/share/doc/jnoisemeter/AUTHORS
+usr/share/doc/jnoisemeter/README

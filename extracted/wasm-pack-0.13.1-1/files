@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/wasm-pack
+usr/share/
+usr/share/doc/
+usr/share/doc/wasm-pack/
+usr/share/doc/wasm-pack/README.md
+usr/share/licenses/
+usr/share/licenses/wasm-pack/
+usr/share/licenses/wasm-pack/LICENSE-MIT

@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/perl5/
+usr/lib/perl5/5.40/
+usr/lib/perl5/5.40/core_perl/
+usr/lib/perl5/5.40/vendor_perl/
+usr/lib/perl5/5.40/vendor_perl/Linux/
+usr/lib/perl5/5.40/vendor_perl/Linux/Pid.pm
+usr/lib/perl5/5.40/vendor_perl/auto/
+usr/lib/perl5/5.40/vendor_perl/auto/Linux/
+usr/lib/perl5/5.40/vendor_perl/auto/Linux/Pid/
+usr/lib/perl5/5.40/vendor_perl/auto/Linux/Pid/Pid.so
+usr/share/
+usr/share/man/
+usr/share/man/man3/
+usr/share/man/man3/Linux::Pid.3pm.gz

@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/bpftop
+usr/share/
+usr/share/doc/
+usr/share/doc/bpftop/
+usr/share/doc/bpftop/README.md
+usr/share/licenses/
+usr/share/licenses/bpftop/
+usr/share/licenses/bpftop/LICENSE

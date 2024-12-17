@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/dvgrab
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/dvgrab.1.gz

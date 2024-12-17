@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/share/
+usr/share/man/
+usr/share/man/man3/
+usr/share/man/man3/File::NFSLock.3pm.gz
+usr/share/perl5/
+usr/share/perl5/vendor_perl/
+usr/share/perl5/vendor_perl/File/
+usr/share/perl5/vendor_perl/File/NFSLock.pm

@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/vendor_perl/
+usr/bin/vendor_perl/imgsize
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/imgsize.1p.gz
+usr/share/man/man3/
+usr/share/man/man3/Image::Size.3pm.gz
+usr/share/perl5/
+usr/share/perl5/vendor_perl/
+usr/share/perl5/vendor_perl/Image/
+usr/share/perl5/vendor_perl/Image/Size.pm

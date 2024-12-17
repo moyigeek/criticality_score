@@ -1,0 +1,5 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/bemenu/
+usr/lib/bemenu/bemenu-renderer-curses.so

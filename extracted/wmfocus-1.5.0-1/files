@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/wmfocus
+usr/share/
+usr/share/licenses/
+usr/share/licenses/wmfocus/
+usr/share/licenses/wmfocus/LICENSE

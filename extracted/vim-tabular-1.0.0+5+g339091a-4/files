@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/vim-tabular/
+usr/share/licenses/vim-tabular/LICENSE.md
+usr/share/vim/
+usr/share/vim/vimfiles/
+usr/share/vim/vimfiles/after/
+usr/share/vim/vimfiles/after/plugin/
+usr/share/vim/vimfiles/after/plugin/TabularMaps.vim
+usr/share/vim/vimfiles/autoload/
+usr/share/vim/vimfiles/autoload/tabular.vim
+usr/share/vim/vimfiles/doc/
+usr/share/vim/vimfiles/doc/Tabular.txt
+usr/share/vim/vimfiles/plugin/
+usr/share/vim/vimfiles/plugin/Tabular.vim

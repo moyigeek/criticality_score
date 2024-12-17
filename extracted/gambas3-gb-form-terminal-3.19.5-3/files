@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/gambas3/
+usr/lib/gambas3/gb.form.terminal.component
+usr/lib/gambas3/gb.form.terminal.gambas
+usr/share/
+usr/share/gambas3/
+usr/share/gambas3/control/
+usr/share/gambas3/control/gb.form.terminal/
+usr/share/gambas3/control/gb.form.terminal/terminalview.png
+usr/share/gambas3/info/
+usr/share/gambas3/info/gb.form.terminal.info
+usr/share/gambas3/info/gb.form.terminal.list

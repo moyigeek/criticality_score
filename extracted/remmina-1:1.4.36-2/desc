@@ -1,0 +1,93 @@
+%FILENAME%
+remmina-1:1.4.36-2-x86_64.pkg.tar.zst
+
+%NAME%
+remmina
+
+%BASE%
+remmina
+
+%VERSION%
+1:1.4.36-2
+
+%DESC%
+remote desktop client written in GTK+
+
+%CSIZE%
+1120224
+
+%ISIZE%
+5357698
+
+%SHA256SUM%
+6328a228bbf4bdef49dae76bc9b2060f478ce0e56cb071bb3e258af7be7cfbb1
+
+%PGPSIG%
+iQIzBAABCAAdFiEEJipY7GxR9+o5Wy4t/cMEC5Ksp0gFAmdBkxgACgkQ/cMEC5Ksp0iXmhAAihNQU+M3k7w6NCSGCYimuBmWcCTAgVvH0PpUqj/ob1km4wDQnfbgWPZZm2eZ1fOMO28HSJCvVHhkXYWTJfPG+77TRykEYuKumu6oyB0WyDdOJFmL12yE+jJj9qo/GWytT9UQJmanMSxYwKVEyyV8nNcTyyIZ1NlGEyE/z9EwkGKozG5Vj4KfByyX0AsfZP1Hhc11HSFBbl0Aub2oSpr+8/bNh/B105U3Uv/G1OEaQ4PHvQyPIZjcUl43aY7SfDtCjChzk+5WXu011UfhI7olFyDUXvFfX4CP+QkTv/ox3+WHGnAsfthqHR6zpBCfXCG5SOv9/B/WG/VFeu9duzIr91ykNH5OPJbKyytxVumtEkgzv+Fa86Fw+UJMjUW4F531ZlDEdpxFqNsnI6zzxGC6taXO9TeuPLHvek5SignDua5oQx8ECVMBPvhDP7jwoVhQ/gpVvEU3oxbAYX81FOSuiRDMx9cYKnSGZCymNIPvHK5zWoYdBUUQE11g15BHpVhvTKXlGrOMVvLytM/Kd4bMZQEMph7jRmMeU4Vm55QZETKmctPWa3fna9u8uaIr52I8rYNPZU+KYsq/taRBChSpHHfSAYKFxVtYdqqrXaf8yGWj7X30OAPXF2t8riiaDmn8OCE55+Ca/9yqKhsxq1B9Cnwz69XOG68nX+wiuD4kDdQ=
+
+%URL%
+https://www.remmina.org/
+
+%LICENSE%
+GPL-2.0-or-later
+
+%ARCH%
+x86_64
+
+%BUILDDATE%
+1732350612
+
+%PACKAGER%
+Robin Candau <antiz@archlinux.org>
+
+%REPLACES%
+remmina-plugins
+
+%PROVIDES%
+remmina-plugins
+
+%DEPENDS%
+avahi
+bash
+cairo
+curl
+gcc-libs
+glib2
+glibc
+gtk3
+hicolor-icon-theme
+json-glib
+libayatana-appindicator
+libgcrypt
+libsodium
+libssh
+libx11
+openssl
+pango
+python
+vte3
+
+%OPTDEPENDS%
+freerdp: RDP plugin
+libsecret: Secret plugin
+libvncserver: VNC plugin
+spice-gtk: Spice plugin
+webkit2gtk-4.1: WWW plugin
+gtk-vnc: GVNC plugin
+kwallet5: kwallet plugin
+gnome-terminal: external tools
+
+%MAKEDEPENDS%
+cmake
+freerdp
+gobject-introspection
+gtk-vnc
+harfbuzz
+kwallet5
+libvncserver
+ninja
+spice-gtk
+spice-protocol
+webkit2gtk-4.1
+xorgproto
+

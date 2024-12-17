@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/share/
+usr/share/man/
+usr/share/man/man3/
+usr/share/man/man3/Email::MIME::Attachment::Stripper.3pm.gz
+usr/share/perl5/
+usr/share/perl5/vendor_perl/
+usr/share/perl5/vendor_perl/Email/
+usr/share/perl5/vendor_perl/Email/MIME/
+usr/share/perl5/vendor_perl/Email/MIME/Attachment/
+usr/share/perl5/vendor_perl/Email/MIME/Attachment/Stripper.pm

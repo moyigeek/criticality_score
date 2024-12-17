@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/aspell-0.60/
+usr/lib/aspell-0.60/dutch.alias
+usr/lib/aspell-0.60/nl.dat
+usr/lib/aspell-0.60/nl.multi
+usr/lib/aspell-0.60/nl.rws
+usr/share/
+usr/share/licenses/
+usr/share/licenses/aspell-nl/
+usr/share/licenses/aspell-nl/LICENSE

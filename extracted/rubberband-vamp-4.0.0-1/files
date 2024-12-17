@@ -1,0 +1,6 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/vamp/
+usr/lib/vamp/vamp-rubberband.cat
+usr/lib/vamp/vamp-rubberband.so

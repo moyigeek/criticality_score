@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/lv2/
+usr/lib/lv2/ADLplug.lv2/
+usr/lib/lv2/ADLplug.lv2/ADLplug.so
+usr/lib/lv2/ADLplug.lv2/ADLplug.ttl
+usr/lib/lv2/ADLplug.lv2/manifest.ttl

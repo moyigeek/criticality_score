@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/share/
+usr/share/rime-data/
+usr/share/rime-data/build/
+usr/share/rime-data/build/pinyin_simp.prism.bin
+usr/share/rime-data/build/pinyin_simp.reverse.bin
+usr/share/rime-data/build/pinyin_simp.schema.yaml
+usr/share/rime-data/build/pinyin_simp.table.bin
+usr/share/rime-data/pinyin_simp.dict.yaml
+usr/share/rime-data/pinyin_simp.schema.yaml

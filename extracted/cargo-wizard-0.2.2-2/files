@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cargo-wizard
+usr/share/
+usr/share/doc/
+usr/share/doc/cargo-wizard/
+usr/share/doc/cargo-wizard/README.md
+usr/share/licenses/
+usr/share/licenses/cargo-wizard/
+usr/share/licenses/cargo-wizard/LICENSE

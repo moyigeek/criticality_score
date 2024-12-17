@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/firrtl
+usr/share/
+usr/share/scala/
+usr/share/scala/firrtl/
+usr/share/scala/firrtl/firrtl.jar

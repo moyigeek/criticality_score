@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/vim-spell-hr/
+usr/share/licenses/vim-spell-hr/README_hr.txt
+usr/share/vim/
+usr/share/vim/vimfiles/
+usr/share/vim/vimfiles/spell/
+usr/share/vim/vimfiles/spell/hr.cp1250.spl
+usr/share/vim/vimfiles/spell/hr.iso-8859-2.spl
+usr/share/vim/vimfiles/spell/hr.utf-8.spl

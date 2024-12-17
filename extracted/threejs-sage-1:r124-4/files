@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/threejs-sage/
+usr/share/licenses/threejs-sage/LICENSE
+usr/share/threejs-sage/
+usr/share/threejs-sage/r124/
+usr/share/threejs-sage/r124/three.min.js
+usr/share/threejs-sage/version

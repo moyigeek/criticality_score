@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/amm
+usr/share/
+usr/share/licenses/
+usr/share/licenses/ammonite/
+usr/share/licenses/ammonite/LICENSE

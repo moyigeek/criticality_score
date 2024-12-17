@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libgamemode.so
+usr/lib32/libgamemode.so.0
+usr/lib32/libgamemode.so.0.0.0
+usr/lib32/libgamemodeauto.so
+usr/lib32/libgamemodeauto.so.0
+usr/lib32/libgamemodeauto.so.0.0.0
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/gamemode.pc
+usr/lib32/pkgconfig/libgamemodeauto.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-gamemode

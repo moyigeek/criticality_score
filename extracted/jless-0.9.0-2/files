@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/jless
+usr/share/
+usr/share/doc/
+usr/share/doc/jless/
+usr/share/doc/jless/README.md
+usr/share/licenses/
+usr/share/licenses/jless/
+usr/share/licenses/jless/LICENSE

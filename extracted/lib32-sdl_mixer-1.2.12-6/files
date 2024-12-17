@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libSDL_mixer-1.2.so.0
+usr/lib32/libSDL_mixer-1.2.so.0.12.0
+usr/lib32/libSDL_mixer.so
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/SDL_mixer.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-sdl_mixer

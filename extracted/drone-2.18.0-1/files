@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/drone-server
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/drone.service
+usr/lib/sysusers.d/
+usr/lib/sysusers.d/drone.conf
+usr/lib/tmpfiles.d/
+usr/lib/tmpfiles.d/drone.conf
+usr/share/
+usr/share/licenses/
+usr/share/licenses/drone/
+usr/share/licenses/drone/LICENSE
+usr/share/licenses/drone/NOTICE

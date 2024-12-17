@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/share/
+usr/share/doc/
+usr/share/doc/haskell-attoparsec-aeson/
+usr/share/haskell/
+usr/share/haskell/register/
+usr/share/haskell/register/haskell-attoparsec-aeson.sh
+usr/share/haskell/unregister/
+usr/share/haskell/unregister/haskell-attoparsec-aeson.sh
+usr/share/licenses/
+usr/share/licenses/haskell-attoparsec-aeson/
+usr/share/licenses/haskell-attoparsec-aeson/LICENSE

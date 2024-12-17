@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/banner
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/banner.1.gz

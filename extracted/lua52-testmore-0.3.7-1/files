@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lua52-testmore/
+usr/share/licenses/lua52-testmore/COPYRIGHT
+usr/share/lua/
+usr/share/lua/5.2/
+usr/share/lua/5.2/Test/
+usr/share/lua/5.2/Test/Builder.lua
+usr/share/lua/5.2/Test/Builder/
+usr/share/lua/5.2/Test/Builder/SocketOutput.lua
+usr/share/lua/5.2/Test/Builder/Tester.lua
+usr/share/lua/5.2/Test/Builder/Tester/
+usr/share/lua/5.2/Test/Builder/Tester/File.lua
+usr/share/lua/5.2/Test/More.lua

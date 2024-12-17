@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/python3.13/
+usr/lib/python3.13/site-packages/
+usr/lib/python3.13/site-packages/qrencode-1.2-py3.13.egg-info/
+usr/lib/python3.13/site-packages/qrencode-1.2-py3.13.egg-info/PKG-INFO
+usr/lib/python3.13/site-packages/qrencode-1.2-py3.13.egg-info/SOURCES.txt
+usr/lib/python3.13/site-packages/qrencode-1.2-py3.13.egg-info/dependency_links.txt
+usr/lib/python3.13/site-packages/qrencode-1.2-py3.13.egg-info/top_level.txt
+usr/lib/python3.13/site-packages/qrencode/
+usr/lib/python3.13/site-packages/qrencode/__init__.py
+usr/lib/python3.13/site-packages/qrencode/__pycache__/
+usr/lib/python3.13/site-packages/qrencode/__pycache__/__init__.cpython-313.opt-1.pyc
+usr/lib/python3.13/site-packages/qrencode/__pycache__/__init__.cpython-313.pyc
+usr/lib/python3.13/site-packages/qrencode/_qrencode.cpython-313-x86_64-linux-gnu.so

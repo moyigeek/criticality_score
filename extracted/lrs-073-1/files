@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/lrs
+usr/bin/lrsnash
+usr/include/
+usr/include/lrslib/
+usr/include/lrslib/lrsdriver.h
+usr/include/lrslib/lrsgmp.h
+usr/include/lrslib/lrslib.h
+usr/include/lrslib/lrslong.h
+usr/include/lrslib/lrsmp.h
+usr/include/lrslib/lrsrestart.h
+usr/lib/
+usr/lib/liblrs.so
+usr/lib/liblrs.so.1
+usr/lib/liblrs.so.1.0.0

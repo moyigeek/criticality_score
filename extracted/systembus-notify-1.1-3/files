@@ -1,0 +1,12 @@
+%FILES%
+etc/
+etc/xdg/
+etc/xdg/autostart/
+etc/xdg/autostart/systembus-notify.desktop
+usr/
+usr/bin/
+usr/bin/systembus-notify
+usr/share/
+usr/share/licenses/
+usr/share/licenses/systembus-notify/
+usr/share/licenses/systembus-notify/LICENSE

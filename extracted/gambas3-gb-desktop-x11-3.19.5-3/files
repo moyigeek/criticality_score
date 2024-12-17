@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/gambas3/
+usr/lib/gambas3/gb.desktop.x11.component
+usr/lib/gambas3/gb.desktop.x11.gambas
+usr/lib/gambas3/gb.desktop.x11.la
+usr/lib/gambas3/gb.desktop.x11.so
+usr/lib/gambas3/gb.desktop.x11.so.0
+usr/lib/gambas3/gb.desktop.x11.so.0.0.0
+usr/share/
+usr/share/gambas3/
+usr/share/gambas3/info/
+usr/share/gambas3/info/gb.desktop.x11.info
+usr/share/gambas3/info/gb.desktop.x11.list

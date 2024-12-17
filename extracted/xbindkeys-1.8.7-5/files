@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/xbindkeys
+usr/bin/xbindkeys_show
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/xbindkeys.1.gz
+usr/share/man/man1/xbindkeys_show.1.gz

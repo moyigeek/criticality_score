@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/sigrok-cli
+usr/share/
+usr/share/applications/
+usr/share/applications/org.sigrok.sigrok-cli.desktop
+usr/share/icons/
+usr/share/icons/hicolor/
+usr/share/icons/hicolor/scalable/
+usr/share/icons/hicolor/scalable/apps/
+usr/share/icons/hicolor/scalable/apps/sigrok-cli.svg
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/sigrok-cli.1.gz

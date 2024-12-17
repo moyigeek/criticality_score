@@ -1,0 +1,11 @@
+%FILES%
+etc/
+etc/revive/
+etc/revive/revive.toml
+usr/
+usr/bin/
+usr/bin/revive
+usr/share/
+usr/share/licenses/
+usr/share/licenses/revive/
+usr/share/licenses/revive/LICENSE

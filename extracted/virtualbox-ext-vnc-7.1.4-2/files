@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/virtualbox-ext-vnc/
+usr/share/licenses/virtualbox-ext-vnc/LICENSE
+usr/share/licenses/virtualbox-ext-vnc/LICENSE.CDDL
+usr/share/virtualbox/
+usr/share/virtualbox/extensions/
+usr/share/virtualbox/extensions/VNC-7.1.4.vbox-extpack

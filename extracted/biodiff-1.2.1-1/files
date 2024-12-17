@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/biodiff
+usr/share/
+usr/share/doc/
+usr/share/doc/biodiff/
+usr/share/doc/biodiff/README.md
+usr/share/licenses/
+usr/share/licenses/biodiff/
+usr/share/licenses/biodiff/LICENSE

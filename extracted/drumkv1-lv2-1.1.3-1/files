@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/lv2/
+usr/lib/lv2/drumkv1.lv2/
+usr/lib/lv2/drumkv1.lv2/drumkv1.so
+usr/lib/lv2/drumkv1.lv2/drumkv1.ttl
+usr/lib/lv2/drumkv1.lv2/drumkv1_ui.ttl
+usr/lib/lv2/drumkv1.lv2/manifest.ttl
+usr/share/
+usr/share/doc/
+usr/share/doc/drumkv1-lv2/
+usr/share/doc/drumkv1-lv2/ChangeLog
+usr/share/doc/drumkv1-lv2/README

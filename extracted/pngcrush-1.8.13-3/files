@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/pngcrush
+usr/share/
+usr/share/licenses/
+usr/share/licenses/pngcrush/
+usr/share/licenses/pngcrush/LICENSE

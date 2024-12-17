@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/ollama/
+usr/lib/ollama/runners/
+usr/lib/ollama/runners/cuda_v12_avx/
+usr/lib/ollama/runners/cuda_v12_avx/libggml_cuda_v12.so
+usr/lib/ollama/runners/cuda_v12_avx/ollama_llama_server

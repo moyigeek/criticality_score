@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/qemu/
+usr/lib/qemu/hw-display-qxl.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/qemu-hw-display-qxl/
+usr/share/licenses/qemu-hw-display-qxl/BSD-2-Clause.txt
+usr/share/licenses/qemu-hw-display-qxl/LICENSE
+usr/share/licenses/qemu-hw-display-qxl/audio.LICENSE.ISC.txt
+usr/share/licenses/qemu-hw-display-qxl/edk2-licenses.txt
+usr/share/licenses/qemu-hw-display-qxl/fuse.LICENSE.BSD-2-Clause.txt
+usr/share/licenses/qemu-hw-display-qxl/tcg-arm.LICENSE.MIT.txt
+usr/share/licenses/qemu-hw-display-qxl/tcg.LICENSE.MIT.txt
+usr/share/licenses/qemu-hw-display-qxl/tci.LICENSE.MIT.txt

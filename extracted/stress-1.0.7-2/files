@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/stress
+usr/share/
+usr/share/doc/
+usr/share/doc/stress/
+usr/share/doc/stress/AUTHORS
+usr/share/doc/stress/ChangeLog
+usr/share/doc/stress/README.md
+usr/share/licenses/
+usr/share/licenses/stress/
+usr/share/licenses/stress/COPYING
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/stress.1.gz

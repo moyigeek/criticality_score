@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/share/
+usr/share/fonts/
+usr/share/fonts/TTF/
+usr/share/fonts/TTF/IosevkaEtoile-Bold.ttc
+usr/share/fonts/TTF/IosevkaEtoile-ExtraBold.ttc
+usr/share/fonts/TTF/IosevkaEtoile-ExtraLight.ttc
+usr/share/fonts/TTF/IosevkaEtoile-Heavy.ttc
+usr/share/fonts/TTF/IosevkaEtoile-Light.ttc
+usr/share/fonts/TTF/IosevkaEtoile-Medium.ttc
+usr/share/fonts/TTF/IosevkaEtoile-Regular.ttc
+usr/share/fonts/TTF/IosevkaEtoile-SemiBold.ttc
+usr/share/fonts/TTF/IosevkaEtoile-Thin.ttc
+usr/share/licenses/
+usr/share/licenses/ttc-iosevka-etoile/
+usr/share/licenses/ttc-iosevka-etoile/LICENSE.md

@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cargo-install-update
+usr/bin/cargo-install-update-config
+usr/share/
+usr/share/doc/
+usr/share/doc/cargo-update/
+usr/share/doc/cargo-update/README.md
+usr/share/doc/cargo-update/cargo-install-update-config.md
+usr/share/doc/cargo-update/cargo-install-update.md
+usr/share/licenses/
+usr/share/licenses/cargo-update/
+usr/share/licenses/cargo-update/LICENSE

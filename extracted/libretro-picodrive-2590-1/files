@@ -1,0 +1,9 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/libretro/
+usr/lib/libretro/picodrive_libretro.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/libretro-picodrive/
+usr/share/licenses/libretro-picodrive/COPYING

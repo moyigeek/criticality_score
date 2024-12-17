@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/smtpd/
+usr/lib/smtpd/opensmtpd/
+usr/lib/smtpd/opensmtpd/filter-senderscore
+usr/share/
+usr/share/doc/
+usr/share/doc/opensmtpd-filter-senderscore/
+usr/share/doc/opensmtpd-filter-senderscore/README.md
+usr/share/licenses/
+usr/share/licenses/opensmtpd-filter-senderscore/
+usr/share/licenses/opensmtpd-filter-senderscore/LICENSE

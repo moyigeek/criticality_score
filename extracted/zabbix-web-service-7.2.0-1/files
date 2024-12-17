@@ -1,0 +1,15 @@
+%FILES%
+etc/
+etc/zabbix/
+etc/zabbix/zabbix_web_service.conf
+usr/
+usr/bin/
+usr/bin/zabbix_web_service
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/zabbix-web-service.service
+usr/lib/sysusers.d/
+usr/lib/sysusers.d/zabbix-web-service.conf
+usr/lib/tmpfiles.d/
+usr/lib/tmpfiles.d/zabbix-web-service.conf

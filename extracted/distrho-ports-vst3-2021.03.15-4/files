@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/vst3/
+usr/lib/vst3/SwankyAmp.vst3/
+usr/lib/vst3/SwankyAmp.vst3/Contents/
+usr/lib/vst3/SwankyAmp.vst3/Contents/x86_64-linux/
+usr/lib/vst3/SwankyAmp.vst3/Contents/x86_64-linux/SwankyAmp.so
+usr/lib/vst3/vitalium.vst3/
+usr/lib/vst3/vitalium.vst3/Contents/
+usr/lib/vst3/vitalium.vst3/Contents/x86_64-linux/
+usr/lib/vst3/vitalium.vst3/Contents/x86_64-linux/vitalium.so

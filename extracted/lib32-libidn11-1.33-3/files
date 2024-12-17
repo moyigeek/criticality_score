@@ -1,0 +1,5 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libidn.so.11
+usr/lib32/libidn.so.11.6.16

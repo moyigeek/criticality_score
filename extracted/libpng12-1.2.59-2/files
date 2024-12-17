@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/include/
+usr/include/libpng12/
+usr/include/libpng12/png.h
+usr/include/libpng12/pngconf.h
+usr/lib/
+usr/lib/libpng.so.3
+usr/lib/libpng.so.3.59.0
+usr/lib/libpng12.so
+usr/lib/libpng12.so.0
+usr/lib/libpng12.so.0.59.0
+usr/share/
+usr/share/licenses/
+usr/share/licenses/libpng12/
+usr/share/licenses/libpng12/LICENSE

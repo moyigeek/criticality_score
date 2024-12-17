@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/eglinfo32
+usr/bin/glxgears32
+usr/bin/glxinfo32
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-mesa-utils/
+usr/share/licenses/lib32-mesa-utils/LICENSE

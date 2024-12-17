@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/opensearch-mapper-murmur3-plugin/
+usr/share/licenses/opensearch-mapper-murmur3-plugin/LICENSE.txt
+usr/share/licenses/opensearch-mapper-murmur3-plugin/NOTICE.txt
+usr/share/opensearch/
+usr/share/opensearch/plugins/
+usr/share/opensearch/plugins/mapper-murmur3/
+usr/share/opensearch/plugins/mapper-murmur3/mapper-murmur3-2.18.0.jar
+usr/share/opensearch/plugins/mapper-murmur3/plugin-descriptor.properties

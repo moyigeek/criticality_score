@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/caca-config-32
+usr/lib32/
+usr/lib32/libcaca.so
+usr/lib32/libcaca.so.0
+usr/lib32/libcaca.so.0.99.20
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/caca.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-libcaca/
+usr/share/licenses/lib32-libcaca/COPYING

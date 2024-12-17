@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/crackNum
+usr/share/
+usr/share/doc/
+usr/share/doc/haskell-cracknum/
+usr/share/licenses/
+usr/share/licenses/haskell-cracknum/
+usr/share/licenses/haskell-cracknum/LICENSE

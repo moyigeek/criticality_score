@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/ocrdesktop
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/ocrdesktop.1.gz

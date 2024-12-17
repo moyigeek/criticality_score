@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/astromenace
+usr/share/
+usr/share/applications/
+usr/share/applications/astromenace.desktop
+usr/share/astromenace/
+usr/share/astromenace/gamedata.vfs
+usr/share/metainfo/
+usr/share/metainfo/astromenace.appdata.xml
+usr/share/pixmaps/
+usr/share/pixmaps/astromenace.png

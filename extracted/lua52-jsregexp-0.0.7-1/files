@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/lua/
+usr/lib/lua/5.2/
+usr/lib/lua/5.2/jsregexp.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lua52-jsregexp/
+usr/share/licenses/lua52-jsregexp/LICENSE
+usr/share/lua/
+usr/share/lua/5.2/
+usr/share/lua/5.2/jsregexp.lua

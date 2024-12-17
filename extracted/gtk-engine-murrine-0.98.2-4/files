@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/gtk-2.0/
+usr/lib/gtk-2.0/2.10.0/
+usr/lib/gtk-2.0/2.10.0/engines/
+usr/lib/gtk-2.0/2.10.0/engines/libmurrine.so
+usr/share/
+usr/share/gtk-engines/
+usr/share/gtk-engines/murrine.xml

@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/proximity-sort
+usr/share/
+usr/share/doc/
+usr/share/doc/proximity-sort/
+usr/share/doc/proximity-sort/README.md
+usr/share/licenses/
+usr/share/licenses/proximity-sort/
+usr/share/licenses/proximity-sort/LICENSE-APACHE
+usr/share/licenses/proximity-sort/LICENSE-MIT

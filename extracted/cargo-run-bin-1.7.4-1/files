@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cargo-bin
+usr/share/
+usr/share/doc/
+usr/share/doc/cargo-run-bin/
+usr/share/doc/cargo-run-bin/README.md
+usr/share/licenses/
+usr/share/licenses/cargo-run-bin/
+usr/share/licenses/cargo-run-bin/LICENSE

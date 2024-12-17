@@ -1,0 +1,17 @@
+%FILES%
+etc/
+etc/cups/
+etc/cups/cups-pdf.conf
+usr/
+usr/lib/
+usr/lib/cups/
+usr/lib/cups/backend/
+usr/lib/cups/backend/cups-pdf
+usr/share/
+usr/share/cups/
+usr/share/cups/model/
+usr/share/cups/model/CUPS-PDF_noopt.ppd
+usr/share/cups/model/CUPS-PDF_opt.ppd
+usr/share/doc/
+usr/share/doc/cups-pdf/
+usr/share/doc/cups-pdf/README

@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/include/
+usr/include/cgif.h
+usr/lib/
+usr/lib/libcgif.so
+usr/lib/libcgif.so.0
+usr/lib/libcgif.so.0.4.1
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/cgif.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/libcgif/
+usr/share/licenses/libcgif/LICENSE

@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/gstreamer-1.0/
+usr/lib/gstreamer-1.0/libgstclaxon.so
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/gstclaxon.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/gst-plugin-claxon/
+usr/share/licenses/gst-plugin-claxon/LICENSE-MIT

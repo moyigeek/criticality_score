@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/oca
+usr/share/
+usr/share/doc/
+usr/share/doc/openpgp-ca/
+usr/share/doc/openpgp-ca/README.md

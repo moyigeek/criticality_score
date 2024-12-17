@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/mediainfo
+usr/share/
+usr/share/licenses/
+usr/share/licenses/mediainfo/
+usr/share/licenses/mediainfo/LICENSE

@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/include/
+usr/include/signon-plugins/
+usr/include/signon-plugins/oauth1data.h
+usr/include/signon-plugins/oauth2data.h
+usr/lib/
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/signon-oauth2plugin.pc
+usr/lib/signon/
+usr/lib/signon/liboauth2plugin.so

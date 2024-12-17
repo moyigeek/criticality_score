@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libdatrie.so
+usr/lib32/libdatrie.so.1
+usr/lib32/libdatrie.so.1.4.0
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/datrie-0.2.pc

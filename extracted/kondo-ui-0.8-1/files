@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/kondo-ui
+usr/share/
+usr/share/doc/
+usr/share/doc/kondo-ui/
+usr/share/doc/kondo-ui/README.md
+usr/share/licenses/
+usr/share/licenses/kondo-ui/
+usr/share/licenses/kondo-ui/LICENSE

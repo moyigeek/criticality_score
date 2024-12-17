@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/vdpauinfo
+usr/share/
+usr/share/licenses/
+usr/share/licenses/vdpauinfo/
+usr/share/licenses/vdpauinfo/COPYING

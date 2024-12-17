@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/gambas3/
+usr/lib/gambas3/gb.option.component
+usr/lib/gambas3/gb.option.la
+usr/lib/gambas3/gb.option.so
+usr/lib/gambas3/gb.option.so.0
+usr/lib/gambas3/gb.option.so.0.0.0
+usr/share/
+usr/share/gambas3/
+usr/share/gambas3/info/
+usr/share/gambas3/info/gb.option.info
+usr/share/gambas3/info/gb.option.list

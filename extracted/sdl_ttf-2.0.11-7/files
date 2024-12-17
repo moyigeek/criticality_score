@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/include/
+usr/include/SDL/
+usr/include/SDL/SDL_ttf.h
+usr/lib/
+usr/lib/libSDL_ttf-2.0.so.0
+usr/lib/libSDL_ttf-2.0.so.0.10.1
+usr/lib/libSDL_ttf.so
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/SDL_ttf.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/sdl_ttf/
+usr/share/licenses/sdl_ttf/LICENSE

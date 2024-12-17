@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/share/
+usr/share/man/
+usr/share/man/man3/
+usr/share/man/man3/Test::MockObject.3pm.gz
+usr/share/man/man3/Test::MockObject::Extends.3pm.gz
+usr/share/perl5/
+usr/share/perl5/vendor_perl/
+usr/share/perl5/vendor_perl/Test/
+usr/share/perl5/vendor_perl/Test/MockObject.pm
+usr/share/perl5/vendor_perl/Test/MockObject/
+usr/share/perl5/vendor_perl/Test/MockObject/Extends.pm

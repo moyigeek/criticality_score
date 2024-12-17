@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/tukai
+usr/share/
+usr/share/doc/
+usr/share/doc/tukai/
+usr/share/doc/tukai/README.md
+usr/share/licenses/
+usr/share/licenses/tukai/
+usr/share/licenses/tukai/LICENSE

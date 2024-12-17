@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/megaglest
+usr/bin/megaglest_editor
+usr/bin/megaglest_g3dviewer
+usr/share/
+usr/share/megaglest/
+usr/share/megaglest/editor.ico
+usr/share/megaglest/g3dviewer.ico
+usr/share/megaglest/glest.ini
+usr/share/megaglest/glestkeys.ini
+usr/share/megaglest/megaglest.ico
+usr/share/megaglest/servers.ini
+usr/share/megaglest/start_megaglest_gameserver

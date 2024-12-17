@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/hcloud
+usr/share/
+usr/share/bash-completion/
+usr/share/bash-completion/completions/
+usr/share/bash-completion/completions/hcloud
+usr/share/fish/
+usr/share/fish/vendor_completions.d/
+usr/share/fish/vendor_completions.d/hcloud.fish
+usr/share/licenses/
+usr/share/licenses/hcloud/
+usr/share/licenses/hcloud/LICENSE
+usr/share/zsh/
+usr/share/zsh/site-functions/
+usr/share/zsh/site-functions/_hcloud

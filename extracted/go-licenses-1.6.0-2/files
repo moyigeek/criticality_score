@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/go-licenses
+usr/share/
+usr/share/licenses/
+usr/share/licenses/go-licenses/
+usr/share/licenses/go-licenses/LICENSE

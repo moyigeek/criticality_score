@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/xkeycaps
+usr/share/
+usr/share/licenses/
+usr/share/licenses/xkeycaps/
+usr/share/licenses/xkeycaps/license.txt
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/xkeycaps.1x.gz

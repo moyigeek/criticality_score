@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/premake5
+usr/share/
+usr/share/licenses/
+usr/share/licenses/premake/
+usr/share/licenses/premake/LICENSE

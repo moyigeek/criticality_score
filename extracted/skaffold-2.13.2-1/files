@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/skaffold
+usr/share/
+usr/share/bash-completion/
+usr/share/bash-completion/completions/
+usr/share/bash-completion/completions/skaffold
+usr/share/fish/
+usr/share/fish/vendor_completions.d/
+usr/share/fish/vendor_completions.d/skaffold.fish
+usr/share/zsh/
+usr/share/zsh/site-functions/
+usr/share/zsh/site-functions/_skaffold

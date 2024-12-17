@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/include/
+usr/include/backtrace-supported.h
+usr/include/backtrace.h
+usr/lib/
+usr/lib/libbacktrace.so
+usr/lib/libbacktrace.so.0
+usr/lib/libbacktrace.so.0.0.0
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/libbacktrace.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/libbacktrace/
+usr/share/licenses/libbacktrace/LICENSE

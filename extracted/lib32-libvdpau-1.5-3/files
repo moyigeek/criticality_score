@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libvdpau.so
+usr/lib32/libvdpau.so.1
+usr/lib32/libvdpau.so.1.0.0
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/vdpau.pc
+usr/lib32/vdpau/
+usr/lib32/vdpau/libvdpau_trace.so
+usr/lib32/vdpau/libvdpau_trace.so.1
+usr/lib32/vdpau/libvdpau_trace.so.1.0.0
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-libvdpau

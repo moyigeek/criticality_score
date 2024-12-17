@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/lua/
+usr/lib/lua/5.3/
+usr/lib/lua/5.3/dbd/
+usr/lib/lua/5.3/dbd/mysql.so
+usr/lib/lua/5.3/dbd/postgresql.so
+usr/lib/lua/5.3/dbd/sqlite3.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lua53-dbi/
+usr/share/licenses/lua53-dbi/COPYING
+usr/share/lua/
+usr/share/lua/5.3/
+usr/share/lua/5.3/DBI.lua

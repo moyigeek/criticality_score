@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/libwhich
+usr/share/
+usr/share/licenses/
+usr/share/licenses/libwhich/
+usr/share/licenses/libwhich/LICENSE

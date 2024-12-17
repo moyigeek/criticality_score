@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/xtrlock
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/xtrlock.1.gz

@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/share/
+usr/share/fontconfig/
+usr/share/fontconfig/conf.avail/
+usr/share/fontconfig/conf.avail/45-Hack.conf
+usr/share/fonts/
+usr/share/fonts/TTF/
+usr/share/fonts/TTF/Hack-Bold.ttf
+usr/share/fonts/TTF/Hack-BoldItalic.ttf
+usr/share/fonts/TTF/Hack-Italic.ttf
+usr/share/fonts/TTF/Hack-Regular.ttf
+usr/share/licenses/
+usr/share/licenses/ttf-hack/
+usr/share/licenses/ttf-hack/LICENSE

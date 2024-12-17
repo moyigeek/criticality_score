@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/share/
+usr/share/fonts/
+usr/share/fonts/OTF/
+usr/share/fonts/OTF/Crimson-Bold.otf
+usr/share/fonts/OTF/Crimson-BoldItalic.otf
+usr/share/fonts/OTF/Crimson-Italic.otf
+usr/share/fonts/OTF/Crimson-Roman.otf
+usr/share/fonts/OTF/Crimson-Semibold.otf
+usr/share/fonts/OTF/Crimson-SemiboldItalic.otf
+usr/share/licenses/
+usr/share/licenses/otf-crimson/
+usr/share/licenses/otf-crimson/LICENSE.txt

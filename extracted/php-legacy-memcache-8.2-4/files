@@ -1,0 +1,10 @@
+%FILES%
+etc/
+etc/php-legacy/
+etc/php-legacy/conf.d/
+etc/php-legacy/conf.d/memcache.ini
+usr/
+usr/lib/
+usr/lib/php-legacy/
+usr/lib/php-legacy/modules/
+usr/lib/php-legacy/modules/memcache.so

@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/gpgit
+usr/share/
+usr/share/doc/
+usr/share/doc/gpgit/
+usr/share/doc/gpgit/Readme.md
+usr/share/licenses/
+usr/share/licenses/gpgit/
+usr/share/licenses/gpgit/LICENSE

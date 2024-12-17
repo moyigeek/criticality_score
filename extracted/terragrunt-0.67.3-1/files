@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/terragrunt
+usr/share/
+usr/share/licenses/
+usr/share/licenses/terragrunt/
+usr/share/licenses/terragrunt/LICENSE.txt

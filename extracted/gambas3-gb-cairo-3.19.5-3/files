@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/gambas3/
+usr/lib/gambas3/gb.cairo.component
+usr/lib/gambas3/gb.cairo.la
+usr/lib/gambas3/gb.cairo.so
+usr/lib/gambas3/gb.cairo.so.0
+usr/lib/gambas3/gb.cairo.so.0.0.0
+usr/share/
+usr/share/gambas3/
+usr/share/gambas3/info/
+usr/share/gambas3/info/gb.cairo.info
+usr/share/gambas3/info/gb.cairo.list

@@ -1,0 +1,14 @@
+%FILES%
+etc/
+etc/dialog.d/
+etc/dialog.d/wiki-search.dialog.rc
+usr/
+usr/bin/
+usr/bin/wiki-search
+usr/bin/wiki-search-html
+usr/share/
+usr/share/doc/
+usr/share/doc/arch-wiki/
+usr/share/doc/arch-wiki/text/
+usr/share/doc/arch-wiki/text/arch-wiki.txt.gz
+usr/share/doc/arch-wiki/text/index

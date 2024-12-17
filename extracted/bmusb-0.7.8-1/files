@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/include/
+usr/include/bmusb/
+usr/include/bmusb/bmusb.h
+usr/include/bmusb/fake_capture.h
+usr/lib/
+usr/lib/libbmusb.so
+usr/lib/libbmusb.so.6
+usr/lib/libbmusb.so.6.0.3
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/bmusb.pc
+usr/lib/udev/
+usr/lib/udev/rules.d/
+usr/lib/udev/rules.d/70-bmusb.rules

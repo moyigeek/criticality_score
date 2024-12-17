@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/include/
+usr/include/FreeImage.h
+usr/include/FreeImagePlus.h
+usr/lib/
+usr/lib/libfreeimage-3.18.0.so
+usr/lib/libfreeimage.so
+usr/lib/libfreeimage.so.3
+usr/lib/libfreeimageplus-3.18.0.so
+usr/lib/libfreeimageplus.so
+usr/lib/libfreeimageplus.so.3
+usr/share/
+usr/share/licenses/
+usr/share/licenses/freeimage/
+usr/share/licenses/freeimage/LICENSE

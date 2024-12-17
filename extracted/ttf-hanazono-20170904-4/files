@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/share/
+usr/share/fonts/
+usr/share/fonts/TTF/
+usr/share/fonts/TTF/HanaMinA.ttf
+usr/share/fonts/TTF/HanaMinB.ttf
+usr/share/licenses/
+usr/share/licenses/ttf-hanazono/
+usr/share/licenses/ttf-hanazono/LICENSE

@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/crab1
+usr/bin/gccrs
+usr/bin/x86_64-pc-linux-gnu-gccrs
+usr/share/
+usr/share/licenses/
+usr/share/licenses/gcc-rust/
+usr/share/licenses/gcc-rust/RUNTIME.LIBRARY.EXCEPTION

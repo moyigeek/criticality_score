@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cargo-supply-chain
+usr/share/
+usr/share/doc/
+usr/share/doc/cargo-supply-chain/
+usr/share/doc/cargo-supply-chain/CHANGELOG.md
+usr/share/doc/cargo-supply-chain/README.md
+usr/share/licenses/
+usr/share/licenses/cargo-supply-chain/
+usr/share/licenses/cargo-supply-chain/LICENSE-APACHE
+usr/share/licenses/cargo-supply-chain/LICENSE-MIT
+usr/share/licenses/cargo-supply-chain/LICENSE-ZLIB

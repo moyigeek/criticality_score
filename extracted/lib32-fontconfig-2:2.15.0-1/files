@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/fc-cache-32
+usr/lib32/
+usr/lib32/libfontconfig.so
+usr/lib32/libfontconfig.so.1
+usr/lib32/libfontconfig.so.1.14.0
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/fontconfig.pc
+usr/share/
+usr/share/libalpm/
+usr/share/libalpm/hooks/
+usr/share/libalpm/hooks/fontconfig-32.hook
+usr/share/licenses/
+usr/share/licenses/lib32-fontconfig/
+usr/share/licenses/lib32-fontconfig/COPYING

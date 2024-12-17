@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libXinerama.so
+usr/lib32/libXinerama.so.1
+usr/lib32/libXinerama.so.1.0.0
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/xinerama.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-libxinerama

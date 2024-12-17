@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/adnsheloex
+usr/bin/adnshost
+usr/bin/adnslogres
+usr/bin/adnsresfilter
+usr/include/
+usr/include/adns.h
+usr/lib/
+usr/lib/libadns.so
+usr/lib/libadns.so.1
+usr/lib/libadns.so.1.6

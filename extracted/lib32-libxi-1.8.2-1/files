@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libXi.so
+usr/lib32/libXi.so.6
+usr/lib32/libXi.so.6.1.0
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/xi.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-libxi

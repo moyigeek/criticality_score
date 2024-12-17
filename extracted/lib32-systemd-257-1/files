@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libnss_myhostname.so.2
+usr/lib32/libnss_mymachines.so.2
+usr/lib32/libnss_resolve.so.2
+usr/lib32/libnss_systemd.so.2
+usr/lib32/libsystemd.so
+usr/lib32/libsystemd.so.0
+usr/lib32/libsystemd.so.0.40.0
+usr/lib32/libudev.so
+usr/lib32/libudev.so.1
+usr/lib32/libudev.so.1.7.10
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/libsystemd.pc
+usr/lib32/pkgconfig/libudev.pc

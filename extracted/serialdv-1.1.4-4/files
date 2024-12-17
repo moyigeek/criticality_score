@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/dvtest
+usr/include/
+usr/include/serialdv/
+usr/include/serialdv/datacontroller.h
+usr/include/serialdv/dummydatacontroller.h
+usr/include/serialdv/dvcontroller.h
+usr/include/serialdv/serialdatacontroller.h
+usr/include/serialdv/serialdv_export.h
+usr/include/serialdv/udpdatacontroller.h
+usr/lib/
+usr/lib/libserialdv.so
+usr/lib/libserialdv.so.1
+usr/lib/libserialdv.so.1.1.4

@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/share/
+usr/share/man/
+usr/share/man/man3/
+usr/share/man/man3/Email::Simple.3pm.gz
+usr/share/man/man3/Email::Simple::Creator.3pm.gz
+usr/share/man/man3/Email::Simple::Header.3pm.gz
+usr/share/perl5/
+usr/share/perl5/vendor_perl/
+usr/share/perl5/vendor_perl/Email/
+usr/share/perl5/vendor_perl/Email/Simple.pm
+usr/share/perl5/vendor_perl/Email/Simple/
+usr/share/perl5/vendor_perl/Email/Simple/Creator.pm
+usr/share/perl5/vendor_perl/Email/Simple/Header.pm

@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cargo-set-version
+usr/bin/cargo-upgrade
+usr/share/
+usr/share/doc/
+usr/share/doc/cargo-edit/
+usr/share/doc/cargo-edit/README.md
+usr/share/licenses/
+usr/share/licenses/cargo-edit/
+usr/share/licenses/cargo-edit/LICENSE

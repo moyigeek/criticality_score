@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/aspell-0.60/
+usr/lib/aspell-0.60/nn.dat
+usr/lib/aspell-0.60/nn.multi
+usr/lib/aspell-0.60/nn.rws
+usr/lib/aspell-0.60/nynorsk.alias

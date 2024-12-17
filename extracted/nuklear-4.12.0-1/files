@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/include/
+usr/include/nuklear.h
+usr/share/
+usr/share/doc/
+usr/share/doc/nuklear/
+usr/share/doc/nuklear/Readme.md
+usr/share/doc/nuklear/index.html
+usr/share/licenses/
+usr/share/licenses/nuklear/
+usr/share/licenses/nuklear/Readme.md

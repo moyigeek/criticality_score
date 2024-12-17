@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/jack_check
+usr/bin/jack_fpmon
+usr/bin/jack_proxy
+usr/share/
+usr/share/doc/
+usr/share/doc/jack_utils/
+usr/share/doc/jack_utils/AUTHORS
+usr/share/doc/jack_utils/README

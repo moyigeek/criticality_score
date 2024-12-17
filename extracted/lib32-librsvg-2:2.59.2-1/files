@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/gdk-pixbuf-2.0/
+usr/lib32/gdk-pixbuf-2.0/2.10.0/
+usr/lib32/gdk-pixbuf-2.0/2.10.0/loaders/
+usr/lib32/gdk-pixbuf-2.0/2.10.0/loaders/libpixbufloader_svg.so
+usr/lib32/librsvg-2.so
+usr/lib32/librsvg-2.so.2
+usr/lib32/librsvg-2.so.2.59.2
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/librsvg-2.0.pc

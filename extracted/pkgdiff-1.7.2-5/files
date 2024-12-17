@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/pkgdiff
+usr/share/
+usr/share/pkgdiff/
+usr/share/pkgdiff/modules/
+usr/share/pkgdiff/modules/FileType.xml
+usr/share/pkgdiff/modules/Internals/
+usr/share/pkgdiff/modules/Internals/Scripts/
+usr/share/pkgdiff/modules/Internals/Scripts/Sort.js
+usr/share/pkgdiff/modules/Internals/Styles/
+usr/share/pkgdiff/modules/Internals/Styles/Index.css
+usr/share/pkgdiff/modules/Internals/Styles/View.css
+usr/share/pkgdiff/modules/Internals/Tools/
+usr/share/pkgdiff/modules/Internals/Tools/rfcdiff-1.41-CUSTOM.sh

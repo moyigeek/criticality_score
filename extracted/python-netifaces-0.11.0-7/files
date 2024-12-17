@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/python3.13/
+usr/lib/python3.13/site-packages/
+usr/lib/python3.13/site-packages/netifaces-0.11.0-py3.13.egg-info/
+usr/lib/python3.13/site-packages/netifaces-0.11.0-py3.13.egg-info/PKG-INFO
+usr/lib/python3.13/site-packages/netifaces-0.11.0-py3.13.egg-info/SOURCES.txt
+usr/lib/python3.13/site-packages/netifaces-0.11.0-py3.13.egg-info/dependency_links.txt
+usr/lib/python3.13/site-packages/netifaces-0.11.0-py3.13.egg-info/top_level.txt
+usr/lib/python3.13/site-packages/netifaces-0.11.0-py3.13.egg-info/zip-safe
+usr/lib/python3.13/site-packages/netifaces.cpython-313-x86_64-linux-gnu.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/python-netifaces/
+usr/share/licenses/python-netifaces/LICENSE

@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/evcxr
+usr/share/
+usr/share/doc/
+usr/share/doc/evcxr_repl/
+usr/share/doc/evcxr_repl/README.md

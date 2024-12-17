@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/vim-spell-nn/
+usr/share/licenses/vim-spell-nn/README_nn.txt
+usr/share/vim/
+usr/share/vim/vimfiles/
+usr/share/vim/vimfiles/spell/
+usr/share/vim/vimfiles/spell/nn.latin1.spl
+usr/share/vim/vimfiles/spell/nn.latin1.sug
+usr/share/vim/vimfiles/spell/nn.utf-8.spl
+usr/share/vim/vimfiles/spell/nn.utf-8.sug

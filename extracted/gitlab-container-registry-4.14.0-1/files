@@ -1,0 +1,11 @@
+%FILES%
+etc/
+etc/gitlab-container-registry/
+etc/gitlab-container-registry/config.yml
+usr/
+usr/bin/
+usr/bin/gitlab-container-registry
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/gitlab-container-registry.service

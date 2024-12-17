@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/ukify
+usr/lib/
+usr/lib/kernel/
+usr/lib/kernel/install.d/
+usr/lib/kernel/install.d/60-ukify.install
+usr/lib/systemd/
+usr/lib/systemd/ukify
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/ukify.1.gz

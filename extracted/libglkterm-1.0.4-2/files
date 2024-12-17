@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/include/
+usr/include/Make.glkterm
+usr/include/gi_blorb.h
+usr/include/gi_dispa.h
+usr/include/glk.h
+usr/include/glkstart.h
+usr/lib/
+usr/lib/libglkterm.so
+usr/lib/libglkterm.so.1
+usr/lib/libglkterm.so.1.0.4
+usr/share/
+usr/share/licenses/
+usr/share/licenses/libglkterm/
+usr/share/licenses/libglkterm/LICENSE

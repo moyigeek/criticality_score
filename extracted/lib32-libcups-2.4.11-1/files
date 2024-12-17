@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libcups.so
+usr/lib32/libcups.so.2
+usr/lib32/libcupsimage.so
+usr/lib32/libcupsimage.so.2
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-libcups/
+usr/share/licenses/lib32-libcups/LICENSE
+usr/share/licenses/lib32-libcups/NOTICE

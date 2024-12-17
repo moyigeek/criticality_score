@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/include/
+usr/include/wx/
+usr/include/wx/wxsqlite3.h
+usr/include/wx/wxsqlite3_version.h
+usr/include/wx/wxsqlite3def.h
+usr/lib/
+usr/lib/libwxcode_gtk3u_wxsqlite3-3.2.so
+usr/lib/libwxcode_gtk3u_wxsqlite3-3.2.so.0
+usr/lib/libwxcode_gtk3u_wxsqlite3-3.2.so.0.0.0
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/wxsqlite3.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/wxsqlite3/
+usr/share/licenses/wxsqlite3/LICENCE

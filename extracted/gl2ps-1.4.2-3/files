@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/include/
+usr/include/gl2ps.h
+usr/lib/
+usr/lib/libgl2ps.so
+usr/lib/libgl2ps.so.1
+usr/lib/libgl2ps.so.1.4.2
+usr/share/
+usr/share/doc/
+usr/share/doc/gl2ps/
+usr/share/doc/gl2ps/COPYING.GL2PS
+usr/share/doc/gl2ps/COPYING.LGPL
+usr/share/doc/gl2ps/README.txt
+usr/share/doc/gl2ps/gl2ps.pdf
+usr/share/doc/gl2ps/gl2psTest.c
+usr/share/doc/gl2ps/gl2psTestSimple.c

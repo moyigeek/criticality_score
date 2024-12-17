@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libavtp.so
+usr/lib32/libavtp.so.0
+usr/lib32/libavtp.so.0.2.0
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/avtp.pc
+usr/share/
+usr/share/doc/
+usr/share/doc/lib32-libavtp/
+usr/share/doc/lib32-libavtp/CONTRIBUTING.md
+usr/share/doc/lib32-libavtp/HACKING.md
+usr/share/doc/lib32-libavtp/README.md
+usr/share/licenses/
+usr/share/licenses/lib32-libavtp/
+usr/share/licenses/lib32-libavtp/LICENSE

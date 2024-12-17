@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/rathole
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/rathole@.service
+usr/lib/systemd/system/ratholec@.service
+usr/lib/systemd/system/ratholes@.service
+usr/share/
+usr/share/doc/
+usr/share/doc/rathole/
+usr/share/doc/rathole/README.md

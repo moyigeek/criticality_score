@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/tere
+usr/share/
+usr/share/doc/
+usr/share/doc/tere/
+usr/share/doc/tere/README.md
+usr/share/doc/tere/demo/
+usr/share/doc/tere/demo/README.md
+usr/share/doc/tere/demo/generate_example_folders.py
+usr/share/doc/tere/demo/tere-demo-2022-07-10-2027-e2-O3.gif
+usr/share/licenses/
+usr/share/licenses/tere/
+usr/share/licenses/tere/LICENSE

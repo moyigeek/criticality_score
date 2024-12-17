@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/snes9x
+usr/share/
+usr/share/doc/
+usr/share/doc/snes9x/
+usr/share/doc/snes9x/control-inputs.txt
+usr/share/doc/snes9x/controls.txt
+usr/share/doc/snes9x/snapshots.txt
+usr/share/licenses/
+usr/share/licenses/snes9x/
+usr/share/licenses/snes9x/LICENSE

@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/flatpak-builder
+usr/share/
+usr/share/doc/
+usr/share/doc/flatpak-builder/
+usr/share/doc/flatpak-builder/docbook.css
+usr/share/doc/flatpak-builder/flatpak-builder-docs.html
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/flatpak-builder.1.gz
+usr/share/man/man5/
+usr/share/man/man5/flatpak-manifest.5.gz

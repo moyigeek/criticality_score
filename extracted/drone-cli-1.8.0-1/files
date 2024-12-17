@@ -1,0 +1,9 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/drone
+usr/share/
+usr/share/doc/
+usr/share/doc/drone-cli/
+usr/share/doc/drone-cli/CHANGELOG.md
+usr/share/doc/drone-cli/README.md

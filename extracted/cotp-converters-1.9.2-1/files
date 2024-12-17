@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/share/
+usr/share/cotp/
+usr/share/cotp/converters/
+usr/share/cotp/converters/authy.py
+usr/share/cotp/converters/freeotp.py
+usr/share/cotp/converters/gauth.py
+usr/share/cotp/converters/mauth.py
+usr/share/cotp/converters/test_converters.py

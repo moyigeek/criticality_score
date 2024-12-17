@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/include/
+usr/include/ad9361.h
+usr/lib/
+usr/lib/libad9361.so
+usr/lib/libad9361.so.0
+usr/lib/libad9361.so.0.2
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/libad9361.pc

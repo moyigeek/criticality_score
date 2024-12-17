@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/nebula
+usr/bin/nebula-cert
+usr/bin/nebula-service
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/nebula.service
+usr/share/
+usr/share/doc/
+usr/share/doc/nebula/
+usr/share/doc/nebula/README.md
+usr/share/licenses/
+usr/share/licenses/nebula/
+usr/share/licenses/nebula/LICENSE

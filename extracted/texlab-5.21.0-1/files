@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/texlab
+usr/share/
+usr/share/licenses/
+usr/share/licenses/texlab/
+usr/share/licenses/texlab/LICENSE

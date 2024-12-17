@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/include/
+usr/include/fakekey/
+usr/include/fakekey/fakekey.h
+usr/lib/
+usr/lib/libfakekey.so
+usr/lib/libfakekey.so.0
+usr/lib/libfakekey.so.0.0.1
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/libfakekey.pc

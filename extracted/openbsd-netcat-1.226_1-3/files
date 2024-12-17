@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/nc
+usr/bin/nc.openbsd
+usr/bin/netcat
+usr/share/
+usr/share/licenses/
+usr/share/licenses/openbsd-netcat/
+usr/share/licenses/openbsd-netcat/BSD-2-Clause.txt
+usr/share/licenses/openbsd-netcat/BSD-3-Clause.txt
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/nc.1.gz

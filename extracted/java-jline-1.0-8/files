@@ -1,0 +1,9 @@
+%FILES%
+usr/
+usr/share/
+usr/share/java/
+usr/share/java/jline-1.0.jar
+usr/share/java/jline.jar
+usr/share/licenses/
+usr/share/licenses/java-jline/
+usr/share/licenses/java-jline/LICENSE

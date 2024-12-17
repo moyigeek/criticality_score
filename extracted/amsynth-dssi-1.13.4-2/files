@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/dssi/
+usr/lib/dssi/amsynth_dssi.so
+usr/lib/dssi/amsynth_dssi/
+usr/lib/dssi/amsynth_dssi/amsynth_dssi_gtk
+usr/share/
+usr/share/metainfo/
+usr/share/metainfo/dssi-amsynth-plugin.metainfo.xml
+usr/share/metainfo/lv2-amsynth-plugin.metainfo.xml
+usr/share/metainfo/vst-amsynth-plugin.metainfo.xml

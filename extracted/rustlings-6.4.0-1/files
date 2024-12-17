@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/rustlings
+usr/share/
+usr/share/doc/
+usr/share/doc/rustlings/
+usr/share/doc/rustlings/README.md
+usr/share/licenses/
+usr/share/licenses/rustlings/
+usr/share/licenses/rustlings/LICENSE

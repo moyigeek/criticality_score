@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/triehash
+usr/share/
+usr/share/licenses/
+usr/share/licenses/triehash/
+usr/share/licenses/triehash/LICENSE.md

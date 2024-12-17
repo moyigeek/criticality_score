@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/wp
+usr/share/
+usr/share/bash-completion/
+usr/share/bash-completion/completions/
+usr/share/bash-completion/completions/wp
+usr/share/licenses/
+usr/share/licenses/wp-cli/
+usr/share/licenses/wp-cli/LICENSE

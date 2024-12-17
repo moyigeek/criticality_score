@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/cmake/
+usr/lib32/cmake/id3tag/
+usr/lib32/cmake/id3tag/id3tagConfig.cmake
+usr/lib32/cmake/id3tag/id3tagConfigVersion.cmake
+usr/lib32/cmake/id3tag/id3tagTargets-noconfig.cmake
+usr/lib32/cmake/id3tag/id3tagTargets.cmake
+usr/lib32/libid3tag.so
+usr/lib32/libid3tag.so.0
+usr/lib32/libid3tag.so.0.16.3
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/id3tag.pc

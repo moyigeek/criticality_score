@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cargo-flamegraph
+usr/bin/flamegraph
+usr/share/
+usr/share/doc/
+usr/share/doc/cargo-flamegraph/
+usr/share/doc/cargo-flamegraph/README.md
+usr/share/licenses/
+usr/share/licenses/cargo-flamegraph/
+usr/share/licenses/cargo-flamegraph/LICENSE-MIT

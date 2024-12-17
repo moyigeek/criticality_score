@@ -1,0 +1,12 @@
+%FILES%
+etc/
+etc/fb.modes
+usr/
+usr/bin/
+usr/bin/fbset
+usr/share/
+usr/share/man/
+usr/share/man/man5/
+usr/share/man/man5/fb.modes.5.gz
+usr/share/man/man8/
+usr/share/man/man8/fbset.8.gz

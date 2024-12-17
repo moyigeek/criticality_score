@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/qtpass
+usr/share/
+usr/share/applications/
+usr/share/applications/qtpass.desktop
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/qtpass.1.gz
+usr/share/pixmaps/
+usr/share/pixmaps/qtpass.png

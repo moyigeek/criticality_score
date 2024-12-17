@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/desync
+usr/share/
+usr/share/doc/
+usr/share/doc/desync/
+usr/share/doc/desync/README.md
+usr/share/licenses/
+usr/share/licenses/desync/
+usr/share/licenses/desync/LICENSE

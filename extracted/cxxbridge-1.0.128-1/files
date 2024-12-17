@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cxxbridge
+usr/share/
+usr/share/cxxbridge/
+usr/share/cxxbridge/cxx.h
+usr/share/doc/
+usr/share/doc/cxxbridge/
+usr/share/doc/cxxbridge/README.md
+usr/share/licenses/
+usr/share/licenses/cxxbridge/
+usr/share/licenses/cxxbridge/LICENSE-APACHE
+usr/share/licenses/cxxbridge/LICENSE-MIT

@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/nginx/
+usr/lib/nginx/modules/
+usr/lib/nginx/modules/ngx_http_set_misc_module.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/nginx-mod-set-misc/
+usr/share/licenses/nginx-mod-set-misc/README.markdown

@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/vst3/
+usr/lib/vst3/DragonflyEarlyReflections.so
+usr/lib/vst3/DragonflyHallReverb.so
+usr/lib/vst3/DragonflyPlateReverb.so
+usr/lib/vst3/DragonflyRoomReverb.so

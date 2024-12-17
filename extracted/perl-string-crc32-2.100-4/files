@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/perl5/
+usr/lib/perl5/5.40/
+usr/lib/perl5/5.40/vendor_perl/
+usr/lib/perl5/5.40/vendor_perl/String/
+usr/lib/perl5/5.40/vendor_perl/String/CRC32.pm
+usr/lib/perl5/5.40/vendor_perl/auto/
+usr/lib/perl5/5.40/vendor_perl/auto/String/
+usr/lib/perl5/5.40/vendor_perl/auto/String/CRC32/
+usr/lib/perl5/5.40/vendor_perl/auto/String/CRC32/CRC32.so
+usr/share/
+usr/share/man/
+usr/share/man/man3/
+usr/share/man/man3/String::CRC32.3pm.gz

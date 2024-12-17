@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/share/
+usr/share/fonts/
+usr/share/fonts/TTF/
+usr/share/fonts/TTF/Monoid-Bold.ttf
+usr/share/fonts/TTF/Monoid-Italic.ttf
+usr/share/fonts/TTF/Monoid-Regular.ttf
+usr/share/fonts/TTF/Monoid-Retina.ttf
+usr/share/fonts/TTF/Monoisome-Regular.ttf
+usr/share/licenses/
+usr/share/licenses/ttf-monoid/
+usr/share/licenses/ttf-monoid/LICENSE

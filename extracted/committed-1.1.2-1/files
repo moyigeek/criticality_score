@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/committed
+usr/share/
+usr/share/doc/
+usr/share/doc/committed/
+usr/share/doc/committed/README.md
+usr/share/licenses/
+usr/share/licenses/committed/
+usr/share/licenses/committed/LICENSE-MIT

@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/sops
+usr/share/
+usr/share/bash-completion/
+usr/share/bash-completion/completions/
+usr/share/bash-completion/completions/sops
+usr/share/doc/
+usr/share/doc/sops/
+usr/share/doc/sops/README.rst
+usr/share/zsh/
+usr/share/zsh/site-functions/
+usr/share/zsh/site-functions/_sops

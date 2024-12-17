@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/fuse-overlayfs
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/fuse-overlayfs.1.gz

@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/htc
+usr/bin/hts
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/htc.1.gz
+usr/share/man/man1/hts.1.gz

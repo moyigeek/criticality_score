@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/pipewire-0.3/
+usr/lib/pipewire-0.3/libpipewire-module-x11-bell.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/pipewire-x11-bell/
+usr/share/licenses/pipewire-x11-bell/COPYING
+usr/share/man/
+usr/share/man/man7/
+usr/share/man/man7/libpipewire-module-x11-bell.7.gz

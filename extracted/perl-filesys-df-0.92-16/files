@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/perl5/
+usr/lib/perl5/5.40/
+usr/lib/perl5/5.40/vendor_perl/
+usr/lib/perl5/5.40/vendor_perl/Filesys/
+usr/lib/perl5/5.40/vendor_perl/Filesys/Df.pm
+usr/lib/perl5/5.40/vendor_perl/auto/
+usr/lib/perl5/5.40/vendor_perl/auto/Filesys/
+usr/lib/perl5/5.40/vendor_perl/auto/Filesys/Df/
+usr/lib/perl5/5.40/vendor_perl/auto/Filesys/Df/Df.so
+usr/share/
+usr/share/man/
+usr/share/man/man3/
+usr/share/man/man3/Filesys::Df.3pm.gz

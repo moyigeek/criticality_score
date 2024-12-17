@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/ollama/
+usr/lib/ollama/runners/
+usr/lib/ollama/runners/rocm_avx/
+usr/lib/ollama/runners/rocm_avx/libggml_rocm.so
+usr/lib/ollama/runners/rocm_avx/ollama_llama_server

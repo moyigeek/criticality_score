@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/ecm
+usr/include/
+usr/include/ecm.h
+usr/lib/
+usr/lib/libecm.so
+usr/lib/libecm.so.1
+usr/lib/libecm.so.1.0.0
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/ecm.1.gz

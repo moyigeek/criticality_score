@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/grpc_cli
+usr/lib/
+usr/lib/libgrpc++_test_config.so
+usr/lib/libgrpc++_test_config.so.1.67
+usr/lib/libgrpc++_test_config.so.1.67.1
+usr/share/
+usr/share/licenses/
+usr/share/licenses/grpc-cli/
+usr/share/licenses/grpc-cli/LICENSE

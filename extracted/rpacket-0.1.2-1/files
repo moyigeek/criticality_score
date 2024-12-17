@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/rpacket
+usr/share/
+usr/share/doc/
+usr/share/doc/rpacket/
+usr/share/doc/rpacket/README.md
+usr/share/licenses/
+usr/share/licenses/rpacket/
+usr/share/licenses/rpacket/Apache-2.0.txt
+usr/share/licenses/rpacket/CC0-1.0.txt
+usr/share/licenses/rpacket/MIT.txt

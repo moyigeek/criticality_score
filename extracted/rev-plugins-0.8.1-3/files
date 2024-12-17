@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/ladspa/
+usr/lib/ladspa/zita-reverbs.so
+usr/share/
+usr/share/doc/
+usr/share/doc/rev-plugins/
+usr/share/doc/rev-plugins/AUTHORS
+usr/share/doc/rev-plugins/README

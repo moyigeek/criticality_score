@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/jmol
+usr/share/
+usr/share/jmol/
+usr/share/jmol/JSpecView.jar
+usr/share/jmol/Jmol.jar
+usr/share/jmol/JmolData.jar
+usr/share/jmol/jmol.sh

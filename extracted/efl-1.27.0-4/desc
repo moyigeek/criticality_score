@@ -1,0 +1,126 @@
+%FILENAME%
+efl-1.27.0-4-x86_64.pkg.tar.zst
+
+%NAME%
+efl
+
+%BASE%
+efl
+
+%VERSION%
+1.27.0-4
+
+%DESC%
+Enlightenment Foundation Libraries
+
+%CSIZE%
+30289068
+
+%ISIZE%
+65360892
+
+%SHA256SUM%
+33a339397ca5b6e5dce96327046744fb576033928188a670ee19a3c96c9319a8
+
+%PGPSIG%
+iQIzBAABCAAdFiEEJipY7GxR9+o5Wy4t/cMEC5Ksp0gFAmdgrDsACgkQ/cMEC5Ksp0jlRA//fWv5Skj5rNVC4i5aVzKUZ0CrU6uESNtIE058KCOHEKmGN32IBiyAWSyGzpjcloRnircVU11divEZYMuX7CyEMvUH11nf8TuC/eafeENRni/IsgJZfkPK+MbaLKytSMx24JWAHr2zWuGQdEn9n52HR7TS3ayihEkma6TENgSZv/WP7rRbiqCoU78YK2bOrA+rZ/BhEBDyDGy27W93e9qUoi+pM/Xu/+49U56VvxsNNTle0oQAYWqTGDQTSWLp+Z3G09deK02iXRFo9q8d87rS25f0QIaOSRQkSlrc5TLGReHXbgXkWrLwqwynOiaWq7gpXhXKD84fKYcS7u8aKTvgKw55QsVhseyWFhDuYo474GomzDCPSTWKMi+CYzVxKTZOwCynS0m13hAu+Io4HJRFonuJhAvpoEsNfTUoX7S7ieGZzPVu2/3GFnLnUETOBz7aTFbDB8Sq1MneAhaVAXYuZoENKLZsUQvyKpGHX9bVjf54RUma+q9IEPNduPco5WYF0gY/fhttZvRelU6xp3h8g0eF7qhTdKF9qmeaEPmf6H7F/Ym25w1+avQxGpdbOjWv9NzxWeWI0EOBcsZHB+G9VTSjsiQFVB+djoCybAda3xq8iSrbY/qERWFiAps1GJQIEhhcI822BUi5SsOQWFRNo1FCF3ym0T/FYr41kDfA7Cc=
+
+%URL%
+https://www.enlightenment.org
+
+%LICENSE%
+BSD
+LGPL2.1
+GPL2
+MIT
+custom
+
+%ARCH%
+x86_64
+
+%BUILDDATE%
+1734388284
+
+%PACKAGER%
+Robin Candau <antiz@archlinux.org>
+
+%REPLACES%
+elementary
+evas_generic_loaders
+emotion_generic_players
+
+%DEPENDS%
+curl
+dbus
+fontconfig
+freetype2
+fribidi
+giflib
+glib2
+gstreamer
+gst-plugins-base-libs
+harfbuzz
+hicolor-icon-theme
+libglvnd
+libinput
+libjpeg-turbo
+libpng
+libpulse
+libsndfile
+libtiff
+libunwind
+libwebp
+libx11
+libxcb
+libxcomposite
+libxcursor
+libxdamage
+libxext
+libxfixes
+libxi
+libxinerama
+libxkbcommon
+libxkbcommon-x11
+libxrandr
+libxrender
+libxss
+libxtst
+lua52
+mailcap
+mesa
+openjpeg2
+openssl
+shared-mime-info
+systemd-libs
+ttf-font
+util-linux-libs
+wayland
+zlib
+
+%OPTDEPENDS%
+gst-plugins-base: Video and thumbnail codecs
+gst-plugins-good: Video and thumbnail codecs
+gst-plugins-bad: Video and thumbnail codecs
+gst-plugins-ugly: Video and thumbnail codecs
+gst-libav: Video and thumbnails with ffmpeg/libav
+libraw: RAW image loader
+libreoffice: Office document loader
+librsvg: SVG loader
+libspectre: PostScript loader
+poppler: PDF loader
+scim: IM module for SCIM
+
+%MAKEDEPENDS%
+doxygen
+libraw
+librsvg
+libspectre
+meson
+ninja
+poppler
+python
+scim
+texlive-basic
+texlive-fontutils
+wayland-protocols
+

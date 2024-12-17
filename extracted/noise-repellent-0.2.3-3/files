@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/lv2/
+usr/lib/lv2/nrepellent.lv2/
+usr/lib/lv2/nrepellent.lv2/manifest.ttl
+usr/lib/lv2/nrepellent.lv2/nrepellent#stereo.ttl
+usr/lib/lv2/nrepellent.lv2/nrepellent-adaptive#stereo.ttl
+usr/lib/lv2/nrepellent.lv2/nrepellent-adaptive.so
+usr/lib/lv2/nrepellent.lv2/nrepellent-adaptive.ttl
+usr/lib/lv2/nrepellent.lv2/nrepellent.so
+usr/lib/lv2/nrepellent.lv2/nrepellent.ttl
+usr/share/
+usr/share/doc/
+usr/share/doc/noise-repellent/
+usr/share/doc/noise-repellent/README.md

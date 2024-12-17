@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/vim-spell-fo/
+usr/share/licenses/vim-spell-fo/README_fo.txt
+usr/share/vim/
+usr/share/vim/vimfiles/
+usr/share/vim/vimfiles/spell/
+usr/share/vim/vimfiles/spell/fo.latin1.spl
+usr/share/vim/vimfiles/spell/fo.latin1.sug
+usr/share/vim/vimfiles/spell/fo.utf-8.spl
+usr/share/vim/vimfiles/spell/fo.utf-8.sug

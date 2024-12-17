@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/tinymist
+usr/share/
+usr/share/licenses/
+usr/share/licenses/tinymist/
+usr/share/licenses/tinymist/LICENSE

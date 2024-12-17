@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/innoextract
+usr/share/
+usr/share/doc/
+usr/share/doc/innoextract/
+usr/share/doc/innoextract/CHANGELOG
+usr/share/doc/innoextract/README.md
+usr/share/licenses/
+usr/share/licenses/innoextract/
+usr/share/licenses/innoextract/LICENSE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/innoextract.1.gz

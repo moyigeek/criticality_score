@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/aspell-0.60/
+usr/lib/aspell-0.60/it.dat
+usr/lib/aspell-0.60/it.multi
+usr/lib/aspell-0.60/it.rws
+usr/lib/aspell-0.60/it_affix.dat
+usr/lib/aspell-0.60/italian.alias
+usr/lib/aspell-0.60/italiano.alias

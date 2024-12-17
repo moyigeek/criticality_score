@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libpsl.so
+usr/lib32/libpsl.so.5
+usr/lib32/libpsl.so.5.3.5
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/libpsl.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-libpsl

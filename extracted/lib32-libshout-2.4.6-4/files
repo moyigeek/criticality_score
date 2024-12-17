@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/ckport/
+usr/lib32/ckport/db/
+usr/lib32/ckport/db/libshout.ckport
+usr/lib32/libshout.so
+usr/lib32/libshout.so.3
+usr/lib32/libshout.so.3.2.0
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/shout.pc

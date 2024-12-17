@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/perl5/
+usr/lib/perl5/5.40/
+usr/lib/perl5/5.40/vendor_perl/
+usr/lib/perl5/5.40/vendor_perl/DBD/
+usr/lib/perl5/5.40/vendor_perl/DBD/Sybase.pm
+usr/lib/perl5/5.40/vendor_perl/auto/
+usr/lib/perl5/5.40/vendor_perl/auto/DBD/
+usr/lib/perl5/5.40/vendor_perl/auto/DBD/Sybase/
+usr/lib/perl5/5.40/vendor_perl/auto/DBD/Sybase/Sybase.so
+usr/share/
+usr/share/man/
+usr/share/man/man3/
+usr/share/man/man3/DBD::Sybase.3.gz

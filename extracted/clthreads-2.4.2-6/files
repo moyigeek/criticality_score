@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/include/
+usr/include/clthreads.h
+usr/lib/
+usr/lib/libclthreads.so
+usr/lib/libclthreads.so.2
+usr/lib/libclthreads.so.2.4.2
+usr/share/
+usr/share/doc/
+usr/share/doc/clthreads/
+usr/share/doc/clthreads/AUTHORS

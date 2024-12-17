@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/slop
+usr/include/
+usr/include/slop.hpp
+usr/lib/
+usr/lib/libslopy.so
+usr/lib/libslopy.so.7.6
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/slop.1.gz

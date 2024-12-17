@@ -1,0 +1,10 @@
+%FILES%
+etc/
+etc/meshbird.conf
+usr/
+usr/bin/
+usr/bin/meshbird
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/meshbird.service

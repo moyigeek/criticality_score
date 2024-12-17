@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/mill
+usr/share/
+usr/share/licenses/
+usr/share/licenses/mill/
+usr/share/licenses/mill/LICENSE

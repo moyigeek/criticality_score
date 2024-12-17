@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cargo-auditable
+usr/share/
+usr/share/doc/
+usr/share/doc/cargo-auditable/
+usr/share/doc/cargo-auditable/README.md
+usr/share/licenses/
+usr/share/licenses/cargo-auditable/
+usr/share/licenses/cargo-auditable/LICENSE-MIT
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/cargo-auditable.1.gz

@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/opensearch-store-smb-plugin/
+usr/share/licenses/opensearch-store-smb-plugin/LICENSE.txt
+usr/share/licenses/opensearch-store-smb-plugin/NOTICE.txt
+usr/share/opensearch/
+usr/share/opensearch/plugins/
+usr/share/opensearch/plugins/store-smb/
+usr/share/opensearch/plugins/store-smb/plugin-descriptor.properties
+usr/share/opensearch/plugins/store-smb/store-smb-2.18.0.jar

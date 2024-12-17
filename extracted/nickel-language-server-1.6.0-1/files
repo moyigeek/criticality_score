@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/nls
+usr/share/
+usr/share/licenses/
+usr/share/licenses/nickel-language-server/
+usr/share/licenses/nickel-language-server/LICENSE

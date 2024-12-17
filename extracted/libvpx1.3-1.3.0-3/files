@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/libvpx.so.1
+usr/lib/libvpx.so.1.3
+usr/lib/libvpx.so.1.3.0
+usr/share/
+usr/share/licenses/
+usr/share/licenses/libvpx1.3/
+usr/share/licenses/libvpx1.3/LICENSE

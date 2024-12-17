@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/signify
+usr/share/
+usr/share/doc/
+usr/share/doc/signify/
+usr/share/doc/signify/CHANGELOG.md
+usr/share/doc/signify/README.md
+usr/share/licenses/
+usr/share/licenses/signify/
+usr/share/licenses/signify/LICENSE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/signify.1.gz

@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/clang/
+usr/lib/clang/18/
+usr/lib/clang/18/lib/
+usr/lib/clang/18/lib/wasi/
+usr/lib/clang/18/lib/wasi/libclang_rt.builtins-wasm32.a
+usr/lib/clang/18/lib/wasip1
+usr/lib/clang/18/lib/wasip2
+usr/share/
+usr/share/licenses/
+usr/share/licenses/wasi-compiler-rt/
+usr/share/licenses/wasi-compiler-rt/LICENSE

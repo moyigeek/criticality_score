@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/gvfsd-smb
+usr/lib/gvfsd-smb-browse
+usr/share/
+usr/share/GConf/
+usr/share/GConf/gsettings/
+usr/share/GConf/gsettings/gvfs-smb.convert
+usr/share/glib-2.0/
+usr/share/glib-2.0/schemas/
+usr/share/glib-2.0/schemas/org.gnome.system.smb.gschema.xml
+usr/share/gvfs/
+usr/share/gvfs/mounts/
+usr/share/gvfs/mounts/smb-browse.mount
+usr/share/gvfs/mounts/smb.mount

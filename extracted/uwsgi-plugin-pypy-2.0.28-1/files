@@ -1,0 +1,15 @@
+%FILES%
+opt/
+opt/pypy/
+opt/pypy/site-packages/
+opt/pypy/site-packages/uwsgidecorators.py
+opt/pypy/site-packages/uwsgidecorators.pyc
+opt/pypy/site-packages/uwsgidecorators.pyo
+usr/
+usr/lib/
+usr/lib/uwsgi/
+usr/lib/uwsgi/pypy_plugin.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/uwsgi-plugin-pypy/
+usr/share/licenses/uwsgi-plugin-pypy/LICENSE

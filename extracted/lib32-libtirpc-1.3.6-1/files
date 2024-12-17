@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libtirpc.so
+usr/lib32/libtirpc.so.3
+usr/lib32/libtirpc.so.3.0.0
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/libtirpc.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-libtirpc

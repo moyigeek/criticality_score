@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/oxipng
+usr/share/
+usr/share/licenses/
+usr/share/licenses/oxipng/
+usr/share/licenses/oxipng/LICENSE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/oxipng.1.gz

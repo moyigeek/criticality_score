@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cargo-ndk
+usr/share/
+usr/share/doc/
+usr/share/doc/cargo-ndk/
+usr/share/doc/cargo-ndk/README.md
+usr/share/licenses/
+usr/share/licenses/cargo-ndk/
+usr/share/licenses/cargo-ndk/LICENSE-MIT

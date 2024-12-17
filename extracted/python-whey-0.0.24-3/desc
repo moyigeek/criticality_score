@@ -1,0 +1,68 @@
+%FILENAME%
+python-whey-0.0.24-3-any.pkg.tar.zst
+
+%NAME%
+python-whey
+
+%BASE%
+python-whey
+
+%VERSION%
+0.0.24-3
+
+%DESC%
+A simple Python wheel builder for simple projects
+
+%CSIZE%
+48318
+
+%ISIZE%
+236944
+
+%SHA256SUM%
+6741c1e7f71589a4ab36a448e4f038c97545a1220b564e70089db55dcd3228b7
+
+%PGPSIG%
+iQEzBAABCAAdFiEE5JnHn1PJalTlcv7hwGCGM3xQdz4FAmdHS9EACgkQwGCGM3xQdz6v4wgArRuZDMgMj/N9E58JlbTvoRqqzvasjGh02Va3u5A4D5axq9SgP+ZuNrvAUlTtQRYpkk0fhUkGdAT7ftPAKD/Z+31NfH+mOmI//Q6kZjeZf51O9g4QY8wnaz6O8H4w8aBPTjTd2fFnnJK36Om/+1jF70A9p2LoNqRZVKMpeXmlwM4rZgoRD9vzboR0QwdMoiLgIg5rHj+eH9qCnpx5ucDGyPxMJNY2RbMmIuKt9fDvRq8GagbwxQ1F2DZ1sB5kyt2phGlAqZVQ+l+qfw+rbQOOuyXzUfl5DHtage0uibo1+1pfgD9IEo11I1o9zniVVMM7M9588KfDXZ8cqfHAlUf8Og==
+
+%URL%
+https://whey.readthedocs.io/
+
+%LICENSE%
+MIT
+
+%ARCH%
+any
+
+%BUILDDATE%
+1732725683
+
+%PACKAGER%
+Jelle van der Waa <jelle@archlinux.org>
+
+%DEPENDS%
+python
+python-click
+python-consolekit
+python-dist-meta
+python-dom-toml
+python-domdf-python-tools
+python-handy-archives
+python-natsort
+python-packaging
+python-pyproject-parser
+python-shippinglabel
+
+%OPTDEPENDS%
+python-docutils: readme functionality
+python-readme-renderer: readme functionality
+python-cmarkgfm: readme functionality
+python-editables: editable installs
+
+%MAKEDEPENDS%
+git
+python-build
+python-installer
+python-wheel
+python-setuptools
+

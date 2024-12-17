@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/vst3/
+usr/lib/vst3/OneTrick SIMIAN2.vst3/
+usr/lib/vst3/OneTrick SIMIAN2.vst3/Contents/
+usr/lib/vst3/OneTrick SIMIAN2.vst3/Contents/x86_64-linux/
+usr/lib/vst3/OneTrick SIMIAN2.vst3/Contents/x86_64-linux/OneTrick SIMIAN2.so

@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/smtpd/
+usr/lib/smtpd/opensmtpd/
+usr/lib/smtpd/opensmtpd/filter-dkimsign
+usr/share/
+usr/share/licenses/
+usr/share/licenses/opensmtpd-filter-dkimsign/
+usr/share/licenses/opensmtpd-filter-dkimsign/LICENSE
+usr/share/man/
+usr/share/man/man8/
+usr/share/man/man8/filter-dkimsign.8.gz

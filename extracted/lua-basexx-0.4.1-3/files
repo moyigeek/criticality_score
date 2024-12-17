@@ -1,0 +1,9 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lua-basexx/
+usr/share/licenses/lua-basexx/LICENSE
+usr/share/lua/
+usr/share/lua/5.4/
+usr/share/lua/5.4/basexx.lua

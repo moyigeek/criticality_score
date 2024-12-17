@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/xsv
+usr/share/
+usr/share/doc/
+usr/share/doc/xsv/
+usr/share/doc/xsv/README.md
+usr/share/licenses/
+usr/share/licenses/xsv/
+usr/share/licenses/xsv/LICENSE-MIT
+usr/share/licenses/xsv/UNLICENSE

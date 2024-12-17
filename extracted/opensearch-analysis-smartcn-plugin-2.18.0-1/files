@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/opensearch-analysis-smartcn-plugin/
+usr/share/licenses/opensearch-analysis-smartcn-plugin/LICENSE.txt
+usr/share/licenses/opensearch-analysis-smartcn-plugin/NOTICE.txt
+usr/share/opensearch/
+usr/share/opensearch/plugins/
+usr/share/opensearch/plugins/analysis-smartcn/
+usr/share/opensearch/plugins/analysis-smartcn/analysis-smartcn-2.18.0.jar
+usr/share/opensearch/plugins/analysis-smartcn/lucene-analysis-smartcn-9.12.0.jar
+usr/share/opensearch/plugins/analysis-smartcn/plugin-descriptor.properties

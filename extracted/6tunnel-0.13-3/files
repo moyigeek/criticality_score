@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/6tunnel
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/6tunnel.1.gz

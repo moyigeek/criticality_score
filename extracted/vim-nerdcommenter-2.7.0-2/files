@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/vim-nerdcommenter/
+usr/share/licenses/vim-nerdcommenter/LICENSE
+usr/share/vim/
+usr/share/vim/vimfiles/
+usr/share/vim/vimfiles/autoload/
+usr/share/vim/vimfiles/autoload/nerdcommenter.vim
+usr/share/vim/vimfiles/doc/
+usr/share/vim/vimfiles/doc/nerdcommenter.txt
+usr/share/vim/vimfiles/plugin/
+usr/share/vim/vimfiles/plugin/nerdcommenter.vim

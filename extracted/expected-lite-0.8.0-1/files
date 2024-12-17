@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/include/
+usr/include/nonstd/
+usr/include/nonstd/expected.hpp
+usr/lib/
+usr/lib/cmake/
+usr/lib/cmake/expected-lite/
+usr/lib/cmake/expected-lite/expected-lite-config-version.cmake
+usr/lib/cmake/expected-lite/expected-lite-config.cmake
+usr/lib/cmake/expected-lite/expected-lite-targets.cmake

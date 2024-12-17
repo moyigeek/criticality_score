@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/ladspa/
+usr/lib/ladspa/caps.so
+usr/share/
+usr/share/doc/
+usr/share/doc/caps/
+usr/share/doc/caps/CHANGES
+usr/share/doc/caps/README
+usr/share/ladspa/
+usr/share/ladspa/rdf/
+usr/share/ladspa/rdf/caps.rdf

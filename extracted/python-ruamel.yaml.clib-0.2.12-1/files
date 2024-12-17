@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/python3.12/
+usr/lib/python3.12/site-packages/
+usr/lib/python3.12/site-packages/_ruamel_yaml.cpython-312-x86_64-linux-gnu.so
+usr/lib/python3.12/site-packages/ruamel.yaml.clib-0.2.12.dist-info/
+usr/lib/python3.12/site-packages/ruamel.yaml.clib-0.2.12.dist-info/LICENSE
+usr/lib/python3.12/site-packages/ruamel.yaml.clib-0.2.12.dist-info/METADATA
+usr/lib/python3.12/site-packages/ruamel.yaml.clib-0.2.12.dist-info/RECORD
+usr/lib/python3.12/site-packages/ruamel.yaml.clib-0.2.12.dist-info/WHEEL
+usr/lib/python3.12/site-packages/ruamel.yaml.clib-0.2.12.dist-info/top_level.txt
+usr/share/
+usr/share/licenses/
+usr/share/licenses/python-ruamel.yaml.clib/
+usr/share/licenses/python-ruamel.yaml.clib/LICENSE

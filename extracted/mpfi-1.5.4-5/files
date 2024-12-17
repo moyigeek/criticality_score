@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/include/
+usr/include/mpfi.h
+usr/include/mpfi_io.h
+usr/lib/
+usr/lib/libmpfi.so
+usr/lib/libmpfi.so.0
+usr/lib/libmpfi.so.0.0.0
+usr/share/
+usr/share/info/
+usr/share/info/mpfi.info.gz

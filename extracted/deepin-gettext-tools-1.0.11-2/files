@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/deepin-desktop-ts-convert
+usr/bin/deepin-generate-mo
+usr/bin/deepin-policy-ts-convert
+usr/bin/deepin-update-pot
+usr/lib/
+usr/lib/deepin-gettext-tools/
+usr/lib/deepin-gettext-tools/generate_mo.py
+usr/lib/deepin-gettext-tools/update_pot.py

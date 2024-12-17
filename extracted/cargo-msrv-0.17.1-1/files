@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cargo-msrv
+usr/share/
+usr/share/doc/
+usr/share/doc/cargo-msrv/
+usr/share/doc/cargo-msrv/README.md
+usr/share/licenses/
+usr/share/licenses/cargo-msrv/
+usr/share/licenses/cargo-msrv/LICENSE-MIT

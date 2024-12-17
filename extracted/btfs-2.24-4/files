@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/btfs
+usr/bin/btfsstat
+usr/bin/btplay
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/btfs.1.gz

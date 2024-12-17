@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/ffmpeg_harvid
+usr/bin/ffprobe_harvid
+usr/bin/harvid
+usr/share/
+usr/share/doc/
+usr/share/doc/harvid/
+usr/share/doc/harvid/ChangeLog
+usr/share/doc/harvid/README.md
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/harvid.1.gz

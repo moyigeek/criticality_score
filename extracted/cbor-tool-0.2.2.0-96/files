@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cbor-tool
+usr/share/
+usr/share/doc/
+usr/share/doc/cbor-tool/
+usr/share/licenses/
+usr/share/licenses/cbor-tool/
+usr/share/licenses/cbor-tool/LICENSE.txt

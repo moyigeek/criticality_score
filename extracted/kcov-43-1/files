@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/kcov
+usr/bin/kcov-system-daemon
+usr/share/
+usr/share/doc/
+usr/share/doc/kcov/
+usr/share/doc/kcov/COPYING
+usr/share/doc/kcov/COPYING.externals
+usr/share/doc/kcov/ChangeLog
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/kcov.1.gz

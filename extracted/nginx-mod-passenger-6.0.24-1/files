@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/nginx/
+usr/lib/nginx/modules/
+usr/lib/nginx/modules/ngx_http_passenger_module.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/nginx-mod-passenger/
+usr/share/licenses/nginx-mod-passenger/LICENSE

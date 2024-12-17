@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/include/
+usr/include/libx86.h
+usr/lib/
+usr/lib/libx86.so
+usr/lib/libx86.so.1
+usr/share/
+usr/share/licenses/
+usr/share/licenses/libx86/
+usr/share/licenses/libx86/LICENSE

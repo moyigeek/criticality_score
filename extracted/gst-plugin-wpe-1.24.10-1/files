@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/gst-plugins-bad/
+usr/lib/gst-plugins-bad/wpe-extension/
+usr/lib/gst-plugins-bad/wpe-extension/libgstwpeextension.so
+usr/lib/gstreamer-1.0/
+usr/lib/gstreamer-1.0/libgstwpe.so

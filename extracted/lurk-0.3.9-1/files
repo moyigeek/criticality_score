@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/lurk
+usr/share/
+usr/share/doc/
+usr/share/doc/lurk/
+usr/share/doc/lurk/README.md
+usr/share/licenses/
+usr/share/licenses/lurk/
+usr/share/licenses/lurk/LICENSE-MIT

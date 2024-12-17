@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/aspell-0.60/
+usr/lib/aspell-0.60/ca-common.rws
+usr/lib/aspell-0.60/ca-general.multi
+usr/lib/aspell-0.60/ca-valencia-mes.rws
+usr/lib/aspell-0.60/ca-valencia.multi
+usr/lib/aspell-0.60/ca.alias
+usr/lib/aspell-0.60/ca.dat
+usr/lib/aspell-0.60/ca_affix.dat
+usr/lib/aspell-0.60/catalan-general.alias
+usr/lib/aspell-0.60/catalan-valencia.alias
+usr/lib/aspell-0.60/catalan.alias

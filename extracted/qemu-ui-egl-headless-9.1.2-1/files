@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/qemu/
+usr/lib/qemu/ui-egl-headless.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/qemu-ui-egl-headless/
+usr/share/licenses/qemu-ui-egl-headless/BSD-2-Clause.txt
+usr/share/licenses/qemu-ui-egl-headless/LICENSE
+usr/share/licenses/qemu-ui-egl-headless/audio.LICENSE.ISC.txt
+usr/share/licenses/qemu-ui-egl-headless/edk2-licenses.txt
+usr/share/licenses/qemu-ui-egl-headless/fuse.LICENSE.BSD-2-Clause.txt
+usr/share/licenses/qemu-ui-egl-headless/tcg-arm.LICENSE.MIT.txt
+usr/share/licenses/qemu-ui-egl-headless/tcg.LICENSE.MIT.txt
+usr/share/licenses/qemu-ui-egl-headless/tci.LICENSE.MIT.txt

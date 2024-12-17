@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/openpgp-card-ssh-agent
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/user/
+usr/lib/systemd/user/openpgp-card-ssh-agent.service
+usr/lib/systemd/user/openpgp-card-ssh-agent.socket
+usr/share/
+usr/share/licenses/
+usr/share/licenses/openpgp-card-ssh-agent/
+usr/share/licenses/openpgp-card-ssh-agent/Apache-2.0.txt
+usr/share/licenses/openpgp-card-ssh-agent/CC-BY-SA-4.0.txt
+usr/share/licenses/openpgp-card-ssh-agent/CC0-1.0.txt
+usr/share/licenses/openpgp-card-ssh-agent/MIT.txt

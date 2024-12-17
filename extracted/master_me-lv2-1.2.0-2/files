@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/lv2/
+usr/lib/lv2/master_me-easy-presets.lv2/
+usr/lib/lv2/master_me-easy-presets.lv2/manifest.ttl
+usr/lib/lv2/master_me-easy-presets.lv2/presets.ttl
+usr/lib/lv2/master_me.lv2/
+usr/lib/lv2/master_me.lv2/manifest.ttl
+usr/lib/lv2/master_me.lv2/master_me_dsp.so
+usr/lib/lv2/master_me.lv2/master_me_ui.so
+usr/lib/lv2/master_me.lv2/plugin.ttl
+usr/lib/lv2/master_me.lv2/ui.ttl

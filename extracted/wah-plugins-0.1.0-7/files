@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/ladspa/
+usr/lib/ladspa/autowah.so
+usr/share/
+usr/share/doc/
+usr/share/doc/wah-plugins/
+usr/share/doc/wah-plugins/AUTHORS
+usr/share/doc/wah-plugins/README

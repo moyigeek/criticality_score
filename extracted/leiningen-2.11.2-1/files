@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/lein
+usr/bin/lein-standalone
+usr/share/
+usr/share/java/
+usr/share/java/leiningen-2.11.2-standalone.jar
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/lein.1.gz

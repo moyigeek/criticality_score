@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/share/
+usr/share/hunspell/
+usr/share/hunspell/he_IL.aff
+usr/share/hunspell/he_IL.dic
+usr/share/myspell/
+usr/share/myspell/dicts/
+usr/share/myspell/dicts/he_IL.aff
+usr/share/myspell/dicts/he_IL.dic
+usr/share/qt/
+usr/share/qt/qtwebengine_dictionaries/
+usr/share/qt/qtwebengine_dictionaries/he_IL.bdic
+usr/share/qt6/
+usr/share/qt6/qtwebengine_dictionaries/
+usr/share/qt6/qtwebengine_dictionaries/he_IL.bdic

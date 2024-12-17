@@ -1,0 +1,6 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/libcalfbox-lss.so
+usr/lib/libcalfbox-lss.so.1
+usr/lib/libcalfbox-lss.so.1.2.0

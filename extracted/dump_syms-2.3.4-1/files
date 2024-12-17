@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/dump_syms
+usr/share/
+usr/share/licenses/
+usr/share/licenses/dump_syms/
+usr/share/licenses/dump_syms/LICENSE-MIT

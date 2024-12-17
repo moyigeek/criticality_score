@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/Dexed
+usr/share/
+usr/share/applications/
+usr/share/applications/com.digitalsuburban.Dexed.desktop
+usr/share/icons/
+usr/share/icons/hicolor/
+usr/share/icons/hicolor/512x512/
+usr/share/icons/hicolor/512x512/apps/
+usr/share/icons/hicolor/512x512/apps/dexed.png

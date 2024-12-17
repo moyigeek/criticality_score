@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/ghc-9.2.8/
+usr/lib/ghc-9.2.8/site-local/
+usr/lib/ghc-9.2.8/site-local/data-functor-logistic-0.0/
+usr/lib/ghc-9.2.8/site-local/data-functor-logistic-0.0/Data/
+usr/lib/ghc-9.2.8/site-local/data-functor-logistic-0.0/Data/Functor/
+usr/lib/ghc-9.2.8/site-local/data-functor-logistic-0.0/Data/Functor/Logistic.dyn_hi
+usr/lib/libHSdata-functor-logistic-0.0-JJXzl9P0XTFHZuJpqe5unD-ghc9.2.8.so
+usr/share/
+usr/share/haskell/
+usr/share/haskell/register/
+usr/share/haskell/register/haskell-data-functor-logistic.sh
+usr/share/haskell/unregister/
+usr/share/haskell/unregister/haskell-data-functor-logistic.sh

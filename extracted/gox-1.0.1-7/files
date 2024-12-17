@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/gox
+usr/share/
+usr/share/doc/
+usr/share/doc/gox/
+usr/share/doc/gox/README.md

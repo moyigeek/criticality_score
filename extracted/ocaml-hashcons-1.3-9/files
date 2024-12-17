@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/ocaml/
+usr/lib/ocaml/hashcons/
+usr/lib/ocaml/hashcons/META
+usr/lib/ocaml/hashcons/hashcons.cmi
+usr/lib/ocaml/hashcons/hashcons.cmo
+usr/lib/ocaml/hashcons/hashcons.cmx
+usr/lib/ocaml/hashcons/hashcons.mli
+usr/lib/ocaml/hashcons/hashcons.o
+usr/src/
+usr/src/debug/
+usr/src/debug/ocaml-hashcons/

@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/include/
+usr/include/npapi-sdk/
+usr/include/npapi-sdk/npapi.h
+usr/include/npapi-sdk/npfunctions.h
+usr/include/npapi-sdk/npruntime.h
+usr/include/npapi-sdk/nptypes.h
+usr/lib/
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/npapi-sdk.pc

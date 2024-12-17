@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/pdftk
+usr/share/
+usr/share/java/
+usr/share/java/pdftk/
+usr/share/java/pdftk/pdftk.jar
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/pdftk.1.gz

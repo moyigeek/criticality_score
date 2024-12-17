@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/jam
+usr/share/
+usr/share/licenses/
+usr/share/licenses/ftjam/
+usr/share/licenses/ftjam/license.txt

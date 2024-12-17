@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/frotz
+usr/share/
+usr/share/man/
+usr/share/man/man6/
+usr/share/man/man6/frotz.6.gz

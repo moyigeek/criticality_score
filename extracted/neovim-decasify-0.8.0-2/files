@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/share/
+usr/share/nvim/
+usr/share/nvim/site/
+usr/share/nvim/site/pack/
+usr/share/nvim/site/pack/dist/
+usr/share/nvim/site/pack/dist/start/
+usr/share/nvim/site/pack/dist/start/decasify/
+usr/share/nvim/site/pack/dist/start/decasify/plugin/
+usr/share/nvim/site/pack/dist/start/decasify/plugin/decasify.lua

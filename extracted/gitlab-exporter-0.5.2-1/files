@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/gitlab-exporter
+usr/share/
+usr/share/doc/
+usr/share/doc/gitlab-exporter/
+usr/share/doc/gitlab-exporter/README.md
+usr/share/licenses/
+usr/share/licenses/gitlab-exporter/
+usr/share/licenses/gitlab-exporter/LICENSE

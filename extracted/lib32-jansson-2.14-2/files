@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libjansson.so
+usr/lib32/libjansson.so.4
+usr/lib32/libjansson.so.4.14.0
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/jansson.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-jansson

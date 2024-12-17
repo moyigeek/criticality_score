@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/batsignal
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/user/
+usr/lib/systemd/user/batsignal.service
+usr/share/
+usr/share/licenses/
+usr/share/licenses/batsignal/
+usr/share/licenses/batsignal/LICENSE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/batsignal.1.gz

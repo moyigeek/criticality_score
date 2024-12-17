@@ -1,0 +1,9 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/staticcheck
+usr/share/
+usr/share/licenses/
+usr/share/licenses/staticcheck/
+usr/share/licenses/staticcheck/LICENCE
+usr/share/licenses/staticcheck/LICENCE-THIRD-PARTY

@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/toastify
+usr/share/
+usr/share/licenses/
+usr/share/licenses/toastify/
+usr/share/licenses/toastify/LICENSE-MIT

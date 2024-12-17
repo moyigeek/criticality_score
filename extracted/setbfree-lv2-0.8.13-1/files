@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/lv2/
+usr/lib/lv2/b_synth/
+usr/lib/lv2/b_synth/b_synth.so
+usr/lib/lv2/b_synth/b_synth.ttl
+usr/lib/lv2/b_synth/b_synthUI.so
+usr/lib/lv2/b_synth/manifest.ttl
+usr/lib/lv2/b_whirl/
+usr/lib/lv2/b_whirl/b_whirl-configurable.ttl
+usr/lib/lv2/b_whirl/b_whirl.so
+usr/lib/lv2/b_whirl/b_whirl.ttl
+usr/lib/lv2/b_whirl/b_whirlUI_gl.so
+usr/lib/lv2/b_whirl/manifest.ttl

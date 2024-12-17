@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/hhp
+usr/bin/hmanage
+usr/bin/hslock
+usr/bin/hxput
+usr/bin/hxsel
+usr/share/
+usr/share/licenses/
+usr/share/licenses/xmonad-utils/
+usr/share/licenses/xmonad-utils/LICENSE

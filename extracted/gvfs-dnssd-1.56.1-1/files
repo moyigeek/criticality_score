@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/gvfsd-dav
+usr/lib/gvfsd-dnssd
+usr/share/
+usr/share/GConf/
+usr/share/GConf/gsettings/
+usr/share/GConf/gsettings/gvfs-dns-sd.convert
+usr/share/glib-2.0/
+usr/share/glib-2.0/schemas/
+usr/share/glib-2.0/schemas/org.gnome.system.dns_sd.gschema.xml
+usr/share/gvfs/
+usr/share/gvfs/mounts/
+usr/share/gvfs/mounts/dav+sd.mount
+usr/share/gvfs/mounts/dav.mount
+usr/share/gvfs/mounts/dns-sd.mount

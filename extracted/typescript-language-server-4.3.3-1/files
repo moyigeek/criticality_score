@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/typescript-language-server
+usr/lib/
+usr/lib/node_modules/
+usr/lib/node_modules/typescript-language-server/
+usr/lib/node_modules/typescript-language-server/lib/
+usr/lib/node_modules/typescript-language-server/lib/cli.mjs
+usr/lib/node_modules/typescript-language-server/lib/cli.mjs.map
+usr/lib/node_modules/typescript-language-server/package.json
+usr/share/
+usr/share/doc/
+usr/share/doc/typescript-language-server/
+usr/share/doc/typescript-language-server/CHANGELOG.md
+usr/share/doc/typescript-language-server/README.md

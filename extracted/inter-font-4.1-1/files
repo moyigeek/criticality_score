@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/share/
+usr/share/fonts/
+usr/share/fonts/inter/
+usr/share/fonts/inter/Inter.ttc
+usr/share/fonts/inter/InterVariable-Italic.ttf
+usr/share/fonts/inter/InterVariable.ttf
+usr/share/licenses/
+usr/share/licenses/inter-font/
+usr/share/licenses/inter-font/LICENSE.txt

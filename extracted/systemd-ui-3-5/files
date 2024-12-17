@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/systemadm
+usr/bin/systemd-gnome-ask-password-agent
+usr/share/
+usr/share/applications/
+usr/share/applications/systemadm.desktop
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/systemadm.1.gz
+usr/share/metainfo/
+usr/share/metainfo/systemadm.appdata.xml

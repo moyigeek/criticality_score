@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/monolith
+usr/share/
+usr/share/doc/
+usr/share/doc/monolith/
+usr/share/doc/monolith/README.md
+usr/share/licenses/
+usr/share/licenses/monolith/
+usr/share/licenses/monolith/LICENSE

@@ -1,0 +1,5 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/redland/
+usr/lib/redland/librdf_storage_postgresql.so

@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/gopass-jsonapi
+usr/share/
+usr/share/licenses/
+usr/share/licenses/gopass-jsonapi/
+usr/share/licenses/gopass-jsonapi/LICENSE

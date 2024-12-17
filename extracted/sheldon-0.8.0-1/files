@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/sheldon
+usr/share/
+usr/share/bash-completion/
+usr/share/bash-completion/completions/
+usr/share/bash-completion/completions/sheldon
+usr/share/licenses/
+usr/share/licenses/sheldon/
+usr/share/licenses/sheldon/LICENSE-APACHE
+usr/share/licenses/sheldon/LICENSE-MIT
+usr/share/zsh/
+usr/share/zsh/site-functions/
+usr/share/zsh/site-functions/_sheldon

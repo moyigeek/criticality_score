@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/ttyper
+usr/share/
+usr/share/doc/
+usr/share/doc/ttyper/
+usr/share/doc/ttyper/README.md
+usr/share/licenses/
+usr/share/licenses/ttyper/
+usr/share/licenses/ttyper/LICENSE

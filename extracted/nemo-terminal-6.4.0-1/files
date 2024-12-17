@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/nemo-terminal-prefs
+usr/share/
+usr/share/glib-2.0/
+usr/share/glib-2.0/schemas/
+usr/share/glib-2.0/schemas/org.nemo.extensions.nemo-terminal.gschema.xml
+usr/share/nemo-python/
+usr/share/nemo-python/extensions/
+usr/share/nemo-python/extensions/nemo_terminal.py
+usr/share/nemo-terminal/
+usr/share/nemo-terminal/logo_120x120.png

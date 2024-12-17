@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/barcode
+usr/bin/sample
+usr/share/
+usr/share/info/
+usr/share/info/barcode.info.gz

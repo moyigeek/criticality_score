@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/check-sieve
+usr/lib/
+usr/lib/libchecksieve.a
+usr/share/
+usr/share/licenses/
+usr/share/licenses/check-sieve/
+usr/share/licenses/check-sieve/LICENSE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/check-sieve.1.gz

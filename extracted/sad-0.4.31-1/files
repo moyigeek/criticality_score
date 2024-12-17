@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/sad
+usr/share/
+usr/share/doc/
+usr/share/doc/sad/
+usr/share/doc/sad/README.md
+usr/share/licenses/
+usr/share/licenses/sad/
+usr/share/licenses/sad/LICENSE

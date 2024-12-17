@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/pgpdump
+usr/share/
+usr/share/doc/
+usr/share/doc/pgpdump/
+usr/share/doc/pgpdump/README.md
+usr/share/licenses/
+usr/share/licenses/pgpdump/
+usr/share/licenses/pgpdump/COPYRIGHT
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/pgpdump.1.gz

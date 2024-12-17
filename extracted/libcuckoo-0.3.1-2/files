@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/include/
+usr/include/libcuckoo-c/
+usr/include/libcuckoo-c/cuckoo_table_template.cc
+usr/include/libcuckoo-c/cuckoo_table_template.h
+usr/include/libcuckoo/
+usr/include/libcuckoo/bucket_container.hh
+usr/include/libcuckoo/cuckoohash_config.hh
+usr/include/libcuckoo/cuckoohash_map.hh
+usr/include/libcuckoo/cuckoohash_util.hh
+usr/share/
+usr/share/cmake/
+usr/share/cmake/libcuckoo/
+usr/share/cmake/libcuckoo/libcuckoo-config-version.cmake
+usr/share/cmake/libcuckoo/libcuckoo-config.cmake
+usr/share/cmake/libcuckoo/libcuckoo-targets.cmake

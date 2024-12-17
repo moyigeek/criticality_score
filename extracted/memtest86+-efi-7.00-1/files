@@ -1,0 +1,7 @@
+%FILES%
+boot/
+boot/memtest86+/
+boot/memtest86+/memtest.efi
+etc/
+etc/grub.d/
+etc/grub.d/60_memtest86+-efi

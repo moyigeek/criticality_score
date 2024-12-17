@@ -1,0 +1,8 @@
+%FILES%
+etc/
+etc/osdbattery/
+etc/osdbattery/osdbattery.cfg
+usr/
+usr/bin/
+usr/bin/osdbattery
+usr/bin/showbatt

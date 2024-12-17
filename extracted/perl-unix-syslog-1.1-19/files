@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/perl5/
+usr/lib/perl5/5.40/
+usr/lib/perl5/5.40/vendor_perl/
+usr/lib/perl5/5.40/vendor_perl/Unix/
+usr/lib/perl5/5.40/vendor_perl/Unix/Syslog.pm
+usr/lib/perl5/5.40/vendor_perl/auto/
+usr/lib/perl5/5.40/vendor_perl/auto/Unix/
+usr/lib/perl5/5.40/vendor_perl/auto/Unix/Syslog/
+usr/lib/perl5/5.40/vendor_perl/auto/Unix/Syslog/Syslog.so
+usr/share/
+usr/share/man/
+usr/share/man/man3/
+usr/share/man/man3/Unix::Syslog.3pm.gz

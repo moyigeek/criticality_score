@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/vim-spell-de/
+usr/share/licenses/vim-spell-de/README_de.txt
+usr/share/vim/
+usr/share/vim/vimfiles/
+usr/share/vim/vimfiles/spell/
+usr/share/vim/vimfiles/spell/de.latin1.spl
+usr/share/vim/vimfiles/spell/de.latin1.sug
+usr/share/vim/vimfiles/spell/de.utf-8.spl
+usr/share/vim/vimfiles/spell/de.utf-8.sug

@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/arca
+usr/share/
+usr/share/applications/
+usr/share/applications/org.kde.arca.desktop
+usr/share/icons/
+usr/share/icons/hicolor/
+usr/share/icons/hicolor/scalable/
+usr/share/icons/hicolor/scalable/apps/
+usr/share/icons/hicolor/scalable/apps/arca.svg
+usr/share/metainfo/
+usr/share/metainfo/org.kde.arca.appdata.xml

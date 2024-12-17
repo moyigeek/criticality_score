@@ -1,0 +1,5 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/vst/
+usr/lib/vst/AIDA-X-vst2.so

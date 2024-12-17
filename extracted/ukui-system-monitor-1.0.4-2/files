@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/ukui-system-monitor
+usr/share/
+usr/share/applications/
+usr/share/applications/ukui-system-monitor.desktop
+usr/share/glib-2.0/
+usr/share/glib-2.0/schemas/
+usr/share/glib-2.0/schemas/org.ukui.system-monitor.menu.gschema.xml
+usr/share/icons/
+usr/share/icons/hicolor/
+usr/share/icons/hicolor/ukui-system-monitor.png

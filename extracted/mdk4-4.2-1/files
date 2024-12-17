@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/mdk4
+usr/share/
+usr/share/doc/
+usr/share/doc/mdk4/
+usr/share/doc/mdk4/README.md
+usr/share/doc/mdk4/useful_files/
+usr/share/doc/mdk4/useful_files/common-ssids.txt
+usr/share/doc/mdk4/useful_files/fakeap-example.txt
+usr/share/doc/mdk4/useful_files/less-common-ssids.txt
+usr/share/doc/mdk4/useful_files/more-ssids.txt
+usr/share/man/
+usr/share/man/man8/
+usr/share/man/man8/mdk4.8.gz

@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/share/
+usr/share/man/
+usr/share/man/man3/
+usr/share/man/man3/GD::Text.3pm.gz
+usr/share/man/man3/GD::Text::Align.3pm.gz
+usr/share/man/man3/GD::Text::Wrap.3pm.gz
+usr/share/perl5/
+usr/share/perl5/vendor_perl/
+usr/share/perl5/vendor_perl/GD/
+usr/share/perl5/vendor_perl/GD/Text.pm
+usr/share/perl5/vendor_perl/GD/Text/
+usr/share/perl5/vendor_perl/GD/Text/Align.pm
+usr/share/perl5/vendor_perl/GD/Text/Wrap.pm

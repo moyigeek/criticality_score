@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/jvm/
+usr/lib/jvm/java-17-openjdk/
+usr/lib/jvm/java-17-openjdk/lib/
+usr/lib/jvm/java-17-openjdk/lib/src.zip
+usr/share/
+usr/share/licenses/
+usr/share/licenses/openjdk17-src

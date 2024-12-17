@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/cmake/
+usr/lib/cmake/Dtk/
+usr/lib/cmake/Dtk/DtkConfig.cmake
+usr/lib/cmake/Dtk6/
+usr/lib/cmake/Dtk6/Dtk6Config.cmake
+usr/lib/cmake/DtkBuildHelper/
+usr/lib/cmake/DtkBuildHelper/DtkBuildHelperConfig.cmake
+usr/lib/cmake/DtkBuildHelper/DtkBuildHelperConfigVersion.cmake
+usr/share/
+usr/share/dsg/
+usr/share/dsg/configs/
+usr/share/dsg/configs/org.deepin.dtk.preference.json

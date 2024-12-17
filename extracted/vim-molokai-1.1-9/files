@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/vim-molokai/
+usr/share/licenses/vim-molokai/LICENSE.md
+usr/share/vim/
+usr/share/vim/vimfiles/
+usr/share/vim/vimfiles/colors/
+usr/share/vim/vimfiles/colors/molokai.vim

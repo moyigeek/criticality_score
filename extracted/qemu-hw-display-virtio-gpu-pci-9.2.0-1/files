@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/qemu/
+usr/lib/qemu/hw-display-virtio-gpu-pci.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/qemu-hw-display-virtio-gpu-pci/
+usr/share/licenses/qemu-hw-display-virtio-gpu-pci/BSD-2-Clause.txt
+usr/share/licenses/qemu-hw-display-virtio-gpu-pci/LICENSE
+usr/share/licenses/qemu-hw-display-virtio-gpu-pci/audio.LICENSE.ISC.txt
+usr/share/licenses/qemu-hw-display-virtio-gpu-pci/edk2-licenses.txt
+usr/share/licenses/qemu-hw-display-virtio-gpu-pci/fuse.LICENSE.BSD-2-Clause.txt
+usr/share/licenses/qemu-hw-display-virtio-gpu-pci/tcg-arm.LICENSE.MIT.txt
+usr/share/licenses/qemu-hw-display-virtio-gpu-pci/tcg.LICENSE.MIT.txt
+usr/share/licenses/qemu-hw-display-virtio-gpu-pci/tci.LICENSE.MIT.txt

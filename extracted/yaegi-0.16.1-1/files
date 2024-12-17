@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/yaegi
+usr/share/
+usr/share/licenses/
+usr/share/licenses/yaegi/
+usr/share/licenses/yaegi/LICENSE

@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/sscg
+usr/share/
+usr/share/man/
+usr/share/man/man8/
+usr/share/man/man8/sscg.8.gz

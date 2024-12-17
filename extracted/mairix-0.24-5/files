@@ -1,0 +1,15 @@
+%FILES%
+etc/
+etc/mairixrc.sample
+usr/
+usr/bin/
+usr/bin/mairix
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/mairix.1.gz
+usr/share/man/man5/
+usr/share/man/man5/mairixrc.5.gz
+usr/share/zsh/
+usr/share/zsh/site-functions/
+usr/share/zsh/site-functions/_mairix

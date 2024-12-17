@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/xbacklight
+usr/lib/
+usr/lib/udev/
+usr/lib/udev/rules.d/
+usr/lib/udev/rules.d/90-backlight.rules
+usr/share/
+usr/share/doc/
+usr/share/doc/acpilight/
+usr/share/doc/acpilight/NEWS.rst
+usr/share/doc/acpilight/README.rst
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/xbacklight.1.gz

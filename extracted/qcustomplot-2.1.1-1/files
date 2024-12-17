@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/include/
+usr/include/qcustomplot.h
+usr/lib/
+usr/lib/libqcustomplot.so
+usr/lib/libqcustomplot.so.2
+usr/lib/libqcustomplot.so.2.1
+usr/lib/libqcustomplot.so.2.1.1
+usr/share/
+usr/share/doc/
+usr/share/doc/qcustomplot/
+usr/share/doc/qcustomplot/changelog.txt

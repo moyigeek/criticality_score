@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/lazarus
+usr/bin/startlazarus
+usr/lib/
+usr/lib/lazarus/
+usr/lib/lazarus/lazarus
+usr/lib/lazarus/startlazarus
+usr/share/
+usr/share/applications/
+usr/share/applications/lazarus.desktop
+usr/share/licenses/
+usr/share/licenses/lazarus-qt6/
+usr/share/licenses/lazarus-qt6/COPYING.modifiedLGPL
+usr/share/pixmaps/
+usr/share/pixmaps/lazarus.png

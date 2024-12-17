@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/opensearch-analysis-phonetic-plugin/
+usr/share/licenses/opensearch-analysis-phonetic-plugin/LICENSE.txt
+usr/share/licenses/opensearch-analysis-phonetic-plugin/NOTICE.txt
+usr/share/opensearch/
+usr/share/opensearch/plugins/
+usr/share/opensearch/plugins/analysis-phonetic/
+usr/share/opensearch/plugins/analysis-phonetic/analysis-phonetic-2.18.0.jar
+usr/share/opensearch/plugins/analysis-phonetic/commons-codec-1.16.1.jar
+usr/share/opensearch/plugins/analysis-phonetic/lucene-analysis-phonetic-9.12.0.jar
+usr/share/opensearch/plugins/analysis-phonetic/plugin-descriptor.properties

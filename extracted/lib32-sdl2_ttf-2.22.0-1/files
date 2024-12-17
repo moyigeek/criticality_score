@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/cmake/
+usr/lib32/cmake/SDL2_ttf/
+usr/lib32/cmake/SDL2_ttf/sdl2_ttf-config-version.cmake
+usr/lib32/cmake/SDL2_ttf/sdl2_ttf-config.cmake
+usr/lib32/libSDL2_ttf-2.0.so.0
+usr/lib32/libSDL2_ttf-2.0.so.0.2200.0
+usr/lib32/libSDL2_ttf.so
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/SDL2_ttf.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-sdl2_ttf/
+usr/share/licenses/lib32-sdl2_ttf/LICENSE

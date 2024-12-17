@@ -1,0 +1,5 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/rpm2cpio
+usr/bin/rpmextract.sh

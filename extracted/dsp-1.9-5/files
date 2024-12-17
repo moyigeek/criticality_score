@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/dsp
+usr/lib/
+usr/lib/ladspa/
+usr/lib/ladspa/ladspa_dsp.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/dsp/
+usr/share/licenses/dsp/LICENSE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/dsp.1.gz

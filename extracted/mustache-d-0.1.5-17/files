@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/include/
+usr/include/d/
+usr/include/d/mustache-d/
+usr/include/d/mustache-d/mustache.d
+usr/lib/
+usr/lib/libmustache-d.a
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/mustache-d.pc

@@ -1,0 +1,16 @@
+%FILES%
+etc/
+etc/metalog.conf
+usr/
+usr/bin/
+usr/bin/metalog
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/metalog.service
+usr/share/
+usr/share/man/
+usr/share/man/man5/
+usr/share/man/man5/metalog.conf.5.gz
+usr/share/man/man8/
+usr/share/man/man8/metalog.8.gz

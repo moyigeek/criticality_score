@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/bs
+usr/share/
+usr/share/doc/
+usr/share/doc/bugstalker/
+usr/share/doc/bugstalker/README.md
+usr/share/licenses/
+usr/share/licenses/bugstalker/
+usr/share/licenses/bugstalker/LICENSE

@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/rucola
+usr/share/
+usr/share/doc/
+usr/share/doc/rucola/
+usr/share/doc/rucola/README.md

@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/include/
+usr/include/FutureSQL6/
+usr/include/FutureSQL6/ThreadedDatabase
+usr/include/FutureSQL6/futuresql_export.h
+usr/include/FutureSQL6/threadeddatabase.h
+usr/include/FutureSQL6/threadeddatabase_p.h
+usr/lib/
+usr/lib/cmake/
+usr/lib/cmake/FutureSQL6/
+usr/lib/cmake/FutureSQL6/FutureSQL6Config.cmake
+usr/lib/cmake/FutureSQL6/FutureSQL6ConfigVersion.cmake
+usr/lib/cmake/FutureSQL6/FutureSQLTargets-noconfig.cmake
+usr/lib/cmake/FutureSQL6/FutureSQLTargets.cmake
+usr/lib/libfuturesql6.so
+usr/lib/libfuturesql6.so.0

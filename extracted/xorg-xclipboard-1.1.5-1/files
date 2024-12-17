@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/xclipboard
+usr/bin/xcutsel
+usr/share/
+usr/share/X11/
+usr/share/X11/app-defaults/
+usr/share/X11/app-defaults/XClipboard
+usr/share/licenses/
+usr/share/licenses/xorg-xclipboard/
+usr/share/licenses/xorg-xclipboard/COPYING
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/xclipboard.1.gz
+usr/share/man/man1/xcutsel.1.gz

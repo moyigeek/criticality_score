@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/share/
+usr/share/doc/
+usr/share/doc/soundfont-fluid/
+usr/share/doc/soundfont-fluid/README
+usr/share/licenses/
+usr/share/licenses/soundfont-fluid/
+usr/share/licenses/soundfont-fluid/COPYING
+usr/share/soundfonts/
+usr/share/soundfonts/FluidR3_GM.sf2
+usr/share/soundfonts/FluidR3_GS.sf2

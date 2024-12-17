@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/include/
+usr/include/libomemo/
+usr/include/libomemo/libomemo.h
+usr/include/libomemo/libomemo_crypto.h
+usr/include/libomemo/libomemo_storage.h
+usr/lib/
+usr/lib/libomemo.so
+usr/lib/libomemo.so.0
+usr/lib/libomemo.so.0.8.1
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/libomemo.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/libomemo/
+usr/share/licenses/libomemo/LICENSE

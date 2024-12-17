@@ -1,0 +1,9 @@
+%FILES%
+usr/
+usr/share/
+usr/share/java/
+usr/share/java/plantuml/
+usr/share/java/plantuml/batik-all-1.7.jar
+usr/share/java/plantuml/jlatexmath-minimal-1.0.3.jar
+usr/share/java/plantuml/jlm_cyrillic.jar
+usr/share/java/plantuml/jlm_greek.jar

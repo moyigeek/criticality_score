@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/stalwart-cli
+usr/share/
+usr/share/doc/
+usr/share/doc/stalwart-cli/
+usr/share/doc/stalwart-cli/CHANGELOG.md
+usr/share/doc/stalwart-cli/README.md
+usr/share/doc/stalwart-cli/UPGRADING.md

@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/tpm_server
+usr/share/
+usr/share/licenses/
+usr/share/licenses/ibm-sw-tpm2/
+usr/share/licenses/ibm-sw-tpm2/LICENSE

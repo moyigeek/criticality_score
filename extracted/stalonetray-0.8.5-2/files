@@ -1,0 +1,10 @@
+%FILES%
+etc/
+etc/stalonetrayrc
+usr/
+usr/bin/
+usr/bin/stalonetray
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/stalonetray.1.gz

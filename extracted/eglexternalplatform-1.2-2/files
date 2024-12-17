@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/include/
+usr/include/EGL/
+usr/include/EGL/eglexternalplatform.h
+usr/include/EGL/eglexternalplatformversion.h
+usr/share/
+usr/share/licenses/
+usr/share/licenses/eglexternalplatform/
+usr/share/licenses/eglexternalplatform/COPYING
+usr/share/pkgconfig/
+usr/share/pkgconfig/eglexternalplatform.pc

@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cargo-asm
+usr/bin/cargo-llvm-ir
+usr/share/
+usr/share/doc/
+usr/share/doc/cargo-asm/
+usr/share/doc/cargo-asm/readme.md
+usr/share/licenses/
+usr/share/licenses/cargo-asm/
+usr/share/licenses/cargo-asm/license-mit.md

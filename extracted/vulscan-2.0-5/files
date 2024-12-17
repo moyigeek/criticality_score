@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/share/
+usr/share/nmap/
+usr/share/nmap/scripts/
+usr/share/nmap/scripts/vulscan/
+usr/share/nmap/scripts/vulscan/cve.csv
+usr/share/nmap/scripts/vulscan/exploitdb.csv
+usr/share/nmap/scripts/vulscan/openvas.csv
+usr/share/nmap/scripts/vulscan/osvdb.csv
+usr/share/nmap/scripts/vulscan/scipvuldb.csv
+usr/share/nmap/scripts/vulscan/securityfocus.csv
+usr/share/nmap/scripts/vulscan/securitytracker.csv
+usr/share/nmap/scripts/vulscan/vulscan.nse
+usr/share/nmap/scripts/vulscan/xforce.csv

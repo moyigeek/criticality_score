@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/dfu-prefix
+usr/bin/dfu-suffix
+usr/bin/dfu-util
+usr/bin/dfuse-pack
+usr/lib/
+usr/lib/udev/
+usr/lib/udev/rules.d/
+usr/lib/udev/rules.d/60-dfuse.rules
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/dfu-prefix.1.gz
+usr/share/man/man1/dfu-suffix.1.gz
+usr/share/man/man1/dfu-util.1.gz

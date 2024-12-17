@@ -1,0 +1,9 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/ossl-modules/
+usr/lib/ossl-modules/tpm2.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/tpm2-openssl/
+usr/share/licenses/tpm2-openssl/LICENSE

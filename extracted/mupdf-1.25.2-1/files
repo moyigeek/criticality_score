@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/mupdf
+usr/share/
+usr/share/applications/
+usr/share/applications/mupdf.desktop
+usr/share/doc/
+usr/share/doc/mupdf/
+usr/share/doc/mupdf/CHANGES
+usr/share/doc/mupdf/COPYING
+usr/share/doc/mupdf/README
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/mupdf.1.gz
+usr/share/pixmaps/
+usr/share/pixmaps/mupdf.xpm

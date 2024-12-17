@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/gost
+usr/share/
+usr/share/licenses/
+usr/share/licenses/gost/
+usr/share/licenses/gost/LICENSE

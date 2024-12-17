@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libappindicator3.so
+usr/lib32/libappindicator3.so.1
+usr/lib32/libappindicator3.so.1.0.0
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/appindicator3-0.1.pc

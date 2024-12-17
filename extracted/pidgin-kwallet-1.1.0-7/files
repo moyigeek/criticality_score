@@ -1,0 +1,5 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/pidgin/
+usr/lib/pidgin/libkwallet.so

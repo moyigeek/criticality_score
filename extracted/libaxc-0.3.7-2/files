@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/include/
+usr/include/axc/
+usr/include/axc/axc.h
+usr/include/axc/axc_crypto.h
+usr/include/axc/axc_store.h
+usr/lib/
+usr/lib/libaxc.so
+usr/lib/libaxc.so.0
+usr/lib/libaxc.so.0.3.7
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/libaxc.pc

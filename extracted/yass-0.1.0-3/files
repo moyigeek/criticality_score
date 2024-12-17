@@ -1,0 +1,13 @@
+%FILES%
+etc/
+etc/yass.conf
+usr/
+usr/bin/
+usr/bin/yass
+usr/share/
+usr/share/applications/
+usr/share/applications/yass.desktop
+usr/share/doc/
+usr/share/doc/yass/
+usr/share/doc/yass/AUTHORS
+usr/share/doc/yass/README

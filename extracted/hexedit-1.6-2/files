@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/hexedit
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/hexedit.1.gz

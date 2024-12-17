@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/share/
+usr/share/emacs/
+usr/share/emacs/site-lisp/
+usr/share/emacs/site-lisp/init-tryout.el
+usr/share/emacs/site-lisp/lua-mode.29.elc
+usr/share/emacs/site-lisp/lua-mode.el

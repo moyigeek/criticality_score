@@ -1,0 +1,15 @@
+%FILES%
+etc/
+etc/kubernetes/
+etc/kubernetes/kube-controller-manager.env
+usr/
+usr/bin/
+usr/bin/kube-controller-manager
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/kube-controller-manager.service
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/kube-controller-manager.1.gz

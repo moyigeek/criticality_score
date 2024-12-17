@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/cmake/
+usr/lib32/cmake/json-c/
+usr/lib32/cmake/json-c/json-c-config.cmake
+usr/lib32/cmake/json-c/json-c-targets-none.cmake
+usr/lib32/cmake/json-c/json-c-targets.cmake
+usr/lib32/libjson-c.so
+usr/lib32/libjson-c.so.5
+usr/lib32/libjson-c.so.5.4.0
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/json-c.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-json-c/
+usr/share/licenses/lib32-json-c/COPYING

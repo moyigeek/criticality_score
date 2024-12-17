@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/jomon
+usr/share/
+usr/share/licenses/
+usr/share/licenses/jomon/
+usr/share/licenses/jomon/LICENSE

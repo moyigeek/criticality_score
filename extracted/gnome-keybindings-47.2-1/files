@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/share/
+usr/share/gettext/
+usr/share/gettext/its/
+usr/share/gettext/its/gnome-keybindings.its
+usr/share/gettext/its/gnome-keybindings.loc
+usr/share/gnome-control-center/
+usr/share/gnome-control-center/keybindings/
+usr/share/gnome-control-center/keybindings/00-multimedia.xml
+usr/share/gnome-control-center/keybindings/01-input-sources.xml
+usr/share/gnome-control-center/keybindings/01-launchers.xml
+usr/share/gnome-control-center/keybindings/01-system.xml
+usr/share/gnome-control-center/keybindings/50-accessibility.xml
+usr/share/pkgconfig/
+usr/share/pkgconfig/gnome-keybindings.pc

@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/lucky_commit
+usr/share/
+usr/share/doc/
+usr/share/doc/lucky-commit/
+usr/share/doc/lucky-commit/README.md
+usr/share/licenses/
+usr/share/licenses/lucky-commit/
+usr/share/licenses/lucky-commit/LICENSE.md

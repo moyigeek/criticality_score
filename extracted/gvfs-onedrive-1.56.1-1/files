@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/gvfsd-onedrive
+usr/share/
+usr/share/gvfs/
+usr/share/gvfs/mounts/
+usr/share/gvfs/mounts/onedrive.mount

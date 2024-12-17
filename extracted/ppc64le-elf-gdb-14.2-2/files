@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/ppc64le-elf-gdb
+usr/bin/ppc64le-elf-gdb-add-index
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/ppc64le-elf-gdb-add-index.1.gz
+usr/share/man/man1/ppc64le-elf-gdb.1.gz
+usr/share/man/man1/ppc64le-elf-gdbserver.1.gz

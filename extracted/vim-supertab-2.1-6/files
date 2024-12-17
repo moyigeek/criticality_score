@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/vim-supertab/
+usr/share/licenses/vim-supertab/LICENSE
+usr/share/vim/
+usr/share/vim/vimfiles/
+usr/share/vim/vimfiles/doc/
+usr/share/vim/vimfiles/doc/supertab.txt
+usr/share/vim/vimfiles/plugin/
+usr/share/vim/vimfiles/plugin/supertab.vim

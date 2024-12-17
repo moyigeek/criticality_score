@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/amavisd-milter
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/amavisd-milter.service
+usr/share/
+usr/share/licenses/
+usr/share/licenses/amavisd-milter/
+usr/share/licenses/amavisd-milter/LICENSE
+usr/share/man/
+usr/share/man/man8/
+usr/share/man/man8/amavisd-milter.8.gz

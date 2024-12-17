@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/evilginx
+usr/share/
+usr/share/doc/
+usr/share/doc/evilginx/
+usr/share/doc/evilginx/CHANGELOG
+usr/share/doc/evilginx/README.md
+usr/share/evilginx/
+usr/share/evilginx/phishlets/
+usr/share/evilginx/phishlets/example.yaml
+usr/share/licenses/
+usr/share/licenses/evilginx/
+usr/share/licenses/evilginx/LICENSE

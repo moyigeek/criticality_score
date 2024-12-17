@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/DragonflyEarlyReflections
+usr/bin/DragonflyHallReverb
+usr/bin/DragonflyPlateReverb
+usr/bin/DragonflyRoomReverb
+usr/share/
+usr/share/applications/
+usr/share/applications/io.github.michaelwillis.DragonflyEarlyReflections.desktop
+usr/share/applications/io.github.michaelwillis.DragonflyHallReverb.desktop
+usr/share/applications/io.github.michaelwillis.DragonflyPlateReverb.desktop
+usr/share/applications/io.github.michaelwillis.DragonflyRoomReverb.desktop
+usr/share/doc/
+usr/share/doc/dragonfly-reverb-standalone/
+usr/share/doc/dragonfly-reverb-standalone/README.md

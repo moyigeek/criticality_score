@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/bonzomatic
+usr/share/
+usr/share/applications/
+usr/share/applications/bonzomatic.desktop
+usr/share/icons/
+usr/share/icons/hicolor/
+usr/share/icons/hicolor/256x256/
+usr/share/icons/hicolor/256x256/apps/
+usr/share/icons/hicolor/256x256/apps/bonzomatic.png
+usr/share/licenses/
+usr/share/licenses/bonzomatic/
+usr/share/licenses/bonzomatic/LICENSE
+usr/share/pixmaps/
+usr/share/pixmaps/bonzomatic.png

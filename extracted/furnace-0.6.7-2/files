@@ -1,0 +1,2205 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/furnace
+usr/share/
+usr/share/applications/
+usr/share/applications/furnace.desktop
+usr/share/doc/
+usr/share/doc/furnace/
+usr/share/doc/furnace/doc/
+usr/share/doc/furnace/doc/1-intro/
+usr/share/doc/furnace/doc/1-intro/README.md
+usr/share/doc/furnace/doc/1-intro/concepts.md
+usr/share/doc/furnace/doc/1-intro/glossary.md
+usr/share/doc/furnace/doc/1-intro/hex.md
+usr/share/doc/furnace/doc/1-intro/qs-insteditor.png
+usr/share/doc/furnace/doc/1-intro/qs-instlist-empty.png
+usr/share/doc/furnace/doc/1-intro/qs-instlist-full.png
+usr/share/doc/furnace/doc/1-intro/qs-instlist-lessempty.png
+usr/share/doc/furnace/doc/1-intro/qs-interface.png
+usr/share/doc/furnace/doc/1-intro/qs-macro-release.png
+usr/share/doc/furnace/doc/1-intro/qs-macro.png
+usr/share/doc/furnace/doc/1-intro/qs-noteoffs-channels.png
+usr/share/doc/furnace/doc/1-intro/qs-notes-channel.png
+usr/share/doc/furnace/doc/1-intro/qs-notes-channels.png
+usr/share/doc/furnace/doc/1-intro/qs-notes-effect.png
+usr/share/doc/furnace/doc/1-intro/qs-notes-inst.png
+usr/share/doc/furnace/doc/1-intro/qs-notes-spaced.png
+usr/share/doc/furnace/doc/1-intro/qs-notes-vol.png
+usr/share/doc/furnace/doc/1-intro/qs-notes-wronginst.png
+usr/share/doc/furnace/doc/1-intro/qs-order-added.png
+usr/share/doc/furnace/doc/1-intro/qs-order-changed.png
+usr/share/doc/furnace/doc/1-intro/qs-order-default.png
+usr/share/doc/furnace/doc/1-intro/qs-playeditcontrols.png
+usr/share/doc/furnace/doc/1-intro/qs-samplist.png
+usr/share/doc/furnace/doc/1-intro/qs-selection.png
+usr/share/doc/furnace/doc/1-intro/qs-speed.png
+usr/share/doc/furnace/doc/1-intro/qs-waveeditor.png
+usr/share/doc/furnace/doc/1-intro/qs-wavelist.png
+usr/share/doc/furnace/doc/1-intro/quickstart.md
+usr/share/doc/furnace/doc/2-interface/
+usr/share/doc/furnace/doc/2-interface/MIDI-value-input-1.png
+usr/share/doc/furnace/doc/2-interface/MIDI-value-input-2.png
+usr/share/doc/furnace/doc/2-interface/README.md
+usr/share/doc/furnace/doc/2-interface/asset-list.md
+usr/share/doc/furnace/doc/2-interface/components.md
+usr/share/doc/furnace/doc/2-interface/control-edit.png
+usr/share/doc/furnace/doc/2-interface/control-metronome.png
+usr/share/doc/furnace/doc/2-interface/control-play-pattern.png
+usr/share/doc/furnace/doc/2-interface/control-play-repeat.png
+usr/share/doc/furnace/doc/2-interface/control-play.png
+usr/share/doc/furnace/doc/2-interface/control-repeat.png
+usr/share/doc/furnace/doc/2-interface/control-step.png
+usr/share/doc/furnace/doc/2-interface/control-stop.png
+usr/share/doc/furnace/doc/2-interface/controls-classic.png
+usr/share/doc/furnace/doc/2-interface/controls-compact.png
+usr/share/doc/furnace/doc/2-interface/controls-split.png
+usr/share/doc/furnace/doc/2-interface/controls-vertical.png
+usr/share/doc/furnace/doc/2-interface/docking.png
+usr/share/doc/furnace/doc/2-interface/effect-list-window.md
+usr/share/doc/furnace/doc/2-interface/effect-list.png
+usr/share/doc/furnace/doc/2-interface/export.md
+usr/share/doc/furnace/doc/2-interface/formats.md
+usr/share/doc/furnace/doc/2-interface/instruments-folder.png
+usr/share/doc/furnace/doc/2-interface/instruments.png
+usr/share/doc/furnace/doc/2-interface/interface1.png
+usr/share/doc/furnace/doc/2-interface/keyboard.md
+usr/share/doc/furnace/doc/2-interface/menu-bar.md
+usr/share/doc/furnace/doc/2-interface/order-list.md
+usr/share/doc/furnace/doc/2-interface/order-list.png
+usr/share/doc/furnace/doc/2-interface/play-edit-controls.md
+usr/share/doc/furnace/doc/2-interface/samples.png
+usr/share/doc/furnace/doc/2-interface/settings.md
+usr/share/doc/furnace/doc/2-interface/song-info.md
+usr/share/doc/furnace/doc/2-interface/tab1.png
+usr/share/doc/furnace/doc/2-interface/tab2.png
+usr/share/doc/furnace/doc/2-interface/tab3.png
+usr/share/doc/furnace/doc/2-interface/wavetables.png
+usr/share/doc/furnace/doc/2-interface/window.png
+usr/share/doc/furnace/doc/3-pattern/
+usr/share/doc/furnace/doc/3-pattern/README.md
+usr/share/doc/furnace/doc/3-pattern/channelbar.png
+usr/share/doc/furnace/doc/3-pattern/effects.md
+usr/share/doc/furnace/doc/3-pattern/keyboard.png
+usr/share/doc/furnace/doc/3-pattern/pattern.png
+usr/share/doc/furnace/doc/3-pattern/status-note-off-rel.png
+usr/share/doc/furnace/doc/3-pattern/status-note-off.png
+usr/share/doc/furnace/doc/3-pattern/status-note-on-rel.png
+usr/share/doc/furnace/doc/3-pattern/status-note-on.png
+usr/share/doc/furnace/doc/3-pattern/status-pitch-arpeg.png
+usr/share/doc/furnace/doc/3-pattern/status-pitch-down.png
+usr/share/doc/furnace/doc/3-pattern/status-pitch-none.png
+usr/share/doc/furnace/doc/3-pattern/status-pitch-porta.png
+usr/share/doc/furnace/doc/3-pattern/status-pitch-up.png
+usr/share/doc/furnace/doc/3-pattern/status-volume-down.png
+usr/share/doc/furnace/doc/3-pattern/status-volume-none.png
+usr/share/doc/furnace/doc/3-pattern/status-volume-tremolo.png
+usr/share/doc/furnace/doc/3-pattern/status-volume-up.png
+usr/share/doc/furnace/doc/4-instrument/
+usr/share/doc/furnace/doc/4-instrument/FM-ADSRchart.png
+usr/share/doc/furnace/doc/4-instrument/README.md
+usr/share/doc/furnace/doc/4-instrument/adpcm-a.md
+usr/share/doc/furnace/doc/4-instrument/adpcm-b.md
+usr/share/doc/furnace/doc/4-instrument/ay8910.md
+usr/share/doc/furnace/doc/4-instrument/ay8930.md
+usr/share/doc/furnace/doc/4-instrument/beeper.md
+usr/share/doc/furnace/doc/4-instrument/bifurcator.md
+usr/share/doc/furnace/doc/4-instrument/c140.md
+usr/share/doc/furnace/doc/4-instrument/c219.md
+usr/share/doc/furnace/doc/4-instrument/c64.md
+usr/share/doc/furnace/doc/4-instrument/dave.md
+usr/share/doc/furnace/doc/4-instrument/es5506.md
+usr/share/doc/furnace/doc/4-instrument/fds.md
+usr/share/doc/furnace/doc/4-instrument/fm-esfm.md
+usr/share/doc/furnace/doc/4-instrument/fm-opl.md
+usr/share/doc/furnace/doc/4-instrument/fm-opll.md
+usr/share/doc/furnace/doc/4-instrument/fm-opm.md
+usr/share/doc/furnace/doc/4-instrument/fm-opn.md
+usr/share/doc/furnace/doc/4-instrument/fm-opz.md
+usr/share/doc/furnace/doc/4-instrument/ga20.md
+usr/share/doc/furnace/doc/4-instrument/game-boy.md
+usr/share/doc/furnace/doc/4-instrument/gbadma.md
+usr/share/doc/furnace/doc/4-instrument/gbaminmod.md
+usr/share/doc/furnace/doc/4-instrument/instrument-editor-top.png
+usr/share/doc/furnace/doc/4-instrument/instrument-wavetable.png
+usr/share/doc/furnace/doc/4-instrument/k007232.md
+usr/share/doc/furnace/doc/4-instrument/k053260.md
+usr/share/doc/furnace/doc/4-instrument/lynx.md
+usr/share/doc/furnace/doc/4-instrument/macro-ADSR.png
+usr/share/doc/furnace/doc/4-instrument/macro-ADSRchart.png
+usr/share/doc/furnace/doc/4-instrument/macro-LFO.png
+usr/share/doc/furnace/doc/4-instrument/macro-button-ADSR.png
+usr/share/doc/furnace/doc/4-instrument/macro-button-LFO.png
+usr/share/doc/furnace/doc/4-instrument/macro-button-seq.png
+usr/share/doc/furnace/doc/4-instrument/macro-seq-bitmask.png
+usr/share/doc/furnace/doc/4-instrument/macro-seq-clip.png
+usr/share/doc/furnace/doc/4-instrument/macro-seq.png
+usr/share/doc/furnace/doc/4-instrument/macroview.png
+usr/share/doc/furnace/doc/4-instrument/msm5232.md
+usr/share/doc/furnace/doc/4-instrument/msm6258.md
+usr/share/doc/furnace/doc/4-instrument/msm6295.md
+usr/share/doc/furnace/doc/4-instrument/n163.md
+usr/share/doc/furnace/doc/4-instrument/nds.md
+usr/share/doc/furnace/doc/4-instrument/nes.md
+usr/share/doc/furnace/doc/4-instrument/pce.md
+usr/share/doc/furnace/doc/4-instrument/pet.md
+usr/share/doc/furnace/doc/4-instrument/pokemini.md
+usr/share/doc/furnace/doc/4-instrument/pokey.md
+usr/share/doc/furnace/doc/4-instrument/powernoise.md
+usr/share/doc/furnace/doc/4-instrument/psg.md
+usr/share/doc/furnace/doc/4-instrument/pv1000.md
+usr/share/doc/furnace/doc/4-instrument/qsound.md
+usr/share/doc/furnace/doc/4-instrument/rf5c68.md
+usr/share/doc/furnace/doc/4-instrument/saa.md
+usr/share/doc/furnace/doc/4-instrument/sample-map.png
+usr/share/doc/furnace/doc/4-instrument/sample.md
+usr/share/doc/furnace/doc/4-instrument/scc.md
+usr/share/doc/furnace/doc/4-instrument/segapcm.md
+usr/share/doc/furnace/doc/4-instrument/sid2.md
+usr/share/doc/furnace/doc/4-instrument/sm8521.md
+usr/share/doc/furnace/doc/4-instrument/snes.md
+usr/share/doc/furnace/doc/4-instrument/su.md
+usr/share/doc/furnace/doc/4-instrument/t6w28.md
+usr/share/doc/furnace/doc/4-instrument/ted.md
+usr/share/doc/furnace/doc/4-instrument/tia.md
+usr/share/doc/furnace/doc/4-instrument/vera.md
+usr/share/doc/furnace/doc/4-instrument/vic.md
+usr/share/doc/furnace/doc/4-instrument/virtual-boy.md
+usr/share/doc/furnace/doc/4-instrument/vrc6.md
+usr/share/doc/furnace/doc/4-instrument/wavesynth.md
+usr/share/doc/furnace/doc/4-instrument/wavetable.png
+usr/share/doc/furnace/doc/4-instrument/wonderswan.md
+usr/share/doc/furnace/doc/4-instrument/wsg.md
+usr/share/doc/furnace/doc/4-instrument/x1_010.md
+usr/share/doc/furnace/doc/4-instrument/ymz280b.md
+usr/share/doc/furnace/doc/5-wave/
+usr/share/doc/furnace/doc/5-wave/README.md
+usr/share/doc/furnace/doc/5-wave/wave-editor-FM.png
+usr/share/doc/furnace/doc/5-wave/wave-editor-shapes.png
+usr/share/doc/furnace/doc/5-wave/wave-editor-tools.png
+usr/share/doc/furnace/doc/5-wave/wave-editor.png
+usr/share/doc/furnace/doc/6-sample/
+usr/share/doc/furnace/doc/6-sample/README.md
+usr/share/doc/furnace/doc/6-sample/sample-editor-buttons.png
+usr/share/doc/furnace/doc/6-sample/sample-editor.png
+usr/share/doc/furnace/doc/7-systems/
+usr/share/doc/furnace/doc/7-systems/5e01.md
+usr/share/doc/furnace/doc/7-systems/README.md
+usr/share/doc/furnace/doc/7-systems/amiga.md
+usr/share/doc/furnace/doc/7-systems/ay8910.md
+usr/share/doc/furnace/doc/7-systems/ay8930.md
+usr/share/doc/furnace/doc/7-systems/bifurcator.md
+usr/share/doc/furnace/doc/7-systems/bubblesystem.md
+usr/share/doc/furnace/doc/7-systems/c140.md
+usr/share/doc/furnace/doc/7-systems/c219.md
+usr/share/doc/furnace/doc/7-systems/c64.md
+usr/share/doc/furnace/doc/7-systems/dac.md
+usr/share/doc/furnace/doc/7-systems/dave.md
+usr/share/doc/furnace/doc/7-systems/es5506.md
+usr/share/doc/furnace/doc/7-systems/esfm.md
+usr/share/doc/furnace/doc/7-systems/fds.md
+usr/share/doc/furnace/doc/7-systems/ga20.md
+usr/share/doc/furnace/doc/7-systems/game-boy.md
+usr/share/doc/furnace/doc/7-systems/gba.md
+usr/share/doc/furnace/doc/7-systems/k007232.md
+usr/share/doc/furnace/doc/7-systems/k056320.md
+usr/share/doc/furnace/doc/7-systems/lynx.md
+usr/share/doc/furnace/doc/7-systems/mmc5.md
+usr/share/doc/furnace/doc/7-systems/msm5232.md
+usr/share/doc/furnace/doc/7-systems/msm6258.md
+usr/share/doc/furnace/doc/7-systems/msm6295.md
+usr/share/doc/furnace/doc/7-systems/n163.md
+usr/share/doc/furnace/doc/7-systems/namco.md
+usr/share/doc/furnace/doc/7-systems/nds.md
+usr/share/doc/furnace/doc/7-systems/nes.md
+usr/share/doc/furnace/doc/7-systems/opl.md
+usr/share/doc/furnace/doc/7-systems/opll.md
+usr/share/doc/furnace/doc/7-systems/opz.md
+usr/share/doc/furnace/doc/7-systems/pce.md
+usr/share/doc/furnace/doc/7-systems/pcspkr.md
+usr/share/doc/furnace/doc/7-systems/pet.md
+usr/share/doc/furnace/doc/7-systems/pokemini.md
+usr/share/doc/furnace/doc/7-systems/pokey.md
+usr/share/doc/furnace/doc/7-systems/powernoise.md
+usr/share/doc/furnace/doc/7-systems/pv1000.md
+usr/share/doc/furnace/doc/7-systems/qsound.md
+usr/share/doc/furnace/doc/7-systems/ricoh.md
+usr/share/doc/furnace/doc/7-systems/saa1099.md
+usr/share/doc/furnace/doc/7-systems/scc.md
+usr/share/doc/furnace/doc/7-systems/segapcm.md
+usr/share/doc/furnace/doc/7-systems/sid2.md
+usr/share/doc/furnace/doc/7-systems/sm8521.md
+usr/share/doc/furnace/doc/7-systems/sms.md
+usr/share/doc/furnace/doc/7-systems/snes.md
+usr/share/doc/furnace/doc/7-systems/soundunit.md
+usr/share/doc/furnace/doc/7-systems/status-C64-ch3off.png
+usr/share/doc/furnace/doc/7-systems/status-C64-gate-off-test-on.png
+usr/share/doc/furnace/doc/7-systems/status-C64-gate-off.png
+usr/share/doc/furnace/doc/7-systems/status-C64-none.png
+usr/share/doc/furnace/doc/7-systems/status-C64-test-on.png
+usr/share/doc/furnace/doc/7-systems/status-PCE-noise-off.png
+usr/share/doc/furnace/doc/7-systems/status-PCE-noise-on.png
+usr/share/doc/furnace/doc/7-systems/status-SNES-env-A.png
+usr/share/doc/furnace/doc/7-systems/status-SNES-env-D.png
+usr/share/doc/furnace/doc/7-systems/status-SNES-env-R.png
+usr/share/doc/furnace/doc/7-systems/status-SNES-env-S.png
+usr/share/doc/furnace/doc/7-systems/status-SNES-gain-dec-lin.png
+usr/share/doc/furnace/doc/7-systems/status-SNES-gain-dec-log.png
+usr/share/doc/furnace/doc/7-systems/status-SNES-gain-direct.png
+usr/share/doc/furnace/doc/7-systems/status-SNES-gain-inc-bent.png
+usr/share/doc/furnace/doc/7-systems/status-SNES-gain-inc-lin.png
+usr/share/doc/furnace/doc/7-systems/status-Swan-PCM-off.png
+usr/share/doc/furnace/doc/7-systems/status-Swan-PCM-on.png
+usr/share/doc/furnace/doc/7-systems/status-Swan-noise-off.png
+usr/share/doc/furnace/doc/7-systems/status-Swan-noise-on.png
+usr/share/doc/furnace/doc/7-systems/status-Swan-sweep-off.png
+usr/share/doc/furnace/doc/7-systems/status-Swan-sweep-on.png
+usr/share/doc/furnace/doc/7-systems/t6w28.md
+usr/share/doc/furnace/doc/7-systems/ted.md
+usr/share/doc/furnace/doc/7-systems/tia.md
+usr/share/doc/furnace/doc/7-systems/vera.md
+usr/share/doc/furnace/doc/7-systems/vic20.md
+usr/share/doc/furnace/doc/7-systems/virtual-boy.md
+usr/share/doc/furnace/doc/7-systems/vrc6.md
+usr/share/doc/furnace/doc/7-systems/wonderswan.md
+usr/share/doc/furnace/doc/7-systems/x1-010.md
+usr/share/doc/furnace/doc/7-systems/ym2151.md
+usr/share/doc/furnace/doc/7-systems/ym2203.md
+usr/share/doc/furnace/doc/7-systems/ym2608.md
+usr/share/doc/furnace/doc/7-systems/ym2610.md
+usr/share/doc/furnace/doc/7-systems/ym2610b.md
+usr/share/doc/furnace/doc/7-systems/ym2612.md
+usr/share/doc/furnace/doc/7-systems/ymu759.md
+usr/share/doc/furnace/doc/7-systems/ymz280b.md
+usr/share/doc/furnace/doc/7-systems/zxbeep.md
+usr/share/doc/furnace/doc/8-advanced/
+usr/share/doc/furnace/doc/8-advanced/README.md
+usr/share/doc/furnace/doc/8-advanced/channels.md
+usr/share/doc/furnace/doc/8-advanced/channels.png
+usr/share/doc/furnace/doc/8-advanced/chanosc-gradient.png
+usr/share/doc/furnace/doc/8-advanced/chanosc.md
+usr/share/doc/furnace/doc/8-advanced/chanosc.png
+usr/share/doc/furnace/doc/8-advanced/chip-manager-move.png
+usr/share/doc/furnace/doc/8-advanced/chip-manager-remove.png
+usr/share/doc/furnace/doc/8-advanced/chip-manager.md
+usr/share/doc/furnace/doc/8-advanced/chip-manager.png
+usr/share/doc/furnace/doc/8-advanced/clock.md
+usr/share/doc/furnace/doc/8-advanced/clock.png
+usr/share/doc/furnace/doc/8-advanced/command-line.md
+usr/share/doc/furnace/doc/8-advanced/comments.md
+usr/share/doc/furnace/doc/8-advanced/comments.png
+usr/share/doc/furnace/doc/8-advanced/compat-flags.md
+usr/share/doc/furnace/doc/8-advanced/find-find.png
+usr/share/doc/furnace/doc/8-advanced/find-replace.md
+usr/share/doc/furnace/doc/8-advanced/find-replace.png
+usr/share/doc/furnace/doc/8-advanced/groove.png
+usr/share/doc/furnace/doc/8-advanced/grooves.md
+usr/share/doc/furnace/doc/8-advanced/grooves.png
+usr/share/doc/furnace/doc/8-advanced/inputlatch.md
+usr/share/doc/furnace/doc/8-advanced/inputlatch.png
+usr/share/doc/furnace/doc/8-advanced/log-viewer.md
+usr/share/doc/furnace/doc/8-advanced/log-viewer.png
+usr/share/doc/furnace/doc/8-advanced/memory-composition.md
+usr/share/doc/furnace/doc/8-advanced/mixer-mixer.png
+usr/share/doc/furnace/doc/8-advanced/mixer-patchbay.png
+usr/share/doc/furnace/doc/8-advanced/mixer.md
+usr/share/doc/furnace/doc/8-advanced/opmask.md
+usr/share/doc/furnace/doc/8-advanced/opmask.png
+usr/share/doc/furnace/doc/8-advanced/osc.md
+usr/share/doc/furnace/doc/8-advanced/osc.png
+usr/share/doc/furnace/doc/8-advanced/pat-manager.md
+usr/share/doc/furnace/doc/8-advanced/pattern-manager.png
+usr/share/doc/furnace/doc/8-advanced/piano.md
+usr/share/doc/furnace/doc/8-advanced/piano.png
+usr/share/doc/furnace/doc/8-advanced/register.png
+usr/share/doc/furnace/doc/8-advanced/regview.md
+usr/share/doc/furnace/doc/8-advanced/stats.md
+usr/share/doc/furnace/doc/8-advanced/stats.png
+usr/share/doc/furnace/doc/8-advanced/user-systems.md
+usr/share/doc/furnace/doc/8-advanced/user-systems.png
+usr/share/doc/furnace/doc/8-advanced/xyosc.md
+usr/share/doc/furnace/doc/9-guides/
+usr/share/doc/furnace/doc/9-guides/README.md
+usr/share/doc/furnace/doc/9-guides/emulation-cores.md
+usr/share/doc/furnace/doc/9-guides/envelope.md
+usr/share/doc/furnace/doc/9-guides/limited-samples.md
+usr/share/doc/furnace/doc/9-guides/opllswitching.md
+usr/share/doc/furnace/doc/9-guides/tuning-samples.md
+usr/share/doc/furnace/doc/README.md
+usr/share/doc/furnace/other/
+usr/share/doc/furnace/other/papers/
+usr/share/doc/furnace/other/papers/clipboard-format.md
+usr/share/doc/furnace/other/papers/exo-license.txt
+usr/share/doc/furnace/other/papers/export-tech.md
+usr/share/doc/furnace/other/papers/format.md
+usr/share/doc/furnace/other/papers/ibm-plex-license.txt
+usr/share/doc/furnace/other/papers/icons.md
+usr/share/doc/furnace/other/papers/liberation-license.txt
+usr/share/doc/furnace/other/papers/mononoki-license.txt
+usr/share/doc/furnace/other/papers/multiplayer.md
+usr/share/doc/furnace/other/papers/newIns.md
+usr/share/doc/furnace/other/papers/oldIns.md
+usr/share/doc/furnace/other/papers/oldflags.md
+usr/share/doc/furnace/other/papers/proggy-license.txt
+usr/share/doc/furnace/other/papers/pt-mono-license.txt
+usr/share/doc/furnace/other/papers/screenshot1.png
+usr/share/doc/furnace/other/papers/screenshot2.png
+usr/share/doc/furnace/other/papers/screenshot3.png
+usr/share/doc/furnace/other/papers/unifont-license.txt
+usr/share/doc/furnace/other/papers/zsm-format.md
+usr/share/furnace/
+usr/share/furnace/demos/
+usr/share/furnace/demos/README.md
+usr/share/furnace/demos/a2600/
+usr/share/furnace/demos/a2600/Funky_Afternoon.fur
+usr/share/furnace/demos/a2600/Slam_the_Door.fur
+usr/share/furnace/demos/a2600/TIADeepIntoCode.fur
+usr/share/furnace/demos/a2600/Watch My Tone.fur
+usr/share/furnace/demos/a2600/atari_breakbeat.fur
+usr/share/furnace/demos/a2600/morepain.fur
+usr/share/furnace/demos/a2600/the_erfngjt.fur
+usr/share/furnace/demos/a2600/twin.fur
+usr/share/furnace/demos/amiga/
+usr/share/furnace/demos/amiga/a_wave_powerhouse.fur
+usr/share/furnace/demos/amiga/bruno_time.fur
+usr/share/furnace/demos/amiga/furnace0.6crk.fur
+usr/share/furnace/demos/amiga/m7 vibe.fur
+usr/share/furnace/demos/amiga/serendipid.fur
+usr/share/furnace/demos/arcade/
+usr/share/furnace/demos/arcade/ComicPartytrack20.fur
+usr/share/furnace/demos/arcade/Destiny_Islands_Irem_M92.fur
+usr/share/furnace/demos/arcade/Eternal_Forest_TaitoArcade.fur
+usr/share/furnace/demos/arcade/Grape_Jelly_Alpha5232.fur
+usr/share/furnace/demos/arcade/Hexionology.fur
+usr/share/furnace/demos/arcade/Ice_Wind_SegaPCM.fur
+usr/share/furnace/demos/arcade/Mars_Bar_On_Mars_NamcoWSG.fur
+usr/share/furnace/demos/arcade/Maximum_Overdrive_NamcoWSG.fur
+usr/share/furnace/demos/arcade/Neo_Seaside_Volley_Court_NeoGeo.fur
+usr/share/furnace/demos/arcade/Phoenix_cover_NamcoWSG.fur
+usr/share/furnace/demos/arcade/Physics_Exam_TaitoArcade.fur
+usr/share/furnace/demos/arcade/Point_of_No_Return_SegaPCM.fur
+usr/share/furnace/demos/arcade/QSound_smile.fur
+usr/share/furnace/demos/arcade/Salamander_Starfield.fur
+usr/share/furnace/demos/arcade/Some_Creatures_SegaPCM.fur
+usr/share/furnace/demos/arcade/The_Good_Times_SegaPCM.fur
+usr/share/furnace/demos/arcade/ToHeart_QoH98_TPower_Asuka120Style.fur
+usr/share/furnace/demos/arcade/Tubelectric_Fictional_Arcade.fur
+usr/share/furnace/demos/arcade/U.N. Owen Was Her (NS2).fur
+usr/share/furnace/demos/arcade/UT99_Run_TaitoArcade.fur
+usr/share/furnace/demos/arcade/Utter_Determination_TaitoArcade.fur
+usr/share/furnace/demos/arcade/WSG_Loop_Tune_NamcoWSG.fur
+usr/share/furnace/demos/arcade/eek_qsound.fur
+usr/share/furnace/demos/arcade/ice_cap_NamcoC30.fur
+usr/share/furnace/demos/arcade/last_day_of_summer_NamcoC15.fur
+usr/share/furnace/demos/arcade/sans_TaitoArcade.fur
+usr/share/furnace/demos/arcade/the_machines_are_socialising_SegaPCM.fur
+usr/share/furnace/demos/ay8910/
+usr/share/furnace/demos/ay8910/AY-3-8910_Jam.fur
+usr/share/furnace/demos/ay8910/AyMate.fur
+usr/share/furnace/demos/ay8910/Drifting in Colour.fur
+usr/share/furnace/demos/ay8910/Flat Wave Society.fur
+usr/share/furnace/demos/ay8910/Second_Addition.fur
+usr/share/furnace/demos/ay8910/cardboardmywater.fur
+usr/share/furnace/demos/ay8910/demoscenetypebeat.fur
+usr/share/furnace/demos/ay8910/remark_music.fur
+usr/share/furnace/demos/ay8910/vibe_zone.fur
+usr/share/furnace/demos/ay8930/
+usr/share/furnace/demos/ay8930/AY8930Shuffle.fur
+usr/share/furnace/demos/ay8930/Obscure_Temptation.fur
+usr/share/furnace/demos/ay8930/One_Minute_Waltz.fur
+usr/share/furnace/demos/ay8930/Playing_On_The_Stairs.fur
+usr/share/furnace/demos/ay8930/Red_Planet.fur
+usr/share/furnace/demos/ay8930/duty fun.fur
+usr/share/furnace/demos/ay8930/joyful.fur
+usr/share/furnace/demos/ay8930/powerful-sample-generator.fur
+usr/share/furnace/demos/c64/
+usr/share/furnace/demos/c64/C64 junk.fur
+usr/share/furnace/demos/c64/ChaosTune.fur
+usr/share/furnace/demos/c64/DOOM_E1M1.fur
+usr/share/furnace/demos/c64/DOOM_E1M3.fur
+usr/share/furnace/demos/c64/Hellcharger.fur
+usr/share/furnace/demos/c64/The_Snippet.fur
+usr/share/furnace/demos/c64/deadlock.fur
+usr/share/furnace/demos/c64/yeah!.fur
+usr/share/furnace/demos/esfm/
+usr/share/furnace/demos/esfm/AAAA.fur
+usr/share/furnace/demos/esfm/ALCATRAZ_ALWAYS.fur
+usr/share/furnace/demos/esfm/CampingJourney.fur
+usr/share/furnace/demos/esfm/Deadline.fur
+usr/share/furnace/demos/esfm/Devil_Detective.fur
+usr/share/furnace/demos/esfm/Drinkin_Coffee_Way_Too_Much.fur
+usr/share/furnace/demos/esfm/EdgeRunning_2078.fur
+usr/share/furnace/demos/esfm/Fighting_the_Dimensions_Big_Bad_Because_its_Fun.fur
+usr/share/furnace/demos/esfm/I_Cant_Escape_Your_Memory.fur
+usr/share/furnace/demos/esfm/Just_me_and_my_Brain.fur
+usr/share/furnace/demos/esfm/Ken_Stage.fur
+usr/share/furnace/demos/esfm/Magician_Lake_Cover.fur
+usr/share/furnace/demos/esfm/Napalm-Loader.fur
+usr/share/furnace/demos/esfm/Perilous059.fur
+usr/share/furnace/demos/esfm/Poets_I.fur
+usr/share/furnace/demos/esfm/Redial.fur
+usr/share/furnace/demos/esfm/SearchPrincess.fur
+usr/share/furnace/demos/esfm/Second_Start.fur
+usr/share/furnace/demos/esfm/Strange_Sunset.fur
+usr/share/furnace/demos/esfm/Tangent_to_a_Segue.fur
+usr/share/furnace/demos/esfm/TheOneWayFuture.fur
+usr/share/furnace/demos/esfm/Unconscious_Unravelling.fur
+usr/share/furnace/demos/esfm/Unknown_Location.fur
+usr/share/furnace/demos/esfm/WalkInThePark.fur
+usr/share/furnace/demos/esfm/WindFjordsESFM.fur
+usr/share/furnace/demos/esfm/act_of_fighter.fur
+usr/share/furnace/demos/esfm/cielos_esfumados.fur
+usr/share/furnace/demos/esfm/esfm_ins.fur
+usr/share/furnace/demos/esfm/experiment.fur
+usr/share/furnace/demos/esfm/flashback.fur
+usr/share/furnace/demos/esfm/frosty_dusk.fur
+usr/share/furnace/demos/esfm/haunted_castle.fur
+usr/share/furnace/demos/esfm/her_wishes.fur
+usr/share/furnace/demos/esfm/ledstorm.fur
+usr/share/furnace/demos/esfm/loneguitarist.fur
+usr/share/furnace/demos/esfm/moon_closedspace.fur
+usr/share/furnace/demos/esfm/pcbend.fur
+usr/share/furnace/demos/esfm/sticker1.fur
+usr/share/furnace/demos/esfm/synthy.fur
+usr/share/furnace/demos/esfm/wack.fur
+usr/share/furnace/demos/esfm/x_evil_soul.fur
+usr/share/furnace/demos/gameboy/
+usr/share/furnace/demos/gameboy/GB_WaitForMe.fur
+usr/share/furnace/demos/gameboy/On_Hold.fur
+usr/share/furnace/demos/gameboy/Pleasure_of_Tension.fur
+usr/share/furnace/demos/gameboy/You're_Doing_Well!.fur
+usr/share/furnace/demos/gameboy/cheap.fur
+usr/share/furnace/demos/gameboy/dancing_to_the_death.fur
+usr/share/furnace/demos/gameboy/dtect.fur
+usr/share/furnace/demos/gameboy/finger.fur
+usr/share/furnace/demos/gameboy/freedom.fur
+usr/share/furnace/demos/gameboy/ice_3_advert.fur
+usr/share/furnace/demos/gameboy/lagtrain.fur
+usr/share/furnace/demos/gameboy/minos.fur
+usr/share/furnace/demos/gameboy/puggs_in_space.fur
+usr/share/furnace/demos/gameboy/snowdin.fur
+usr/share/furnace/demos/gameboy/spreadtro.fur
+usr/share/furnace/demos/genesis/
+usr/share/furnace/demos/genesis/All Good Times.fur
+usr/share/furnace/demos/genesis/Another_winter.fur
+usr/share/furnace/demos/genesis/Carnage.fur
+usr/share/furnace/demos/genesis/CorridorsOfTimeRMX.fur
+usr/share/furnace/demos/genesis/Equinox Intro.fur
+usr/share/furnace/demos/genesis/Fancy_Promenard.fur
+usr/share/furnace/demos/genesis/Kobito_of_the_Shining_Needle.fur
+usr/share/furnace/demos/genesis/MegadriveOverdrive.fur
+usr/share/furnace/demos/genesis/Plok_Beach.fur
+usr/share/furnace/demos/genesis/Puyopuyo~n_DopplegangerArle-TsuuStyle.fur
+usr/share/furnace/demos/genesis/Shovel_Knight_Title.fur
+usr/share/furnace/demos/genesis/Solar_Man.fur
+usr/share/furnace/demos/genesis/SpareHalloween2.fur
+usr/share/furnace/demos/genesis/SparkmanMD.fur
+usr/share/furnace/demos/genesis/Stereotactics_Rewritten.fur
+usr/share/furnace/demos/genesis/darkstar.fur
+usr/share/furnace/demos/genesis/forest_freeway_zone.fur
+usr/share/furnace/demos/genesis/imaginarium.fur
+usr/share/furnace/demos/genesis/inside_the_computer.fur
+usr/share/furnace/demos/genesis/laidback.fur
+usr/share/furnace/demos/genesis/last_chiptune.fur
+usr/share/furnace/demos/genesis/louder.fur
+usr/share/furnace/demos/genesis/mm5_boss.fur
+usr/share/furnace/demos/genesis/mummy_in_the_pyramid.fur
+usr/share/furnace/demos/genesis/my_problem.fur
+usr/share/furnace/demos/genesis/newer_song_lol.fur
+usr/share/furnace/demos/genesis/the_serenity_of_lonliness.fur
+usr/share/furnace/demos/genesis/yky.fur
+usr/share/furnace/demos/lynx/
+usr/share/furnace/demos/lynx/LedStorm.fur
+usr/share/furnace/demos/lynx/Road_Rash_Grass_Valley.fur
+usr/share/furnace/demos/lynx/Tyrian-Camanis.fur
+usr/share/furnace/demos/lynx/chippylotus.fur
+usr/share/furnace/demos/lynx/insert_title_here.fur
+usr/share/furnace/demos/misc/
+usr/share/furnace/demos/misc/BlueBolt_VIC20.fur
+usr/share/furnace/demos/misc/Dreamliner_FMTowns.fur
+usr/share/furnace/demos/misc/FiveTwoThreeTwo_MSM5232.fur
+usr/share/furnace/demos/misc/Galactic_Melody_PowerNoise.fur
+usr/share/furnace/demos/misc/GreenIdeas_PET.fur
+usr/share/furnace/demos/misc/Inner Machinations YM2610B.fur
+usr/share/furnace/demos/misc/Miami_Ice_Sharp_X1.fur
+usr/share/furnace/demos/misc/OHM_VRC6.fur
+usr/share/furnace/demos/misc/Playground_2xT6W28.fur
+usr/share/furnace/demos/misc/Someting_I_can_feel_MSM5232.fur
+usr/share/furnace/demos/misc/Special Stage Sonic 3 (GBA).fur
+usr/share/furnace/demos/misc/StrobesPowerNoise.fur
+usr/share/furnace/demos/misc/T_Six_T6W28.fur
+usr/share/furnace/demos/misc/TerminalZone_SM8521.fur
+usr/share/furnace/demos/misc/Weightlessness_ES5506.fur
+usr/share/furnace/demos/misc/ZetaForceLevel2.fur
+usr/share/furnace/demos/misc/beeper_torture.fur
+usr/share/furnace/demos/misc/biffy_bifurcator.fur
+usr/share/furnace/demos/misc/brokenspace-msm5232.fur
+usr/share/furnace/demos/misc/cavedotwave-msm5232.fur
+usr/share/furnace/demos/misc/combat_vehicle_pokey.fur
+usr/share/furnace/demos/misc/deepmist_dave.fur
+usr/share/furnace/demos/misc/empty_PV-1000.fur
+usr/share/furnace/demos/misc/fragments_turbosound.fur
+usr/share/furnace/demos/misc/fursuits_for_the_suspiciously_rich_MSM5232.fur
+usr/share/furnace/demos/misc/hope_for_the_dream_opm.fur
+usr/share/furnace/demos/misc/lagrange_point_2023_opm.fur
+usr/share/furnace/demos/misc/massive_x_opz.fur
+usr/share/furnace/demos/misc/meaningful_connection_es5506.fur
+usr/share/furnace/demos/misc/mushroomhill_SM8521.fur
+usr/share/furnace/demos/misc/pseudogba_pwaa_godot.fur
+usr/share/furnace/demos/misc/rf5wapianoroll.fur
+usr/share/furnace/demos/misc/sparkling_aria_pokemini.fur
+usr/share/furnace/demos/misc/sucked_something_zx.fur
+usr/share/furnace/demos/misc/teddy_bear_midnight_jam_ted.fur
+usr/share/furnace/demos/misc/the_king_of_crisp_opm.fur
+usr/share/furnace/demos/misc/vortex_opm.fur
+usr/share/furnace/demos/misc/walkontheroof_T6W28.fur
+usr/share/furnace/demos/misc/waterworld_map_opm.fur
+usr/share/furnace/demos/msx/
+usr/share/furnace/demos/msx/21492413.fur
+usr/share/furnace/demos/msx/BREEZE_SENSATION.fur
+usr/share/furnace/demos/msx/Gyruss_Stage_2.fur
+usr/share/furnace/demos/msx/Juice_Stand.fur
+usr/share/furnace/demos/msx/Morning_Alarm.fur
+usr/share/furnace/demos/msx/Nemesis2AirBattle.fur
+usr/share/furnace/demos/msx/OPLL_High_and_Rising.fur
+usr/share/furnace/demos/msx/OPLL_OperationPleaseLeaveLeave.fur
+usr/share/furnace/demos/msx/Port Sun.fur
+usr/share/furnace/demos/msx/Princess_of_the_Dead.fur
+usr/share/furnace/demos/msx/Striking_Towards_Opposition.fur
+usr/share/furnace/demos/msx/attack_the_barbarian.fur
+usr/share/furnace/demos/msx/opll-fashioned_drums.fur
+usr/share/furnace/demos/msx/ranburu_song.fur
+usr/share/furnace/demos/multichip/
+usr/share/furnace/demos/multichip/1_bit_bros.fur
+usr/share/furnace/demos/multichip/AgentX.fur
+usr/share/furnace/demos/multichip/Between_the_Circuits.fur
+usr/share/furnace/demos/multichip/Chip_Duel_AY-3-8910+SN76489.fur
+usr/share/furnace/demos/multichip/Cossack Stage Boss.fur
+usr/share/furnace/demos/multichip/FamiMega Aliance.fur
+usr/share/furnace/demos/multichip/Fantasy_Chip_Christmas.fur
+usr/share/furnace/demos/multichip/Fight Against the Dark Matter.fur
+usr/share/furnace/demos/multichip/Fiorella YM2610B+YM2203.fur
+usr/share/furnace/demos/multichip/Fusion.fur
+usr/share/furnace/demos/multichip/HoldOn.fur
+usr/share/furnace/demos/multichip/Jet_Pack_Adventure_GBAesque.fur
+usr/share/furnace/demos/multichip/MegaMari-Cirno.fur
+usr/share/furnace/demos/multichip/MetalSlug_BaseCamp_SMS_TIA.fur
+usr/share/furnace/demos/multichip/Namco_C30_C219_Loop.fur
+usr/share/furnace/demos/multichip/OPL3_SegaPCM_Xeno_Crisis_-_Facility_Area_2.fur
+usr/share/furnace/demos/multichip/PinBot-C30C140.fur
+usr/share/furnace/demos/multichip/Sky Chaze Zone 32X.fur
+usr/share/furnace/demos/multichip/Sunset Hill Zone Act 2.fur
+usr/share/furnace/demos/multichip/TheOnlyWayIsForward.fur
+usr/share/furnace/demos/multichip/collab.fur
+usr/share/furnace/demos/multichip/cueball.fur
+usr/share/furnace/demos/multichip/double-dragon-stage1.fur
+usr/share/furnace/demos/multichip/government funding breakcore-ish remix.fur
+usr/share/furnace/demos/multichip/invicibility_mmc5_n163_fds.fur
+usr/share/furnace/demos/multichip/meteor_shower.fur
+usr/share/furnace/demos/multichip/not genesis thing.fur
+usr/share/furnace/demos/multichip/one.fur
+usr/share/furnace/demos/multichip/overdrive.fur
+usr/share/furnace/demos/multichip/pont of noreturn.fur
+usr/share/furnace/demos/multichip/ridiculous_game.fur
+usr/share/furnace/demos/multichip/satellite_interconnects.fur
+usr/share/furnace/demos/multichip/second_dimension_demo.fur
+usr/share/furnace/demos/multichip/silverlining.fur
+usr/share/furnace/demos/multichip/skate_or_die.fur
+usr/share/furnace/demos/multichip/splashingwater.fur
+usr/share/furnace/demos/multichip/sunlight.fur
+usr/share/furnace/demos/multichip/super_fantasy_zone_mango.fur
+usr/share/furnace/demos/multichip/track8_n163_k053260.fur
+usr/share/furnace/demos/multichip/urgency.fur
+usr/share/furnace/demos/nes/
+usr/share/furnace/demos/nes/Bridge Zone.fur
+usr/share/furnace/demos/nes/Byte-Sized Bop.fur
+usr/share/furnace/demos/nes/FDS TEST.fur
+usr/share/furnace/demos/nes/Famitune1.fur
+usr/share/furnace/demos/nes/Fur_Nes.fur
+usr/share/furnace/demos/nes/Future_Re-ference.fur
+usr/share/furnace/demos/nes/Rise_against_the_ashes_to_the_new_dawn.fur
+usr/share/furnace/demos/nes/Samsung SGH-x830 - Ringtone 8.fur
+usr/share/furnace/demos/nes/Sky Sanctuary Zone.fur
+usr/share/furnace/demos/nes/Super cool and awesome samurai.fur
+usr/share/furnace/demos/nes/Super_Space_Invaders_Title.fur
+usr/share/furnace/demos/nes/The Cheetahmen.fur
+usr/share/furnace/demos/nes/The East.fur
+usr/share/furnace/demos/nes/carve_your_own_path.fur
+usr/share/furnace/demos/nes/christmas-fever.fur
+usr/share/furnace/demos/nes/going_up_a_step_at_time.fur
+usr/share/furnace/demos/nes/infinity.fur
+usr/share/furnace/demos/nes/oby1_ingame.fur
+usr/share/furnace/demos/nes/one_sided_love.fur
+usr/share/furnace/demos/nes/sweatsmile_bossfight.fur
+usr/share/furnace/demos/nes/the_best-1990.fur
+usr/share/furnace/demos/nes/turtle_byte.fur
+usr/share/furnace/demos/opl/
+usr/share/furnace/demos/opl/Contraduct Design OPL3 Cover.fur
+usr/share/furnace/demos/opl/DASH.fur
+usr/share/furnace/demos/opl/E1M4OPL2.fur
+usr/share/furnace/demos/opl/Egyptian_Rule.fur
+usr/share/furnace/demos/opl/Fly_to_the_Leaden_Sky_OPL3.fur
+usr/share/furnace/demos/opl/Funky_Bubbles_OPL3.fur
+usr/share/furnace/demos/opl/I_won_t_be_there_again.fur
+usr/share/furnace/demos/opl/Memories_of_Triumph.fur
+usr/share/furnace/demos/opl/Midnight_Dog_Orchestra.fur
+usr/share/furnace/demos/opl/Moon.fur
+usr/share/furnace/demos/opl/Oh no, more sine waves.fur
+usr/share/furnace/demos/opl/Perpetual_Motion.fur
+usr/share/furnace/demos/opl/PhantomBreakerBattleGrounds_ShinjukuStage-OPL3.fur
+usr/share/furnace/demos/opl/Sliding_on_a_Rainbow.fur
+usr/share/furnace/demos/opl/TeamInnocent-BGM4-OPL3Plus.fur
+usr/share/furnace/demos/opl/Waterworld_-_Map.fur
+usr/share/furnace/demos/opl/e3m2_opl3.fur
+usr/share/furnace/demos/opl/fight and flight.fur
+usr/share/furnace/demos/opl/green_biker_dude_opl.fur
+usr/share/furnace/demos/opl/home_wfl_opl3.fur
+usr/share/furnace/demos/opl/rain.cloud.sunset.fur
+usr/share/furnace/demos/opl/the_foggy_cave_in_the_darkness.fur
+usr/share/furnace/demos/pc98/
+usr/share/furnace/demos/pc98/Blue_Nebula.fur
+usr/share/furnace/demos/pc98/CT_maintheme.fur
+usr/share/furnace/demos/pc98/Counterattack.fur
+usr/share/furnace/demos/pc98/MMXStageClear.fur
+usr/share/furnace/demos/pc98/atomic_failure.fur
+usr/share/furnace/demos/pce/
+usr/share/furnace/demos/pce/Bad_Dudes_Greased_Lightning.fur
+usr/share/furnace/demos/pce/Fake Gameboy.fur
+usr/share/furnace/demos/pce/Ma-Da-Ra.fur
+usr/share/furnace/demos/pce/Warpdrive_Engage.fur
+usr/share/furnace/demos/quickstart.fur
+usr/share/furnace/demos/sn7/
+usr/share/furnace/demos/sn7/456nm_TI994A.fur
+usr/share/furnace/demos/sn7/FlowOfSN7.fur
+usr/share/furnace/demos/sn7/Last Frecuency System.fur
+usr/share/furnace/demos/sn7/Night_Market_TI994A.fur
+usr/share/furnace/demos/sn7/Tidal_Tempest_Zone.fur
+usr/share/furnace/demos/sn7/doorintosummer.fur
+usr/share/furnace/demos/sn7/gg_silver_surfer_st1.fur
+usr/share/furnace/demos/sn7/gg_soniccd_collision_chaos.fur
+usr/share/furnace/demos/sn7/thunderblade-type-ii.fur
+usr/share/furnace/demos/snes/
+usr/share/furnace/demos/snes/Breezy.fur
+usr/share/furnace/demos/snes/Cosmic_Warehouse.fur
+usr/share/furnace/demos/snes/Dear Blue SNES.fur
+usr/share/furnace/demos/snes/IMU Caf\303\251.fur
+usr/share/furnace/demos/snes/MM8_Frost_Man.fur
+usr/share/furnace/demos/snes/ManbowSMW.fur
+usr/share/furnace/demos/snes/Sadness.fur
+usr/share/furnace/demos/snes/Sunken Lights.fur
+usr/share/furnace/demos/snes/Unreal_Something_SNES.fur
+usr/share/furnace/demos/snes/amalgam.fur
+usr/share/furnace/demos/snes/analog.fur
+usr/share/furnace/demos/snes/aurora.fur
+usr/share/furnace/demos/snes/changeyourheart.fur
+usr/share/furnace/demos/snes/encjslt.fur
+usr/share/furnace/demos/snes/segacd.fur
+usr/share/furnace/demos/snes/sound processing unit.fur
+usr/share/furnace/demos/snes/spd10.fur
+usr/share/furnace/demos/snes/spd12.fur
+usr/share/furnace/demos/snes/tetristheme.fur
+usr/share/furnace/demos/snes/very chill snes.fur
+usr/share/furnace/demos/snes/wonders_of_synthia.fur
+usr/share/furnace/demos/specs2/
+usr/share/furnace/demos/specs2/KeygenTypeBeat.fur
+usr/share/furnace/demos/specs2/Tim_Follin.fur
+usr/share/furnace/demos/specs2/acidic_juice_of_hell.fur
+usr/share/furnace/demos/specs2/atmosphere.fur
+usr/share/furnace/demos/specs2/back_into_adventure.fur
+usr/share/furnace/demos/specs2/object.fur
+usr/share/furnace/demos/specs2/rastaline_dub.fur
+usr/share/furnace/demos/specs2/spa.fur
+usr/share/furnace/demos/specs2/thick bass test.fur
+usr/share/furnace/demos/virtualboy/
+usr/share/furnace/demos/virtualboy/4_dimensionnal_goddess_of_existance.fur
+usr/share/furnace/demos/virtualboy/Cherry_Vertex.fur
+usr/share/furnace/demos/virtualboy/Dimensional.fur
+usr/share/furnace/demos/virtualboy/Double_Puzzle_Trouble.fur
+usr/share/furnace/demos/virtualboy/DoublingDown.fur
+usr/share/furnace/demos/virtualboy/Evil_Incarnate.fur
+usr/share/furnace/demos/virtualboy/God_Rest_Ye_Deadly_Gentlemen.fur
+usr/share/furnace/demos/virtualboy/Iridion_3D_Stage_3.fur
+usr/share/furnace/demos/virtualboy/LN2StreetLoader-VB.fur
+usr/share/furnace/demos/virtualboy/La_Folia_ground_bass.fur
+usr/share/furnace/demos/virtualboy/No_Such_Thing.fur
+usr/share/furnace/demos/virtualboy/Professional_Beat.fur
+usr/share/furnace/demos/virtualboy/Rave_Dancetune.fur
+usr/share/furnace/demos/virtualboy/Red_And_Black_Orchid.fur
+usr/share/furnace/demos/virtualboy/Red_Revolver.fur
+usr/share/furnace/demos/virtualboy/Redworld.fur
+usr/share/furnace/demos/virtualboy/Scarlet_Horizons.fur
+usr/share/furnace/demos/virtualboy/SeeingRed.fur
+usr/share/furnace/demos/virtualboy/StuckTerminologyRealVB.fur
+usr/share/furnace/demos/virtualboy/Virtual_Promises.fur
+usr/share/furnace/demos/virtualboy/air_fight.fur
+usr/share/furnace/demos/virtualboy/blueseed.fur
+usr/share/furnace/demos/virtualboy/devil_crash.fur
+usr/share/furnace/demos/virtualboy/eek.fur
+usr/share/furnace/demos/virtualboy/ghx_melodic.fur
+usr/share/furnace/demos/virtualboy/groove_in_the_virtual_realm.fur
+usr/share/furnace/demos/virtualboy/honeydippedkiwis.fur
+usr/share/furnace/demos/virtualboy/lastninja-sewersloader.fur
+usr/share/furnace/demos/virtualboy/mission_breafing.fur
+usr/share/furnace/demos/virtualboy/needforspeed2semainmenu.fur
+usr/share/furnace/demos/virtualboy/red_joke.fur
+usr/share/furnace/demos/virtualboy/redboas.fur
+usr/share/furnace/demos/virtualboy/redshift.fur
+usr/share/furnace/demos/virtualboy/virtual_namachuukei_pennant_race.fur
+usr/share/furnace/demos/virtualboy/wavetablehell4-vb.fur
+usr/share/furnace/demos/wonderswan/
+usr/share/furnace/demos/wonderswan/Bullet_Hell.fur
+usr/share/furnace/demos/wonderswan/Rusty_-_Queen_in_the_Dark_Night.fur
+usr/share/furnace/demos/wonderswan/TimeTrial.fur
+usr/share/furnace/demos/wonderswan/sijofsjfsoeife.fur
+usr/share/furnace/demos/x16/
+usr/share/furnace/demos/x16/Cafe - 010 Editor 2.0kg.fur
+usr/share/furnace/demos/x16/Exerion_II_Tune.fur
+usr/share/furnace/demos/x16/Identity_Believer.fur
+usr/share/furnace/demos/x16/Melody of Certain Feelings.fur
+usr/share/furnace/demos/x16/Shades of Blue.fur
+usr/share/furnace/demos/x16/TFV_Rise.fur
+usr/share/furnace/demos/x16/dance with me.fur
+usr/share/furnace/demos/x16/her11.fur
+usr/share/furnace/demos/x16/keygen19.fur
+usr/share/furnace/demos/x16/lunacommdemo.fur
+usr/share/furnace/demos/x16/richca.fur
+usr/share/furnace/demos/x16/watching_paint_dry.fur
+usr/share/furnace/demos/x68000/
+usr/share/furnace/demos/x68000/Optimistic.fur
+usr/share/furnace/demos/x68000/TimeMan.fur
+usr/share/furnace/demos/x68000/Wicked_Express.fur
+usr/share/furnace/instruments/
+usr/share/furnace/instruments/AY/
+usr/share/furnace/instruments/AY/Closed Hat.fui
+usr/share/furnace/instruments/AY/Hat-EnvBass.fui
+usr/share/furnace/instruments/AY/Heavy Kick and Snare.fui
+usr/share/furnace/instruments/AY/Heavy Kick.fui
+usr/share/furnace/instruments/AY/Kick E-1.fui
+usr/share/furnace/instruments/AY/Open Hat.fui
+usr/share/furnace/instruments/AY/Snare A#3.fui
+usr/share/furnace/instruments/AY/kick.fui
+usr/share/furnace/instruments/AY/snare.fui
+usr/share/furnace/instruments/C64/
+usr/share/furnace/instruments/C64/C64Lead.fui
+usr/share/furnace/instruments/C64/C64_Bass.fui
+usr/share/furnace/instruments/C64/Castanets.fui
+usr/share/furnace/instruments/C64/Closed_Hi-hat.fui
+usr/share/furnace/instruments/C64/Gunshot.fui
+usr/share/furnace/instruments/C64/Open_Hi-hat.fui
+usr/share/furnace/instruments/C64/Side_Stick.fui
+usr/share/furnace/instruments/C64/Snare.fui
+usr/share/furnace/instruments/C64/string_c64.fui
+usr/share/furnace/instruments/ESFM/
+usr/share/furnace/instruments/ESFM/Hi-Hat_ESFM.fui
+usr/share/furnace/instruments/ESFM/Synth Bass.fui
+usr/share/furnace/instruments/ESFM/djtBMX_1chostinato.fui
+usr/share/furnace/instruments/ESFM/djtBMX_4opBassESFM.fui
+usr/share/furnace/instruments/ESFM/djtBMX_4opESFMStrings.fui
+usr/share/furnace/instruments/ESFM/djtBMX_4opESFMStrings2.fui
+usr/share/furnace/instruments/ESFM/djtBMX_4opESFMStrings3.fui
+usr/share/furnace/instruments/ESFM/djtBMX_4opESFMStrings4.fui
+usr/share/furnace/instruments/ESFM/djtBMX_4opRubbaBassESFM.fui
+usr/share/furnace/instruments/ESFM/djtBMX_ESFMBRAS.fui
+usr/share/furnace/instruments/ESFM/djtBMX_ESFMBRASSSECT.fui
+usr/share/furnace/instruments/ESFM/djtBMX_ESFMGIT.fui
+usr/share/furnace/instruments/ESFM/djtBMX_ESFMPWM.fui
+usr/share/furnace/instruments/ESFM/djtBMX_ESFMSYN.fui
+usr/share/furnace/instruments/ESFM/djtBMX_ESFMresobell-short.fui
+usr/share/furnace/instruments/ESFM/djtBMX_ESFMresobell.fui
+usr/share/furnace/instruments/ESFM/djtBMX_ESFMresopipe.fui
+usr/share/furnace/instruments/ESFM/djtBMX_PULSELESSBUZZER.fui
+usr/share/furnace/instruments/ESFM/djtBMX_analogoctbas.fui
+usr/share/furnace/instruments/ESFM/djtBMX_bells.fui
+usr/share/furnace/instruments/ESFM/djtBMX_brarsesin.fui
+usr/share/furnace/instruments/ESFM/djtBMX_brassin.fui
+usr/share/furnace/instruments/ESFM/djtBMX_bwaro.fui
+usr/share/furnace/instruments/ESFM/djtBMX_chorbel.fui
+usr/share/furnace/instruments/ESFM/djtBMX_chorpad.fui
+usr/share/furnace/instruments/ESFM/djtBMX_clanger.fui
+usr/share/furnace/instruments/ESFM/djtBMX_clanger2.fui
+usr/share/furnace/instruments/ESFM/djtBMX_clanger3.fui
+usr/share/furnace/instruments/ESFM/djtBMX_clanger4.fui
+usr/share/furnace/instruments/ESFM/djtBMX_compile-basskick.fui
+usr/share/furnace/instruments/ESFM/djtBMX_compile-closehh.fui
+usr/share/furnace/instruments/ESFM/djtBMX_compile-marimba.fui
+usr/share/furnace/instruments/ESFM/djtBMX_compile-openhh.fui
+usr/share/furnace/instruments/ESFM/djtBMX_compile-padbrass.fui
+usr/share/furnace/instruments/ESFM/djtBMX_compile-sinetom.fui
+usr/share/furnace/instruments/ESFM/djtBMX_compile-snare.fui
+usr/share/furnace/instruments/ESFM/djtBMX_compile-springbass.fui
+usr/share/furnace/instruments/ESFM/djtBMX_compileagogo.fui
+usr/share/furnace/instruments/ESFM/djtBMX_compilebrass.fui
+usr/share/furnace/instruments/ESFM/djtBMX_compilefartbass.fui
+usr/share/furnace/instruments/ESFM/djtBMX_didgeritune.fui
+usr/share/furnace/instruments/ESFM/djtBMX_drlead.fui
+usr/share/furnace/instruments/ESFM/djtBMX_egless-kick.fui
+usr/share/furnace/instruments/ESFM/djtBMX_explosion.fui
+usr/share/furnace/instruments/ESFM/djtBMX_falcomkey.fui
+usr/share/furnace/instruments/ESFM/djtBMX_gitbsyn3.fui
+usr/share/furnace/instruments/ESFM/djtBMX_gitbsyn4.fui
+usr/share/furnace/instruments/ESFM/djtBMX_gitsyn2.fui
+usr/share/furnace/instruments/ESFM/djtBMX_gitty.fui
+usr/share/furnace/instruments/ESFM/djtBMX_hammeredkeypad.fui
+usr/share/furnace/instruments/ESFM/djtBMX_kikbas.fui
+usr/share/furnace/instruments/ESFM/djtBMX_lfotest.fui
+usr/share/furnace/instruments/ESFM/djtBMX_lofibrass.fui
+usr/share/furnace/instruments/ESFM/djtBMX_lylemays.fui
+usr/share/furnace/instruments/ESFM/djtBMX_m1stylepaino.fui
+usr/share/furnace/instruments/ESFM/djtBMX_m1stylepaino2.fui
+usr/share/furnace/instruments/ESFM/djtBMX_m1stylepaino3.fui
+usr/share/furnace/instruments/ESFM/djtBMX_m1stylepaino4.fui
+usr/share/furnace/instruments/ESFM/djtBMX_m1stylepaino5.fui
+usr/share/furnace/instruments/ESFM/djtBMX_nearest-drone.fui
+usr/share/furnace/instruments/ESFM/djtBMX_neophytekick.fui
+usr/share/furnace/instruments/ESFM/djtBMX_neophytekick2.fui
+usr/share/furnace/instruments/ESFM/djtBMX_noisytom.fui
+usr/share/furnace/instruments/ESFM/djtBMX_panfluter.fui
+usr/share/furnace/instruments/ESFM/djtBMX_pianoyorgan.fui
+usr/share/furnace/instruments/ESFM/djtBMX_piezoclavi.fui
+usr/share/furnace/instruments/ESFM/djtBMX_pulselesspulse.fui
+usr/share/furnace/instruments/ESFM/djtBMX_pulselesspwm.fui
+usr/share/furnace/instruments/ESFM/djtBMX_pwm2.fui
+usr/share/furnace/instruments/ESFM/djtBMX_pwm3.fui
+usr/share/furnace/instruments/ESFM/djtBMX_pwminv.fui
+usr/share/furnace/instruments/ESFM/djtBMX_quantizedcalilope.fui
+usr/share/furnace/instruments/ESFM/djtBMX_quantizedcalilope2.fui
+usr/share/furnace/instruments/ESFM/djtBMX_quantizedcalilope3.fui
+usr/share/furnace/instruments/ESFM/djtBMX_quantizeddrone2.fui
+usr/share/furnace/instruments/ESFM/djtBMX_quantizedhorn.fui
+usr/share/furnace/instruments/ESFM/djtBMX_santur.fui
+usr/share/furnace/instruments/ESFM/djtBMX_santurys.fui
+usr/share/furnace/instruments/ESFM/djtBMX_segapiano.fui
+usr/share/furnace/instruments/ESFM/djtBMX_shttomsz.fui
+usr/share/furnace/instruments/ESFM/djtBMX_sinusoidgit.fui
+usr/share/furnace/instruments/ESFM/djtBMX_sitardrone.fui
+usr/share/furnace/instruments/ESFM/djtBMX_slapbass.fui
+usr/share/furnace/instruments/ESFM/djtBMX_softstar-string-enhanced.fui
+usr/share/furnace/instruments/ESFM/djtBMX_springbass2.fui
+usr/share/furnace/instruments/ESFM/djtBMX_springbass3.fui
+usr/share/furnace/instruments/ESFM/djtBMX_springbass4.fui
+usr/share/furnace/instruments/ESFM/djtBMX_squeiuz.fui
+usr/share/furnace/instruments/ESFM/djtBMX_sunsoftbass.fui
+usr/share/furnace/instruments/ESFM/djtBMX_sunsoftbass2.fui
+usr/share/furnace/instruments/ESFM/djtBMX_sunsoftbass3.fui
+usr/share/furnace/instruments/ESFM/djtBMX_sunsoftbass4.fui
+usr/share/furnace/instruments/ESFM/djtBMX_sunsoftbass5.fui
+usr/share/furnace/instruments/ESFM/djtBMX_superpwm.fui
+usr/share/furnace/instruments/ESFM/djtBMX_sync-invtest.fui
+usr/share/furnace/instruments/ESFM/djtBMX_syncpwm-abuse.fui
+usr/share/furnace/instruments/ESFM/djtBMX_tabla.fui
+usr/share/furnace/instruments/ESFM/djtBMX_tarnceseq.fui
+usr/share/furnace/instruments/ESFM/djtBMX_vic20square.fui
+usr/share/furnace/instruments/ESFM/djtBMX_vic20squaretest.fui
+usr/share/furnace/instruments/ESFM/djtBMX_wurly.fui
+usr/share/furnace/instruments/GB/
+usr/share/furnace/instruments/GB/GB_Kick.fui
+usr/share/furnace/instruments/GB/GB_Lead.fui
+usr/share/furnace/instruments/GB/GB_Snare.fui
+usr/share/furnace/instruments/GB/closed hi-hat.fui
+usr/share/furnace/instruments/GB/kick.fui
+usr/share/furnace/instruments/GB/open hihat.fui
+usr/share/furnace/instruments/GB/snare.fui
+usr/share/furnace/instruments/GB/square fade-in.fui
+usr/share/furnace/instruments/NES/
+usr/share/furnace/instruments/NES/0-2-5_arp_lead.fui
+usr/share/furnace/instruments/NES/0-3-5_arp_lead.fui
+usr/share/furnace/instruments/NES/Noise Hi-Hat Closed.fui
+usr/share/furnace/instruments/NES/Noise Hi-Hat Open.fui
+usr/share/furnace/instruments/NES/Noise Kick.fui
+usr/share/furnace/instruments/NES/Noise Snare.fui
+usr/share/furnace/instruments/NES/Triangle Kick+Bass.fui
+usr/share/furnace/instruments/NES/Triangle Kick.fui
+usr/share/furnace/instruments/NES/Triangle Snare+Bass.fui
+usr/share/furnace/instruments/NES/Triangle Snare.fui
+usr/share/furnace/instruments/OPL/
+usr/share/furnace/instruments/OPL/2-OP OPL3 Slap Bass.fui
+usr/share/furnace/instruments/OPL/2-op strings.fui
+usr/share/furnace/instruments/OPL/2OP Compressed Snare C-3 (Part 1).fui
+usr/share/furnace/instruments/OPL/2OP Compressed Snare C-3 (Part 2).fui
+usr/share/furnace/instruments/OPL/4op Bass.fui
+usr/share/furnace/instruments/OPL/Chorus Organ.fui
+usr/share/furnace/instruments/OPL/Closed Hi-hat.fui
+usr/share/furnace/instruments/OPL/Crystal.fui
+usr/share/furnace/instruments/OPL/DX7 Electric Piano.fui
+usr/share/furnace/instruments/OPL/Distortion Guitar.fui
+usr/share/furnace/instruments/OPL/Guitar 2.fui
+usr/share/furnace/instruments/OPL/Guitar.fui
+usr/share/furnace/instruments/OPL/Low Overdriven Guitar (Sine Carrier).fui
+usr/share/furnace/instruments/OPL/Low Overdriven Guitar (Square Carrier).fui
+usr/share/furnace/instruments/OPL/OPL-ClickKik.fui
+usr/share/furnace/instruments/OPL/OPL-RhythmTemplate.fui
+usr/share/furnace/instruments/OPL/OPL-RollingDrum.fui
+usr/share/furnace/instruments/OPL/OPL1_Ride_Closed.fui
+usr/share/furnace/instruments/OPL/OPL2-TwinkleBlare.fui
+usr/share/furnace/instruments/OPL/OPL3-4opbrass11.fui
+usr/share/furnace/instruments/OPL/OPL3-4opharmonica.fui
+usr/share/furnace/instruments/OPL/OPL3-4opsitar.fui
+usr/share/furnace/instruments/OPL/OPL3-FakeFalcomGuitar.fui
+usr/share/furnace/instruments/OPL/OPL3-FakeFalcomString.fui
+usr/share/furnace/instruments/OPL/OPL3-GabberKick.fui
+usr/share/furnace/instruments/OPL/OPL3-GabberKick3-60hz-.fui
+usr/share/furnace/instruments/OPL/OPL3-MajorSquare.fui
+usr/share/furnace/instruments/OPL/OPL3-PWM.fui
+usr/share/furnace/instruments/OPL/OPL3-PeriodicNoise.fui
+usr/share/furnace/instruments/OPL/OPL3-SegaBass.fui
+usr/share/furnace/instruments/OPL/OPL3-SyncDuck.fui
+usr/share/furnace/instruments/OPL/OPL3-TwinkleKey.fui
+usr/share/furnace/instruments/OPL/OPL3-clap.fui
+usr/share/furnace/instruments/OPL/OPL3-easyhoova.fui
+usr/share/furnace/instruments/OPL/OPL3_-_C64_like_sqr_snare.fui
+usr/share/furnace/instruments/OPL/OPL3_-_PWM_Lead.fui
+usr/share/furnace/instruments/OPL/OPL3_BigBass.fui
+usr/share/furnace/instruments/OPL/OPL3_C64_Kick_or_Snare_Start.fui
+usr/share/furnace/instruments/OPL/OPL3_C64_Snare_Carry.fui
+usr/share/furnace/instruments/OPL/OPL3_Slap_Bass.fui
+usr/share/furnace/instruments/OPL/OPL3_Springybass.fui
+usr/share/furnace/instruments/OPL/OPL_GoodPanFlute.fui
+usr/share/furnace/instruments/OPL/OPL_KoreanSquare.fui
+usr/share/furnace/instruments/OPL/OPL_SupersawUnit.fui
+usr/share/furnace/instruments/OPL/OPL_horn.fui
+usr/share/furnace/instruments/OPL/Open Hi-hat.fui
+usr/share/furnace/instruments/OPL/Overdriven Guitar.fui
+usr/share/furnace/instruments/OPL/Psuedo-PoKEY Perodic Noise (4OP).fui
+usr/share/furnace/instruments/OPL/Snare Drum 2.fui
+usr/share/furnace/instruments/OPL/Snare Drum.fui
+usr/share/furnace/instruments/OPL/Synth Brass.fui
+usr/share/furnace/instruments/OPL/Synth Guitar.fui
+usr/share/furnace/instruments/OPL/Timpani (OPL3).fui
+usr/share/furnace/instruments/OPL/Violin.fui
+usr/share/furnace/instruments/OPL/asterix gb clarinet.fui
+usr/share/furnace/instruments/OPL/clavinetmaybe.fui
+usr/share/furnace/instruments/OPL/detuneexample.fui
+usr/share/furnace/instruments/OPL/grand piano.fui
+usr/share/furnace/instruments/OPL/kalimba or plain sine i cant tell.fui
+usr/share/furnace/instruments/OPL/key.fui
+usr/share/furnace/instruments/OPL/marimba.fui
+usr/share/furnace/instruments/OPL/opl3_4op_bass_1.fui
+usr/share/furnace/instruments/OPL/opl3_4op_bass_2.fui
+usr/share/furnace/instruments/OPL/opl3_4op_bass_3.fui
+usr/share/furnace/instruments/OPL/opl3_4op_drum_kick.fui
+usr/share/furnace/instruments/OPL/opl3_4op_drum_power_snare.fui
+usr/share/furnace/instruments/OPL/opl3_4op_drum_snare.fui
+usr/share/furnace/instruments/OPL/opl3_4op_drum_tom.fui
+usr/share/furnace/instruments/OPL/opl3_4op_growl_synth.fui
+usr/share/furnace/instruments/OPL/opl3_4op_lead_guitar.fui
+usr/share/furnace/instruments/OPL/opl3_4op_piano_bell.fui
+usr/share/furnace/instruments/OPL/opl3_4op_rhythm_guitar_1.fui
+usr/share/furnace/instruments/OPL/opl3_4op_rhythm_guitar_2.fui
+usr/share/furnace/instruments/OPL/opl3_4op_strings.fui
+usr/share/furnace/instruments/OPL/sax.fui
+usr/share/furnace/instruments/OPL/tuba trumpet thing.fui
+usr/share/furnace/instruments/OPLL/
+usr/share/furnace/instruments/OPLL/Almost_Sine.fui
+usr/share/furnace/instruments/OPLL/Alt_Oboe.fui
+usr/share/furnace/instruments/OPLL/Better_Electric_Guitar.fui
+usr/share/furnace/instruments/OPLL/Chime.fui
+usr/share/furnace/instruments/OPLL/Electric_Guitar_2.fui
+usr/share/furnace/instruments/OPLL/Electric_Guitar_3.fui
+usr/share/furnace/instruments/OPLL/Finger_Bass.fui
+usr/share/furnace/instruments/OPLL/Glass_and_Wood.fui
+usr/share/furnace/instruments/OPLL/Half_Sine.fui
+usr/share/furnace/instruments/OPLL/Hihat_Plus_Brass.fui
+usr/share/furnace/instruments/OPLL/Near Perfect Square Wave.dmp
+usr/share/furnace/instruments/OPLL/OPLL_Clickik.fui
+usr/share/furnace/instruments/OPLL/Overdriven_Guitar.fui
+usr/share/furnace/instruments/OPLL/Rainbow_Bell.fui
+usr/share/furnace/instruments/OPLL/Reedlike_Sound.fui
+usr/share/furnace/instruments/OPLL/Soft_Bass.fui
+usr/share/furnace/instruments/OPLL/Soft_Clarinet.fui
+usr/share/furnace/instruments/OPLL/Soft_EP.fui
+usr/share/furnace/instruments/OPLL/Soft_Flute.fui
+usr/share/furnace/instruments/OPLL/Steel_Guitar.fui
+usr/share/furnace/instruments/OPLL/Triangle_Recorder.fui
+usr/share/furnace/instruments/OPLL/Weeppiko-piano_guitar_idk.fui
+usr/share/furnace/instruments/OPM/
+usr/share/furnace/instruments/OPM/80's Organ.dmp
+usr/share/furnace/instruments/OPM/Basses.opm
+usr/share/furnace/instruments/OPM/Bowed Lead 1.dmp
+usr/share/furnace/instruments/OPM/Brass 4.dmp
+usr/share/furnace/instruments/OPM/Brass 5.dmp
+usr/share/furnace/instruments/OPM/Brass 6.dmp
+usr/share/furnace/instruments/OPM/Brass 7.dmp
+usr/share/furnace/instruments/OPM/Brass 8.dmp
+usr/share/furnace/instruments/OPM/Chromatic Percussion.opm
+usr/share/furnace/instruments/OPM/Computer Shutdown [C-6 0213].dmp
+usr/share/furnace/instruments/OPM/Deep Marimba.dmp
+usr/share/furnace/instruments/OPM/Dist 2.dmp
+usr/share/furnace/instruments/OPM/Dist Bass 2.dmp
+usr/share/furnace/instruments/OPM/Dog Whistle.dmp
+usr/share/furnace/instruments/OPM/Donkey Kong Lead.dmp
+usr/share/furnace/instruments/OPM/Elec Bass 1.dmp
+usr/share/furnace/instruments/OPM/Electric Piano 2.dmp
+usr/share/furnace/instruments/OPM/FlangerStrings 1.dmp
+usr/share/furnace/instruments/OPM/FlangerStrings 2.dmp
+usr/share/furnace/instruments/OPM/FlangerStrings 3.dmp
+usr/share/furnace/instruments/OPM/Flute 2.dmp
+usr/share/furnace/instruments/OPM/Flute.dmp
+usr/share/furnace/instruments/OPM/Guitar Test.opm
+usr/share/furnace/instruments/OPM/HammeredMetalLd1.dmp
+usr/share/furnace/instruments/OPM/Harmonica.dmp
+usr/share/furnace/instruments/OPM/Hi-Hat Closed.dmp
+usr/share/furnace/instruments/OPM/Hi-Hat Open.dmp
+usr/share/furnace/instruments/OPM/Impact Synth 4.dmp
+usr/share/furnace/instruments/OPM/Liquid Lead 3.dmp
+usr/share/furnace/instruments/OPM/Mallet 2.dmp
+usr/share/furnace/instruments/OPM/Mallet 3.dmp
+usr/share/furnace/instruments/OPM/Mallet 4.dmp
+usr/share/furnace/instruments/OPM/Mellow Lead 1.dmp
+usr/share/furnace/instruments/OPM/Metal Bass 2.dmp
+usr/share/furnace/instruments/OPM/Metal Bass 4.dmp
+usr/share/furnace/instruments/OPM/Metal Bass 5.dmp
+usr/share/furnace/instruments/OPM/Metal Bass 6.dmp
+usr/share/furnace/instruments/OPM/Mini Acid 1.dmp
+usr/share/furnace/instruments/OPM/OPM Power Snare.fui
+usr/share/furnace/instruments/OPM/OPMSquare.fui
+usr/share/furnace/instruments/OPM/OPMTrumpet.fui
+usr/share/furnace/instruments/OPM/Octave Synth 1.dmp
+usr/share/furnace/instruments/OPM/Organ 2 (Percussive).dmp
+usr/share/furnace/instruments/OPM/Organ 3 (Rock Organ).dmp
+usr/share/furnace/instruments/OPM/Organ 3 Alt (Rock Organ Alt).dmp
+usr/share/furnace/instruments/OPM/Organ 5 (Percussive Variation).dmp
+usr/share/furnace/instruments/OPM/Perfect Square Wave + Hi-Hat Closed.dmp
+usr/share/furnace/instruments/OPM/Perfect Square Wave + Hi-Hat Open.dmp
+usr/share/furnace/instruments/OPM/Piano 2.dmp
+usr/share/furnace/instruments/OPM/Piano 3 (Electric Grand).dmp
+usr/share/furnace/instruments/OPM/Piano Low.dmp
+usr/share/furnace/instruments/OPM/Piano Test.opm
+usr/share/furnace/instruments/OPM/Plucked 1.dmp
+usr/share/furnace/instruments/OPM/Plucked 2.dmp
+usr/share/furnace/instruments/OPM/Plucked 3.dmp
+usr/share/furnace/instruments/OPM/Portal Cast.dmp
+usr/share/furnace/instruments/OPM/Reed Organ or Bandoneon.dmp
+usr/share/furnace/instruments/OPM/Slap Bass 1.dmp
+usr/share/furnace/instruments/OPM/StringEns 3.dmp
+usr/share/furnace/instruments/OPM/Synth Brass 3.dmp
+usr/share/furnace/instruments/OPM/Synth Brass 4.dmp
+usr/share/furnace/instruments/OPM/Synth Brass 5.dmp
+usr/share/furnace/instruments/OPM/Synth Brass 6.dmp
+usr/share/furnace/instruments/OPM/Synth Flute.dmp
+usr/share/furnace/instruments/OPM/Synth Lead 2.dmp
+usr/share/furnace/instruments/OPM/Synth Lead 3.dmp
+usr/share/furnace/instruments/OPM/Synth Reed 2.dmp
+usr/share/furnace/instruments/OPM/Synth Reed 3.dmp
+usr/share/furnace/instruments/OPM/Synth Reed 4.dmp
+usr/share/furnace/instruments/OPM/Techno Bass 2.dmp
+usr/share/furnace/instruments/OPM/Timpani (OPM).fui
+usr/share/furnace/instruments/OPM/VariBrass 2.dmp
+usr/share/furnace/instruments/OPM/ass overtone brass.dmp
+usr/share/furnace/instruments/OPM/ass-loud lead.dmp
+usr/share/furnace/instruments/OPM/brickblock369 Accordion.dmp
+usr/share/furnace/instruments/OPM/brickblock369 Church Organ.dmp
+usr/share/furnace/instruments/OPM/early 80s bs.dmp
+usr/share/furnace/instruments/OPM/huh.dmp
+usr/share/furnace/instruments/OPM/orchestal bullshit.dmp
+usr/share/furnace/instruments/OPM/organ_test/
+usr/share/furnace/instruments/OPM/organ_test/Organ Test - Notes.txt
+usr/share/furnace/instruments/OPM/organ_test/Organ Test.opm
+usr/share/furnace/instruments/OPM/saw + whatever the fuck.dmp
+usr/share/furnace/instruments/OPM/trashy guitar.dmp
+usr/share/furnace/instruments/OPM/trashy handbells.dmp
+usr/share/furnace/instruments/OPN/
+usr/share/furnace/instruments/OPN/accordion/
+usr/share/furnace/instruments/OPN/accordion/Accordion.dmp
+usr/share/furnace/instruments/OPN/accordion/Harmonium.dmp
+usr/share/furnace/instruments/OPN/bass/
+usr/share/furnace/instruments/OPN/bass/(CH3) Double Synth.dmp
+usr/share/furnace/instruments/OPN/bass/4-OP_Vowel_Bass.fui
+usr/share/furnace/instruments/OPN/bass/4_OP_Funky_Bass.fui
+usr/share/furnace/instruments/OPN/bass/A.Bass1.fui
+usr/share/furnace/instruments/OPN/bass/A.Bass2a.fui
+usr/share/furnace/instruments/OPN/bass/A.Bass2b.fui
+usr/share/furnace/instruments/OPN/bass/A.Bass2c.fui
+usr/share/furnace/instruments/OPN/bass/Acoustic Bass 2.dmp
+usr/share/furnace/instruments/OPN/bass/Acoustic Bass.dmp
+usr/share/furnace/instruments/OPN/bass/Algorithmic Bass.fui
+usr/share/furnace/instruments/OPN/bass/Bass Guitar 1.dmp
+usr/share/furnace/instruments/OPN/bass/Bass Guitar 2.dmp
+usr/share/furnace/instruments/OPN/bass/Bass Guitar 3.dmp
+usr/share/furnace/instruments/OPN/bass/Bass Guitar.dmp
+usr/share/furnace/instruments/OPN/bass/Bass.fui
+usr/share/furnace/instruments/OPN/bass/BassThing.dmp
+usr/share/furnace/instruments/OPN/bass/Common Genesis Bass.dmp
+usr/share/furnace/instruments/OPN/bass/Digi.Bass1.fui
+usr/share/furnace/instruments/OPN/bass/Digi.Bass2.fui
+usr/share/furnace/instruments/OPN/bass/Digi.Bass3.fui
+usr/share/furnace/instruments/OPN/bass/Double Bass.dmp
+usr/share/furnace/instruments/OPN/bass/E.Bass1a.fui
+usr/share/furnace/instruments/OPN/bass/E.Bass1b.fui
+usr/share/furnace/instruments/OPN/bass/E.Bass1c.fui
+usr/share/furnace/instruments/OPN/bass/E.Bass1d.fui
+usr/share/furnace/instruments/OPN/bass/E.Bass1e.fui
+usr/share/furnace/instruments/OPN/bass/E.Bass2a.fui
+usr/share/furnace/instruments/OPN/bass/E.Bass2b.fui
+usr/share/furnace/instruments/OPN/bass/E.Bass2c.fui
+usr/share/furnace/instruments/OPN/bass/E.Bass3a.fui
+usr/share/furnace/instruments/OPN/bass/E.Bass3b.fui
+usr/share/furnace/instruments/OPN/bass/E.Bass3c.fui
+usr/share/furnace/instruments/OPN/bass/E.Bass3d.fui
+usr/share/furnace/instruments/OPN/bass/E.Bass3e.fui
+usr/share/furnace/instruments/OPN/bass/E.Bass3f.fui
+usr/share/furnace/instruments/OPN/bass/E.Bass3g.fui
+usr/share/furnace/instruments/OPN/bass/E.Bass4a.fui
+usr/share/furnace/instruments/OPN/bass/E.Bass4b.fui
+usr/share/furnace/instruments/OPN/bass/E.Bass4c.fui
+usr/share/furnace/instruments/OPN/bass/E.Bass5.fui
+usr/share/furnace/instruments/OPN/bass/E.Bass6.fui
+usr/share/furnace/instruments/OPN/bass/E.Bass7.fui
+usr/share/furnace/instruments/OPN/bass/Electric Bass Guitar.dmp
+usr/share/furnace/instruments/OPN/bass/Electric Finger Bass.dmp
+usr/share/furnace/instruments/OPN/bass/Electric Fretless Bass.dmp
+usr/share/furnace/instruments/OPN/bass/Electric Picked Bass.dmp
+usr/share/furnace/instruments/OPN/bass/Electric Slap Bass.dmp
+usr/share/furnace/instruments/OPN/bass/FM-Bass-2.dmp
+usr/share/furnace/instruments/OPN/bass/FM_Bass.dmp
+usr/share/furnace/instruments/OPN/bass/FM_CriminalBass.fui
+usr/share/furnace/instruments/OPN/bass/Finger Bass.fui
+usr/share/furnace/instruments/OPN/bass/FingerBass.fui
+usr/share/furnace/instruments/OPN/bass/GEMSLike Bass.dmp
+usr/share/furnace/instruments/OPN/bass/Growl Bass.dmp
+usr/share/furnace/instruments/OPN/bass/Heavy Electric Bass.dmp
+usr/share/furnace/instruments/OPN/bass/House Bass 2.fui
+usr/share/furnace/instruments/OPN/bass/House Bass.fui
+usr/share/furnace/instruments/OPN/bass/House_Bass.fui
+usr/share/furnace/instruments/OPN/bass/Levin Bass.dmp
+usr/share/furnace/instruments/OPN/bass/Low Piano.dmp
+usr/share/furnace/instruments/OPN/bass/Low Sax.dmp
+usr/share/furnace/instruments/OPN/bass/Low Square.dmp
+usr/share/furnace/instruments/OPN/bass/Low Trumpet.dmp
+usr/share/furnace/instruments/OPN/bass/Metal Bass 1.dmp
+usr/share/furnace/instruments/OPN/bass/Metal Bass 3.dmp
+usr/share/furnace/instruments/OPN/bass/Passport Bass.dmp
+usr/share/furnace/instruments/OPN/bass/Percussion Bass 2.dmp
+usr/share/furnace/instruments/OPN/bass/Percussion Bass.dmp
+usr/share/furnace/instruments/OPN/bass/Piano Bass.dmp
+usr/share/furnace/instruments/OPN/bass/PickBass.fui
+usr/share/furnace/instruments/OPN/bass/PickMD.fui
+usr/share/furnace/instruments/OPN/bass/Power Bass.dmp
+usr/share/furnace/instruments/OPN/bass/Punch Bass.dmp
+usr/share/furnace/instruments/OPN/bass/Punch Packer.dmp
+usr/share/furnace/instruments/OPN/bass/Radical Bass.dmp
+usr/share/furnace/instruments/OPN/bass/Real Bass 1.dmp
+usr/share/furnace/instruments/OPN/bass/Real Bass 2.dmp
+usr/share/furnace/instruments/OPN/bass/Resonant Bass.dmp
+usr/share/furnace/instruments/OPN/bass/Rounded Saw.dmp
+usr/share/furnace/instruments/OPN/bass/SC-55 Synth Bass 1.dmp
+usr/share/furnace/instruments/OPN/bass/SC-55 SynthBass101.dmp
+usr/share/furnace/instruments/OPN/bass/Slap Bass 1.dmp
+usr/share/furnace/instruments/OPN/bass/Slap Bass 2.dmp
+usr/share/furnace/instruments/OPN/bass/Slap Bass 2.fui
+usr/share/furnace/instruments/OPN/bass/Slap Bass 3.dmp
+usr/share/furnace/instruments/OPN/bass/Slap Bass 3.fui
+usr/share/furnace/instruments/OPN/bass/Slap Bass 4.fui
+usr/share/furnace/instruments/OPN/bass/Slap Bass.dmp
+usr/share/furnace/instruments/OPN/bass/Slap Bass.fui
+usr/share/furnace/instruments/OPN/bass/Space Synth.dmp
+usr/share/furnace/instruments/OPN/bass/Spooky Bass.dmp
+usr/share/furnace/instruments/OPN/bass/Squire Bass.dmp
+usr/share/furnace/instruments/OPN/bass/Sublime Bass.dmp
+usr/share/furnace/instruments/OPN/bass/Sunsoft Slap Bass.dmp
+usr/share/furnace/instruments/OPN/bass/Synth.dmp
+usr/share/furnace/instruments/OPN/bass/Techno Bass 1.dmp
+usr/share/furnace/instruments/OPN/bass/Thiel Bass.dmp
+usr/share/furnace/instruments/OPN/bass/Tuba 1.dmp
+usr/share/furnace/instruments/OPN/bass/Tuba 2.dmp
+usr/share/furnace/instruments/OPN/bass/Twang.dmp
+usr/share/furnace/instruments/OPN/bass/VRC7 Bass.dmp
+usr/share/furnace/instruments/OPN/bass/Yamaha MU Synth Bass 2.dmp
+usr/share/furnace/instruments/OPN/bass/algobass.dmp
+usr/share/furnace/instruments/OPN/bass/bass1.fui
+usr/share/furnace/instruments/OPN/bass/bass2.fui
+usr/share/furnace/instruments/OPN/bass/bass3.fui
+usr/share/furnace/instruments/OPN/bass/bass4.fui
+usr/share/furnace/instruments/OPN/bass/bass5.fui
+usr/share/furnace/instruments/OPN/bass/bass6.fui
+usr/share/furnace/instruments/OPN/bass/bass_acoustic_00.fui
+usr/share/furnace/instruments/OPN/bass/bass_electric_00.fui
+usr/share/furnace/instruments/OPN/bass/bass_electric_01.fui
+usr/share/furnace/instruments/OPN/bass/bass_electric_02.fui
+usr/share/furnace/instruments/OPN/bass/bass_electric_03_muffled.fui
+usr/share/furnace/instruments/OPN/bass/bass_electric_04.fui
+usr/share/furnace/instruments/OPN/bass/bass_electric_05_amp.fui
+usr/share/furnace/instruments/OPN/bass/bass_growl_00_wobbly.fui
+usr/share/furnace/instruments/OPN/bass/bass_growl_01_wobbly2.fui
+usr/share/furnace/instruments/OPN/bass/bass_growl_02_wobbly3.fui
+usr/share/furnace/instruments/OPN/bass/bass_picked_00.fui
+usr/share/furnace/instruments/OPN/bass/bass_picked_01_snappy.fui
+usr/share/furnace/instruments/OPN/bass/bass_picked_02.fui
+usr/share/furnace/instruments/OPN/bass/bass_slap_00.fui
+usr/share/furnace/instruments/OPN/bass/bass_slap_01.fui
+usr/share/furnace/instruments/OPN/bass/bass_slap_02.fui
+usr/share/furnace/instruments/OPN/bass/fm_bass1.fui
+usr/share/furnace/instruments/OPN/bass/fm_bass2.fui
+usr/share/furnace/instruments/OPN/bass/fm_bass3.fui
+usr/share/furnace/instruments/OPN/bass/generic alg 0 bass.dmp
+usr/share/furnace/instruments/OPN/bass/opm_nestri.fui
+usr/share/furnace/instruments/OPN/bass/sonic_modbass.dmp
+usr/share/furnace/instruments/OPN/bass/tarylbass1.fui
+usr/share/furnace/instruments/OPN/bass/weird bass.dmp
+usr/share/furnace/instruments/OPN/default.fui
+usr/share/furnace/instruments/OPN/drums/
+usr/share/furnace/instruments/OPN/drums/4-7 Snare.fui
+usr/share/furnace/instruments/OPN/drums/909 Hat.dmp
+usr/share/furnace/instruments/OPN/drums/BassD 1.dmp
+usr/share/furnace/instruments/OPN/drums/Compressed Clap.fui
+usr/share/furnace/instruments/OPN/drums/Compressed FM Snare Drum.fui
+usr/share/furnace/instruments/OPN/drums/Crash.dmp
+usr/share/furnace/instruments/OPN/drums/Cymbal.dmp
+usr/share/furnace/instruments/OPN/drums/Cymbal.fui
+usr/share/furnace/instruments/OPN/drums/Double Tom.dmp
+usr/share/furnace/instruments/OPN/drums/Drum.fui
+usr/share/furnace/instruments/OPN/drums/GB Tom.fui
+usr/share/furnace/instruments/OPN/drums/Heavy EDM Kick F#5.fui
+usr/share/furnace/instruments/OPN/drums/Heavy EDM Kick+Snare F#5.fui
+usr/share/furnace/instruments/OPN/drums/Heavy Kick.fui
+usr/share/furnace/instruments/OPN/drums/Hi-Hat Closed.dmp
+usr/share/furnace/instruments/OPN/drums/Hi-Hat Open.dmp
+usr/share/furnace/instruments/OPN/drums/Kick 1.dmp
+usr/share/furnace/instruments/OPN/drums/Kick 2.dmp
+usr/share/furnace/instruments/OPN/drums/Kick Drum.fui
+usr/share/furnace/instruments/OPN/drums/Kick_B0.dmp
+usr/share/furnace/instruments/OPN/drums/Less Chrunchy Snare.dmp
+usr/share/furnace/instruments/OPN/drums/Light Snare.dmp
+usr/share/furnace/instruments/OPN/drums/OPM-lowpitch-fmclap.fui
+usr/share/furnace/instruments/OPN/drums/Obvious Kick (C-5 02CC).dmp
+usr/share/furnace/instruments/OPN/drums/Obvious Ride Closed (C-5).dmp
+usr/share/furnace/instruments/OPN/drums/Obvious Ride Open (C-5).dmp
+usr/share/furnace/instruments/OPN/drums/Obvious Snare (D#5 0299).dmp
+usr/share/furnace/instruments/OPN/drums/Obvious Tom (C-5 0266, G#4 0255, E-4 0244).dmp
+usr/share/furnace/instruments/OPN/drums/Single Clap.fui
+usr/share/furnace/instruments/OPN/drums/Snare 1.dmp
+usr/share/furnace/instruments/OPN/drums/Snare 2.dmp
+usr/share/furnace/instruments/OPN/drums/Snare 3.dmp
+usr/share/furnace/instruments/OPN/drums/Snare 4.dmp
+usr/share/furnace/instruments/OPN/drums/Snare Drum.fui
+usr/share/furnace/instruments/OPN/drums/Snare_B2.dmp
+usr/share/furnace/instruments/OPN/drums/Squishy Snare.fui
+usr/share/furnace/instruments/OPN/drums/Timpani.dmp
+usr/share/furnace/instruments/OPN/drums/Tom.dmp
+usr/share/furnace/instruments/OPN/drums/Trap Kick.dmp
+usr/share/furnace/instruments/OPN/drums/Trap Snare Carry (C-4, 0201).dmp
+usr/share/furnace/instruments/OPN/drums/Trap Snare Start (D-4 023F).dmp
+usr/share/furnace/instruments/OPN/drums/Trap Snare.dmp
+usr/share/furnace/instruments/OPN/drums/Triangle.dmp
+usr/share/furnace/instruments/OPN/drums/Wood Block.dmp
+usr/share/furnace/instruments/OPN/drums/[2OPHigh]HatClosed_B2.dmp
+usr/share/furnace/instruments/OPN/drums/[2OPHigh]HatOpen_B2.dmp
+usr/share/furnace/instruments/OPN/drums/crash_00.fui
+usr/share/furnace/instruments/OPN/drums/fmbigkick.fui
+usr/share/furnace/instruments/OPN/drums/fmclap.fui
+usr/share/furnace/instruments/OPN/drums/fmclap2.fui
+usr/share/furnace/instruments/OPN/drums/fmhat.fui
+usr/share/furnace/instruments/OPN/drums/fmopenhat.fui
+usr/share/furnace/instruments/OPN/drums/hihat_00.fui
+usr/share/furnace/instruments/OPN/drums/idk_something_percussion.fui
+usr/share/furnace/instruments/OPN/drums/kick_00_classic.fui
+usr/share/furnace/instruments/OPN/drums/kick_01_power.fui
+usr/share/furnace/instruments/OPN/drums/kick_02_power2.fui
+usr/share/furnace/instruments/OPN/drums/kick_03_muffled.fui
+usr/share/furnace/instruments/OPN/drums/kick_04_bassdrum.fui
+usr/share/furnace/instruments/OPN/drums/kick_05_noisy.fui
+usr/share/furnace/instruments/OPN/drums/kick_06_fat.fui
+usr/share/furnace/instruments/OPN/drums/kick_07_fat2.fui
+usr/share/furnace/instruments/OPN/drums/powersnare.fui
+usr/share/furnace/instruments/OPN/drums/snare_00_simple.fui
+usr/share/furnace/instruments/OPN/drums/snare_01_curvy.fui
+usr/share/furnace/instruments/OPN/drums/snare_02_weak.fui
+usr/share/furnace/instruments/OPN/drums/snare_03_weak2.fui
+usr/share/furnace/instruments/OPN/drums/snare_04_muffled.fui
+usr/share/furnace/instruments/OPN/drums/snare_05_intense.fui
+usr/share/furnace/instruments/OPN/drums/snareclap_G-2.fui
+usr/share/furnace/instruments/OPN/drums/thinclosedhihat.dmp
+usr/share/furnace/instruments/OPN/effect/
+usr/share/furnace/instruments/OPN/effect/Acoustic String Slap SFX.dmp
+usr/share/furnace/instruments/OPN/effect/Buzzer.dmp
+usr/share/furnace/instruments/OPN/effect/C64 Wave Combo.dmp
+usr/share/furnace/instruments/OPN/effect/Clap.dmp
+usr/share/furnace/instruments/OPN/effect/Clink.dmp
+usr/share/furnace/instruments/OPN/effect/Crank Turn.dmp
+usr/share/furnace/instruments/OPN/effect/Decay Laser.dmp
+usr/share/furnace/instruments/OPN/effect/Glide.dmp
+usr/share/furnace/instruments/OPN/effect/Heart.dmp
+usr/share/furnace/instruments/OPN/effect/Interference.dmp
+usr/share/furnace/instruments/OPN/effect/Laser Gun.dmp
+usr/share/furnace/instruments/OPN/effect/Laser.dmp
+usr/share/furnace/instruments/OPN/effect/Lightning Bolt.dmp
+usr/share/furnace/instruments/OPN/effect/Ocean.dmp
+usr/share/furnace/instruments/OPN/effect/Skid.dmp
+usr/share/furnace/instruments/OPN/effect/Sore Throat.dmp
+usr/share/furnace/instruments/OPN/effect/TV Static.dmp
+usr/share/furnace/instruments/OPN/effect/Techno TL Pitch Slider.dmp
+usr/share/furnace/instruments/OPN/effect/Thunder Strike.dmp
+usr/share/furnace/instruments/OPN/effect/U.F.O.dmp
+usr/share/furnace/instruments/OPN/effect/Wind.fui
+usr/share/furnace/instruments/OPN/effect/[2OPLow]Analog Horror 1.dmp
+usr/share/furnace/instruments/OPN/effect/[2OPLow]Analog Horror 2.dmp
+usr/share/furnace/instruments/OPN/effect/fm_propeller.fui
+usr/share/furnace/instruments/OPN/effect/weird.fui
+usr/share/furnace/instruments/OPN/effect/white nosie.dmp
+usr/share/furnace/instruments/OPN/guitar/
+usr/share/furnace/instruments/OPN/guitar/(CH3) Double Guitar.dmp
+usr/share/furnace/instruments/OPN/guitar/Acoustic Guitar.dmp
+usr/share/furnace/instruments/OPN/guitar/Acoustic Nylon Guitar.dmp
+usr/share/furnace/instruments/OPN/guitar/Acoustic Steel Guitar.dmp
+usr/share/furnace/instruments/OPN/guitar/Banjo (Muted).opni
+usr/share/furnace/instruments/OPN/guitar/Banjo.dmp
+usr/share/furnace/instruments/OPN/guitar/Banjo.opni
+usr/share/furnace/instruments/OPN/guitar/Distorted Guitar 1.dmp
+usr/share/furnace/instruments/OPN/guitar/Distorted Guitar 2.dmp
+usr/share/furnace/instruments/OPN/guitar/Electric Clean Guitar.dmp
+usr/share/furnace/instruments/OPN/guitar/Electric Distorted Guitar (High).dmp
+usr/share/furnace/instruments/OPN/guitar/Electric Distorted Guitar (Low).dmp
+usr/share/furnace/instruments/OPN/guitar/Electric Funk Guitar.dmp
+usr/share/furnace/instruments/OPN/guitar/Electric Guitar 1.dmp
+usr/share/furnace/instruments/OPN/guitar/Electric Guitar 2.dmp
+usr/share/furnace/instruments/OPN/guitar/Electric Guitar 3.dmp
+usr/share/furnace/instruments/OPN/guitar/Electric Guitar EX.dmp
+usr/share/furnace/instruments/OPN/guitar/Electric Guitar Harmonics.dmp
+usr/share/furnace/instruments/OPN/guitar/Electric Jazz Guitar.dmp
+usr/share/furnace/instruments/OPN/guitar/Electric Lap Guitar.dmp
+usr/share/furnace/instruments/OPN/guitar/Electric Muted Guitar.dmp
+usr/share/furnace/instruments/OPN/guitar/Electric Overdriven Guitar (High).dmp
+usr/share/furnace/instruments/OPN/guitar/Electric Overdriven Guitar (Low).dmp
+usr/share/furnace/instruments/OPN/guitar/ElectricGuitar.fui
+usr/share/furnace/instruments/OPN/guitar/Funk Guitar.fui
+usr/share/furnace/instruments/OPN/guitar/Gardenshroom.dmp
+usr/share/furnace/instruments/OPN/guitar/Grunge.dmp
+usr/share/furnace/instruments/OPN/guitar/Guitar.dmp
+usr/share/furnace/instruments/OPN/guitar/Hard Guitar.fui
+usr/share/furnace/instruments/OPN/guitar/Koto.opni
+usr/share/furnace/instruments/OPN/guitar/Oud.opni
+usr/share/furnace/instruments/OPN/guitar/Rough Sitar.dmp
+usr/share/furnace/instruments/OPN/guitar/SSGuitar_A2.dmp
+usr/share/furnace/instruments/OPN/guitar/SSGuitar_B2.dmp
+usr/share/furnace/instruments/OPN/guitar/SSGuitar_F#2.dmp
+usr/share/furnace/instruments/OPN/guitar/SSGuitar_G2.dmp
+usr/share/furnace/instruments/OPN/guitar/Shamisen (Regular Pluck).opni
+usr/share/furnace/instruments/OPN/guitar/Shamisen (Tsugaru Slap).opni
+usr/share/furnace/instruments/OPN/guitar/Shamisen.dmp
+usr/share/furnace/instruments/OPN/guitar/Sitar.dmp
+usr/share/furnace/instruments/OPN/guitar/Sitar.opni
+usr/share/furnace/instruments/OPN/guitar/Space Sitar.dmp
+usr/share/furnace/instruments/OPN/guitar/Spanish Guitar.dmp
+usr/share/furnace/instruments/OPN/guitar/Synth Guitar.dmp
+usr/share/furnace/instruments/OPN/guitar/Tamboura (Bass Sitar).opni
+usr/share/furnace/instruments/OPN/guitar/Ukulele.dmp
+usr/share/furnace/instruments/OPN/guitar/YM2151_DistGuitar.fui
+usr/share/furnace/instruments/OPN/guitar/distguitar_00.fui
+usr/share/furnace/instruments/OPN/guitar/high guitar.dmp
+usr/share/furnace/instruments/OPN/guitar/powerchord.fui
+usr/share/furnace/instruments/OPN/guitar/sine distorted guitar.dmp
+usr/share/furnace/instruments/OPN/horn/
+usr/share/furnace/instruments/OPN/horn/(CH3) Trumpet + Echo.dmp
+usr/share/furnace/instruments/OPN/horn/Brass Lead 1.fui
+usr/share/furnace/instruments/OPN/horn/Brass Lead 2.fui
+usr/share/furnace/instruments/OPN/horn/Brass Synth 1.dmp
+usr/share/furnace/instruments/OPN/horn/Dubious Trumpet.dmp
+usr/share/furnace/instruments/OPN/horn/FM Brass.dmp
+usr/share/furnace/instruments/OPN/horn/ModBrass 1.dmp
+usr/share/furnace/instruments/OPN/horn/Ringing Trumpet.dmp
+usr/share/furnace/instruments/OPN/horn/Saw Trumpet.dmp
+usr/share/furnace/instruments/OPN/horn/Sharp Hepta-Brass.dmp
+usr/share/furnace/instruments/OPN/horn/Sharp Horn.dmp
+usr/share/furnace/instruments/OPN/horn/Synth Brass 1.dmp
+usr/share/furnace/instruments/OPN/horn/Synth Brass 2.dmp
+usr/share/furnace/instruments/OPN/horn/SynthBrass.fui
+usr/share/furnace/instruments/OPN/horn/Trumpet 1.dmp
+usr/share/furnace/instruments/OPN/horn/Trumpet 1.fui
+usr/share/furnace/instruments/OPN/horn/Trumpet 2.dmp
+usr/share/furnace/instruments/OPN/horn/Trumpet 2.fui
+usr/share/furnace/instruments/OPN/horn/Trumpet 3.dmp
+usr/share/furnace/instruments/OPN/horn/Trumpet EX.dmp
+usr/share/furnace/instruments/OPN/horn/Trumpet.dmp
+usr/share/furnace/instruments/OPN/horn/Tuba.fui
+usr/share/furnace/instruments/OPN/horn/VRC7 Trumpet.dmp
+usr/share/furnace/instruments/OPN/horn/VariBrass 1.dmp
+usr/share/furnace/instruments/OPN/horn/brass_00_wobbly.fui
+usr/share/furnace/instruments/OPN/horn/brass_01_bassish.fui
+usr/share/furnace/instruments/OPN/horn/brass_02_boring.fui
+usr/share/furnace/instruments/OPN/horn/brass_03_boring2.fui
+usr/share/furnace/instruments/OPN/keys/
+usr/share/furnace/instruments/OPN/keys/(CH3) Double Piano.dmp
+usr/share/furnace/instruments/OPN/keys/(CH3) Double Reed Organ.dmp
+usr/share/furnace/instruments/OPN/keys/Acoustic E-Piano.fui
+usr/share/furnace/instruments/OPN/keys/Bite Organ.dmp
+usr/share/furnace/instruments/OPN/keys/Celesta (High).dmp
+usr/share/furnace/instruments/OPN/keys/Celesta (Low).dmp
+usr/share/furnace/instruments/OPN/keys/Church Organ (2).dmp
+usr/share/furnace/instruments/OPN/keys/Church Organ.dmp
+usr/share/furnace/instruments/OPN/keys/Circus Organ.fui
+usr/share/furnace/instruments/OPN/keys/Clavinet.dmp
+usr/share/furnace/instruments/OPN/keys/Creep Organ.dmp
+usr/share/furnace/instruments/OPN/keys/Digital Clav 1.fui
+usr/share/furnace/instruments/OPN/keys/Digital Piano 1.fui
+usr/share/furnace/instruments/OPN/keys/Digital Piano 2.fui
+usr/share/furnace/instruments/OPN/keys/Digital Piano 3.fui
+usr/share/furnace/instruments/OPN/keys/E. Piano 1 (Rhodes).dmp
+usr/share/furnace/instruments/OPN/keys/E. Piano 2 (DX).dmp
+usr/share/furnace/instruments/OPN/keys/E. Piano 3 (Glassy).dmp
+usr/share/furnace/instruments/OPN/keys/ElisOrgan.fui
+usr/share/furnace/instruments/OPN/keys/Harpsichord.dmp
+usr/share/furnace/instruments/OPN/keys/Less Soft E Piano.dmp
+usr/share/furnace/instruments/OPN/keys/Low Piano.dmp
+usr/share/furnace/instruments/OPN/keys/Organ 1 (Drawbar).dmp
+usr/share/furnace/instruments/OPN/keys/Organ 2 (Digital).dmp
+usr/share/furnace/instruments/OPN/keys/Organ 3.fui
+usr/share/furnace/instruments/OPN/keys/Organ 4.fui
+usr/share/furnace/instruments/OPN/keys/Organ.dmp
+usr/share/furnace/instruments/OPN/keys/Piano 1 (Acoustic).dmp
+usr/share/furnace/instruments/OPN/keys/Piano 1.dmp
+usr/share/furnace/instruments/OPN/keys/Piano 2 (Bright Acoustic).dmp
+usr/share/furnace/instruments/OPN/keys/Piano.fui
+usr/share/furnace/instruments/OPN/keys/PianoMD.fui
+usr/share/furnace/instruments/OPN/keys/Reed Organ.dmp
+usr/share/furnace/instruments/OPN/keys/Rock Organ.dmp
+usr/share/furnace/instruments/OPN/keys/Short Piano.dmp
+usr/share/furnace/instruments/OPN/keys/Soft E Piano.dmp
+usr/share/furnace/instruments/OPN/keys/Soft Organ Lead.dmp
+usr/share/furnace/instruments/OPN/keys/Space Piano.dmp
+usr/share/furnace/instruments/OPN/keys/Sparksichord.dmp
+usr/share/furnace/instruments/OPN/keys/Spoopy Organ.dmp
+usr/share/furnace/instruments/OPN/keys/VRC7 Reed Organ.dmp
+usr/share/furnace/instruments/OPN/keys/YM2151_E-PIANO.fui
+usr/share/furnace/instruments/OPN/keys/brickblock369 Harpsichord.dmp
+usr/share/furnace/instruments/OPN/keys/fmpiano.fui
+usr/share/furnace/instruments/OPN/keys/harpsisine.dmp
+usr/share/furnace/instruments/OPN/percussion/
+usr/share/furnace/instruments/OPN/percussion/(CH3) Double Metalliphone.dmp
+usr/share/furnace/instruments/OPN/percussion/(CH3) Double Steel Drum.dmp
+usr/share/furnace/instruments/OPN/percussion/(CH3) Double Xylophone.dmp
+usr/share/furnace/instruments/OPN/percussion/Agogo or Cowbell.dmp
+usr/share/furnace/instruments/OPN/percussion/BellMD.fui
+usr/share/furnace/instruments/OPN/percussion/Bell_Oct4-7.dmp
+usr/share/furnace/instruments/OPN/percussion/Bongo.dmp
+usr/share/furnace/instruments/OPN/percussion/Chime.dmp
+usr/share/furnace/instruments/OPN/percussion/ChurchBell.fui
+usr/share/furnace/instruments/OPN/percussion/Cowbell.dmp
+usr/share/furnace/instruments/OPN/percussion/Cowbell_F#5.dmp
+usr/share/furnace/instruments/OPN/percussion/Dangerously Cheap Timpani.fui
+usr/share/furnace/instruments/OPN/percussion/Dulcimer.dmp
+usr/share/furnace/instruments/OPN/percussion/Glockenspiel.dmp
+usr/share/furnace/instruments/OPN/percussion/Kalimba.dmp
+usr/share/furnace/instruments/OPN/percussion/Kalimba.fui
+usr/share/furnace/instruments/OPN/percussion/Mallet 1.dmp
+usr/share/furnace/instruments/OPN/percussion/Marimba (2).dmp
+usr/share/furnace/instruments/OPN/percussion/Marimba.dmp
+usr/share/furnace/instruments/OPN/percussion/Marimba.fui
+usr/share/furnace/instruments/OPN/percussion/Metalliphone.dmp
+usr/share/furnace/instruments/OPN/percussion/Music Box.dmp
+usr/share/furnace/instruments/OPN/percussion/MusicBox.fui
+usr/share/furnace/instruments/OPN/percussion/Music_Box.fui
+usr/share/furnace/instruments/OPN/percussion/OPM-lowpitch-fmclap.fui
+usr/share/furnace/instruments/OPN/percussion/Peck.dmp
+usr/share/furnace/instruments/OPN/percussion/Realistic Bell.dmp
+usr/share/furnace/instruments/OPN/percussion/Short Bongo.dmp
+usr/share/furnace/instruments/OPN/percussion/Space Chime.dmp
+usr/share/furnace/instruments/OPN/percussion/Space Marimba.dmp
+usr/share/furnace/instruments/OPN/percussion/Steel Drum (2).dmp
+usr/share/furnace/instruments/OPN/percussion/Steel Drum.dmp
+usr/share/furnace/instruments/OPN/percussion/Timpani (OPN).fui
+usr/share/furnace/instruments/OPN/percussion/Timpani.dmp
+usr/share/furnace/instruments/OPN/percussion/Tubular Bells.dmp
+usr/share/furnace/instruments/OPN/percussion/VRC7 Chime.dmp
+usr/share/furnace/instruments/OPN/percussion/VRC7 Marimba.dmp
+usr/share/furnace/instruments/OPN/percussion/VRC7 Metalliphone.dmp
+usr/share/furnace/instruments/OPN/percussion/VRC7 Soft Hestian.dmp
+usr/share/furnace/instruments/OPN/percussion/VRC7 Vibraphone.dmp
+usr/share/furnace/instruments/OPN/percussion/VRC7 Xylophone.dmp
+usr/share/furnace/instruments/OPN/percussion/Vibraphone.dmp
+usr/share/furnace/instruments/OPN/percussion/Xylophone 1.dmp
+usr/share/furnace/instruments/OPN/percussion/Xylophone 2.dmp
+usr/share/furnace/instruments/OPN/percussion/Xylophone.dmp
+usr/share/furnace/instruments/OPN/percussion/agogo.fui
+usr/share/furnace/instruments/OPN/percussion/alg 7 bongoes.dmp
+usr/share/furnace/instruments/OPN/percussion/bell_00_glockenspiel.fui
+usr/share/furnace/instruments/OPN/percussion/bell_01_glockenspiel_echoing.fui
+usr/share/furnace/instruments/OPN/percussion/bell_02_glockenspiel_wobbly.fui
+usr/share/furnace/instruments/OPN/percussion/brickblock369 Glockenspiel.dmp
+usr/share/furnace/instruments/OPN/percussion/brickblock369 Steel Drum.dmp
+usr/share/furnace/instruments/OPN/percussion/brickblock369 Timpani.dmp
+usr/share/furnace/instruments/OPN/percussion/fm_cowbell.fui
+usr/share/furnace/instruments/OPN/percussion/octave_8_bell.fui
+usr/share/furnace/instruments/OPN/strings/
+usr/share/furnace/instruments/OPN/strings/(CH3) Double Viola.dmp
+usr/share/furnace/instruments/OPN/strings/5thsPad.fui
+usr/share/furnace/instruments/OPN/strings/Choir.dmp
+usr/share/furnace/instruments/OPN/strings/Earthbound Strings.dmp
+usr/share/furnace/instruments/OPN/strings/Enchant.dmp
+usr/share/furnace/instruments/OPN/strings/Ethereal Something.dmp
+usr/share/furnace/instruments/OPN/strings/Fiddle.dmp
+usr/share/furnace/instruments/OPN/strings/Fifths Pad.dmp
+usr/share/furnace/instruments/OPN/strings/Fifths Type Beat.dmp
+usr/share/furnace/instruments/OPN/strings/Pad.dmp
+usr/share/furnace/instruments/OPN/strings/Rapid Fiddle.dmp
+usr/share/furnace/instruments/OPN/strings/SSGPad.dmp
+usr/share/furnace/instruments/OPN/strings/Sawsine pad.dmp
+usr/share/furnace/instruments/OPN/strings/Slow Strings.fui
+usr/share/furnace/instruments/OPN/strings/Space Violin.dmp
+usr/share/furnace/instruments/OPN/strings/String.fui
+usr/share/furnace/instruments/OPN/strings/VRC7 Strings.dmp
+usr/share/furnace/instruments/OPN/strings/VRC7 Viola.dmp
+usr/share/furnace/instruments/OPN/strings/Violin 1.dmp
+usr/share/furnace/instruments/OPN/strings/Violin 2.dmp
+usr/share/furnace/instruments/OPN/strings/Violin.fui
+usr/share/furnace/instruments/OPN/strings/ViolinMD.fui
+usr/share/furnace/instruments/OPN/strings/strings_00.fui
+usr/share/furnace/instruments/OPN/synth/
+usr/share/furnace/instruments/OPN/synth/(CH3) Double Ambience.dmp
+usr/share/furnace/instruments/OPN/synth/(CH3) Double Choir.dmp
+usr/share/furnace/instruments/OPN/synth/(CH3) Double Rounded Square.dmp
+usr/share/furnace/instruments/OPN/synth/(CH3) Saw & Organ.dmp
+usr/share/furnace/instruments/OPN/synth/(CH3) Sine Chord.dmp
+usr/share/furnace/instruments/OPN/synth/(CH3) Synth with Light Snare.dmp
+usr/share/furnace/instruments/OPN/synth/1 16 Pulse.dmp
+usr/share/furnace/instruments/OPN/synth/1 4 Pulse.dmp
+usr/share/furnace/instruments/OPN/synth/1 8 Pulse.dmp
+usr/share/furnace/instruments/OPN/synth/3 16 Pulse.dmp
+usr/share/furnace/instruments/OPN/synth/3 8 Pulse.dmp
+usr/share/furnace/instruments/OPN/synth/5 16 Pulse.dmp
+usr/share/furnace/instruments/OPN/synth/7 16 Pulse.dmp
+usr/share/furnace/instruments/OPN/synth/Abduction.dmp
+usr/share/furnace/instruments/OPN/synth/Altered Square.dmp
+usr/share/furnace/instruments/OPN/synth/Ambience.dmp
+usr/share/furnace/instruments/OPN/synth/Buttermilk.dmp
+usr/share/furnace/instruments/OPN/synth/Church Hestian.dmp
+usr/share/furnace/instruments/OPN/synth/Circuitbird Donk.dmp
+usr/share/furnace/instruments/OPN/synth/Cricket Chorus.fui
+usr/share/furnace/instruments/OPN/synth/Cutoff.dmp
+usr/share/furnace/instruments/OPN/synth/Desert Synth.dmp
+usr/share/furnace/instruments/OPN/synth/Distorted Hestian.dmp
+usr/share/furnace/instruments/OPN/synth/Ecco.dmp
+usr/share/furnace/instruments/OPN/synth/FM_noname1.fui
+usr/share/furnace/instruments/OPN/synth/Guess.dmp
+usr/share/furnace/instruments/OPN/synth/Hestian.dmp
+usr/share/furnace/instruments/OPN/synth/High Hestian.dmp
+usr/share/furnace/instruments/OPN/synth/Hyperspeed Decay Sine.dmp
+usr/share/furnace/instruments/OPN/synth/K.K. Slider Aah.dmp
+usr/share/furnace/instruments/OPN/synth/K.K. Slider Weh.dmp
+usr/share/furnace/instruments/OPN/synth/Kirby SNES Synth Pad.fui
+usr/share/furnace/instruments/OPN/synth/Klax.dmp
+usr/share/furnace/instruments/OPN/synth/Kyd.dmp
+usr/share/furnace/instruments/OPN/synth/Liquid Lead.dmp
+usr/share/furnace/instruments/OPN/synth/Love.dmp
+usr/share/furnace/instruments/OPN/synth/Low Hestian.dmp
+usr/share/furnace/instruments/OPN/synth/Metal Lead 2.dmp
+usr/share/furnace/instruments/OPN/synth/Metal Lead 3.dmp
+usr/share/furnace/instruments/OPN/synth/Metal Lead.dmp
+usr/share/furnace/instruments/OPN/synth/Metallic FM Lead.fui
+usr/share/furnace/instruments/OPN/synth/NES Triangle.dmp
+usr/share/furnace/instruments/OPN/synth/Near Perfect Saw Wave.dmp
+usr/share/furnace/instruments/OPN/synth/Near Perfect Square Wave.dmp
+usr/share/furnace/instruments/OPN/synth/Octave_Square.fui
+usr/share/furnace/instruments/OPN/synth/Octave_Square2.fui
+usr/share/furnace/instruments/OPN/synth/Perfect Saw Wave.dmp
+usr/share/furnace/instruments/OPN/synth/Perfect Square Wave.dmp
+usr/share/furnace/instruments/OPN/synth/Perfect Triangle Wave.dmp
+usr/share/furnace/instruments/OPN/synth/Rattling Hestian.dmp
+usr/share/furnace/instruments/OPN/synth/ResoUnison-Synth 1.dmp
+usr/share/furnace/instruments/OPN/synth/Reverby_Live_Chords.fui
+usr/share/furnace/instruments/OPN/synth/Rough Hestian.dmp
+usr/share/furnace/instruments/OPN/synth/Rough Square.dmp
+usr/share/furnace/instruments/OPN/synth/Rounded Square.dmp
+usr/share/furnace/instruments/OPN/synth/RustEcho.dmp
+usr/share/furnace/instruments/OPN/synth/Saw Lead.fui
+usr/share/furnace/instruments/OPN/synth/Saw Malleable.dmp
+usr/share/furnace/instruments/OPN/synth/Saw.dmp
+usr/share/furnace/instruments/OPN/synth/SeqSynth 1.dmp
+usr/share/furnace/instruments/OPN/synth/Sharp Saw.dmp
+usr/share/furnace/instruments/OPN/synth/Signal.dmp
+usr/share/furnace/instruments/OPN/synth/Sine Growl.dmp
+usr/share/furnace/instruments/OPN/synth/Space Cowboy.dmp
+usr/share/furnace/instruments/OPN/synth/Space Hestian.dmp
+usr/share/furnace/instruments/OPN/synth/Space Organ.dmp
+usr/share/furnace/instruments/OPN/synth/Space Saw.dmp
+usr/share/furnace/instruments/OPN/synth/Space Shredder.dmp
+usr/share/furnace/instruments/OPN/synth/Sparkle.dmp
+usr/share/furnace/instruments/OPN/synth/Spoopy.dmp
+usr/share/furnace/instruments/OPN/synth/Square Wave.dmp
+usr/share/furnace/instruments/OPN/synth/Square.dmp
+usr/share/furnace/instruments/OPN/synth/Square.fui
+usr/share/furnace/instruments/OPN/synth/Squid.dmp
+usr/share/furnace/instruments/OPN/synth/Synth Reed 1.dmp
+usr/share/furnace/instruments/OPN/synth/Synth with Closed Hi-Hat.dmp
+usr/share/furnace/instruments/OPN/synth/Synth with Open Hi-Hat.dmp
+usr/share/furnace/instruments/OPN/synth/Thin.dmp
+usr/share/furnace/instruments/OPN/synth/Tri.dmp
+usr/share/furnace/instruments/OPN/synth/Twang EX.dmp
+usr/share/furnace/instruments/OPN/synth/Twang Whistle.dmp
+usr/share/furnace/instruments/OPN/synth/Twoah.dmp
+usr/share/furnace/instruments/OPN/synth/VRC7 Choir.dmp
+usr/share/furnace/instruments/OPN/synth/VRC7 Hestian.dmp
+usr/share/furnace/instruments/OPN/synth/Wahwah.dmp
+usr/share/furnace/instruments/OPN/synth/[1OPHigh]Saw.dmp
+usr/share/furnace/instruments/OPN/synth/[2OPHigh]Filtered Square.dmp
+usr/share/furnace/instruments/OPN/synth/cool leaed.dmp
+usr/share/furnace/instruments/OPN/synth/dodo.fui
+usr/share/furnace/instruments/OPN/synth/fm_grinder.fui
+usr/share/furnace/instruments/OPN/synth/fm_horror.fui
+usr/share/furnace/instruments/OPN/synth/fm_noname2.fui
+usr/share/furnace/instruments/OPN/synth/fm_noname3.fui
+usr/share/furnace/instruments/OPN/synth/fm_noname4.fui
+usr/share/furnace/instruments/OPN/synth/fm_noname5.fui
+usr/share/furnace/instruments/OPN/synth/fm_noname6.fui
+usr/share/furnace/instruments/OPN/synth/fm_noname7.fui
+usr/share/furnace/instruments/OPN/synth/growl.fui
+usr/share/furnace/instruments/OPN/synth/mystic cave lead.dmp
+usr/share/furnace/instruments/OPN/synth/pateta.fui
+usr/share/furnace/instruments/OPN/synth/sawtooth.dmp
+usr/share/furnace/instruments/OPN/synth/snes-ish square.dmp
+usr/share/furnace/instruments/OPN/synth/sonic spinball toxic caves thingy.dmp
+usr/share/furnace/instruments/OPN/synth/whut.dmp
+usr/share/furnace/instruments/OPN/synth/yrwywryw.dmp
+usr/share/furnace/instruments/OPN/tfilib/
+usr/share/furnace/instruments/OPN/tfilib/banjo.tfi
+usr/share/furnace/instruments/OPN/tfilib/bass.tfi
+usr/share/furnace/instruments/OPN/tfilib/bell.tfi
+usr/share/furnace/instruments/OPN/tfilib/cymbal.tfi
+usr/share/furnace/instruments/OPN/tfilib/distbass.tfi
+usr/share/furnace/instruments/OPN/tfilib/distguit.tfi
+usr/share/furnace/instruments/OPN/tfilib/distslap.tfi
+usr/share/furnace/instruments/OPN/tfilib/elecbass.tfi
+usr/share/furnace/instruments/OPN/tfilib/fifths.tfi
+usr/share/furnace/instruments/OPN/tfilib/flute.tfi
+usr/share/furnace/instruments/OPN/tfilib/guitar.tfi
+usr/share/furnace/instruments/OPN/tfilib/harp.tfi
+usr/share/furnace/instruments/OPN/tfilib/harpsich.tfi
+usr/share/furnace/instruments/OPN/tfilib/hithat.tfi
+usr/share/furnace/instruments/OPN/tfilib/kick.tfi
+usr/share/furnace/instruments/OPN/tfilib/list.txt
+usr/share/furnace/instruments/OPN/tfilib/lyre.tfi
+usr/share/furnace/instruments/OPN/tfilib/marimba.tfi
+usr/share/furnace/instruments/OPN/tfilib/neslike.tfi
+usr/share/furnace/instruments/OPN/tfilib/ocarina.tfi
+usr/share/furnace/instruments/OPN/tfilib/organ.tfi
+usr/share/furnace/instruments/OPN/tfilib/piano.tfi
+usr/share/furnace/instruments/OPN/tfilib/sawtooth.tfi
+usr/share/furnace/instruments/OPN/tfilib/sax.tfi
+usr/share/furnace/instruments/OPN/tfilib/sine.tfi
+usr/share/furnace/instruments/OPN/tfilib/slapbass.tfi
+usr/share/furnace/instruments/OPN/tfilib/snare.tfi
+usr/share/furnace/instruments/OPN/tfilib/sofpiano.tfi
+usr/share/furnace/instruments/OPN/tfilib/softsaw.tfi
+usr/share/furnace/instruments/OPN/tfilib/softsqr.tfi
+usr/share/furnace/instruments/OPN/tfilib/square.tfi
+usr/share/furnace/instruments/OPN/tfilib/steldrum.tfi
+usr/share/furnace/instruments/OPN/tfilib/synbell.tfi
+usr/share/furnace/instruments/OPN/tfilib/tackpian.tfi
+usr/share/furnace/instruments/OPN/tfilib/timpani1.tfi
+usr/share/furnace/instruments/OPN/tfilib/timpani2.tfi
+usr/share/furnace/instruments/OPN/tfilib/toypiano.tfi
+usr/share/furnace/instruments/OPN/tfilib/triangle.tfi
+usr/share/furnace/instruments/OPN/tfilib/trumpet.tfi
+usr/share/furnace/instruments/OPN/tfilib/wooddrum.tfi
+usr/share/furnace/instruments/OPN/wind/
+usr/share/furnace/instruments/OPN/wind/(CH3) Double Clarinet.dmp
+usr/share/furnace/instruments/OPN/wind/(CH3) Double Flute.dmp
+usr/share/furnace/instruments/OPN/wind/(CH3) Double Woodwind.dmp
+usr/share/furnace/instruments/OPN/wind/(CH3) Quadruple Ocarina.dmp
+usr/share/furnace/instruments/OPN/wind/B'arinet.dmp
+usr/share/furnace/instruments/OPN/wind/BottleBlow.fui
+usr/share/furnace/instruments/OPN/wind/Clarinet (2).dmp
+usr/share/furnace/instruments/OPN/wind/Clarinet.dmp
+usr/share/furnace/instruments/OPN/wind/Clarinet.fui
+usr/share/furnace/instruments/OPN/wind/Didgeridoo.dmp
+usr/share/furnace/instruments/OPN/wind/English Horn.dmp
+usr/share/furnace/instruments/OPN/wind/Even-Calliope.dmp
+usr/share/furnace/instruments/OPN/wind/FM_4OP_-_Tenor_Sax.fui
+usr/share/furnace/instruments/OPN/wind/Flute (2).dmp
+usr/share/furnace/instruments/OPN/wind/Flute.dmp
+usr/share/furnace/instruments/OPN/wind/Forest Flute.dmp
+usr/share/furnace/instruments/OPN/wind/Harmonica 2.fui
+usr/share/furnace/instruments/OPN/wind/Harmonica.dmp
+usr/share/furnace/instruments/OPN/wind/Ocarina.dmp
+usr/share/furnace/instruments/OPN/wind/Pan Flute.dmp
+usr/share/furnace/instruments/OPN/wind/Sax 1.fui
+usr/share/furnace/instruments/OPN/wind/Sax 2 (Bari).fui
+usr/share/furnace/instruments/OPN/wind/Saxophone EX.dmp
+usr/share/furnace/instruments/OPN/wind/Saxophone.dmp
+usr/share/furnace/instruments/OPN/wind/bassoon.fui
+usr/share/furnace/instruments/OPN/wind/bassoon_clarinet.fui
+usr/share/furnace/instruments/OPN/wind/fm_pipeflute.fui
+usr/share/furnace/instruments/OPN/wind/woodwind_00.fui
+usr/share/furnace/instruments/OPZ/
+usr/share/furnace/instruments/OPZ/Fake SNES Bass_OPZ.fui
+usr/share/furnace/instruments/OPZ/Fake_Famicom_Tri.fui
+usr/share/furnace/instruments/OPZ/Heavy_synth_bass.fui
+usr/share/furnace/instruments/OPZ/Organ_OPZ.fui
+usr/share/furnace/instruments/OPZ/Synth Bass.fui
+usr/share/furnace/instruments/OPZ/accordion.fui
+usr/share/furnace/instruments/OPZ/accordion2.fui
+usr/share/furnace/instruments/OPZ/bagpipe.fui
+usr/share/furnace/instruments/OPZ/distortedhalfsinepad.fui
+usr/share/furnace/instruments/OPZ/funkysynthbass.fui
+usr/share/furnace/instruments/OPZ/halfsine_pad.fui
+usr/share/furnace/instruments/OPZ/horrorpad.fui
+usr/share/furnace/instruments/OPZ/overdriven_guitar.fui
+usr/share/furnace/instruments/OPZ/pickbass.fui
+usr/share/furnace/instruments/OPZ/reedorgan.fui
+usr/share/furnace/instruments/OPZ/rimshot.fui
+usr/share/furnace/instruments/OPZ/sitar.fui
+usr/share/furnace/instruments/OPZ/synthdulcimer.fui
+usr/share/furnace/instruments/OPZ/timpani_oct2.fui
+usr/share/furnace/instruments/README.md
+usr/share/furnace/instruments/SN7/
+usr/share/furnace/instruments/SN7/0-2-5_arp_lead.fui
+usr/share/furnace/instruments/SN7/0-3-5_arp_lead.fui
+usr/share/furnace/instruments/SN7/2-Arp Chord High.dmp
+usr/share/furnace/instruments/SN7/2-Arp High.dmp
+usr/share/furnace/instruments/SN7/2-Arp Major Low.dmp
+usr/share/furnace/instruments/SN7/2-Arp Minor Low.dmp
+usr/share/furnace/instruments/SN7/3-Arp High.dmp
+usr/share/furnace/instruments/SN7/3-Arp Major.dmp
+usr/share/furnace/instruments/SN7/3-Arp Minor.dmp
+usr/share/furnace/instruments/SN7/5-Arp Major.dmp
+usr/share/furnace/instruments/SN7/5-Arp Minor.dmp
+usr/share/furnace/instruments/SN7/Arp Snare.dmp
+usr/share/furnace/instruments/SN7/Attack.dmp
+usr/share/furnace/instruments/SN7/Buzz Noise.dmp
+usr/share/furnace/instruments/SN7/Crash.dmp
+usr/share/furnace/instruments/SN7/Cyclic Noise.dmp
+usr/share/furnace/instruments/SN7/Decay Noise.dmp
+usr/share/furnace/instruments/SN7/Decay.dmp
+usr/share/furnace/instruments/SN7/Down Slider.dmp
+usr/share/furnace/instruments/SN7/Echo.fui
+usr/share/furnace/instruments/SN7/Flute.fui
+usr/share/furnace/instruments/SN7/Follin Guitar 2.fui
+usr/share/furnace/instruments/SN7/Follin Guitar.fui
+usr/share/furnace/instruments/SN7/Guitar.fui
+usr/share/furnace/instruments/SN7/Hi-Hat & Note.dmp
+usr/share/furnace/instruments/SN7/Hi-Hat Closed.dmp
+usr/share/furnace/instruments/SN7/Hi-Hat Open.dmp
+usr/share/furnace/instruments/SN7/Kick Noise.dmp
+usr/share/furnace/instruments/SN7/Multi Slider.dmp
+usr/share/furnace/instruments/SN7/Obvious Crash.dmp
+usr/share/furnace/instruments/SN7/Octave Arp.fui
+usr/share/furnace/instruments/SN7/Record Scratch Down.dmp
+usr/share/furnace/instruments/SN7/Record Scratch Up.dmp
+usr/share/furnace/instruments/SN7/Retrig.dmp
+usr/share/furnace/instruments/SN7/Ride.dmp
+usr/share/furnace/instruments/SN7/SMSPerc/
+usr/share/furnace/instruments/SN7/SMSPerc/SMSPerc About.txt
+usr/share/furnace/instruments/SN7/SMSPerc/SMSPerc ExampleInst [Hat] CH3.fui
+usr/share/furnace/instruments/SN7/SMSPerc/SMSPerc ExampleInst [KickSnare] CH3.fui
+usr/share/furnace/instruments/SN7/SMSPerc/SMSPerc ExampleInst [Nothing] CH3.fui
+usr/share/furnace/instruments/SN7/SMSPerc/SMSPerc Hat_Closed CH4 [D].fui
+usr/share/furnace/instruments/SN7/SMSPerc/SMSPerc Hat_Open CH4 [D].fui
+usr/share/furnace/instruments/SN7/SMSPerc/SMSPerc Kick CH4 [C].fui
+usr/share/furnace/instruments/SN7/SMSPerc/SMSPerc KickSnare CH3.fui
+usr/share/furnace/instruments/SN7/SMSPerc/SMSPerc Snare CH4 [D].fui
+usr/share/furnace/instruments/SN7/Snare.dmp
+usr/share/furnace/instruments/SN7/Splash.dmp
+usr/share/furnace/instruments/SN7/Thump & Note.dmp
+usr/share/furnace/instruments/SN7/Tim Follin 6-Arp Fast Major.dmp
+usr/share/furnace/instruments/SN7/Tim Follin 6-Arp Fast Minor.dmp
+usr/share/furnace/instruments/SN7/Tim Follin 6-Arp Slow Major.dmp
+usr/share/furnace/instruments/SN7/Tim Follin 6-Arp Slow Minor.dmp
+usr/share/furnace/instruments/SN7/Tim Follin Lead.dmp
+usr/share/furnace/instruments/SN7/Tom A.dmp
+usr/share/furnace/instruments/SN7/Tom B.dmp
+usr/share/furnace/instruments/SN7/Up Slider.dmp
+usr/share/furnace/instruments/SN7/Variable.dmp
+usr/share/furnace/instruments/SN7/Whistle.dmp
+usr/share/furnace/instruments/SN7/compatibility.fui
+usr/share/furnace/instruments/TIA/
+usr/share/furnace/instruments/TIA/Bass Drum.fui
+usr/share/furnace/instruments/TIA/Clap.fui
+usr/share/furnace/instruments/TIA/Hi-Hat Long.fui
+usr/share/furnace/instruments/TIA/Hi-Hat.fui
+usr/share/furnace/instruments/TIA/Snare Drum.fui
+usr/share/furnace/instruments/TODO/
+usr/share/furnace/instruments/TODO/(WSG) Supersaw.fui
+usr/share/furnace/instruments/TODO/FDS-oneofthosejapaneseguitarsidkhowtheyarecalledyeah.fui
+usr/share/furnace/instruments/TODO/FDS-overfuckingholyshitdriven-guitar.fui
+usr/share/furnace/instruments/TODO/FDS-slapassbass.fui
+usr/share/furnace/instruments/VERA/
+usr/share/furnace/instruments/VERA/0-2-5_arp_lead.fui
+usr/share/furnace/instruments/VERA/0-3-5_arp_lead.fui
+usr/share/furnace/instruments/VERA/Noise_Kick.fui
+usr/share/furnace/instruments/VERA/Noise_Snare.fui
+usr/share/furnace/instruments/VIC/
+usr/share/furnace/instruments/VIC/kick.fui
+usr/share/furnace/instruments/uhrwerk/
+usr/share/furnace/instruments/uhrwerk/(OPN) arbys.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/
+usr/share/furnace/instruments/uhrwerk/B Series/(OPM) b21.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPM) b21b.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPM) b21c.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b00.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b00a.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b00b.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b01.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b01b.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b02.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b02b.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b02c MUTE.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b02c.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b03.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b04.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b05.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b06.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b07.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b08.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b08b.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b08c.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b09.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b10.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b10b.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b11.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b12.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b13.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b14.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b15.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b16.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b17.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b17b MUTE.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b17b SLAP (actual).dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b17b SLAP.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b17b.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b18 MUTE.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b18 SLAP.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b18.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b19 MUTE.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b19 SLAP.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b19.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b20.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b22 MUTE.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b22 SLAP.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b22.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b22b.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b22c MUTE.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b22c SLAP.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b22c.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b23 MUTE.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b23 SLAP.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b23.dmp
+usr/share/furnace/instruments/uhrwerk/B Series/(OPN) b69.dmp
+usr/share/furnace/instruments/uhrwerk/P Series/
+usr/share/furnace/instruments/uhrwerk/P Series/(OPM) p11.dmp
+usr/share/furnace/instruments/uhrwerk/P Series/(OPN) p01.dmp
+usr/share/furnace/instruments/uhrwerk/P Series/(OPN) p01b.dmp
+usr/share/furnace/instruments/uhrwerk/P Series/(OPN) p02.dmp
+usr/share/furnace/instruments/uhrwerk/P Series/(OPN) p02b.dmp
+usr/share/furnace/instruments/uhrwerk/P Series/(OPN) p03.dmp
+usr/share/furnace/instruments/uhrwerk/P Series/(OPN) p03b.dmp
+usr/share/furnace/instruments/uhrwerk/P Series/(OPN) p04.dmp
+usr/share/furnace/instruments/uhrwerk/P Series/(OPN) p05.dmp
+usr/share/furnace/instruments/uhrwerk/P Series/(OPN) p06.dmp
+usr/share/furnace/instruments/uhrwerk/P Series/(OPN) p06b.dmp
+usr/share/furnace/instruments/uhrwerk/P Series/(OPN) p06c.dmp
+usr/share/furnace/instruments/uhrwerk/P Series/(OPN) p07.dmp
+usr/share/furnace/instruments/uhrwerk/P Series/(OPN) p08.dmp
+usr/share/furnace/instruments/uhrwerk/P Series/(OPN) p09.dmp
+usr/share/furnace/instruments/uhrwerk/P Series/(OPN) p10.dmp
+usr/share/furnace/instruments/uhrwerk/P Series/(OPN) p10b.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/
+usr/share/furnace/instruments/uhrwerk/R Series/(OPM) r27.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) act 1 void of space.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) r10.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) r10b.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) r11.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) r12.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) r13.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) r14.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) r15.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) r16.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) r2.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) r3.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) r33.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) r4.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) r5.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) r65.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) r6b.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) r7.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) r7b.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) r7c.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) r8.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) r8b.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) r8c.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) r9.dmp
+usr/share/furnace/instruments/uhrwerk/R Series/(OPN) r9b.dmp
+usr/share/furnace/instruments/uhrwerk/README.txt
+usr/share/furnace/instruments/uhrwerk/Z Series/
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPM) z00.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPM) z01.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPM) z02.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPM) z02b.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPM) z02c.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPM) z03.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPM) z04.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPM) z04b.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPM) z04c.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPM) z11.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPM) z11b.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPM) z11c.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPM) z11d.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPM) z11e.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPM) z39.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPM) z39b low vol.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPM) z39b.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPM) z39c.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPM) z39d.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPM) z39e.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPM) z40.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z05.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z05b.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z05c.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z05d.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z06.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z06b.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z07.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z08.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z09.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z10.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z10b.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z10c.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z10d.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z10e.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z12.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z13.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z14.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z14b.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z14c.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z14d.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z15.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z15b (quiet).dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z15b.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z16.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z16b.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z16c.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z16d.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z17.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z17b.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z17c.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z17d.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z17e.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z18.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z19.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z20.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z20b.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z21.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z22.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z22b.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z23.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z24.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z24b.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z24c.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z25.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z26.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z26b.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z26c.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z26d.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z26e.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z27.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z28.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z28b.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z28c.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z29.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z30.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z30b.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z30c.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z31.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z32.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z33.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z33b.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z33c.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z33d.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z33e.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z34.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z34b.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z35.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z36.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z37.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z38.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z41.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z41b.dmp
+usr/share/furnace/instruments/uhrwerk/Z Series/(OPN) z42.dmp
+usr/share/furnace/wavetables/
+usr/share/furnace/wavetables/128x256/
+usr/share/furnace/wavetables/128x256/128x256bass.fuw
+usr/share/furnace/wavetables/128x256/128x256chime.fuw
+usr/share/furnace/wavetables/128x256/128x256lead.fuw
+usr/share/furnace/wavetables/32x16/
+usr/share/furnace/wavetables/32x16/32x16FunkyLead.fuw
+usr/share/furnace/wavetables/32x16/32x16NamcoBass.fuw
+usr/share/furnace/wavetables/32x16/32x16ataribass.fuw
+usr/share/furnace/wavetables/32x16/32x16brass.fuw
+usr/share/furnace/wavetables/32x16/32x16clarinet.fuw
+usr/share/furnace/wavetables/32x16/32x16distortedsquare.fuw
+usr/share/furnace/wavetables/32x16/32x16eguitar.fuw
+usr/share/furnace/wavetables/32x16/32x16flute.fuw
+usr/share/furnace/wavetables/32x16/32x16guitar.fuw
+usr/share/furnace/wavetables/32x16/32x16opllpiano.fuw
+usr/share/furnace/wavetables/32x16/32x16opllvibra.fuw
+usr/share/furnace/wavetables/32x16/32x16reedorgan.fuw
+usr/share/furnace/wavetables/32x16/32x16saw.fuw
+usr/share/furnace/wavetables/32x16/32x16saw2.fuw
+usr/share/furnace/wavetables/32x16/32x16sax.fuw
+usr/share/furnace/wavetables/32x16/32x16slapbass.fuw
+usr/share/furnace/wavetables/32x16/32x16synthbass.fuw
+usr/share/furnace/wavetables/32x16/32x16synthbrass.fuw
+usr/share/furnace/wavetables/32x16/32x16trumpet.fuw
+usr/share/furnace/wavetables/32x16/32x16voice.fuw
+usr/share/furnace/wavetables/32x32/
+usr/share/furnace/wavetables/32x32/32x32KeygenBass.fuw
+usr/share/furnace/wavetables/32x32/32x32accordion.fuw
+usr/share/furnace/wavetables/32x32/32x32accordion2.fuw
+usr/share/furnace/wavetables/32x32/32x32acousticguitar.fuw
+usr/share/furnace/wavetables/32x32/32x32agogo.fuw
+usr/share/furnace/wavetables/32x32/32x32ataribass.fuw
+usr/share/furnace/wavetables/32x32/32x32bass2.fuw
+usr/share/furnace/wavetables/32x32/32x32bass3.fuw
+usr/share/furnace/wavetables/32x32/32x32bell.fuw
+usr/share/furnace/wavetables/32x32/32x32brass.fuw
+usr/share/furnace/wavetables/32x32/32x32brass2.fuw
+usr/share/furnace/wavetables/32x32/32x32chime.fuw
+usr/share/furnace/wavetables/32x32/32x32choir.fuw
+usr/share/furnace/wavetables/32x32/32x32clarinet.fuw
+usr/share/furnace/wavetables/32x32/32x32clarinet2.fuw
+usr/share/furnace/wavetables/32x32/32x32distortedpulse.fuw
+usr/share/furnace/wavetables/32x32/32x32distortedpulse2.fuw
+usr/share/furnace/wavetables/32x32/32x32distortedsaw.fuw
+usr/share/furnace/wavetables/32x32/32x32ebass.fuw
+usr/share/furnace/wavetables/32x32/32x32eguitar.fuw
+usr/share/furnace/wavetables/32x32/32x32eguitar2.fuw
+usr/share/furnace/wavetables/32x32/32x32englishhorn.fuw
+usr/share/furnace/wavetables/32x32/32x32fantasia.fuw
+usr/share/furnace/wavetables/32x32/32x32filteredsaw.fuw
+usr/share/furnace/wavetables/32x32/32x32filteredsquare.fuw
+usr/share/furnace/wavetables/32x32/32x32flute.fuw
+usr/share/furnace/wavetables/32x32/32x32frenchhorn.fuw
+usr/share/furnace/wavetables/32x32/32x32frenchhorn2.fuw
+usr/share/furnace/wavetables/32x32/32x32glockenspiel.fuw
+usr/share/furnace/wavetables/32x32/32x32hardslap.fuw
+usr/share/furnace/wavetables/32x32/32x32jazzguitar.fuw
+usr/share/furnace/wavetables/32x32/32x32lead.fuw
+usr/share/furnace/wavetables/32x32/32x32lead2.fuw
+usr/share/furnace/wavetables/32x32/32x32mutetrumpet.fuw
+usr/share/furnace/wavetables/32x32/32x32oboe.fuw
+usr/share/furnace/wavetables/32x32/32x32octavelead.fuw
+usr/share/furnace/wavetables/32x32/32x32octavesaw.fuw
+usr/share/furnace/wavetables/32x32/32x32organ.fuw
+usr/share/furnace/wavetables/32x32/32x32organ2.fuw
+usr/share/furnace/wavetables/32x32/32x32organ3.fuw
+usr/share/furnace/wavetables/32x32/32x32piano.fuw
+usr/share/furnace/wavetables/32x32/32x32piano2.fuw
+usr/share/furnace/wavetables/32x32/32x32reedorgan.fuw
+usr/share/furnace/wavetables/32x32/32x32sam.fuw
+usr/share/furnace/wavetables/32x32/32x32saw2.fuw
+usr/share/furnace/wavetables/32x32/32x32sax.fuw
+usr/share/furnace/wavetables/32x32/32x32strings.fuw
+usr/share/furnace/wavetables/32x32/32x32strings2.fuw
+usr/share/furnace/wavetables/32x32/32x32synthbass.fuw
+usr/share/furnace/wavetables/32x32/32x32synthbell.fuw
+usr/share/furnace/wavetables/32x32/32x32synthlead.fuw
+usr/share/furnace/wavetables/32x32/32x32synthlead2.fuw
+usr/share/furnace/wavetables/32x32/32x32synthpiano.fuw
+usr/share/furnace/wavetables/32x32/32x32synthstrings.fuw
+usr/share/furnace/wavetables/32x32/32x32trumpet.fuw
+usr/share/furnace/wavetables/32x32/32x32tuba.fuw
+usr/share/furnace/wavetables/32x32/32x32vibraphone.fuw
+usr/share/furnace/wavetables/32x32/32x32voice.fuw
+usr/share/furnace/wavetables/32x32/32x32voice2.fuw
+usr/share/icons/
+usr/share/icons/hicolor/
+usr/share/icons/hicolor/1024x1024/
+usr/share/icons/hicolor/1024x1024/apps/
+usr/share/icons/hicolor/1024x1024/apps/furnace.png
+usr/share/icons/hicolor/128x128/
+usr/share/icons/hicolor/128x128/apps/
+usr/share/icons/hicolor/128x128/apps/furnace.png
+usr/share/icons/hicolor/128x128@2/
+usr/share/icons/hicolor/128x128@2/apps/
+usr/share/icons/hicolor/128x128@2/apps/furnace.png
+usr/share/icons/hicolor/16x16/
+usr/share/icons/hicolor/16x16/apps/
+usr/share/icons/hicolor/16x16/apps/furnace.png
+usr/share/icons/hicolor/16x16@2/
+usr/share/icons/hicolor/16x16@2/apps/
+usr/share/icons/hicolor/16x16@2/apps/furnace.png
+usr/share/icons/hicolor/256x256/
+usr/share/icons/hicolor/256x256/apps/
+usr/share/icons/hicolor/256x256/apps/furnace.png
+usr/share/icons/hicolor/256x256@2/
+usr/share/icons/hicolor/256x256@2/apps/
+usr/share/icons/hicolor/256x256@2/apps/furnace.png
+usr/share/icons/hicolor/32x32/
+usr/share/icons/hicolor/32x32/apps/
+usr/share/icons/hicolor/32x32/apps/furnace.png
+usr/share/icons/hicolor/32x32@2/
+usr/share/icons/hicolor/32x32@2/apps/
+usr/share/icons/hicolor/32x32@2/apps/furnace.png
+usr/share/icons/hicolor/512x512/
+usr/share/icons/hicolor/512x512/apps/
+usr/share/icons/hicolor/512x512/apps/furnace.png
+usr/share/icons/hicolor/512x512@2/
+usr/share/icons/hicolor/512x512@2/apps/
+usr/share/icons/hicolor/512x512@2/apps/furnace.png
+usr/share/icons/hicolor/64x64/
+usr/share/icons/hicolor/64x64/apps/
+usr/share/icons/hicolor/64x64/apps/furnace.png
+usr/share/icons/hicolor/64x64@2/
+usr/share/icons/hicolor/64x64@2/apps/
+usr/share/icons/hicolor/64x64@2/apps/furnace.png
+usr/share/licenses/
+usr/share/licenses/furnace/
+usr/share/licenses/furnace/LICENSE
+usr/share/locale/
+usr/share/locale/de/
+usr/share/locale/de/LC_MESSAGES/
+usr/share/locale/de/LC_MESSAGES/furnace.mo
+usr/share/locale/es/
+usr/share/locale/es/LC_MESSAGES/
+usr/share/locale/es/LC_MESSAGES/furnace.mo
+usr/share/locale/fi/
+usr/share/locale/fi/LC_MESSAGES/
+usr/share/locale/fi/LC_MESSAGES/furnace.mo
+usr/share/locale/fr/
+usr/share/locale/fr/LC_MESSAGES/
+usr/share/locale/fr/LC_MESSAGES/furnace.mo
+usr/share/locale/hy/
+usr/share/locale/hy/LC_MESSAGES/
+usr/share/locale/hy/LC_MESSAGES/furnace.mo
+usr/share/locale/id/
+usr/share/locale/id/LC_MESSAGES/
+usr/share/locale/id/LC_MESSAGES/furnace.mo
+usr/share/locale/ko/
+usr/share/locale/ko/LC_MESSAGES/
+usr/share/locale/ko/LC_MESSAGES/furnace.mo
+usr/share/locale/nl/
+usr/share/locale/nl/LC_MESSAGES/
+usr/share/locale/nl/LC_MESSAGES/furnace.mo
+usr/share/locale/pl/
+usr/share/locale/pl/LC_MESSAGES/
+usr/share/locale/pl/LC_MESSAGES/furnace.mo
+usr/share/locale/pt_BR/
+usr/share/locale/pt_BR/LC_MESSAGES/
+usr/share/locale/pt_BR/LC_MESSAGES/furnace.mo
+usr/share/locale/ru/
+usr/share/locale/ru/LC_MESSAGES/
+usr/share/locale/ru/LC_MESSAGES/furnace.mo
+usr/share/locale/sk/
+usr/share/locale/sk/LC_MESSAGES/
+usr/share/locale/sk/LC_MESSAGES/furnace.mo
+usr/share/locale/sv/
+usr/share/locale/sv/LC_MESSAGES/
+usr/share/locale/sv/LC_MESSAGES/furnace.mo
+usr/share/locale/th/
+usr/share/locale/th/LC_MESSAGES/
+usr/share/locale/th/LC_MESSAGES/furnace.mo
+usr/share/locale/tr/
+usr/share/locale/tr/LC_MESSAGES/
+usr/share/locale/tr/LC_MESSAGES/furnace.mo
+usr/share/locale/uk/
+usr/share/locale/uk/LC_MESSAGES/
+usr/share/locale/uk/LC_MESSAGES/furnace.mo
+usr/share/locale/zh/
+usr/share/locale/zh/LC_MESSAGES/
+usr/share/locale/zh/LC_MESSAGES/furnace.mo
+usr/share/locale/zh_HK/
+usr/share/locale/zh_HK/LC_MESSAGES/
+usr/share/locale/zh_HK/LC_MESSAGES/furnace.mo
+usr/share/metainfo/
+usr/share/metainfo/furnace.appdata.xml
+usr/share/mime/
+usr/share/mime/packages/
+usr/share/mime/packages/furnace.xml

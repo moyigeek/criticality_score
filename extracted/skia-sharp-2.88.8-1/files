@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/libSkiaSharp.so
+usr/lib/libSkiaSharp.so.88
+usr/lib/libSkiaSharp.so.88.8.0
+usr/share/
+usr/share/licenses/
+usr/share/licenses/skia-sharp/
+usr/share/licenses/skia-sharp/LICENSE.md

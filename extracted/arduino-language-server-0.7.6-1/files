@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/arduino-language-server
+usr/share/
+usr/share/doc/
+usr/share/doc/arduino-language-server/
+usr/share/doc/arduino-language-server/README.md

@@ -1,0 +1,15 @@
+%FILES%
+etc/
+etc/kubernetes/
+etc/kubernetes/kube-scheduler.env
+usr/
+usr/bin/
+usr/bin/kube-scheduler
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/kube-scheduler.service
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/kube-scheduler.1.gz

@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/pngquant
+usr/share/
+usr/share/licenses/
+usr/share/licenses/pngquant/
+usr/share/licenses/pngquant/LICENSE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/pngquant.1.gz

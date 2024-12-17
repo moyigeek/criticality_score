@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/virtiofsd
+usr/share/
+usr/share/doc/
+usr/share/doc/virtiofsd/
+usr/share/doc/virtiofsd/README.md
+usr/share/doc/virtiofsd/migration.md
+usr/share/doc/virtiofsd/xattr-mapping.md
+usr/share/licenses/
+usr/share/licenses/virtiofsd/
+usr/share/licenses/virtiofsd/LICENSE-APACHE
+usr/share/licenses/virtiofsd/LICENSE-BSD-3-Clause
+usr/share/qemu/
+usr/share/qemu/vhost-user/
+usr/share/qemu/vhost-user/50-virtiofsd.json

@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/share/
+usr/share/man/
+usr/share/man/man3/
+usr/share/man/man3/Config::General.3pm.gz
+usr/share/man/man3/Config::General::Extended.3pm.gz
+usr/share/man/man3/Config::General::Interpolated.3pm.gz
+usr/share/perl5/
+usr/share/perl5/vendor_perl/
+usr/share/perl5/vendor_perl/Config/
+usr/share/perl5/vendor_perl/Config/General.pm
+usr/share/perl5/vendor_perl/Config/General/
+usr/share/perl5/vendor_perl/Config/General/Extended.pm
+usr/share/perl5/vendor_perl/Config/General/Interpolated.pm

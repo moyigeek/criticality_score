@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libfribidi.so
+usr/lib32/libfribidi.so.0
+usr/lib32/libfribidi.so.0.4.0
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/fribidi.pc

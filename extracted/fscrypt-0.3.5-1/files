@@ -1,0 +1,17 @@
+%FILES%
+etc/
+etc/pam.d/
+etc/pam.d/fscrypt
+usr/
+usr/bin/
+usr/bin/fscrypt
+usr/lib/
+usr/lib/security/
+usr/lib/security/pam_fscrypt.so
+usr/share/
+usr/share/bash-completion/
+usr/share/bash-completion/completions/
+usr/share/bash-completion/completions/fscrypt
+usr/share/licenses/
+usr/share/licenses/fscrypt/
+usr/share/licenses/fscrypt/LICENSE

@@ -1,0 +1,15 @@
+%FILES%
+etc/
+etc/vimpagerrc
+usr/
+usr/bin/
+usr/bin/vimcat
+usr/bin/vimpager
+usr/share/
+usr/share/licenses/
+usr/share/licenses/vimpager/
+usr/share/licenses/vimpager/license.txt
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/vimcat.1.gz
+usr/share/man/man1/vimpager.1.gz

@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/share/
+usr/share/doc/
+usr/share/doc/mythes-hu/
+usr/share/doc/mythes-hu/README_th_hu_HU_v2.txt
+usr/share/myspell/
+usr/share/myspell/dicts/
+usr/share/myspell/dicts/th_hu_HU_v2.dat
+usr/share/myspell/dicts/th_hu_HU_v2.idx
+usr/share/mythes/
+usr/share/mythes/th_hu_HU_v2.dat
+usr/share/mythes/th_hu_HU_v2.idx

@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libp11-kit.so
+usr/lib32/libp11-kit.so.0
+usr/lib32/libp11-kit.so.0.4.1
+usr/lib32/p11-kit-proxy.so
+usr/lib32/pkcs11/
+usr/lib32/pkcs11/p11-kit-client.so
+usr/lib32/pkcs11/p11-kit-trust.so
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/p11-kit-1.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-p11-kit/
+usr/share/licenses/lib32-p11-kit/COPYING

@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/rfdump
+usr/share/
+usr/share/applications/
+usr/share/applications/rfdump.desktop
+usr/share/pixmaps/
+usr/share/pixmaps/rfdump.png
+usr/share/rfdump/
+usr/share/rfdump/mifare.txt
+usr/share/rfdump/rfd.dtd
+usr/share/rfdump/rfd_types.xml
+usr/share/rfdump/rfdump.png
+usr/share/rfdump/rfdump.ui
+usr/share/rfdump/rfdump.xpm

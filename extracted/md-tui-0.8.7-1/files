@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/mdt
+usr/share/
+usr/share/doc/
+usr/share/doc/md-tui/
+usr/share/doc/md-tui/README.md

@@ -1,0 +1,13 @@
+%FILES%
+etc/
+etc/bash_completion.d/
+etc/bash_completion.d/pass-otp
+usr/
+usr/lib/
+usr/lib/password-store/
+usr/lib/password-store/extensions/
+usr/lib/password-store/extensions/otp.bash
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/pass-otp.1.gz

@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/mono/
+usr/lib/mono/2.0/
+usr/lib/mono/2.0/uwsgi.dll
+usr/lib/uwsgi/
+usr/lib/uwsgi/mono_plugin.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/uwsgi-plugin-mono/
+usr/share/licenses/uwsgi-plugin-mono/LICENSE

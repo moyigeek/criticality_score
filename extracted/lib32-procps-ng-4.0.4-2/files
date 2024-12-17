@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libproc2.so
+usr/lib32/libproc2.so.0
+usr/lib32/libproc2.so.0.0.2
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/libproc2.pc

@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/kube-linter
+usr/share/
+usr/share/bash-completion/
+usr/share/bash-completion/completions/
+usr/share/bash-completion/completions/kube-linter
+usr/share/fish/
+usr/share/fish/completions/
+usr/share/fish/completions/kube-linter.fish
+usr/share/zsh/
+usr/share/zsh/site-functions/
+usr/share/zsh/site-functions/_kube-linter

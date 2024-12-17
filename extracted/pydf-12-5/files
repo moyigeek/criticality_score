@@ -1,0 +1,13 @@
+%FILES%
+etc/
+etc/pydfrc
+usr/
+usr/bin/
+usr/bin/pydf
+usr/share/
+usr/share/licenses/
+usr/share/licenses/pydf/
+usr/share/licenses/pydf/COPYING
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/pydf.1.gz

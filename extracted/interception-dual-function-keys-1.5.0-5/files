@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/dual-function-keys
+usr/share/
+usr/share/doc/
+usr/share/doc/interception-dual-function-keys/
+usr/share/doc/interception-dual-function-keys/README.md
+usr/share/doc/interception-dual-function-keys/dual-function-keys.md
+usr/share/doc/interception-dual-function-keys/examples.md
+usr/share/licenses/
+usr/share/licenses/interception-dual-function-keys/
+usr/share/licenses/interception-dual-function-keys/LICENSE.md
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/dual-function-keys.1.gz

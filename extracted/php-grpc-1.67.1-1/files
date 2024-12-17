@@ -1,0 +1,14 @@
+%FILES%
+etc/
+etc/php/
+etc/php/conf.d/
+etc/php/conf.d/grpc.ini
+usr/
+usr/lib/
+usr/lib/php/
+usr/lib/php/modules/
+usr/lib/php/modules/grpc.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/php-grpc/
+usr/share/licenses/php-grpc/LICENSE

@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/ko
+usr/share/
+usr/share/bash-completion/
+usr/share/bash-completion/completions/
+usr/share/bash-completion/completions/ko
+usr/share/fish/
+usr/share/fish/vendor_completions.d/
+usr/share/fish/vendor_completions.d/ko.fish
+usr/share/zsh/
+usr/share/zsh/site-functions/
+usr/share/zsh/site-functions/_ko

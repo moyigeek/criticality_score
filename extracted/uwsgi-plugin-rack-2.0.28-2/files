@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/uwsgi/
+usr/lib/uwsgi/fiber_plugin.so
+usr/lib/uwsgi/rack_plugin.so
+usr/lib/uwsgi/rbthreads_plugin.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/uwsgi-plugin-rack/
+usr/share/licenses/uwsgi-plugin-rack/LICENSE

@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/byacc
+usr/share/
+usr/share/doc/
+usr/share/doc/byacc/
+usr/share/doc/byacc/README
+usr/share/licenses/
+usr/share/licenses/byacc/
+usr/share/licenses/byacc/LICENSE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/byacc.1.gz

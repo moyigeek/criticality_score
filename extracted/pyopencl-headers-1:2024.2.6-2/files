@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/include/
+usr/include/pyopencl/
+usr/include/pyopencl/pyopencl-airy.cl
+usr/include/pyopencl/pyopencl-bessel-j-complex.cl
+usr/include/pyopencl/pyopencl-bessel-j.cl
+usr/include/pyopencl/pyopencl-bessel-y.cl
+usr/include/pyopencl/pyopencl-eval-tbl.cl
+usr/include/pyopencl/pyopencl-hankel-complex.cl
+usr/share/
+usr/share/licenses/
+usr/share/licenses/pyopencl-headers/
+usr/share/licenses/pyopencl-headers/Apache-2.0.txt
+usr/share/licenses/pyopencl-headers/BSD-3-Clause.txt
+usr/share/licenses/pyopencl-headers/MIT.PyOpenCL.txt
+usr/share/licenses/pyopencl-headers/MIT.RANLUXCL.txt

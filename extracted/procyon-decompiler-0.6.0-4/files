@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/procyon-decompiler
+usr/share/
+usr/share/java/
+usr/share/java/procyon-decompiler/
+usr/share/java/procyon-decompiler/procyon-decompiler.jar

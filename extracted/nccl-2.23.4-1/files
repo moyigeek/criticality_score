@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/include/
+usr/include/nccl.h
+usr/include/nccl_net.h
+usr/lib/
+usr/lib/libnccl.so
+usr/lib/libnccl.so.2
+usr/lib/libnccl.so.2.23.4
+usr/lib/libnccl_static.a
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/nccl.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/nccl/
+usr/share/licenses/nccl/LICENSE

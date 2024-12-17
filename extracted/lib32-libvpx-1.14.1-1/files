@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libvpx.so
+usr/lib32/libvpx.so.9
+usr/lib32/libvpx.so.9.0
+usr/lib32/libvpx.so.9.0.1
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/vpx.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-libvpx

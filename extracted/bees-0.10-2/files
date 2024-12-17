@@ -1,0 +1,13 @@
+%FILES%
+etc/
+etc/bees/
+etc/bees/beesd.conf.sample
+usr/
+usr/bin/
+usr/bin/beesd
+usr/lib/
+usr/lib/bees/
+usr/lib/bees/bees
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/beesd@.service

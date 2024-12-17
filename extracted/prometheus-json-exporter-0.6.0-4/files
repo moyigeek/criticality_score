@@ -1,0 +1,11 @@
+%FILES%
+etc/
+etc/prometheus/
+etc/prometheus/json.yml
+usr/
+usr/bin/
+usr/bin/prometheus-json-exporter
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/prometheus-json-exporter.service

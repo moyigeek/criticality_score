@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/xdo
+usr/share/
+usr/share/licenses/
+usr/share/licenses/xdo/
+usr/share/licenses/xdo/LICENSE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/xdo.1.gz

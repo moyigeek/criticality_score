@@ -1,0 +1,9 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/man.cgi
+usr/bin/man2html
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/man2html.1.gz

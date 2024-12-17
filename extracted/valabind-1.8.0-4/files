@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/valabind
+usr/bin/valabind-cc
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/valabind-cc.1.gz
+usr/share/man/man1/valabind.1.gz

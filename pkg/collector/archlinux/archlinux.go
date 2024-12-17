@@ -4,6 +4,7 @@ import (
 	"archive/tar"
 	"bufio"
 	"compress/gzip"
+	"log"
 	"fmt"
 	"io"
 	"os"
@@ -167,6 +168,12 @@ func readDescFile(descPath string) (DepInfo, []DepInfo, error) {
 			inPackageSection = true
 			continue
 		}
+		if line == "%VERSION%" {
+			expectNextLine = "version"
+			inPackageSection = false
+			inDependSection = false
+			continue
+		}
 		if line == "%DEPENDS%" {
 			inDependSection = true
 			inPackageSection = false
@@ -177,9 +184,15 @@ func readDescFile(descPath string) (DepInfo, []DepInfo, error) {
 			inDependSection = false
 		}
 
+		if expectNextLine == "version" {
+			pkgInfo.Version = line
+			expectNextLine = ""
+			continue
+		}
+
 		if inPackageSection && line != "" {
 			rawContent.WriteString(line + "\n")
-			// fmt.Println(rawContent.String())
+			// log.Println(rawContent.String())
 			pkgInfo = toDep(line, rawContent.String())
 		}
 
@@ -271,11 +284,11 @@ func Archlinux(outputPath string) {
 	downloadDir := "./download"
 
 	// if _, err := os.Stat(downloadDir); os.IsNotExist(err) {
-	// 	fmt.Println("Download directory not found, starting download...")
+	// 	log.Println("Download directory not found, starting download...")
 		DownloadFiles()
 	// }
 
-	fmt.Println("Getting package list...")
+	log.Println("Getting package list...")
 	extractDir := "./extracted"
 	packages := make(map[string]map[string]interface{})
 	packageNamePattern := regexp.MustCompile(`^([a-zA-Z0-9\-_]+)-([0-9\._]+)`)
@@ -283,7 +296,7 @@ func Archlinux(outputPath string) {
 	if _, err := os.Stat(extractDir); os.IsNotExist(err) {
 		err := os.Mkdir(extractDir, 0o755)
 		if err != nil {
-			fmt.Printf("Error creating extract directory: %v\n", err)
+			log.Printf("Error creating extract directory: %v\n", err)
 			return
 		}
 	}
@@ -310,7 +323,7 @@ func Archlinux(outputPath string) {
 		return nil
 	})
 	if err != nil {
-		fmt.Printf("Error walking through download directory: %v\n", err)
+		log.Printf("Error walking through download directory: %v\n", err)
 		return
 	}
 
@@ -335,20 +348,20 @@ func Archlinux(outputPath string) {
 		return nil
 	})
 	if err != nil {
-		fmt.Printf("Error walking through extracted directory: %v\n", err)
+		log.Printf("Error walking through extracted directory: %v\n", err)
 		return
 	}
-	fmt.Printf("Done, total: %d packages.\n", len(packages))
+	log.Printf("Done, total: %d packages.\n", len(packages))
 
 	if outputPath != "" {
 		err := generateDependencyGraph(packages, outputPath)
 		if err != nil {
-			fmt.Printf("Error generating dependency graph: %v\n", err)
+			log.Printf("Error generating dependency graph: %v\n", err)
 			return
 		}
-		fmt.Println("Dependency graph generated successfully.")
+		log.Println("Dependency graph generated successfully.")
 	}
-	fmt.Println("Building dependencies graph...")
+	log.Println("Building dependencies graph...")
 	keys := make([]string, 0, len(packages))
 	for k := range packages {
 		keys = append(keys, k)
@@ -361,7 +374,7 @@ func Archlinux(outputPath string) {
 		depMap[pkgName] = deps
 	}
 
-	fmt.Println("Calculating dependencies count...")
+	log.Println("Calculating dependencies count...")
 	countMap := make(map[string]int)
 	for _, deps := range depMap {
 		for _, dep := range deps {
@@ -374,11 +387,12 @@ func Archlinux(outputPath string) {
 	for pkgName, pkgInfo := range packages {
 		depCount := countMap[pkgName]
 
-		var description, homepage string
+		var description, homepage, version string
 
 		if info, ok := pkgInfo["Info"].(DepInfo); ok {
 			description = info.Description
 			homepage = info.Homepage
+			version = info.Version
 		} else {
 			description = ""
 			homepage = ""
@@ -389,12 +403,13 @@ func Archlinux(outputPath string) {
 			DependsCount: depCount,
 			Description:  description,
 			Homepage:     homepage,
+			Version:      version,
 		}
 	}
 
 	err = updateOrInsertDatabase(pkgInfoMap)
 	if err != nil {
-		fmt.Printf("Error updating database: %v\n", err)
+		log.Printf("Error updating database: %v\n", err)
 		return
 	}
 	for _, pkgInfo := range packages {
@@ -405,17 +420,17 @@ func Archlinux(outputPath string) {
 					if isUniqueViolation(err) {
 						continue
 					}
-					fmt.Printf("Error storing dependencies for package %s: %v\n", packageName, err)
+					log.Printf("Error storing dependencies for package %s: %v\n", packageName, err)
 					return
 				}
 			} else {
-				fmt.Printf("No valid dependencies found for package %s\n", packageName)
+				log.Printf("No valid dependencies found for package %s\n", packageName)
 			}
 		} else {
-			fmt.Printf("Invalid package name for pkgInfo: %v\n", pkgInfo)
+			log.Printf("Invalid package name for pkgInfo: %v\n", pkgInfo)
 		}
 	}
-	fmt.Println("Database updated successfully.")
+	log.Println("Database updated successfully.")
 }
 func isUniqueViolation(err error) bool {
 	if pqErr, ok := err.(*pq.Error); ok {

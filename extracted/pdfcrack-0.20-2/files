@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/pdfcrack
+usr/share/
+usr/share/doc/
+usr/share/doc/pdfcrack/
+usr/share/doc/pdfcrack/README
+usr/share/doc/pdfcrack/changelog
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/pdfcrack.1.gz

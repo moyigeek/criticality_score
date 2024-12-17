@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/perl5/
+usr/lib/perl5/5.40/
+usr/lib/perl5/5.40/core_perl/
+usr/lib/perl5/5.40/vendor_perl/
+usr/lib/perl5/5.40/vendor_perl/B/
+usr/lib/perl5/5.40/vendor_perl/B/COW.pm
+usr/lib/perl5/5.40/vendor_perl/auto/
+usr/lib/perl5/5.40/vendor_perl/auto/B/
+usr/lib/perl5/5.40/vendor_perl/auto/B/COW/
+usr/lib/perl5/5.40/vendor_perl/auto/B/COW/COW.so
+usr/share/
+usr/share/man/
+usr/share/man/man3/
+usr/share/man/man3/B::COW.3pm.gz

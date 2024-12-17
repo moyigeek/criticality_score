@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/chm_http
+usr/bin/enum_chmLib
+usr/bin/enumdir_chmLib
+usr/bin/extract_chmLib
+usr/bin/test_chmLib
+usr/include/
+usr/include/chm_lib.h
+usr/include/lzx.h
+usr/lib/
+usr/lib/libchm.so
+usr/lib/libchm.so.0
+usr/lib/libchm.so.0.0.0

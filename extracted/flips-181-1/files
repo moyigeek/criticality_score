@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/flips
+usr/share/
+usr/share/applications/
+usr/share/applications/com.github.Alcaro.Flips.desktop
+usr/share/icons/
+usr/share/icons/hicolor/
+usr/share/icons/hicolor/scalable/
+usr/share/icons/hicolor/scalable/apps/
+usr/share/icons/hicolor/scalable/apps/com.github.Alcaro.Flips.svg
+usr/share/icons/hicolor/symbolic/
+usr/share/icons/hicolor/symbolic/apps/
+usr/share/icons/hicolor/symbolic/apps/com.github.Alcaro.Flips-symbolic.svg
+usr/share/metainfo/
+usr/share/metainfo/com.github.Alcaro.Flips.metainfo.xml

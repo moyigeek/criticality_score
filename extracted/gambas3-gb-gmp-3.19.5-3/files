@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/gambas3/
+usr/lib/gambas3/gb.gmp.component
+usr/lib/gambas3/gb.gmp.la
+usr/lib/gambas3/gb.gmp.so
+usr/lib/gambas3/gb.gmp.so.0
+usr/lib/gambas3/gb.gmp.so.0.0.0
+usr/share/
+usr/share/gambas3/
+usr/share/gambas3/info/
+usr/share/gambas3/info/gb.gmp.info
+usr/share/gambas3/info/gb.gmp.list

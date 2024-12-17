@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/vim-spell-mi/
+usr/share/licenses/vim-spell-mi/README_mi.txt
+usr/share/vim/
+usr/share/vim/vimfiles/
+usr/share/vim/vimfiles/spell/
+usr/share/vim/vimfiles/spell/mi.iso-8859-4.spl
+usr/share/vim/vimfiles/spell/mi.utf-8.spl

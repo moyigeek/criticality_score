@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/gopass-hibp
+usr/share/
+usr/share/licenses/
+usr/share/licenses/gopass-hibp/
+usr/share/licenses/gopass-hibp/LICENSE

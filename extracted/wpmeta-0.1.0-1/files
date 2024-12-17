@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/wpmeta
+usr/share/
+usr/share/licenses/
+usr/share/licenses/wpmeta/
+usr/share/licenses/wpmeta/LICENSE

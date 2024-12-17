@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/modules-load.d/
+usr/lib/modules-load.d/tp_smapi.conf
+usr/lib/modules/
+usr/lib/modules/6.12.5-arch1-1/
+usr/lib/modules/6.12.5-arch1-1/extramodules/
+usr/lib/modules/6.12.5-arch1-1/extramodules/hdaps.ko.zst
+usr/lib/modules/6.12.5-arch1-1/extramodules/thinkpad_ec.ko.zst
+usr/lib/modules/6.12.5-arch1-1/extramodules/tp_smapi.ko.zst

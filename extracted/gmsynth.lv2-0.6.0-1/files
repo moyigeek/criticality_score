@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/lv2/
+usr/lib/lv2/gmsynth.lv2/
+usr/lib/lv2/gmsynth.lv2/GeneralUser_LV2.sf2
+usr/lib/lv2/gmsynth.lv2/gmsynth.so
+usr/lib/lv2/gmsynth.lv2/gmsynth.ttl
+usr/lib/lv2/gmsynth.lv2/manifest.ttl
+usr/share/
+usr/share/doc/
+usr/share/doc/gmsynth.lv2/
+usr/share/doc/gmsynth.lv2/README.md

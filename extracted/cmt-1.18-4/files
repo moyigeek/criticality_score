@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/ladspa/
+usr/lib/ladspa/cmt.so
+usr/share/
+usr/share/doc/
+usr/share/doc/cmt/
+usr/share/doc/cmt/README
+usr/share/doc/cmt/adding_plugins.html
+usr/share/doc/cmt/bugs.html
+usr/share/doc/cmt/changes.html
+usr/share/doc/cmt/index.html
+usr/share/doc/cmt/installation.html
+usr/share/doc/cmt/license.html
+usr/share/doc/cmt/overview.html
+usr/share/doc/cmt/plugins.html

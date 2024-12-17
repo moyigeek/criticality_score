@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libwavpack.so
+usr/lib32/libwavpack.so.1
+usr/lib32/libwavpack.so.1.2.6
+usr/lib32/pkgconfig/
+usr/lib32/pkgconfig/wavpack.pc
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-wavpack/
+usr/share/licenses/lib32-wavpack/LICENSE

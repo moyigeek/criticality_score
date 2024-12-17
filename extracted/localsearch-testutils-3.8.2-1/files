@@ -1,0 +1,15 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/localsearch-3.0/
+usr/lib/localsearch-3.0/trackertestutils/
+usr/lib/localsearch-3.0/trackertestutils/__init__.py
+usr/lib/localsearch-3.0/trackertestutils/__main__.py
+usr/lib/localsearch-3.0/trackertestutils/dbusdaemon.py
+usr/lib/localsearch-3.0/trackertestutils/dconf.py
+usr/lib/localsearch-3.0/trackertestutils/helpers.py
+usr/lib/localsearch-3.0/trackertestutils/localsearch3-test-sandbox
+usr/lib/localsearch-3.0/trackertestutils/mainloop.py
+usr/lib/localsearch-3.0/trackertestutils/psutil_mini.py
+usr/lib/localsearch-3.0/trackertestutils/sandbox.py
+usr/lib/localsearch-3.0/trackertestutils/storehelper.py

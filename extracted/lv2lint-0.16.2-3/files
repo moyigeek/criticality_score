@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/lv2lint
+usr/share/
+usr/share/doc/
+usr/share/doc/lv2lint/
+usr/share/doc/lv2lint/ChangeLog
+usr/share/doc/lv2lint/README.md
+usr/share/doc/lv2lint/TODO
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/lv2lint.1.gz

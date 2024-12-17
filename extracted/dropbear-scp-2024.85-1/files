@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/scp
+usr/share/
+usr/share/licenses/
+usr/share/licenses/dropbear-scp/
+usr/share/licenses/dropbear-scp/LICENSE

@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/micronucleus
+usr/lib/
+usr/lib/udev/
+usr/lib/udev/rules.d/
+usr/lib/udev/rules.d/49-micronucleus.rules
+usr/share/
+usr/share/licenses/
+usr/share/licenses/micronucleus/
+usr/share/licenses/micronucleus/LICENSE

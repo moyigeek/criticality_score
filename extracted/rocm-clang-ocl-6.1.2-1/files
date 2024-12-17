@@ -1,0 +1,14 @@
+%FILES%
+opt/
+opt/rocm/
+opt/rocm/bin/
+opt/rocm/bin/clang-ocl
+opt/rocm/share/
+opt/rocm/share/doc/
+opt/rocm/share/doc/rocm-clang-ocl/
+opt/rocm/share/doc/rocm-clang-ocl/LICENSE
+usr/
+usr/share/
+usr/share/licenses/
+usr/share/licenses/rocm-clang-ocl/
+usr/share/licenses/rocm-clang-ocl/LICENSE

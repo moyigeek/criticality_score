@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/websocat
+usr/share/
+usr/share/doc/
+usr/share/doc/websocat/
+usr/share/doc/websocat/README.md
+usr/share/doc/websocat/doc.md
+usr/share/licenses/
+usr/share/licenses/websocat/
+usr/share/licenses/websocat/LICENSE

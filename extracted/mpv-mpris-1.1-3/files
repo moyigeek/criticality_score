@@ -1,0 +1,13 @@
+%FILES%
+etc/
+etc/mpv/
+etc/mpv/scripts/
+etc/mpv/scripts/mpris.so
+usr/
+usr/lib/
+usr/lib/mpv-mpris/
+usr/lib/mpv-mpris/mpris.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/mpv-mpris/
+usr/share/licenses/mpv-mpris/LICENSE

@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/zps
+usr/share/
+usr/share/applications/
+usr/share/applications/zps.desktop
+usr/share/doc/
+usr/share/doc/zps/
+usr/share/doc/zps/README.md
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/zps.1.gz

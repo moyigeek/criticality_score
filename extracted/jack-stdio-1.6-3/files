@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/jack-stdin
+usr/bin/jack-stdout
+usr/share/
+usr/share/doc/
+usr/share/doc/jack-stdio/
+usr/share/doc/jack-stdio/AUTHORS
+usr/share/doc/jack-stdio/ChangeLog
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/jack-stdin.1.gz
+usr/share/man/man1/jack-stdout.1.gz

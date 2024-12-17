@@ -1,0 +1,11 @@
+%FILES%
+etc/
+etc/rtirq.conf
+usr/
+usr/bin/
+usr/bin/rtirq
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/rtirq-resume.service
+usr/lib/systemd/system/rtirq.service

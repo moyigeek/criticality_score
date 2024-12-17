@@ -1,0 +1,932 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/CsoundQt-d-html-cs6
+usr/bin/csoundqt
+usr/share/
+usr/share/applications/
+usr/share/applications/csoundqt.desktop
+usr/share/csoundqt/
+usr/share/csoundqt/Examples/
+usr/share/csoundqt/Examples/CsoundQt/
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Basics/
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Basics/Basic Elements Opcodes.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Basics/Basic Elements Variables.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Basics/Document Structure.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Basics/Getting Help.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Basics/Hello World.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Basics/Instrument Control.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Basics/Realtime Instrument Control.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Basics/Routing.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Language_Features/
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Language_Features/Console_Print.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Language_Features/Function_Tables_1.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Language_Features/Function_Tables_2.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Language_Features/Loops_1.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Language_Features/Loops_2.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Language_Features/Using_Udos.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Language_Features/Writing_Audio_Files.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Realtime_Interaction/
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Realtime_Interaction/Creating_Widgets.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Realtime_Interaction/Keyboard_Input.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Realtime_Interaction/Live_Audio_Input.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Realtime_Interaction/MIDI_Assign_Controllers.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Realtime_Interaction/MIDI_Control_Data.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Realtime_Interaction/MIDI_Receiving_Notes.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Realtime_Interaction/MIDI_Synth.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Realtime_Interaction/OpenSoundControl.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Realtime_Interaction/Widgets_Buttontypes.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Realtime_Interaction/Widgets_Checkbox.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Realtime_Interaction/Widgets_Invalue.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Realtime_Interaction/Widgets_Outvalue.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Toots/
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Toots/Toot1.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Toots/Toot2.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Toots/Toot3.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Toots/Toot4.csd
+usr/share/csoundqt/Examples/CsoundQt/Getting Started/Toots/Toot5.csd
+usr/share/csoundqt/Examples/CsoundQt/Html5 Support/
+usr/share/csoundqt/Examples/CsoundQt/Html5 Support/Html_file_in_CsoundQt.html
+usr/share/csoundqt/Examples/CsoundQt/Html5 Support/Minimal_Html_Example.csd
+usr/share/csoundqt/Examples/CsoundQt/Html5 Support/Styled_Sliders.csd
+usr/share/csoundqt/Examples/CsoundQt/Live Collection/
+usr/share/csoundqt/Examples/CsoundQt/Live Collection/Live_Accordizer.csd
+usr/share/csoundqt/Examples/CsoundQt/Live Collection/Live_Delay_Feedback.csd
+usr/share/csoundqt/Examples/CsoundQt/Live Collection/Live_Granular.csd
+usr/share/csoundqt/Examples/CsoundQt/Live Collection/Live_RM_AM.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/Autotuner.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/Binaural_Panning.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/Circle_Map.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/Cross_Synthesis.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/Event_Panel.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/Filter_lab.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/IR_Creator.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/Just_Intonation.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/Keyboard_Control.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/MIDI_Tunings.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/Matrix.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/Mincer_Loop.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/Mouse_Control.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/No_Reinit.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/Noise_Reduction.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/Oscillator_Aliasing.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/Pseudostereo.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/Pvstencil.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/Reinit_Example.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/Rms.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/SF_Granular.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/Score_Tricks.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/Simple_Convolution.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/Spatialization.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/Spatialization_5.1.csd
+usr/share/csoundqt/Examples/CsoundQt/Miscellaneous/Universal_Convolution.csd
+usr/share/csoundqt/Examples/CsoundQt/Music/
+usr/share/csoundqt/Examples/CsoundQt/Music/Boulanger-Trapped_in_Convert.csd
+usr/share/csoundqt/Examples/CsoundQt/Music/Chowning-Stria.csd
+usr/share/csoundqt/Examples/CsoundQt/Music/Kung-Xanadu.csd
+usr/share/csoundqt/Examples/CsoundQt/Music/Riley-In_C.csd
+usr/share/csoundqt/Examples/CsoundQt/Music/Stockhausen-Studie_II.csd
+usr/share/csoundqt/Examples/CsoundQt/Plugins/
+usr/share/csoundqt/Examples/CsoundQt/Plugins/CircularBuffer.csd
+usr/share/csoundqt/Examples/CsoundQt/Synths/
+usr/share/csoundqt/Examples/CsoundQt/Synths/Additive_Synth.csd
+usr/share/csoundqt/Examples/CsoundQt/Synths/B6_Hammond.csd
+usr/share/csoundqt/Examples/CsoundQt/Synths/Diffamator.csd
+usr/share/csoundqt/Examples/CsoundQt/Synths/Formant_Synth.csd
+usr/share/csoundqt/Examples/CsoundQt/Synths/Imitative_Additive.csd
+usr/share/csoundqt/Examples/CsoundQt/Synths/Mono_Synth.csd
+usr/share/csoundqt/Examples/CsoundQt/Synths/Phase_Mod_Synth.csd
+usr/share/csoundqt/Examples/CsoundQt/Synths/Piano_phase.csd
+usr/share/csoundqt/Examples/CsoundQt/Synths/Pipe_Synth.csd
+usr/share/csoundqt/Examples/CsoundQt/Synths/Scanned_Synthesis_Sandbox.csd
+usr/share/csoundqt/Examples/CsoundQt/Synths/Scanned_test.csd
+usr/share/csoundqt/Examples/CsoundQt/Synths/Simple_FM_Synth.csd
+usr/share/csoundqt/Examples/CsoundQt/Synths/Simple_Subtractive.csd
+usr/share/csoundqt/Examples/CsoundQt/Synths/Sruti-Drone_Box.csd
+usr/share/csoundqt/Examples/CsoundQt/Synths/String_Phaser.csd
+usr/share/csoundqt/Examples/CsoundQt/Synths/Waveform_Mix.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/
+usr/share/csoundqt/Examples/CsoundQt/Useful/8_Chn_Player.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/ASCII_Key.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/AudioMidiTest.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/Audio_Input_Test.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/Audio_Output_Test.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/Audio_Thru_Test.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/Envelope_Extractor.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/File_to_Text.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/IO_Test.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/MIDI_IO_Test.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/MIDI_Layering.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/MIDI_Recorder.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/Mixdown_Player.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/Monome_basic.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/Multichannel_Player.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/Pitch_Tracker.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/SF_Merger.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/SF_Play_from_HD.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/SF_Play_from_HD_2.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/SF_Play_from_buffer.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/SF_Play_from_buffer_2.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/SF_Record.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/SF_Snippets_Player.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/SF_Splitter.csd
+usr/share/csoundqt/Examples/CsoundQt/Useful/SpectrumAnalyzer.csd
+usr/share/csoundqt/Examples/CsoundQt/Widgets/
+usr/share/csoundqt/Examples/CsoundQt/Widgets/Button_Widget.csd
+usr/share/csoundqt/Examples/CsoundQt/Widgets/Checkbox_Widget.csd
+usr/share/csoundqt/Examples/CsoundQt/Widgets/Controller_Widget.csd
+usr/share/csoundqt/Examples/CsoundQt/Widgets/Display_Widget.csd
+usr/share/csoundqt/Examples/CsoundQt/Widgets/Graph_Widget-old.csd
+usr/share/csoundqt/Examples/CsoundQt/Widgets/Graph_Widget.csd
+usr/share/csoundqt/Examples/CsoundQt/Widgets/Label_Widget.csd
+usr/share/csoundqt/Examples/CsoundQt/Widgets/Lineedit_Widget.csd
+usr/share/csoundqt/Examples/CsoundQt/Widgets/Menu_Widget.csd
+usr/share/csoundqt/Examples/CsoundQt/Widgets/Presets.csd
+usr/share/csoundqt/Examples/CsoundQt/Widgets/Reserved_Channels.csd
+usr/share/csoundqt/Examples/CsoundQt/Widgets/Scope_Widget.csd
+usr/share/csoundqt/Examples/CsoundQt/Widgets/Scrollnumber_Widget.csd
+usr/share/csoundqt/Examples/CsoundQt/Widgets/Slider_Widget.csd
+usr/share/csoundqt/Examples/CsoundQt/Widgets/SpinBox_Widget.csd
+usr/share/csoundqt/Examples/CsoundQt/Widgets/String_Channels.csd
+usr/share/csoundqt/Examples/CsoundQt/Widgets/Tableplot_Widget.csd
+usr/share/csoundqt/Examples/CsoundQt/Widgets/Widget_Panel.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/
+usr/share/csoundqt/Examples/FLOSS Manual Examples/01 Basics/
+usr/share/csoundqt/Examples/FLOSS Manual Examples/01 Basics/01A01_Aliasing.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/01 Basics/01B01_PeriodicAperiodic.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/01 Basics/01B02_LimitsOfHearing.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/01 Basics/01B03_Adding_vs_ratio.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/01 Basics/01B04_Midi_to_frequency.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/01 Basics/01B05_Tuning_Systems.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/01 Basics/01C01_db_vs_linear.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/01 Basics/01C02_rms_feedback_system.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/01 Basics/01C03_FletcherMunson.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/01 Basics/01D01_different_seed.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/01 Basics/01D02_white_noises.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/01 Basics/01D03_linrand.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/01 Basics/01D04_trirand.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/01 Basics/01D05_more_lin_tri_units.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/01 Basics/01D06_scalings.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/01 Basics/01D07_markov_basics.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/01 Basics/01D08_markov_music.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/01 Basics/01D09_random_walk.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/01 Basics/01D10_Rejection_Sampling.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/01 Basics/01D11_Random_Walk2.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/01 Basics/01D12_humanising.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/01 Basics/01D13_simple_algorithmic_note_generator.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/02 Quick Start/
+usr/share/csoundqt/Examples/FLOSS Manual Examples/02 Quick Start/02A01_HelloWorld.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/02 Quick Start/02A02_HelloCabbage.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/02 Quick Start/02B01_DocStruct.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/02 Quick Start/02C01_Midi_Keybd_in.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/02 Quick Start/02C02_Midi_Ctl_in.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/02 Quick Start/02C03_Midi_all_in.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/02 Quick Start/02D01_GetDeviceList.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/02 Quick Start/02D02_LiveInput.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/02 Quick Start/02E01_Render.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/02 Quick Start/02E02_RecordRT.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A01_Init-pass.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A02_Perf-pass_incr.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A03_Perf-pass_incr_listen.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A04_Perf-pass_no_incr.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A05_Audio_vector.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A06_Init_perf_audio.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A07_Init-values_of_k-variables.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A08_k-inits_in_multiple_calls_1.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A09_k-inits_in_multiple_calls_2.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A10_k-inits_in_multiple_calls_3.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A11_a_inits_in_multiple_calls.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A12_Init_no_incr.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A13_Re-init.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A14_Order_of_calc.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A15_Order_of_calc_named.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A16_FractionalInstrNums.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A17_Random_at_ika.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A18_Zipper.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A19_Time_Impossible.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A20_Sample_by_sample_processing.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A21_Init_explcit_implicit.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A22_Init_overwrite.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A23_Init_hidden_in_if.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03A24_Init_hidden_in_udo.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03B01_Variable_types.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03B02_Local_scope.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03B03_Global_scope.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03B04_Global_audio_intro.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03B05_Global_audio_overwritten.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03B06_Global_audio_added.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03B07_Global_control_added.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03B08_Local_audio_add.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03B09_Global_audio_add.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03B10_Global_with_clear.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03B11_Chn_demo.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C01_IfThen_i.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C02_IfThen_k.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C03_IfThen_short_form.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C04_IfGoto_i.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C05_IfGoto_ik.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C06_IfGoto_k.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C07_Loops_with_if.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C08_Loop_opcodes_i.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C09_Random_string.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C10_Random_ftable_fill.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C11_Table_random_dev.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C12_while_until_i-rate.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C13_while_until_k-rate.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C14_Timout_pre.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C15_Timout_basics.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C16_Timeloop_and_not.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C17_Timout_different_durations.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C18_Timout_random_durations.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C19_Timout_trigger_events.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C20_Timout_random_envelope.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C21_Timeloop_metro.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C22_Metro_trigger_events.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C23_Timeloop_Internal_Clock.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C24_Internal_clock_trigger_events.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C25_self_triggering.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03C26_recursion.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03D01_Table_norm_notNorm.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03D02_Table_ftgen.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03D03_Sample_to_table.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03D04_Standard_waveforms_with_GEN10.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03D05_Write_Fibo_to_table.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03D06_Record_ksig_to_table.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03D07_Record_audio_to_table.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03D08_RecPlay_ak_signals.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03D09_ftsave.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03D10_Table_to_soundfile.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03E01_CopyArray.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03E02_i_k_arrays.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03E03_Audio_array.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03E04_Directory.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03E05_Local_vs_global_arrays.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03E06_cmp.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03E07_pvs_to_from_array.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03E08_array_overload.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03E09_Shuffle.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03F01_OrderOfExc_event_i.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03F02_OrderOfExc_event_k.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03F03_Score_tricks.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03F04_Midi_triggered_events.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03F05_FLTK_triggered_events.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03F06_Commandline_rt_events.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03F07_Event_by_condition.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03F08_Generate_event_pool.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03F09_Events_sprintf.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03F10_Events_collected.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03F11_Events_time_loop.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03F12_event_i_vs_event.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03F13_compileorc.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03F14_compilestr.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03G01_Pre_UDO.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03G02_All_to_UDO.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03G03_UDO_more_flex.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03G04_UDO_calls_UDO.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03G06_UDO_setksmps.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03G07_UDO_default_args.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03G08_UDO_overloading.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03G09_Recursive_UDO.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03G10_UDO_FilePlay.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03G11_UDO_rand_dev.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03G12_ArrPermRnd.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03G13_UDO_Recursive_AddSynth.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03G14_UDO_zdf_svf.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03H01_Macros_basic.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03H02_Macro_6partials.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03H03_Score_macro.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03I01_traditional_syntax.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03I02_functional_syntax_1.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03I03_functional_syntax_2.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03I04_functional_syntax_rate_1.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03I05_functional_syntax_rate_2.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03I06_functional_syntax_udo.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/03 Csound Language/03I07_functional_syntax_udo_2.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04A01_AddSynth_simple.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04A02_AddSynth_score.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04A03_AddSynth_GEN.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04A04_Standard_waveforms.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04A05_Flexible_number_of_partials.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04A06_Play_it_with_Midi.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04A07_Risset_variations.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04A08_Risset_played_by_Midi.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04A09_risset_bell_rec_udo.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04A10_gbuzz.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04A11_gbuzz_partials_rise.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04A12_gbuzz_amp_coeff_rise.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04A13_hsboscil.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04B01_Subtractive_Midi.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04B02_Subtractive_timbres.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04B03_Subtractive_vowels.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04C01_Simple_AM.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04C02_Sidebands.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04C03_RingMod.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04D01_Frequency_modulation.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04D02_Ratio.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04D03_Index.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04D04_Standard.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04D05_basic_FM_with_foscil.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04D06_Parallel_MM_FM.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04D07_Serial_MM_FM.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04D08_MC_FM.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04D09_Trumpet.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04D10_Bell.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04D11_Phase modulation and Feedback FM.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04D12_Feedback modulation.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04E01_Simple_waveshaping.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04E02_Powershape.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04E03_Distort_1.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04E04_Distort_2.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04F01_GranSynthIntro.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04F02_GranSynth_basic.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04F03_Fof_vowels.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04F04_Asynchronous_GS.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04F05_grain3.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04F06_grain3_random.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04G01_Mass_spring_sine.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04G02_MS_sine_audible.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04G03_MS_variable_constant.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04G04_lin_reson.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04G05_nonlin_reson.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04G06_van_der_pol.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04G07_KarplusStrong.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04G08_Plucked.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04G09_wgbow.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04G10_wgbow_enhanced.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04G11_barmodel.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04G12_PhiSEM.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04H01_scantable_1.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04H02_scantable_2.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04H03_Scantable_pvsmaska.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04H04_Hammer.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04H05_Scan_trajectories.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04H06_Scan_trajectories2.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04H07_Scan_matrices.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04H08_Scan_extreme_amplitude.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/04 Sound Synthesis/04H09_Scan_balanced_amplitudes.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05A01_line.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05A02_line_p3.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05A03_linseg.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05A04_linseg_p3_fractions.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05A05_line_vs_linseg.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05A06_line_vs_expon.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05A07_expon_pings.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05A08_linsegr.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05A09_sine_env.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05A10_lpshold_loopseg.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05B01_routing.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05B02_Pan_stereo.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05B03_pan2.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05B04_hrtfmove.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05B05_VBAP_circle.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05B06_VBAP_spread.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05B07_VBAP_layouts.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05B08_Ambi_circle.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05B09_Ambi_orders.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05B10_udo_ambisonics2D_1.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05B11_udo_ambisonics2D_2.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05B12_udo_ambisonics2D_3.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05B13_udo_ambisonics2D_4.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05B14_udo_ambisonics2D_5.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05B15_udo_ambisonics_1.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05B16_udo_ambisonics_2.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05B17_udo_ambisonics_3.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05B18_udo_ambisonics_4.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05B19_udo_AEP.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05C01_tone_butlp_moogladder.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05C02_atone_buthp_bqrez.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05C03_reson_butbp.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05C04_comb.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05C05_filter_compar.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05D01_delay.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05D02_delay_feedback.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05D03_delay_feedback_2.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05D04_deltapi.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05D05_multi-tap_delay.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05D06_flanger.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05D07_flanger_2.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05D08_custom_delay_line.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05E01_freeverb.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05E02_reverbsc.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05E03_reverb_with_chn.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05E04_schroeder_reverb.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05F01_RM_modification.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05F02_Wvshp_bit_crunch.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05F03_Wvshp_different_transfer_funs.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05F04_distort.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05G01_simple_grain.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05G02_simple_grain_continuous.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05G03_simple_grain_optimized.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05G04_simple_granulator.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05G05_random_deviations.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05G06_the_fox_universe.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05G07_live_granular.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05G08_sndwarp.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05G09_selfmade_grain.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05G10_granule.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05G11_grain_delay.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05G12_grain.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05H01_pconvolve.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05H02_ftconv.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05H03_liveconv.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05I01_pvsanal.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05I02_pvstanal.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05I03_pvsbufread.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05I04_pvscale.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05I05_pvshift.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05I06_phase_vocoder.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05I07_pvscross.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05I08_pvsfilter.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05I09_pvsmooth_pvsblur.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05I10_pvsbin.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05I11_pvstrace_simple.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05I12_pvstrace_array.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05K01_ats_header.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05K02_atsread.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05K03_atsread2.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05K04_atsreadnz.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05K05_atsinterpread.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05K06_atspartialtap.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05K07_atsadd.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05K08_atsaddnz.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05K09_atssinnoi.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/05 Sound Modification/05K10_atscross.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/06 Samples/
+usr/share/csoundqt/Examples/FLOSS Manual Examples/06 Samples/06A01_Play_soundfile.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/06 Samples/06A02_Write_soundfile.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/06 Samples/06A03_Write_RT.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/06 Samples/06A06_pdcs_tabset_tabget.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/06 Samples/06B01_flooper2.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/06 Samples/06B02_sndloop.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/06 Samples/06B03_RecPlayToTable.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/06 Samples/06B04_BufRecPlay_UDO.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/07 MIDI/
+usr/share/csoundqt/Examples/FLOSS Manual Examples/07 MIDI/07A01_midiin_print.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/07 MIDI/07B01_MidiInstrTrigger.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/07 MIDI/07B02_massign.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/07 MIDI/07B03_MidiTriggerChain.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/07 MIDI/07B04_MidiMultiTrigg.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/07 MIDI/07C01_ctrl7_print.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/07 MIDI/07C02_pchbend_aftouch.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/07 MIDI/07C03_cpsmidi_ampmidi.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/07 MIDI/07C04_smoothing.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/07 MIDI/07C05_MidiControlComplex.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/07 MIDI/07C06_RecordingController.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/07 MIDI/07D01_ReadMidiFile.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/07 MIDI/07D02_MidiToScore.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/07 MIDI/07E01_midiout.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/07 MIDI/07E02_score_to_midiout.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/07 MIDI/07E03_midiout_cc.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/07 MIDI/07E04_midion.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/07 MIDI/07E05_midion2.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/07 MIDI/07E06_moscil.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/08 Other Communication/
+usr/share/csoundqt/Examples/FLOSS Manual Examples/08 Other Communication/08A01_OSC_send_recv_int.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/08 Other Communication/08A02_OSC_more_data.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/08 Other Communication/08A03_Send_receive_array.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/08 Other Communication/08A04_Send_receive_table.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/08 Other Communication/08A05_send_receive_audio.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/08 Other Communication/08B01_Pd_to_Csound.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/08 Other Communication/08B02_Processing_to_Csound.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/08 Other Communication/08B03_Serial_Read.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/08 Other Communication/08B04_Serial_Read_multiple.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/09 Csound in other Applications/
+usr/share/csoundqt/Examples/FLOSS Manual Examples/09 Csound in other Applications/09A01_pdcs_control_in.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/09 Csound in other Applications/09A02_pdcs_live_in.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/09 Csound in other Applications/09A03_pdcs_midi.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/09 Csound in other Applications/09A04_pdcs_events.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/09 Csound in other Applications/09A05_pdcs_control_out.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/09 Csound in other Applications/09B01_maxcs_helloworld.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/09 Csound in other Applications/09B02_maxcs_audio_io.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/09 Csound in other Applications/09B03_maxcs_control_in.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/09 Csound in other Applications/09B04_maxcs_midi.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/09 Csound in other Applications/09B05_maxcs_events.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/10 Csound Frontends/
+usr/share/csoundqt/Examples/FLOSS Manual Examples/10 Csound Frontends/10B01_cabbage_1.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/10 Csound Frontends/10B02_cabbage_2.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/10 Csound Frontends/10B03_cabbage_3.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/10 Csound Frontends/10B04_cabbage_4.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/10 Csound Frontends/10B05_cabbage_5.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/10 Csound Frontends/10F01_csound_udp.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/12 Csound and other Languages/
+usr/share/csoundqt/Examples/FLOSS Manual Examples/12 Csound and other Languages/12B01_pyinit.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/12 Csound and other Languages/12B02_python_global.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/12 Csound and other Languages/12B03_pyrun.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/12 Csound and other Languages/12B04_pyevali.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/12 Csound and other Languages/12B05_pyassigni.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/12 Csound and other Languages/12B06_pycall.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/12 Csound and other Languages/12B07_local_vs_global.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/12 Csound and other Languages/12B08_markov.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/12 Csound and other Languages/12D01_iOS_simple.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/12 Csound and other Languages/12G01_Hello_HTML_World.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/12 Csound and other Languages/12G02_Minimal_HTML.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/12 Csound and other Languages/12G03_Extended_HTML.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/14 Miscellanea/
+usr/share/csoundqt/Examples/FLOSS Manual Examples/14 Miscellanea/14A01_Score_bin.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/14 Miscellanea/14A02_Score_bin_script.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/14 Miscellanea/14A03_Score_perlscript.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/14 Miscellanea/14B01_run_pause_stop.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/14 Miscellanea/14B02_tabs.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/14 Miscellanea/14B03_score_generated.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/14 Miscellanea/14B04_presets.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/14 Miscellanea/14B05_dialog.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/14 Miscellanea/14C01_Amplitude_Tracking_First_Principles.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/14 Miscellanea/14C02_Simple_Dynamic_Gate.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/14 Miscellanea/14C03_Dynamic_Trigger.csd
+usr/share/csoundqt/Examples/FLOSS Manual Examples/14 Miscellanea/14C04_Drum_Replacement.csd
+usr/share/csoundqt/Examples/McCurdy Collection/
+usr/share/csoundqt/Examples/McCurdy Collection/3DAudio/
+usr/share/csoundqt/Examples/McCurdy Collection/3DAudio/hrtfer_hrtfmove_hrtfmove2_hrftstat.csd
+usr/share/csoundqt/Examples/McCurdy Collection/AdditiveSynthesis/
+usr/share/csoundqt/Examples/McCurdy Collection/AdditiveSynthesis/AdditiveSynthesisSpectralSketching.csd
+usr/share/csoundqt/Examples/McCurdy Collection/AdditiveSynthesis/HarmonicAdditiveSynthesis1.csd
+usr/share/csoundqt/Examples/McCurdy Collection/AdditiveSynthesis/HarmonicAdditiveSynthesis2.csd
+usr/share/csoundqt/Examples/McCurdy Collection/AdditiveSynthesis/InharmonicAdditiveSynthesis.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Convolution/
+usr/share/csoundqt/Examples/McCurdy Collection/Convolution/convolve.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Convolution/dconv.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Convolution/pconvolve.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Delays/
+usr/share/csoundqt/Examples/McCurdy Collection/Delays/DelayDoppler.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Delays/Delays.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Delays/MultitapDelay.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Delays/StereoPingPongDelay.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Delays/delayCompletedPitchShifter.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Delays/delaySimplePitchShifter.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Delays/delayStereoChorus.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Delays/delayThruZeroFlanger.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Delays/delayfeedback.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Delays/delayfiltersinloop.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Delays/delayflanger.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Delays/delayportamento.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Delays/delayw_delayr_deltap.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Distortion/
+usr/share/csoundqt/Examples/McCurdy Collection/Distortion/BitDepthReduction.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Distortion/clip.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Distortion/distort.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Distortion/distort1.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Distortion/fold.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Distortion/powershape.csd
+usr/share/csoundqt/Examples/McCurdy Collection/DynamicsProcessing/
+usr/share/csoundqt/Examples/McCurdy Collection/DynamicsProcessing/NoiseGate.csd
+usr/share/csoundqt/Examples/McCurdy Collection/DynamicsProcessing/compress.csd
+usr/share/csoundqt/Examples/McCurdy Collection/DynamicsProcessing/dam.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/ATSadd.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/mincer.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvadd.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvoc.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvsadsyn.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvsanal_pvsynth.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvsarp.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvsbandp.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvsbandr.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvsblur.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvsbufread.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvscale.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvscross.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvscross1.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvsfilter.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvsfread.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvsfreeze.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvshift.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvshift_pvscale.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvsifd_partials_resyn.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvsmooth.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvsmorph.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvspitch.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvstanal.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvstencil.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvsvoc.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvswarp.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvswrite.csd
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/pvswriteFile.pvx
+usr/share/csoundqt/Examples/McCurdy Collection/FFT/temposcal.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/FormantFilter.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/areson.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/atone.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/atonex.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/bandpass.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/bqrez.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/butterbp.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/butterbr.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/butterhp.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/butterlp.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/clfilt.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/eqfil.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/hilbert.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/lowpass2.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/lowres.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/lowresx.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/lpf18.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/moogladder.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/moogvcf.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/pareq.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/rbjeq.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/reson.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/reson_resonr_resonz.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/resony.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/rezzy.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/statevar.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/svfilter.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/tbvcf.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/tone.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/tonex.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Filters/vlowres.csd
+usr/share/csoundqt/Examples/McCurdy Collection/GranularSynthesis/
+usr/share/csoundqt/Examples/McCurdy Collection/GranularSynthesis/MorphingPresets.csd
+usr/share/csoundqt/Examples/McCurdy Collection/GranularSynthesis/Preset1.txt
+usr/share/csoundqt/Examples/McCurdy Collection/GranularSynthesis/Preset2.txt
+usr/share/csoundqt/Examples/McCurdy Collection/GranularSynthesis/Preset3.txt
+usr/share/csoundqt/Examples/McCurdy Collection/GranularSynthesis/Preset4.txt
+usr/share/csoundqt/Examples/McCurdy Collection/GranularSynthesis/SchedkwhenGranulation.csd
+usr/share/csoundqt/Examples/McCurdy Collection/GranularSynthesis/diskgrain.csd
+usr/share/csoundqt/Examples/McCurdy Collection/GranularSynthesis/fof.csd
+usr/share/csoundqt/Examples/McCurdy Collection/GranularSynthesis/fof2.csd
+usr/share/csoundqt/Examples/McCurdy Collection/GranularSynthesis/fofx6_Mono.csd
+usr/share/csoundqt/Examples/McCurdy Collection/GranularSynthesis/fofx6_Poly.csd
+usr/share/csoundqt/Examples/McCurdy Collection/GranularSynthesis/fog.csd
+usr/share/csoundqt/Examples/McCurdy Collection/GranularSynthesis/grain.csd
+usr/share/csoundqt/Examples/McCurdy Collection/GranularSynthesis/grain2.csd
+usr/share/csoundqt/Examples/McCurdy Collection/GranularSynthesis/grain3.csd
+usr/share/csoundqt/Examples/McCurdy Collection/GranularSynthesis/granule.csd
+usr/share/csoundqt/Examples/McCurdy Collection/GranularSynthesis/sndwarp.csd
+usr/share/csoundqt/Examples/McCurdy Collection/GranularSynthesis/syncgrain.csd
+usr/share/csoundqt/Examples/McCurdy Collection/GranularSynthesis/syncloop.csd
+usr/share/csoundqt/Examples/McCurdy Collection/GranularSynthesis/wavelets.csd
+usr/share/csoundqt/Examples/McCurdy Collection/LiveAudioIn/
+usr/share/csoundqt/Examples/McCurdy Collection/LiveAudioIn/MIDIKeyboardControlledPitchShifter.csd
+usr/share/csoundqt/Examples/McCurdy Collection/LiveAudioIn/follow2EnvelopeFilter.csd
+usr/share/csoundqt/Examples/McCurdy Collection/LiveAudioIn/follow2gate.csd
+usr/share/csoundqt/Examples/McCurdy Collection/LiveAudioIn/ins.csd
+usr/share/csoundqt/Examples/McCurdy Collection/LiveAudioIn/meters.csd
+usr/share/csoundqt/Examples/McCurdy Collection/LiveAudioIn/pitch.csd
+usr/share/csoundqt/Examples/McCurdy Collection/LiveAudioIn/pitchamdf.csd
+usr/share/csoundqt/Examples/McCurdy Collection/LiveSampling/
+usr/share/csoundqt/Examples/McCurdy Collection/LiveSampling/DiskRecAndPlayback.csd
+usr/share/csoundqt/Examples/McCurdy Collection/LiveSampling/DynamicTriggeredRecord.csd
+usr/share/csoundqt/Examples/McCurdy Collection/LiveSampling/MultiTableRec.csd
+usr/share/csoundqt/Examples/McCurdy Collection/LiveSampling/TableRecBasic.csd
+usr/share/csoundqt/Examples/McCurdy Collection/LiveSampling/sndloop.csd
+usr/share/csoundqt/Examples/McCurdy Collection/MIDI/
+usr/share/csoundqt/Examples/McCurdy Collection/MIDI/BasicMonophonicSynth.csd
+usr/share/csoundqt/Examples/McCurdy Collection/MIDI/LiveQuantize.csd
+usr/share/csoundqt/Examples/McCurdy Collection/MIDI/MIDIController.csd
+usr/share/csoundqt/Examples/McCurdy Collection/MIDI/MIDIControllerInitialisation.csd
+usr/share/csoundqt/Examples/McCurdy Collection/MIDI/MIDIInstrActivate.csd
+usr/share/csoundqt/Examples/McCurdy Collection/MIDI/MIDILinsegrEnvelope.csd
+usr/share/csoundqt/Examples/McCurdy Collection/MIDI/MIDIOneControllerTwoOutputs.csd
+usr/share/csoundqt/Examples/McCurdy Collection/MIDI/MIDIPitchBend.csd
+usr/share/csoundqt/Examples/McCurdy Collection/MIDI/MIDIReadPitchAndVelocity.csd
+usr/share/csoundqt/Examples/McCurdy Collection/MIDI/MIDIRescaledController.csd
+usr/share/csoundqt/Examples/McCurdy Collection/MIDI/MIDITapTempo.csd
+usr/share/csoundqt/Examples/McCurdy Collection/MIDI/MonoOverlaps.csd
+usr/share/csoundqt/Examples/McCurdy Collection/MIDI/MonophonicSynth.csd
+usr/share/csoundqt/Examples/McCurdy Collection/MIDI/PitchBendDiskin1.csd
+usr/share/csoundqt/Examples/McCurdy Collection/MIDI/PitchBendDiskin2.csd
+usr/share/csoundqt/Examples/McCurdy Collection/MIDI/PolyphonicSynth.csd
+usr/share/csoundqt/Examples/McCurdy Collection/MIDI/cpstmid.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/AnalogueVocoder.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/CsoundIsListening.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/Data.txt
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/DbToAmp.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/DistanceEmulator.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/MultiFX.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/PianoPhaseDemo.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/PitchFormats.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/Rhythmicon.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/Samphold.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/ShuffleTableContents.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/StereoToMono(Offline).csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/StereoToMono.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/TB303.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/Theremin.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/TuningSystems.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/beating.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/date_dates.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/doppler.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/fout.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/ftsave_ftload.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/humanizing.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/limit_mirror_wrap.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/pan2.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/risset_rhythms.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/rtclock.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/sensekey.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/timeinsts.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/trigger.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Miscellaneous/waveset.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Modulation/
+usr/share/csoundqt/Examples/McCurdy Collection/Modulation/2xModulatorCarrierWithEnvelopes.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Modulation/FM2ModCar.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Modulation/FM3ModCar.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Modulation/FMMod2Car.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Modulation/FMModCarModCar.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Modulation/FMModModCar.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Modulation/FMModModCarEnvelopes.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Modulation/FMSynthesisVibratoToSideBands.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Modulation/ModulatorCarrier.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Modulation/ModulatorCarrierWithEnvelopes.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Modulation/PhaseModulationSynthesisCf.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Modulation/PhaseModulationSynthesisMCf.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Modulation/PhaseModulationSynthesisMMC.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Modulation/PhaseModulationSynthesisMMMC.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Modulation/PhaseModulationSynthesisMMM_C.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Modulation/PhaseModulationSynthesisMM_C.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Modulation/PhaseModulationSynthesisMfC.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Modulation/RingModulationAmplitudeModulation.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Modulation/SimpleModulatorCarrier.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Modulation/TX81Z.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Modulation/foscil_foscili.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Mouse/
+usr/share/csoundqt/Examples/McCurdy Collection/Mouse/MouseBass_Synth.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Mouse/MouseChord_File.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Mouse/MouseChord_Synth.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Mouse/MouseKeyboard_File.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Mouse/MouseKeyboard_Synth.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/PrePiano.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/bamboo.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/barmodel.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/cabasa.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/crunch.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/dripwater.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/gogobel.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/guiro.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/mandol.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/marimba.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/moog.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/pluck.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/repluck.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/sandpaper.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/sekere.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/shaker.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/sleighbells.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/stix.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/tambourine.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/vibes.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/wgbow.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/wgbowedbar.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/wgbrass.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/wgclar.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/wgflute.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/wgpluck.csd
+usr/share/csoundqt/Examples/McCurdy Collection/PhysicalModels/wgpluck2.csd
+usr/share/csoundqt/Examples/McCurdy Collection/RealtimeScoreGeneration/
+usr/share/csoundqt/Examples/McCurdy Collection/RealtimeScoreGeneration/DrumSequencerVariableLength.csd
+usr/share/csoundqt/Examples/McCurdy Collection/RealtimeScoreGeneration/DrunkWalk.csd
+usr/share/csoundqt/Examples/McCurdy Collection/RealtimeScoreGeneration/NoteClusters.csd
+usr/share/csoundqt/Examples/McCurdy Collection/RealtimeScoreGeneration/SimpleDrumSequencer.csd
+usr/share/csoundqt/Examples/McCurdy Collection/RealtimeScoreGeneration/SimpleLoopSequencer.csd
+usr/share/csoundqt/Examples/McCurdy Collection/RealtimeScoreGeneration/SimpleSchedkwhenNoteGenerator.csd
+usr/share/csoundqt/Examples/McCurdy Collection/RealtimeScoreGeneration/timedseq.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Reverbs/
+usr/share/csoundqt/Examples/McCurdy Collection/Reverbs/GatedReverb.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Reverbs/SchroederReverb.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Reverbs/babo.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Reverbs/comb.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Reverbs/freeverb.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Reverbs/nreverb.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Reverbs/reverb.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Reverbs/screverb.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Reverbs/vcomb.csd
+usr/share/csoundqt/Examples/McCurdy Collection/SoundGenerators/
+usr/share/csoundqt/Examples/McCurdy Collection/SoundGenerators/WhiteNoisePinkNoise.csd
+usr/share/csoundqt/Examples/McCurdy Collection/SoundGenerators/buzz.csd
+usr/share/csoundqt/Examples/McCurdy Collection/SoundGenerators/gbuzz.csd
+usr/share/csoundqt/Examples/McCurdy Collection/SoundGenerators/hsboscil.csd
+usr/share/csoundqt/Examples/McCurdy Collection/SoundGenerators/mode.csd
+usr/share/csoundqt/Examples/McCurdy Collection/SoundGenerators/pdhalf.csd
+usr/share/csoundqt/Examples/McCurdy Collection/SoundGenerators/vco.csd
+usr/share/csoundqt/Examples/McCurdy Collection/SoundGenerators/vco2.csd
+usr/share/csoundqt/Examples/McCurdy Collection/SoundGenerators/vco_with_PWM_LFO_and_LPF.csd
+usr/share/csoundqt/Examples/McCurdy Collection/SoundGenerators/wterrain.csd
+usr/share/csoundqt/Examples/McCurdy Collection/SoundfilePlayback/
+usr/share/csoundqt/Examples/McCurdy Collection/SoundfilePlayback/bbcut.csd
+usr/share/csoundqt/Examples/McCurdy Collection/SoundfilePlayback/flooper2.csd
+usr/share/csoundqt/Examples/McCurdy Collection/SoundfilePlayback/loscil_loscil3.csd
+usr/share/csoundqt/Examples/McCurdy Collection/SoundfilePlayback/lposcilsa.csd
+usr/share/csoundqt/Examples/McCurdy Collection/SoundfilePlayback/table_tablei_table3.csd
+usr/share/csoundqt/Examples/McCurdy Collection/SpecializedFilters/
+usr/share/csoundqt/Examples/McCurdy Collection/SpecializedFilters/Phaser1.csd
+usr/share/csoundqt/Examples/McCurdy Collection/SpecializedFilters/Phaser2.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Waveguides/
+usr/share/csoundqt/Examples/McCurdy Collection/Waveguides/streson.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Waveguides/wguide1.csd
+usr/share/csoundqt/Examples/McCurdy Collection/Waveguides/wguide2.csd
+usr/share/csoundqt/Examples/McCurdy Collection/create_bundle.py
+usr/share/csoundqt/Examples/McCurdy Haikus/
+usr/share/csoundqt/Examples/McCurdy Haikus/1.csd
+usr/share/csoundqt/Examples/McCurdy Haikus/2.csd
+usr/share/csoundqt/Examples/McCurdy Haikus/3.csd
+usr/share/csoundqt/Examples/McCurdy Haikus/4.csd
+usr/share/csoundqt/Examples/McCurdy Haikus/5.csd
+usr/share/csoundqt/Examples/McCurdy Haikus/6.csd
+usr/share/csoundqt/Examples/McCurdy Haikus/7.csd
+usr/share/csoundqt/Examples/McCurdy Haikus/8.csd
+usr/share/csoundqt/Examples/McCurdy Haikus/9.csd
+usr/share/csoundqt/Examples/SourceMaterials/
+usr/share/csoundqt/Examples/SourceMaterials/808loop.wav
+usr/share/csoundqt/Examples/SourceMaterials/808loopMono.wav
+usr/share/csoundqt/Examples/SourceMaterials/AEP_udos.txt
+usr/share/csoundqt/Examples/SourceMaterials/AndItsAll.ats
+usr/share/csoundqt/Examples/SourceMaterials/AndItsAll.pvx
+usr/share/csoundqt/Examples/SourceMaterials/AndItsAll.wav
+usr/share/csoundqt/Examples/SourceMaterials/BassGuitarC.wav
+usr/share/csoundqt/Examples/SourceMaterials/Bounce.wav
+usr/share/csoundqt/Examples/SourceMaterials/BratscheMono.wav
+usr/share/csoundqt/Examples/SourceMaterials/ClassGuit.wav
+usr/share/csoundqt/Examples/SourceMaterials/ClassicalGuitar.wav
+usr/share/csoundqt/Examples/SourceMaterials/HRTFcompact
+usr/share/csoundqt/Examples/SourceMaterials/InputMidiFile.mid
+usr/share/csoundqt/Examples/SourceMaterials/MFEM.wav
+usr/share/csoundqt/Examples/SourceMaterials/Mug.wav
+usr/share/csoundqt/Examples/SourceMaterials/PPhase1.pvx
+usr/share/csoundqt/Examples/SourceMaterials/PPhase2.pvx
+usr/share/csoundqt/Examples/SourceMaterials/Seashore.wav
+usr/share/csoundqt/Examples/SourceMaterials/Songpan.wav
+usr/share/csoundqt/Examples/SourceMaterials/Stairwell.wav
+usr/share/csoundqt/Examples/SourceMaterials/StairwellL.cv
+usr/share/csoundqt/Examples/SourceMaterials/StairwellL.wav
+usr/share/csoundqt/Examples/SourceMaterials/StairwellR.cv
+usr/share/csoundqt/Examples/SourceMaterials/StairwellR.wav
+usr/share/csoundqt/Examples/SourceMaterials/SynthPad.wav
+usr/share/csoundqt/Examples/SourceMaterials/Wood.wav
+usr/share/csoundqt/Examples/SourceMaterials/ahh.aiff
+usr/share/csoundqt/Examples/SourceMaterials/ambisonics2D_udos.txt
+usr/share/csoundqt/Examples/SourceMaterials/ambisonics_udos.txt
+usr/share/csoundqt/Examples/SourceMaterials/ambisonics_utilities.txt
+usr/share/csoundqt/Examples/SourceMaterials/basoon-C4.ats
+usr/share/csoundqt/Examples/SourceMaterials/bell.aiff
+usr/share/csoundqt/Examples/SourceMaterials/choir.wav
+usr/share/csoundqt/Examples/SourceMaterials/circularstring-128
+usr/share/csoundqt/Examples/SourceMaterials/cs_sco_rand.pl
+usr/share/csoundqt/Examples/SourceMaterials/dish.wav
+usr/share/csoundqt/Examples/SourceMaterials/dishL.cv
+usr/share/csoundqt/Examples/SourceMaterials/dishL.wav
+usr/share/csoundqt/Examples/SourceMaterials/dishR.cv
+usr/share/csoundqt/Examples/SourceMaterials/dishR.wav
+usr/share/csoundqt/Examples/SourceMaterials/eee.aiff
+usr/share/csoundqt/Examples/SourceMaterials/female-speech.ats
+usr/share/csoundqt/Examples/SourceMaterials/flute-A5.ats
+usr/share/csoundqt/Examples/SourceMaterials/flute.wav
+usr/share/csoundqt/Examples/SourceMaterials/fox.wav
+usr/share/csoundqt/Examples/SourceMaterials/fwavblnk.aiff
+usr/share/csoundqt/Examples/SourceMaterials/gbuzz3.wav
+usr/share/csoundqt/Examples/SourceMaterials/hrtf-44100-left.dat
+usr/share/csoundqt/Examples/SourceMaterials/hrtf-44100-right.dat
+usr/share/csoundqt/Examples/SourceMaterials/imp.wav
+usr/share/csoundqt/Examples/SourceMaterials/impuls20.aiff
+usr/share/csoundqt/Examples/SourceMaterials/impulse_big_hall.wav
+usr/share/csoundqt/Examples/SourceMaterials/loop.pvx
+usr/share/csoundqt/Examples/SourceMaterials/loop.wav
+usr/share/csoundqt/Examples/SourceMaterials/mandpluk.aiff
+usr/share/csoundqt/Examples/SourceMaterials/marmstk1.wav
+usr/share/csoundqt/Examples/SourceMaterials/noise.pvx
+usr/share/csoundqt/Examples/SourceMaterials/oboe-A5.ats
+usr/share/csoundqt/Examples/SourceMaterials/ooo.aiff
+usr/share/csoundqt/Examples/SourceMaterials/print.py
+usr/share/csoundqt/Examples/SourceMaterials/sample.wav
+usr/share/csoundqt/Examples/SourceMaterials/scale.txt
+usr/share/csoundqt/Examples/SourceMaterials/spiral-8,16,128,2,1over2
+usr/share/csoundqt/Examples/SourceMaterials/string-128
+usr/share/csoundqt/Examples/SourceMaterials/test.ats
+usr/share/csoundqt/Examples/SourceMaterials/twopeaks.aiff
+usr/share/csoundqt/Examples/SourceMaterials/violins.wav
+usr/share/csoundqt/Examples/SourceMaterials/wave.wav
+usr/share/csoundqt/Examples/Stria Synth/
+usr/share/csoundqt/Examples/Stria Synth/SEQ_TEST_V09.txt
+usr/share/csoundqt/Examples/Stria Synth/StriaCSO_Manual_30a_02.pdf
+usr/share/csoundqt/Examples/Stria Synth/Stria_30a.csd
+usr/share/csoundqt/Examples/Stria Synth/TEST_V09.txt
+usr/share/csoundqt/Examples/Stria Synth/TEST_V09_MIDI.txt
+usr/share/csoundqt/templates/
+usr/share/csoundqt/templates/csound+html-template.csd
+usr/share/csoundqt/templates/csoundqt-or-webcsound-template.html
+usr/share/csoundqt/templates/simple.csd
+usr/share/doc/
+usr/share/doc/csoundqt/
+usr/share/doc/csoundqt/ChangeLog
+usr/share/doc/csoundqt/README.md
+usr/share/icons/
+usr/share/icons/hicolor/
+usr/share/icons/hicolor/128x128/
+usr/share/icons/hicolor/128x128/mimetypes/
+usr/share/icons/hicolor/128x128/mimetypes/csound.png
+usr/share/icons/hicolor/scalable/
+usr/share/icons/hicolor/scalable/apps/
+usr/share/icons/hicolor/scalable/apps/csoundqt.svg
+usr/share/mime/
+usr/share/mime/packages/
+usr/share/mime/packages/x-csound-csd.xml
+usr/share/mime/packages/x-csound-inc.xml
+usr/share/mime/packages/x-csound-orc.xml
+usr/share/mime/packages/x-csound-sco.xml
+usr/share/mime/packages/x-csound-udo.xml

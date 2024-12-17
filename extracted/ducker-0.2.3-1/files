@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/ducker
+usr/share/
+usr/share/doc/
+usr/share/doc/ducker/
+usr/share/doc/ducker/README.md
+usr/share/licenses/
+usr/share/licenses/ducker/
+usr/share/licenses/ducker/LICENSE.txt

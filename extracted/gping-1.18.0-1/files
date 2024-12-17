@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/gping
+usr/share/
+usr/share/doc/
+usr/share/doc/gping/
+usr/share/doc/gping/readme.md
+usr/share/licenses/
+usr/share/licenses/gping/
+usr/share/licenses/gping/LICENSE
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/gping.1.gz

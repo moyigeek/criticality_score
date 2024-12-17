@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/libLLVM-16.0.6jl.so
+usr/lib/libLLVM-16jl.so
+usr/lib/llvm-julia/
+usr/lib/llvm-julia/lib/
+usr/lib/llvm-julia/lib/LLVMgold.so
+usr/lib/llvm-julia/lib/libLLVM-16.0.6.3jl.so
+usr/lib/llvm-julia/lib/libLLVM-16jl.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/llvm-julia-libs/
+usr/share/licenses/llvm-julia-libs/LICENSE

@@ -1,0 +1,6 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/libsensors.so
+usr/lib32/libsensors.so.5
+usr/lib32/libsensors.so.5.0.0

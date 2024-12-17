@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/share/
+usr/share/doc/
+usr/share/doc/zita-resampler/
+usr/share/doc/zita-resampler/AUTHORS
+usr/share/doc/zita-resampler/README
+usr/share/doc/zita-resampler/filt1.png
+usr/share/doc/zita-resampler/filt2.png
+usr/share/doc/zita-resampler/inpdist.png
+usr/share/doc/zita-resampler/resampler.html
+usr/share/doc/zita-resampler/src-1kHz.png
+usr/share/doc/zita-resampler/zita-1kHz.png
+usr/share/doc/zita-resampler/zitadocs.css

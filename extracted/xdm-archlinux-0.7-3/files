@@ -1,0 +1,16 @@
+%FILES%
+etc/
+etc/X11/
+etc/X11/xdm/
+etc/X11/xdm/archlinux/
+etc/X11/xdm/archlinux/Xresources
+etc/X11/xdm/archlinux/Xsetup
+etc/X11/xdm/archlinux/Xstartup
+etc/X11/xdm/archlinux/arch.xpm
+etc/X11/xdm/archlinux/buttons
+etc/X11/xdm/archlinux/xdm-config
+usr/
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/xdm-archlinux.service

@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/ttysvr
+usr/share/
+usr/share/doc/
+usr/share/doc/ttysvr/
+usr/share/doc/ttysvr/README.md
+usr/share/licenses/
+usr/share/licenses/ttysvr/
+usr/share/licenses/ttysvr/LICENSE-MIT

@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/odin2
+usr/share/
+usr/share/applications/
+usr/share/applications/odin2.desktop
+usr/share/icons/
+usr/share/icons/hicolor/
+usr/share/icons/hicolor/512x512/
+usr/share/icons/hicolor/512x512/apps/
+usr/share/icons/hicolor/512x512/apps/odin2.png

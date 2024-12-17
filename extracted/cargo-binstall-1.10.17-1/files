@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cargo-binstall
+usr/share/
+usr/share/doc/
+usr/share/doc/cargo-binstall/
+usr/share/doc/cargo-binstall/README.md

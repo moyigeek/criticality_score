@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/initcpio/
+usr/lib/initcpio/hooks/
+usr/lib/initcpio/hooks/tinyssh
+usr/lib/initcpio/install/
+usr/lib/initcpio/install/tinyssh
+usr/share/
+usr/share/licenses/
+usr/share/licenses/mkinitcpio-tinyssh/
+usr/share/licenses/mkinitcpio-tinyssh/LICENSE

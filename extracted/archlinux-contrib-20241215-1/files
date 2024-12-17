@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/check-pkg-urls
+usr/bin/checkservices
+usr/bin/cleanup-list
+usr/bin/parse-submodules
+usr/bin/pkgsearch
+usr/bin/rebuild-todo
+usr/bin/review
+usr/bin/security-tracker-check
+usr/bin/srcinfo-pkg-graph
+usr/bin/staging2testing

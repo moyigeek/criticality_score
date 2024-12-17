@@ -43,8 +43,8 @@ var weights = map[string]float64{
 	"updated_since":     -1,
 	"contributor_count": 2,
 	"commit_frequency":  1,
-	"depsdev_ratios":    6,
-	"deps_distro":       6,
+	"depsdev_ratios":    5,
+	"deps_distro":       10,
 	"org_count":		 1,
 }
 
@@ -55,8 +55,8 @@ var thresholds = map[string]float64{
 	"updated_since":     120, // in months
 	"contributor_count": 40000,
 	"commit_frequency":  1000,
-	"depsdev_ratios":    50,
-	"deps_distro":       50,
+	"depsdev_ratios":    30,
+	"deps_distro":       1,
 	"org_count":		 8400,
 }
 
@@ -115,7 +115,6 @@ func GetProjectTypeFromDB(link string) string {
 
 func CalculateScore(data ProjectData, distro_scores float64) float64 {
 	score := 0.0
-
 	var createdSinceScore, updatedSinceScore, contributorCountScore, commitFrequencyScore, Org_CountScore float64
 	if data.CreatedSince != nil {
 		monthsSinceCreation := time.Since(*data.CreatedSince).Hours() / (24 * 30)
@@ -150,15 +149,13 @@ func CalculateScore(data ProjectData, distro_scores float64) float64 {
 	if data.Pkg_Manager != nil {
 		pkgManager, ok := PackageManagerData[*data.Pkg_Manager]
 		if ok && data.DepsdevCount != nil {
-			ratios := float64(*data.DepsdevCount)/float64(pkgManager)
+			ratios := float64(*data.DepsdevCount)/float64(pkgManager) * 100
 			normalized := math.Log(ratios + 1) / math.Log(math.Max(ratios, thresholds["depsdev_ratios"]) + 1)
 			score += weights["depsdev_ratios"] * normalized
 		}
 	}
-	if data.deps_distro != nil {
-		normalized := math.Log(distro_scores + 1) / math.Log(math.Max(distro_scores, thresholds["deps_distro"]) + 1)
-		score += weights["deps_distro"] * normalized
-	}
+	normalized := math.Log(distro_scores + 1) / math.Log(math.Max(distro_scores, thresholds["deps_distro"]) + 1)
+	score += weights["deps_distro"] * normalized
 
 	var totalnum float64
 	for _, weight := range weights{
@@ -173,8 +170,8 @@ func UpdateScore(db *sql.DB, packageScore map[string]LinkScore, batchSize int) e
 	for link, score := range packageScore {
 		updates = append(updates, UpdateData{
 			Link:         link,
-			DistroScores: score.Distro_scores,
-			Score:        score.Score,
+			DistroScores: float64(score.Distro_scores),
+			Score:        float64(score.Score),
 		})
 	}
 
@@ -188,13 +185,12 @@ func UpdateScore(db *sql.DB, packageScore map[string]LinkScore, batchSize int) e
 		query := "UPDATE git_metrics SET deps_distro = CASE git_link"
 		args := []interface{}{}
 		for j, update := range batch {
-			query += fmt.Sprintf(" WHEN $%d THEN $%d", j*3+1, j*3+2)
-			args = append(args, update.Link, update.DistroScores)
+			query += fmt.Sprintf(" WHEN $%d THEN $%d::double precision ", j*3+1, j*3+2)
+			args = append(args, update.Link, update.DistroScores, update.Score)
 		}
-		query += " END, score = CASE git_link"
-		for j, update := range batch {
-			query += fmt.Sprintf(" WHEN $%d THEN $%d", j*3+1, j*3+3)
-			args = append(args, update.Link, update.Score)
+		query += " END, scores = CASE git_link"
+		for j, _ := range batch {
+			query += fmt.Sprintf(" WHEN $%d THEN $%d::double precision ", j*3+1, j*3+3)
 		}
 		query += " END WHERE git_link IN ("
 		for j, _ := range batch {
@@ -204,10 +200,18 @@ func UpdateScore(db *sql.DB, packageScore map[string]LinkScore, batchSize int) e
 			query += fmt.Sprintf("$%d", j*3+1)
 		}
 		query += ")"
-
-		if _, err := db.Exec(query, args...); err != nil {
+		result, err := db.Exec(query, args...)
+		if err != nil {
+			log.Printf("Error executing query: %v", err)
 			return fmt.Errorf("failed to update batch: %w", err)
 		}
+		
+		rowsAffected, err := result.RowsAffected()
+		if err != nil {
+			log.Printf("Error retrieving rows affected: %v", err)
+			return fmt.Errorf("failed to retrieve affected rows: %w", err)
+		}
+		log.Printf("Batch [%d - %d]: %d rows updated", i, end, rowsAffected)
 	}
 
 	return nil

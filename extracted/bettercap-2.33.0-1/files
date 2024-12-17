@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/bettercap
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/bettercap.service
+usr/share/
+usr/share/doc/
+usr/share/doc/bettercap/
+usr/share/doc/bettercap/README.md

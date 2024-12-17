@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/vst3/
+usr/lib/vst3/OneTrick CRYPTID.vst3/
+usr/lib/vst3/OneTrick CRYPTID.vst3/Contents/
+usr/lib/vst3/OneTrick CRYPTID.vst3/Contents/x86_64-linux/
+usr/lib/vst3/OneTrick CRYPTID.vst3/Contents/x86_64-linux/OneTrick CRYPTID.so

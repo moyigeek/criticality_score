@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/nethogs
+usr/include/
+usr/include/libnethogs.h
+usr/lib/
+usr/lib/libnethogs.so
+usr/lib/libnethogs.so.0.8.8
+usr/share/
+usr/share/man/
+usr/share/man/man8/
+usr/share/man/man8/nethogs.8.gz

@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/share/
+usr/share/myspell/
+usr/share/myspell/dicts/
+usr/share/myspell/dicts/th_ro_RO_v2.dat
+usr/share/myspell/dicts/th_ro_RO_v2.idx
+usr/share/mythes/
+usr/share/mythes/th_ro_RO_v2.dat
+usr/share/mythes/th_ro_RO_v2.idx

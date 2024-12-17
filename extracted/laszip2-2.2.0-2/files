@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/include/
+usr/include/laszip2/
+usr/include/laszip2/lasunzipper.hpp
+usr/include/laszip2/laszip.hpp
+usr/include/laszip2/laszipexport.hpp
+usr/include/laszip2/laszipper.hpp
+usr/lib/
+usr/lib/laszip2/
+usr/lib/laszip2/liblaszip.so
+usr/lib/laszip2/liblaszip.so.6
+usr/lib/laszip2/liblaszip.so.6.0.0

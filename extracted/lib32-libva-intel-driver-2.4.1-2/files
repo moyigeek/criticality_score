@@ -1,0 +1,9 @@
+%FILES%
+usr/
+usr/lib32/
+usr/lib32/dri/
+usr/lib32/dri/i965_drv_video.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/lib32-libva-intel-driver/
+usr/share/licenses/lib32-libva-intel-driver/COPYING

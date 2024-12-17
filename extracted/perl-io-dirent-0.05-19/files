@@ -1,0 +1,17 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/perl5/
+usr/lib/perl5/5.40/
+usr/lib/perl5/5.40/core_perl/
+usr/lib/perl5/5.40/vendor_perl/
+usr/lib/perl5/5.40/vendor_perl/IO/
+usr/lib/perl5/5.40/vendor_perl/IO/Dirent.pm
+usr/lib/perl5/5.40/vendor_perl/auto/
+usr/lib/perl5/5.40/vendor_perl/auto/IO/
+usr/lib/perl5/5.40/vendor_perl/auto/IO/Dirent/
+usr/lib/perl5/5.40/vendor_perl/auto/IO/Dirent/Dirent.so
+usr/share/
+usr/share/man/
+usr/share/man/man3/
+usr/share/man/man3/IO::Dirent.3pm.gz

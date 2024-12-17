@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/unrtf
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/unrtf.1.gz
+usr/share/unrtf/
+usr/share/unrtf/SYMBOL.charmap
+usr/share/unrtf/html.conf
+usr/share/unrtf/latex.conf
+usr/share/unrtf/rtf.conf
+usr/share/unrtf/text.conf
+usr/share/unrtf/troff_mm.conf
+usr/share/unrtf/vt.conf

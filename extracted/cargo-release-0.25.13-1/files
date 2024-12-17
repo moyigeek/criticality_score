@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/cargo-release
+usr/share/
+usr/share/licenses/
+usr/share/licenses/cargo-release/
+usr/share/licenses/cargo-release/LICENSE-MIT

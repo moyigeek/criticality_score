@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/include/
+usr/include/homfly.h
+usr/lib/
+usr/lib/libhomfly.so
+usr/lib/libhomfly.so.0
+usr/lib/libhomfly.so.0.0.0
+usr/share/
+usr/share/licenses/
+usr/share/licenses/libhomfly/
+usr/share/licenses/libhomfly/LICENSE

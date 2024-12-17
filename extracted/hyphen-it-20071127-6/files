@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/share/
+usr/share/hyphen/
+usr/share/hyphen/hyph_it_CH.dic
+usr/share/hyphen/hyph_it_IT.dic
+usr/share/hyphen/hyph_la_VA.dic
+usr/share/myspell/
+usr/share/myspell/dicts/
+usr/share/myspell/dicts/hyph_it_CH.dic
+usr/share/myspell/dicts/hyph_it_IT.dic
+usr/share/myspell/dicts/hyph_la_VA.dic

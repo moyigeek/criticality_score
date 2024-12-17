@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/gmp3info
+usr/bin/mp3info
+usr/share/
+usr/share/applications/
+usr/share/applications/gmp3info.desktop
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/mp3info.1.gz

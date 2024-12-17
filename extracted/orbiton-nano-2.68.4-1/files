@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/nano
+usr/share/
+usr/share/licenses/
+usr/share/licenses/orbiton-nano/
+usr/share/licenses/orbiton-nano/LICENSE

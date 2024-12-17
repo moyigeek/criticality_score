@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/share/
+usr/share/doc/
+usr/share/doc/vim-auto-pairs/
+usr/share/doc/vim-auto-pairs/README.md
+usr/share/licenses/
+usr/share/licenses/vim-auto-pairs/
+usr/share/licenses/vim-auto-pairs/LICENSE
+usr/share/vim/
+usr/share/vim/vimfiles/
+usr/share/vim/vimfiles/plugin/
+usr/share/vim/vimfiles/plugin/auto-pairs.vim

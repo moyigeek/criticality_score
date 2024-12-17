@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/odt2txt
+usr/share/
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/odt2txt.1.gz

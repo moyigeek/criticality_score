@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/netscanner
+usr/share/
+usr/share/doc/
+usr/share/doc/netscanner/
+usr/share/doc/netscanner/README.md
+usr/share/licenses/
+usr/share/licenses/netscanner/
+usr/share/licenses/netscanner/LICENSE

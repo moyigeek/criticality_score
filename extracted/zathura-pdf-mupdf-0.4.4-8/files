@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/zathura/
+usr/lib/zathura/libpdf-mupdf.so
+usr/share/
+usr/share/applications/
+usr/share/applications/org.pwmt.zathura-pdf-mupdf.desktop
+usr/share/licenses/
+usr/share/licenses/zathura-pdf-mupdf/
+usr/share/licenses/zathura-pdf-mupdf/LICENSE
+usr/share/metainfo/
+usr/share/metainfo/org.pwmt.zathura-pdf-mupdf.metainfo.xml

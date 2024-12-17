@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/git-sizer
+usr/share/
+usr/share/doc/
+usr/share/doc/git-sizer/
+usr/share/doc/git-sizer/README.md
+usr/share/licenses/
+usr/share/licenses/git-sizer/
+usr/share/licenses/git-sizer/LICENSE.md

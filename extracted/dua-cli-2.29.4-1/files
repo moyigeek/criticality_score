@@ -1,0 +1,11 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/dua
+usr/share/
+usr/share/doc/
+usr/share/doc/dua-cli/
+usr/share/doc/dua-cli/README.md
+usr/share/licenses/
+usr/share/licenses/dua-cli/
+usr/share/licenses/dua-cli/LICENSE

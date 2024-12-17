@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/lib/
+usr/lib/pipewire-0.3/
+usr/lib/pipewire-0.3/libpipewire-module-roc-sink.so
+usr/lib/pipewire-0.3/libpipewire-module-roc-source.so
+usr/share/
+usr/share/licenses/
+usr/share/licenses/pipewire-roc/
+usr/share/licenses/pipewire-roc/COPYING
+usr/share/man/
+usr/share/man/man7/
+usr/share/man/man7/libpipewire-module-roc-sink.7.gz
+usr/share/man/man7/libpipewire-module-roc-source.7.gz

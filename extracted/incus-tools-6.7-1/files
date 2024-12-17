@@ -1,0 +1,10 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/fuidshift
+usr/bin/incus-benchmark
+usr/bin/lxc-to-incus
+usr/share/
+usr/share/licenses/
+usr/share/licenses/incus-tools/
+usr/share/licenses/incus-tools/LICENCE

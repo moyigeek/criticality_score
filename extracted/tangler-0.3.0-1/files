@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/tangler
+usr/share/
+usr/share/licenses/
+usr/share/licenses/tangler/
+usr/share/licenses/tangler/MIT.txt

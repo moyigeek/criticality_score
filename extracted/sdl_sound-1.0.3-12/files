@@ -1,0 +1,12 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/playsound
+usr/bin/playsound_simple
+usr/include/
+usr/include/SDL/
+usr/include/SDL/SDL_sound.h
+usr/lib/
+usr/lib/libSDL_sound-1.0.so.1
+usr/lib/libSDL_sound-1.0.so.1.0.2
+usr/lib/libSDL_sound.so

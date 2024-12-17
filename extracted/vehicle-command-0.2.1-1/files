@@ -1,0 +1,14 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/tesla-auth-token
+usr/bin/tesla-ble
+usr/bin/tesla-control
+usr/bin/tesla-http-proxy
+usr/bin/tesla-jws
+usr/bin/tesla-keygen
+usr/bin/tesla-unlock
+usr/share/
+usr/share/doc/
+usr/share/doc/vehicle-command/
+usr/share/doc/vehicle-command/README.md

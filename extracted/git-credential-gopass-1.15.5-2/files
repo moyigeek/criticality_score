@@ -1,0 +1,8 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/git-credential-gopass
+usr/share/
+usr/share/licenses/
+usr/share/licenses/git-credential-gopass/
+usr/share/licenses/git-credential-gopass/LICENSE

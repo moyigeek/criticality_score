@@ -1,0 +1,15 @@
+%FILES%
+etc/
+etc/loki/
+etc/loki/promtail.yaml
+usr/
+usr/bin/
+usr/bin/promtail
+usr/lib/
+usr/lib/systemd/
+usr/lib/systemd/system/
+usr/lib/systemd/system/promtail.service
+usr/lib/sysusers.d/
+usr/lib/sysusers.d/promtail.conf
+usr/lib/tmpfiles.d/
+usr/lib/tmpfiles.d/promtail.conf

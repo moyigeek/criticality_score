@@ -1,0 +1,16 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/luksmeta
+usr/include/
+usr/include/luksmeta.h
+usr/lib/
+usr/lib/libluksmeta.so
+usr/lib/libluksmeta.so.0
+usr/lib/libluksmeta.so.0.0.0
+usr/lib/pkgconfig/
+usr/lib/pkgconfig/luksmeta.pc
+usr/share/
+usr/share/man/
+usr/share/man/man8/
+usr/share/man/man8/luksmeta.8.gz

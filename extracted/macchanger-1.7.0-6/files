@@ -1,0 +1,13 @@
+%FILES%
+usr/
+usr/bin/
+usr/bin/macchanger
+usr/share/
+usr/share/info/
+usr/share/info/macchanger.info.gz
+usr/share/macchanger/
+usr/share/macchanger/OUI.list
+usr/share/macchanger/wireless.list
+usr/share/man/
+usr/share/man/man1/
+usr/share/man/man1/macchanger.1.gz
