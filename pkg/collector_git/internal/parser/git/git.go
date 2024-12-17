@@ -1,3 +1,10 @@
+/*
+ * @Author: 7erry
+ * @Date: 2024-09-29 14:41:35
+ * @LastEditTime: 2024-12-14 16:50:39
+ * @Description: Parse Git Repositories to collect necessary metrics
+ */
+
 package git
 
 import (
@@ -403,7 +410,7 @@ func (repo *Repo) WalkRepo(r *git.Repository) error {
 		filename := filepath.Base(f.Name)
 		GetLanguages(filename, &languages)
 		GetEcosystem(filename, &ecosystems)
-		if repo.License != parser.UNKNOWN_LICENSE {
+		if repo.License == parser.UNKNOWN_LICENSE {
 			if _, ok := parser.LICENSE_FILENAMES[filename]; ok {
 				license, err := GetLicense(f)
 				if err != nil {

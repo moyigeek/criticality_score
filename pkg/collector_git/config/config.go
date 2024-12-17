@@ -1,8 +1,8 @@
 /*
  * @Author: 7erry
  * @Date: 2024-08-31 03:44:46
- * @LastEditTime: 2024-12-02 14:59:16
- * @Description:
+ * @LastEditTime: 2024-12-14 16:48:05
+ * @Description: Config file for the git metrics collector
  */
 package config
 
@@ -30,6 +30,7 @@ const (
 	SQLITE_PASSWORD      string = ""
 )
 
+// The cloned repositories will be stored in STORAGE_PATH
 var STORAGE_PATH string = "./storage"
 
 func SetStoragetPath(path string) {

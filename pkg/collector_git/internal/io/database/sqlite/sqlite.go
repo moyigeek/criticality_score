@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-09-07 20:07:35
- * @LastEditTime: 2024-11-27 20:27:00
+ * @LastEditTime: 2024-12-14 16:37:38
  * @Description:
  */
 package sqlite
@@ -52,37 +52,20 @@ func CreateTable(db *gorm.DB) error {
 }
 
 func InsertTable(db *gorm.DB, metrics *database.GitMetrics) {
-	db.Where(&database.GitMetrics{URL: metrics.URL}).Assign(database.GitMetrics{
-		CreatedSince:     metrics.CreatedSince,
-		UpdatedSince:     metrics.UpdatedSince,
-		ContributorCount: metrics.ContributorCount,
-		OrgCount:         metrics.OrgCount,
-		CommitFrequency:  metrics.CommitFrequency,
-		Name:             metrics.Name,
-		Owner:            metrics.Owner,
-		Source:           metrics.Source,
-		URL:              metrics.URL,
-		Ecosystems:       metrics.Ecosystems,
-		NeedUpdate:       metrics.NeedUpdate,
-	}).FirstOrCreate(metrics)
-}
-
-func BatchInsertMetrics(db *gorm.DB, metrics [database.BATCH_SIZE]database.GitMetrics) error {
-
-	tx := db.Begin()
-
-	if err := tx.Error; err != nil {
-		return err
-	}
-
-	if err := tx.Create(&metrics).Error; err != nil {
-		tx.Rollback()
-		return err
-	}
-
-	if err := tx.Commit().Error; err != nil {
-		return err
-	}
-
-	return nil
+	db.Where(&database.GitMetrics{URL: metrics.URL}).
+		Assign(database.GitMetrics{
+			Name:             metrics.Name,
+			Owner:            metrics.Owner,
+			Source:           metrics.Source,
+			URL:              metrics.URL,
+			License:          metrics.License,
+			Ecosystems:       metrics.Ecosystems,
+			Languages:        metrics.Languages,
+			CreatedSince:     metrics.CreatedSince,
+			UpdatedSince:     metrics.UpdatedSince,
+			ContributorCount: metrics.ContributorCount,
+			OrgCount:         metrics.OrgCount,
+			CommitFrequency:  metrics.CommitFrequency,
+			NeedUpdate:       metrics.NeedUpdate,
+		}).FirstOrCreate(metrics)
 }

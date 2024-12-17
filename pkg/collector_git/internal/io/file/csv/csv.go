@@ -1,4 +1,10 @@
 /*
+ * @Author: 7erry
+ * @Date: 2024-12-13 20:57:15
+ * @LastEditTime: 2024-12-14 16:42:50
+ * @Description:
+ */
+/*
  * @Date: 2024-09-07 19:55:19
  * @LastEditTime: 2024-11-27 20:28:18
  * @Description:
@@ -35,7 +41,7 @@ func GetCSVInput(path string) ([][]string, error) {
 	return urls, nil
 }
 
-func SaveToCSV(content [][]string) error {
+func Save2CSV(content [][]string) error {
 	file, err := os.Create(config.OUTPUT_CSV_PATH)
 	if err != nil {
 		return err

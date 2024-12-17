@@ -1,7 +1,7 @@
 /*
  * @Author: 7erry
  * @Date: 2024-08-31 03:50:13
- * @LastEditTime: 2024-12-07 18:43:18
+ * @LastEditTime: 2024-12-14 16:43:59
  * @Description:
  */
 package git
@@ -11,7 +11,6 @@ import (
 	"testing"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/collector"
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/logger"
 	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/url"
 
 	"github.com/stretchr/testify/require"
@@ -27,15 +26,7 @@ func TestParseGitRepo(t *testing.T) {
 			expected: Repo{},
 		},
 		{
-			input:    "https://github.com/cider-security-research/cicd-goat.git",
-			expected: Repo{},
-		},
-		{
-			input:    "https://github.com/cider-security-research/top-10-cicd-security-risks.git",
-			expected: Repo{},
-		},
-		{
-			input:    "https://salsa.debian.org/med-team/kmer.git",
+			input:    "https://gitee.com/mirrors/Proxy-Go.git",
 			expected: Repo{},
 		},
 		{
@@ -54,7 +45,7 @@ func TestParseGitRepo(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			logger.Infof("%++v", *repo)
+			repo.Show()
 			//require.Equal(t, test.expected, *repo)
 		})
 	}

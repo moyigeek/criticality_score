@@ -1,3 +1,10 @@
+/*
+ * @Author: 7erry
+ * @Date: 2024-09-29 14:41:35
+ * @LastEditTime: 2024-12-14 16:49:04
+ * @Description: Collect Git Repositories - Download and Read by go-git
+ */
+
 package collector
 
 import (
@@ -169,7 +176,7 @@ func Update(u *url.RepoURL) (*gogit.Repository, error) {
 
 	err = Pull(r, url)
 
-	// err := fetch(r)
+	// err := Fetch(r)
 	if err == gogit.NoErrAlreadyUpToDate {
 		err = nil
 	} else {
