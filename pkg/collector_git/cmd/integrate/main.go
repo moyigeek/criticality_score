@@ -104,7 +104,8 @@ func main() {
 				contributor_count = $7,
 				commit_frequency = $8,
 				license = $9,
-				need_update = FALSE WHERE git_link = $10`,
+				language = $10,
+				need_update = FALSE WHERE git_link = $11`,
 				repo.Name,
 				repo.Owner,
 				repo.Source,
@@ -114,6 +115,7 @@ func main() {
 				repo.ContributorCount,
 				repo.CommitFrequency,
 				repo.License,
+				repo.Languages,
 				input)
 
 			if err != nil {
