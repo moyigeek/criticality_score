@@ -42,7 +42,7 @@ func main() {
 		score := scores.CalculateScore(*data, distro_scores)
 		packageScore[link] = scores.LinkScore{
 			Distro_scores: distro_scores,
-			Score:         score,
+			Score:         score * 100,
 		}
 	}
 	log.Println("Updating database...")
