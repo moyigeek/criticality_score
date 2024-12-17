@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/tokssh
-usr/bin/tuntox
-usr/lib/
-usr/lib/systemd/
-usr/lib/systemd/system/
-usr/lib/systemd/system/tuntox.service

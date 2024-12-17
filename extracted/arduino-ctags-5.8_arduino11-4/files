@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/arduino-ctags
-usr/share/
-usr/share/man/
-usr/share/man/man1/
-usr/share/man/man1/arduino-ctags.1.gz

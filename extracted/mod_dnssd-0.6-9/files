@@ -1,6 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/httpd/
-usr/lib/httpd/modules/
-usr/lib/httpd/modules/mod_dnssd.so

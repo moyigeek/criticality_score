@@ -1,6 +1,0 @@
-%FILES%
-usr/
-usr/lib32/
-usr/lib32/libunistring.so
-usr/lib32/libunistring.so.5
-usr/lib32/libunistring.so.5.1.0

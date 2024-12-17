@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/cargo-outdated
-usr/share/
-usr/share/licenses/
-usr/share/licenses/cargo-outdated/
-usr/share/licenses/cargo-outdated/LICENSE-MIT

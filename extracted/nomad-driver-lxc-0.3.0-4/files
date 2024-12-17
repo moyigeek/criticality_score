@@ -1,6 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/nomad/
-usr/lib/nomad/plugins/
-usr/lib/nomad/plugins/nomad-driver-lxc

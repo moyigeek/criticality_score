@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/dscanner
-usr/share/
-usr/share/licenses/
-usr/share/licenses/dscanner/
-usr/share/licenses/dscanner/LICENSE

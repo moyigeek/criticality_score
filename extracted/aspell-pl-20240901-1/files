@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/aspell-0.60/
-usr/lib/aspell-0.60/pl.dat
-usr/lib/aspell-0.60/pl.multi
-usr/lib/aspell-0.60/pl.rws
-usr/lib/aspell-0.60/pl_affix.dat
-usr/lib/aspell-0.60/polish.alias

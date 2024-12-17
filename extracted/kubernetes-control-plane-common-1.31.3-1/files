@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/sysusers.d/
-usr/lib/sysusers.d/kubernetes-control-plane-common.conf
-usr/lib/tmpfiles.d/
-usr/lib/tmpfiles.d/kubernetes-control-plane-common.conf

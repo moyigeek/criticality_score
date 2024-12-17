@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/oxc_language_server
-usr/share/
-usr/share/licenses/
-usr/share/licenses/oxc-language-server/
-usr/share/licenses/oxc-language-server/LICENSE

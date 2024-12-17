@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/include/
-usr/include/maa.h
-usr/lib/
-usr/lib/libmaa.so
-usr/lib/libmaa.so.4
-usr/lib/libmaa.so.4.1

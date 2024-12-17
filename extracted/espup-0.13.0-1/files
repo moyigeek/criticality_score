@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/espup
-usr/share/
-usr/share/licenses/
-usr/share/licenses/espup/
-usr/share/licenses/espup/LICENSE-APACHE
-usr/share/licenses/espup/LICENSE-MIT

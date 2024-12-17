@@ -1,6 +1,0 @@
-%FILES%
-usr/
-usr/share/
-usr/share/lua/
-usr/share/lua/5.2/
-usr/share/lua/5.2/binaryheap.lua

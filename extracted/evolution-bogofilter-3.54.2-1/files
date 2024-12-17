@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/evolution/
-usr/lib/evolution/modules/
-usr/lib/evolution/modules/module-bogofilter.so
-usr/share/
-usr/share/metainfo/
-usr/share/metainfo/org.gnome.Evolution-bogofilter.metainfo.xml

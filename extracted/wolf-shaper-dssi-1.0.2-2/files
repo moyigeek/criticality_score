@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/dssi/
-usr/lib/dssi/wolf-shaper-dssi.so
-usr/lib/dssi/wolf-shaper-dssi/
-usr/lib/dssi/wolf-shaper-dssi/wolf-shaper_ui

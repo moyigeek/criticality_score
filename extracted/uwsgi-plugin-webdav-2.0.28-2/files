@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/uwsgi/
-usr/lib/uwsgi/webdav_plugin.so
-usr/share/
-usr/share/licenses/
-usr/share/licenses/uwsgi-plugin-webdav/
-usr/share/licenses/uwsgi-plugin-webdav/LICENSE

@@ -1,6 +1,0 @@
-%FILES%
-usr/
-usr/include/
-usr/include/linenoise.h
-usr/lib/
-usr/lib/liblinenoise.a

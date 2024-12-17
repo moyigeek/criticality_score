@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/lib32/
-usr/lib32/libtdb.so
-usr/lib32/libtdb.so.1
-usr/lib32/libtdb.so.1.4.12
-usr/lib32/pkgconfig/
-usr/lib32/pkgconfig/tdb.pc

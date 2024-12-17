@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/pulseaudio/
-usr/lib/pulseaudio/modules/
-usr/lib/pulseaudio/modules/libavahi-wrap.so
-usr/lib/pulseaudio/modules/module-raop-discover.so
-usr/lib/pulseaudio/modules/module-zeroconf-discover.so
-usr/lib/pulseaudio/modules/module-zeroconf-publish.so

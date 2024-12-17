@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/include/
-usr/include/half/
-usr/include/half/half.hpp
-usr/share/
-usr/share/licenses/
-usr/share/licenses/half/
-usr/share/licenses/half/LICENSE

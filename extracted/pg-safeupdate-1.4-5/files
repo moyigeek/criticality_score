@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/postgresql/
-usr/lib/postgresql/safeupdate.so
-usr/share/
-usr/share/license/
-usr/share/license/pg-safeupdate/
-usr/share/license/pg-safeupdate/LICENSE

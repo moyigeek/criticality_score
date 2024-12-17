@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/rofi/
-usr/lib/rofi/calc.so
-usr/share/
-usr/share/licenses/
-usr/share/licenses/rofi-calc/
-usr/share/licenses/rofi-calc/LICENSE

@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/posterazor
-usr/share/
-usr/share/applications/
-usr/share/applications/posterazor.desktop
-usr/share/icons/
-usr/share/icons/posterazor.xpm

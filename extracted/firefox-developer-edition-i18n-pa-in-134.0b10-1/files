@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/firefox-developer-edition/
-usr/lib/firefox-developer-edition/browser/
-usr/lib/firefox-developer-edition/browser/extensions/
-usr/lib/firefox-developer-edition/browser/extensions/langpack-pa-IN@firefox.mozilla.org.xpi

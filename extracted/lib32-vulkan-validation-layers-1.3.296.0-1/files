@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/lib32/
-usr/lib32/libVkLayer_khronos_validation.so
-usr/share/
-usr/share/licenses/
-usr/share/licenses/lib32-vulkan-validation-layers/
-usr/share/licenses/lib32-vulkan-validation-layers/LICENSE.txt

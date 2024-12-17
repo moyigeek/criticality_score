@@ -1,5 +1,0 @@
-%FILES%
-etc/
-etc/alsa/
-etc/alsa/conf.d/
-etc/alsa/conf.d/99-pulseaudio-default.conf

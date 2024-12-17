@@ -1,6 +1,0 @@
-%FILES%
-usr/
-usr/lib32/
-usr/lib32/libgpm.so
-usr/lib32/libgpm.so.2
-usr/lib32/libgpm.so.2.1.0

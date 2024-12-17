@@ -1,6 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/php/
-usr/lib/php/modules/
-usr/lib/php/modules/xsl.so

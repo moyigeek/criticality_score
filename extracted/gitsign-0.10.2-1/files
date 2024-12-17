@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/gitsign
-usr/share/
-usr/share/licenses/
-usr/share/licenses/gitsign/
-usr/share/licenses/gitsign/LICENSE

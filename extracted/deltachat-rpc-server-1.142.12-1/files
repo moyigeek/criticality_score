@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/deltachat-rpc-server
-usr/share/
-usr/share/doc/
-usr/share/doc/deltachat-rpc-server/
-usr/share/doc/deltachat-rpc-server/README.md

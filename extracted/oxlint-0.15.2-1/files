@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/oxlint
-usr/share/
-usr/share/licenses/
-usr/share/licenses/oxlint/
-usr/share/licenses/oxlint/LICENSE

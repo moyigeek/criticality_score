@@ -1,6 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/ladspa/
-usr/lib/ladspa/ladspa-rubberband.cat
-usr/lib/ladspa/ladspa-rubberband.so

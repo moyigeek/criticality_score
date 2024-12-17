@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/wakatime
-usr/bin/wakatime-cli
-usr/share/
-usr/share/licenses/
-usr/share/licenses/wakatime/
-usr/share/licenses/wakatime/LICENSE

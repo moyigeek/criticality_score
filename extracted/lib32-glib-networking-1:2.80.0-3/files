@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/lib32/
-usr/lib32/gio/
-usr/lib32/gio/modules/
-usr/lib32/gio/modules/libgiognomeproxy.so
-usr/lib32/gio/modules/libgiognutls.so
-usr/lib32/gio/modules/libgiolibproxy.so

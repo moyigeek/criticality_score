@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/SoapySDR/
-usr/lib/SoapySDR/modules0.8/
-usr/lib/SoapySDR/modules0.8/libuhdSupport.so
-usr/lib/uhd/
-usr/lib/uhd/modules/
-usr/lib/uhd/modules/libsoapySupport.so

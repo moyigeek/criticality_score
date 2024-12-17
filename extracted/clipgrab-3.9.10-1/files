@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/clipgrab
-usr/share/
-usr/share/applications/
-usr/share/applications/clipgrab.desktop
-usr/share/pixmaps/
-usr/share/pixmaps/clipgrab.png

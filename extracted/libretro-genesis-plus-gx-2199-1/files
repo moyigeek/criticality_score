@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/libretro/
-usr/lib/libretro/genesis_plus_gx_libretro.so
-usr/share/
-usr/share/licenses/
-usr/share/licenses/libretro-genesis-plus-gx/
-usr/share/licenses/libretro-genesis-plus-gx/LICENSE.txt

@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/pacman-bintrans
-usr/share/
-usr/share/doc/
-usr/share/doc/pacman-bintrans/
-usr/share/doc/pacman-bintrans/README.md

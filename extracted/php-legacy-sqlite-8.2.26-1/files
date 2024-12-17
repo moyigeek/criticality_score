@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/php-legacy/
-usr/lib/php-legacy/modules/
-usr/lib/php-legacy/modules/pdo_sqlite.so
-usr/lib/php-legacy/modules/sqlite3.so

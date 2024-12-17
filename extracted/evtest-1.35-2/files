@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/evtest
-usr/share/
-usr/share/man/
-usr/share/man/man1/
-usr/share/man/man1/evtest.1.gz

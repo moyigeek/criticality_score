@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/include/
-usr/include/blockdev/
-usr/include/blockdev/mpath.h
-usr/lib/
-usr/lib/libbd_mpath.so
-usr/lib/libbd_mpath.so.3
-usr/lib/libbd_mpath.so.3.0.0

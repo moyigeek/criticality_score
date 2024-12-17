@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/pipectl
-usr/share/
-usr/share/man/
-usr/share/man/man1/
-usr/share/man/man1/pipectl.1.gz

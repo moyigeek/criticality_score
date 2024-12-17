@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/thunderbird/
-usr/lib/thunderbird/browser/
-usr/lib/thunderbird/browser/extensions/
-usr/lib/thunderbird/browser/extensions/uBlock0@raymondhill.net.xpi

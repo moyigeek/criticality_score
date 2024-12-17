@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/gopls
-usr/share/
-usr/share/licenses/
-usr/share/licenses/gopls/
-usr/share/licenses/gopls/LICENSE

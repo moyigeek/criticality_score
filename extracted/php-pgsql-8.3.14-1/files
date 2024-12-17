@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/php/
-usr/lib/php/modules/
-usr/lib/php/modules/pdo_pgsql.so
-usr/lib/php/modules/pgsql.so

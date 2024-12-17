@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/include/
-usr/include/curspriv.h
-usr/include/pdcsdl2.h
-usr/lib/
-usr/lib/libpdcurses2.so

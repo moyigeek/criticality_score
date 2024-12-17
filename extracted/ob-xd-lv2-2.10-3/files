@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/lv2/
-usr/lib/lv2/OB-Xd.lv2/
-usr/lib/lv2/OB-Xd.lv2/OB-Xd.so
-usr/lib/lv2/OB-Xd.lv2/dsp.ttl
-usr/lib/lv2/OB-Xd.lv2/manifest.ttl
-usr/lib/lv2/OB-Xd.lv2/ui.ttl

@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/phpdbg
-usr/share/
-usr/share/man/
-usr/share/man/man1/
-usr/share/man/man1/phpdbg.1.gz

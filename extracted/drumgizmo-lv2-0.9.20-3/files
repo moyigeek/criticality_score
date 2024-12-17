@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/lv2/
-usr/lib/lv2/drumgizmo.lv2/
-usr/lib/lv2/drumgizmo.lv2/drumgizmo.so
-usr/lib/lv2/drumgizmo.lv2/manifest.ttl

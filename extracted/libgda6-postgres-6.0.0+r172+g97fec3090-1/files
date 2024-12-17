@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/libgda-6.0/
-usr/lib/libgda-6.0/providers/
-usr/lib/libgda-6.0/providers/libgda-postgres-6.0.so
-usr/lib/pkgconfig/
-usr/lib/pkgconfig/libgda-postgres-6.0.pc

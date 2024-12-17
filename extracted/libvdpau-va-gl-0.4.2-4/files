@@ -1,6 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/vdpau/
-usr/lib/vdpau/libvdpau_va_gl.so
-usr/lib/vdpau/libvdpau_va_gl.so.1

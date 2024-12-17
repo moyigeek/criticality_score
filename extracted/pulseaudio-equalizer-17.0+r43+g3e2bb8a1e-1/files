@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/qpaeq
-usr/lib/
-usr/lib/pulseaudio/
-usr/lib/pulseaudio/modules/
-usr/lib/pulseaudio/modules/module-equalizer-sink.so

@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/catatonit
-usr/lib/
-usr/lib/podman/
-usr/lib/podman/catatonit

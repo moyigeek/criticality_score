@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/urxvt/
-usr/lib/urxvt/perl/
-usr/lib/urxvt/perl/clipboard
-usr/lib/urxvt/perl/keyboard-select
-usr/lib/urxvt/perl/url-select

@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/jvm/
-usr/lib/jvm/java-17-openjdk/
-usr/lib/jvm/java-17-openjdk/lib/
-usr/lib/jvm/java-17-openjdk/lib/java-atk-wrapper.jar

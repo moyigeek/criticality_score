@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/sysusers.d/
-usr/lib/sysusers.d/buildbot.conf
-usr/lib/tmpfiles.d/
-usr/lib/tmpfiles.d/buildbot.conf

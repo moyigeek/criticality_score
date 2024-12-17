@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/share/
-usr/share/vim/
-usr/share/vim/vimfiles/
-usr/share/vim/vimfiles/colors/
-usr/share/vim/vimfiles/colors/seti.vim

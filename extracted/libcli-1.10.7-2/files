@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/include/
-usr/include/libcli.h
-usr/lib/
-usr/lib/libcli.so
-usr/lib/libcli.so.1.10
-usr/lib/libcli.so.1.10.7

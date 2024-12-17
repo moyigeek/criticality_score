@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/share/
-usr/share/licenses/
-usr/share/licenses/lua53-basexx/
-usr/share/licenses/lua53-basexx/LICENSE
-usr/share/lua/
-usr/share/lua/5.3/
-usr/share/lua/5.3/basexx.lua

@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/lv2/
-usr/lib/lv2/spectmorph.lv2/
-usr/lib/lv2/spectmorph.lv2/manifest.ttl
-usr/lib/lv2/spectmorph.lv2/spectmorph.ttl
-usr/lib/lv2/spectmorph.lv2/spectmorph_lv2.so

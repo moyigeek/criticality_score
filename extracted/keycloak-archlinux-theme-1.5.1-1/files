@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/share/
-usr/share/java/
-usr/share/java/keycloak/
-usr/share/java/keycloak/providers/
-usr/share/java/keycloak/providers/keycloak-archlinux-theme.jar

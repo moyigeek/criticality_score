@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/sentry-cli
-usr/share/
-usr/share/licenses/
-usr/share/licenses/sentry-cli/
-usr/share/licenses/sentry-cli/LICENSE

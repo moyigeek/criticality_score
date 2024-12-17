@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/lib32/
-usr/lib32/libgif.so
-usr/lib32/libgif.so.7
-usr/lib32/libgif.so.7.2.0
-usr/share/
-usr/share/licenses/
-usr/share/licenses/lib32-giflib

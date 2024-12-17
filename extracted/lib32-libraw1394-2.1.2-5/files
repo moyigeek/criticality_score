@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/lib32/
-usr/lib32/libraw1394.so
-usr/lib32/libraw1394.so.11
-usr/lib32/libraw1394.so.11.1.0
-usr/lib32/pkgconfig/
-usr/lib32/pkgconfig/libraw1394.pc

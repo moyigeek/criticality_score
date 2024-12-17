@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/lib32/
-usr/lib32/libkeyutils.so
-usr/lib32/libkeyutils.so.1
-usr/lib32/libkeyutils.so.1.10
-usr/lib32/pkgconfig/
-usr/lib32/pkgconfig/libkeyutils.pc

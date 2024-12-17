@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/share/
-usr/share/terminfo/
-usr/share/terminfo/r/
-usr/share/terminfo/r/rxvt-unicode
-usr/share/terminfo/r/rxvt-unicode-256color

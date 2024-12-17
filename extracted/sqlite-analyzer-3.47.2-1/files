@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/sqlite3_analyzer
-usr/share/
-usr/share/licenses/
-usr/share/licenses/sqlite-analyzer/
-usr/share/licenses/sqlite-analyzer/license.txt

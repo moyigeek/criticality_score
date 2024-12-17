@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/libretro/
-usr/lib/libretro/ppsspp_libretro.so
-usr/share/
-usr/share/licenses/
-usr/share/licenses/libretro-ppsspp/
-usr/share/licenses/libretro-ppsspp/LICENSE.TXT

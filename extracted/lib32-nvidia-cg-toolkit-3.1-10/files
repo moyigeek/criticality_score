@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/lib32/
-usr/lib32/libCg.so
-usr/lib32/libCgGL.so
-usr/share/
-usr/share/licenses/
-usr/share/licenses/lib32-nvidia-cg-toolkit

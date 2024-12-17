@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/cgdb
-usr/share/
-usr/share/cgdb/
-usr/share/cgdb/cgdb.txt
-usr/share/info/
-usr/share/info/cgdb.info.gz

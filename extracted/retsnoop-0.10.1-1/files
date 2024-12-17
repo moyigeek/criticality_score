@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/retsnoop
-usr/share/
-usr/share/licenses/
-usr/share/licenses/retsnoop/
-usr/share/licenses/retsnoop/LICENSE

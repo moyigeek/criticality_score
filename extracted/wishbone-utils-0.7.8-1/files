@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/wishbone-tool
-usr/share/
-usr/share/licenses/
-usr/share/licenses/wishbone-utils/
-usr/share/licenses/wishbone-utils/LICENSE

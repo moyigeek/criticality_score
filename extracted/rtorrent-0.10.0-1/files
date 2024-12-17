@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/rtorrent
-usr/share/
-usr/share/doc/
-usr/share/doc/rtorrent/
-usr/share/doc/rtorrent/rtorrent.rc

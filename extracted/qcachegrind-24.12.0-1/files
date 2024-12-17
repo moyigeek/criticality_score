@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/qcachegrind
-usr/share/
-usr/share/applications/
-usr/share/applications/qcachegrind.desktop

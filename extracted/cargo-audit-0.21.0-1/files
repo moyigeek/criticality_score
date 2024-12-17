@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/cargo-audit
-usr/share/
-usr/share/licenses/
-usr/share/licenses/cargo-audit/
-usr/share/licenses/cargo-audit/LICENSE-MIT

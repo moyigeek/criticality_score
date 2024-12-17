@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/lib32/
-usr/lib32/libndp.so
-usr/lib32/libndp.so.0
-usr/lib32/libndp.so.0.3.0
-usr/lib32/pkgconfig/
-usr/lib32/pkgconfig/libndp.pc

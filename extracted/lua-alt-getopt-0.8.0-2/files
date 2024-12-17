@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/share/
-usr/share/licenses/
-usr/share/licenses/lua-alt-getopt/
-usr/share/licenses/lua-alt-getopt/LICENSE
-usr/share/lua/
-usr/share/lua/5.4/
-usr/share/lua/5.4/alt_getopt.lua

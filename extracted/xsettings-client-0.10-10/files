@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/include/
-usr/include/xsettings-client.h
-usr/include/xsettings-common.h
-usr/lib/
-usr/lib/libXsettings-client.so
-usr/lib/libXsettings-client.so.0
-usr/lib/libXsettings-client.so.0.0.0

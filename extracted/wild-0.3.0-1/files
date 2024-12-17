@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/wild
-usr/share/
-usr/share/licenses/
-usr/share/licenses/wild/
-usr/share/licenses/wild/LICENSE-APACHE
-usr/share/licenses/wild/LICENSE-MIT

@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/include/
-usr/include/mustache.hpp
-usr/share/
-usr/share/licenses/
-usr/share/licenses/mustache/
-usr/share/licenses/mustache/LICENSE

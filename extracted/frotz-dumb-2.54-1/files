@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/dfrotz
-usr/share/
-usr/share/man/
-usr/share/man/man6/
-usr/share/man/man6/dfrotz.6.gz

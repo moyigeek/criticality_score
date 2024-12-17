@@ -1,6 +1,0 @@
-%FILES%
-usr/
-usr/share/
-usr/share/dotnet/
-usr/share/dotnet/source-built-artifacts/
-usr/share/dotnet/source-built-artifacts/Private.SourceBuilt.Artifacts.7.0.120.arch-x64.tar.gz

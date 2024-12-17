@@ -1,6 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/virtualbox/
-usr/lib/virtualbox/additions/
-usr/lib/virtualbox/additions/VBoxGuestAdditions.iso

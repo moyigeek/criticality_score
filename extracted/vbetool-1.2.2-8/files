@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/vbetool
-usr/share/
-usr/share/man/
-usr/share/man/man1/
-usr/share/man/man1/vbetool.1.gz

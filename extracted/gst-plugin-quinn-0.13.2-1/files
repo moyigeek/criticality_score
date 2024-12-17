@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/gstreamer-1.0/
-usr/lib/gstreamer-1.0/libgstquinn.so
-usr/lib/pkgconfig/
-usr/lib/pkgconfig/gstquinn.pc

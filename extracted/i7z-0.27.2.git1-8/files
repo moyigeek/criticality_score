@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/i7z
-usr/bin/i7z-gui
-usr/share/
-usr/share/man/
-usr/share/man/man1/
-usr/share/man/man1/i7z.1.gz

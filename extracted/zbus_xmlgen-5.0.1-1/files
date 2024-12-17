@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/zbus-xmlgen
-usr/share/
-usr/share/licenses/
-usr/share/licenses/zbus_xmlgen/
-usr/share/licenses/zbus_xmlgen/MIT.txt

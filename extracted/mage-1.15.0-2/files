@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/mage
-usr/share/
-usr/share/licenses/
-usr/share/licenses/mage/
-usr/share/licenses/mage/LICENSE

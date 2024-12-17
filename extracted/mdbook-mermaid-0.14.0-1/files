@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/mdbook-mermaid
-usr/share/
-usr/share/licenses/
-usr/share/licenses/mdbook-mermaid/
-usr/share/licenses/mdbook-mermaid/LICENSE
-usr/share/licenses/mdbook-mermaid/mermaid.LICENSE.txt

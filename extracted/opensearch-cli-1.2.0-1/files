@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/opensearch-cli
-usr/share/
-usr/share/licenses/
-usr/share/licenses/opensearch-cli/
-usr/share/licenses/opensearch-cli/LICENSE.txt

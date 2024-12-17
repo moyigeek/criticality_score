@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/include/
-usr/include/st.h
-usr/lib/
-usr/lib/libst.so
-usr/lib/libst.so.1
-usr/lib/libst.so.1.9

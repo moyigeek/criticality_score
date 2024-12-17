@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/marble-qt
-usr/share/
-usr/share/applications/
-usr/share/applications/org.kde.marble-qt.desktop

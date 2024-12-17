@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/lib32/
-usr/lib32/liblz4.so
-usr/lib32/liblz4.so.1
-usr/lib32/liblz4.so.1.10.0
-usr/lib32/pkgconfig/
-usr/lib32/pkgconfig/liblz4.pc

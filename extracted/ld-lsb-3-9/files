@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/ld-lsb-x86-64.so.2
-usr/lib/ld-lsb-x86-64.so.3
-usr/lib/ld-lsb.so.2
-usr/lib/ld-lsb.so.3

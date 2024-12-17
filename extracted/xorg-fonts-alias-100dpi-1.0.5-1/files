@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/share/
-usr/share/fonts/
-usr/share/fonts/100dpi/
-usr/share/fonts/100dpi/fonts.alias
-usr/share/licenses/
-usr/share/licenses/xorg-fonts-alias-100dpi/
-usr/share/licenses/xorg-fonts-alias-100dpi/COPYING

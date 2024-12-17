@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/gstreamer-1.0/
-usr/lib/gstreamer-1.0/libgstjson.so
-usr/lib/pkgconfig/
-usr/lib/pkgconfig/gstjson.pc

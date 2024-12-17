@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/deepin-menu
-usr/share/
-usr/share/dbus-1/
-usr/share/dbus-1/services/
-usr/share/dbus-1/services/com.deepin.menu.service

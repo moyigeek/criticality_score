@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/workerd
-usr/share/
-usr/share/doc/
-usr/share/doc/workerd/
-usr/share/doc/workerd/README.md

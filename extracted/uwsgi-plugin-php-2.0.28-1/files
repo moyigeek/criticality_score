@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/uwsgi/
-usr/lib/uwsgi/php_plugin.so
-usr/share/
-usr/share/licenses/
-usr/share/licenses/uwsgi-plugin-php/
-usr/share/licenses/uwsgi-plugin-php/LICENSE

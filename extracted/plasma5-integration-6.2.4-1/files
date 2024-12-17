@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/qt/
-usr/lib/qt/plugins/
-usr/lib/qt/plugins/platformthemes/
-usr/lib/qt/plugins/platformthemes/KDEPlasmaPlatformTheme5.so

@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/gtk2fontsel
-usr/share/
-usr/share/applications/
-usr/share/applications/gtk2fontsel.desktop

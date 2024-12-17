@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/lwtrace
-usr/include/
-usr/include/libwlocate.h
-usr/lib/
-usr/lib/libwlocate.so

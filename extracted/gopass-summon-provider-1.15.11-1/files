@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/gopass-summon-provider
-usr/share/
-usr/share/licenses/
-usr/share/licenses/gopass-summon-provider/
-usr/share/licenses/gopass-summon-provider/LICENSE

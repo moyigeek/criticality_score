@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/lv2/
-usr/lib/lv2/VASTvaporizer2.lv2/
-usr/lib/lv2/VASTvaporizer2.lv2/dsp.ttl
-usr/lib/lv2/VASTvaporizer2.lv2/libVASTvaporizer2.so
-usr/lib/lv2/VASTvaporizer2.lv2/manifest.ttl
-usr/lib/lv2/VASTvaporizer2.lv2/ui.ttl

@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/tree-sitter
-usr/share/
-usr/share/licenses/
-usr/share/licenses/tree-sitter-cli/
-usr/share/licenses/tree-sitter-cli/LICENSE

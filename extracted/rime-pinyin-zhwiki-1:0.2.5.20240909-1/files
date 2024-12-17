@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/share/
-usr/share/licenses/
-usr/share/licenses/rime-pinyin-zhwiki/
-usr/share/licenses/rime-pinyin-zhwiki/fdl-1.3.txt
-usr/share/rime-data/
-usr/share/rime-data/zhwiki.dict.yaml

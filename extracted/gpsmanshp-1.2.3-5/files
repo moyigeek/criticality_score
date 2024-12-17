@@ -1,6 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/gpsmanshp/
-usr/lib/gpsmanshp/gpsmanshp.so
-usr/lib/gpsmanshp/pkgIndex.tcl

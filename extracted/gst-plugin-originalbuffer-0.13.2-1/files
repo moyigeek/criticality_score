@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/gstreamer-1.0/
-usr/lib/gstreamer-1.0/libgstoriginalbuffer.so
-usr/lib/pkgconfig/
-usr/lib/pkgconfig/gstoriginalbuffer.pc

@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/dlv
-usr/share/
-usr/share/licenses/
-usr/share/licenses/delve/
-usr/share/licenses/delve/LICENSE

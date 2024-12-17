@@ -1,5 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/pacman-bintrans-monitor
-usr/bin/pacman-bintrans-sign

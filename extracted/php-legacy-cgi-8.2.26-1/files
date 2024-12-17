@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/php-cgi-legacy
-usr/share/
-usr/share/man/
-usr/share/man/man1/
-usr/share/man/man1/php-cgi-legacy.1.gz

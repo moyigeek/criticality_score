@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/pulseaudio/
-usr/lib/pulseaudio/modules/
-usr/lib/pulseaudio/modules/module-jack-sink.so
-usr/lib/pulseaudio/modules/module-jack-source.so
-usr/lib/pulseaudio/modules/module-jackdbus-detect.so

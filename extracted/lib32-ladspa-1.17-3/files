@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/lib32/
-usr/lib32/ladspa/
-usr/lib32/ladspa/amp.so
-usr/lib32/ladspa/delay.so
-usr/lib32/ladspa/filter.so
-usr/lib32/ladspa/noise.so
-usr/lib32/ladspa/sine.so

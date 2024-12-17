@@ -1,5 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/nix/
-usr/lib/nix/busybox

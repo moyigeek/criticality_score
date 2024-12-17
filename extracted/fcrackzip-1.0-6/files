@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/fcrackzip
-usr/bin/fzipinfo
-usr/share/
-usr/share/man/
-usr/share/man/man1/
-usr/share/man/man1/fcrackzip.1.gz

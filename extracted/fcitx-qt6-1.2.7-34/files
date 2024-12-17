@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/qt6/
-usr/lib/qt6/plugins/
-usr/lib/qt6/plugins/platforminputcontexts/
-usr/lib/qt6/plugins/platforminputcontexts/libfcitxplatforminputcontextplugin-qt6.so

@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/libretro/
-usr/lib/libretro/snes9x_libretro.so
-usr/share/
-usr/share/licenses/
-usr/share/licenses/libretro-snes9x/
-usr/share/licenses/libretro-snes9x/LICENSE

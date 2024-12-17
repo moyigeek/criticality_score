@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/libvirt/
-usr/lib/libvirt/storage-backend/
-usr/lib/libvirt/storage-backend/libvirt_storage_backend_gluster.so
-usr/lib/libvirt/storage-file/
-usr/lib/libvirt/storage-file/libvirt_storage_file_gluster.so

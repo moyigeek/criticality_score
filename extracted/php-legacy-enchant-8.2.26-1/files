@@ -1,6 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/php-legacy/
-usr/lib/php-legacy/modules/
-usr/lib/php-legacy/modules/enchant.so

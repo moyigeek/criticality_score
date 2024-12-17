@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/watchbind
-usr/share/
-usr/share/doc/
-usr/share/doc/watchbind/
-usr/share/doc/watchbind/README.md

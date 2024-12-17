@@ -1,6 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/netbrake
-usr/lib/
-usr/lib/libnetbrake.so.0.1

@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/kubectl-ingress_nginx
-usr/share/
-usr/share/doc/
-usr/share/doc/kubectl-ingress-nginx/
-usr/share/doc/kubectl-ingress-nginx/kubectl-plugin.md

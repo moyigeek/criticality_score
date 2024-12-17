@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/share/
-usr/share/licenses/
-usr/share/licenses/lua53-fifo/
-usr/share/licenses/lua53-fifo/LICENSE
-usr/share/lua/
-usr/share/lua/5.3/
-usr/share/lua/5.3/fifo.lua

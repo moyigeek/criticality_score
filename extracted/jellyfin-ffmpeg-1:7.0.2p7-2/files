@@ -1,6 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/jellyfin-ffmpeg/
-usr/lib/jellyfin-ffmpeg/ffmpeg
-usr/lib/jellyfin-ffmpeg/ffprobe

@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/blisp
-usr/share/
-usr/share/licenses/
-usr/share/licenses/blisp/
-usr/share/licenses/blisp/LICENSE

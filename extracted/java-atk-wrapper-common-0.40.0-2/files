@@ -1,7 +1,0 @@
-%FILES%
-etc/
-etc/java-openjdk/
-etc/java-openjdk/accessibility.properties
-usr/
-usr/lib/
-usr/lib/libatk-wrapper.so

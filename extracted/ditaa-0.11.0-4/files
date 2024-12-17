@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/ditaa
-usr/share/
-usr/share/java/
-usr/share/java/ditaa/
-usr/share/java/ditaa/ditaa-0.11.jar

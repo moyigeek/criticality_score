@@ -1,6 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/pulseaudio/
-usr/lib/pulseaudio/modules/
-usr/lib/pulseaudio/modules/module-lirc.so

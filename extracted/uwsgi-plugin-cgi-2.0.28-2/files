@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/uwsgi/
-usr/lib/uwsgi/cgi_plugin.so
-usr/share/
-usr/share/licenses/
-usr/share/licenses/uwsgi-plugin-cgi/
-usr/share/licenses/uwsgi-plugin-cgi/LICENSE

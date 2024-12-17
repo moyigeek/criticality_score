@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/lib32/
-usr/lib32/libnspr4.so
-usr/lib32/libplc4.so
-usr/lib32/libplds4.so
-usr/lib32/pkgconfig/
-usr/lib32/pkgconfig/mozilla-nspr.pc
-usr/lib32/pkgconfig/nspr.pc

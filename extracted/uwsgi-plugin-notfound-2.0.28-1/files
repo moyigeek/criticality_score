@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/uwsgi/
-usr/lib/uwsgi/notfound_plugin.so
-usr/share/
-usr/share/licenses/
-usr/share/licenses/uwsgi-plugin-notfound/
-usr/share/licenses/uwsgi-plugin-notfound/LICENSE

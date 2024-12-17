@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/gstreamer-1.0/
-usr/lib/gstreamer-1.0/libgstrsonvif.so
-usr/lib/pkgconfig/
-usr/lib/pkgconfig/gstrsonvif.pc

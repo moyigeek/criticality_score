@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/cgrep
-usr/share/
-usr/share/doc/
-usr/share/doc/cgrep/
-usr/share/doc/cgrep/LICENSE

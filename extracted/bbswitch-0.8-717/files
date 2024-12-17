@@ -1,7 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/modules/
-usr/lib/modules/6.12.4-arch1-1/
-usr/lib/modules/6.12.4-arch1-1/extramodules/
-usr/lib/modules/6.12.4-arch1-1/extramodules/bbswitch.ko.zst

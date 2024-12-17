@@ -1,6 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/colord-plugins/
-usr/lib/colord-plugins/libcolord_sensor_sane.so
-usr/lib/colord-sane

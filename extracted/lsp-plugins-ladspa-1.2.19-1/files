@@ -1,5 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/ladspa/
-usr/lib/ladspa/lsp-plugins-ladspa.so

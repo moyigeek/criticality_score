@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/cobalt
-usr/share/
-usr/share/licenses/
-usr/share/licenses/cobalt/
-usr/share/licenses/cobalt/LICENSE-MIT

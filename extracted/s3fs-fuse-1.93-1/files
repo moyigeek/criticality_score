@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/s3fs
-usr/share/
-usr/share/man/
-usr/share/man/man1/
-usr/share/man/man1/s3fs.1.gz

@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/bfbench
-usr/bin/tinypi
-usr/include/
-usr/include/libbf.h
-usr/lib/
-usr/lib/libbf.so

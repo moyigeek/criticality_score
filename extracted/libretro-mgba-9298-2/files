@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/libretro/
-usr/lib/libretro/mgba_libretro.so
-usr/share/
-usr/share/licenses/
-usr/share/licenses/libretro-mgba/
-usr/share/licenses/libretro-mgba/LICENSE

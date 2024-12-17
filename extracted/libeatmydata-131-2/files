@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/eatmydata
-usr/lib/
-usr/lib/libeatmydata.so
-usr/lib/libeatmydata/
-usr/lib/libeatmydata/eatmydata.sh

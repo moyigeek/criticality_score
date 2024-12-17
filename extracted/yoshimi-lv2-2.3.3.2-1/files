@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/lib/
-usr/lib/lv2/
-usr/lib/lv2/yoshimi.lv2/
-usr/lib/lv2/yoshimi.lv2/manifest.ttl
-usr/lib/lv2/yoshimi.lv2/yoshimi.ttl
-usr/lib/lv2/yoshimi.lv2/yoshimi_lv2.so

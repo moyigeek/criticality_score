@@ -1,8 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/retry
-usr/share/
-usr/share/man/
-usr/share/man/man1/
-usr/share/man/man1/retry.1.gz

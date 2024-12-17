@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/include/
-usr/include/pillowfight/
-usr/include/pillowfight/pillowfight.h
-usr/include/pillowfight/util.h
-usr/lib/
-usr/lib/libpillowfight.so
-usr/lib/libpillowfight.so.0

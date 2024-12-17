@@ -1,9 +1,0 @@
-%FILES%
-usr/
-usr/bin/
-usr/bin/ec
-usr/bin/editorconfig-checker
-usr/share/
-usr/share/licenses/
-usr/share/licenses/editorconfig-checker/
-usr/share/licenses/editorconfig-checker/LICENSE
