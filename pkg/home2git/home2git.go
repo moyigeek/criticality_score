@@ -1,13 +1,12 @@
 package home2git
 
 import (
-	"encoding/csv"
 	"fmt"
-	"os"
 	"net/http"
 	"time"
 	"io"
 	"strings"
+	"database/sql"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 )
@@ -15,8 +14,9 @@ import (
 var visitedLinks = make(map[string]bool)
 
 
-func Home2git(flagConfigPath string, outputCSV string, url string){
+func Home2git(flagConfigPath string, repolist []string, url string, batchSize int){
 	err := storage.InitializeDatabase(flagConfigPath)
+	db, err := storage.GetDatabaseConnection()
 	if err != nil {
 		fmt.Printf("Error initializing database: %v\n", err)
 		return
@@ -25,48 +25,32 @@ func Home2git(flagConfigPath string, outputCSV string, url string){
 		fmt.Println("Please provide a LLM URL.")
 		return
 	}
-	var PackageList [][]string
-	PackageList, _ = FetchAllLinks()
-
-	outFile, err := os.Create(outputCSV)
-	if err != nil {
-		fmt.Printf("Failed to create output file %s: %v\n", outputCSV, err)
-		return
-	}
-	defer outFile.Close()
-
-	writer := csv.NewWriter(outFile)
-
-	if err := writer.Write([]string{"PackageName", "Homepage", "GitHub Repository"}); err != nil {
-		fmt.Printf("Error writing header: %v\n", err)
-		return
-	}
-	writer.Flush()
-
-	for i := 0; i < len(PackageList); i++ {
-		homepageURL := PackageList[i][0]
-		packageName := PackageList[i][1]
-
-		htmlContent, err := DownloadHTML(homepageURL)
-		if err != nil {
-			continue
+	defer db.Close()
+	fmt.Println("Starting to process the links...")
+	resultMap := make(map[string]map[string]string)
+	PackageListMap, _ := FetchAllLinks(db, repolist)
+	for repo := range PackageListMap {
+		resultMap[repo] = make(map[string]string)
+		PackageList := PackageListMap[repo]
+		for i := 0; i < len(PackageList); i++ {
+			homepageURL := PackageList[i][1]
+			packageName := PackageList[i][0]
+			htmlContent, err := DownloadHTML(homepageURL)
+			if err != nil {
+				continue
+			}
+	
+			links, _ := FindLinksInHTML(homepageURL, htmlContent, 1)
+			githubURL := ProcessHomepage(packageName, links, homepageURL, url)
+			res := Check(githubURL)
+			if res == "" {
+				continue
+			}
+			resultMap[repo][packageName] = res
+			fmt.Println("repo:", repo, "packageName:", packageName, "res:", res)
 		}
-
-		links, _ := FindLinksInHTML(homepageURL, htmlContent, 1)
-		githubURL := ProcessHomepage(packageName, links, homepageURL, url)
-		res := Check(githubURL)
-		if res == "" {
-			continue
-		}
-
-		if err := writer.Write([]string{packageName, homepageURL, res}); err != nil {
-			fmt.Printf("Error writing row: %v\n", err)
-			continue
-		}
-		writer.Flush()
 	}
-
-	fmt.Println("Processing complete. Results saved to", outputCSV)
+	UpdateBatch(db, batchSize, resultMap)
 }
 func Check(githubURL string)string{
 	client := &http.Client{
@@ -84,42 +68,39 @@ func Check(githubURL string)string{
 	return ""
 }
 
-func FetchAllLinks() ([][]string, error) {
-	db, err := storage.GetDatabaseConnection()
-	rows, err := db.Query("SELECT package, homepage FROM gentoo_packages union select package, homepage from homebrew_packages union select package, homepage from nix_packages")
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	var links [][]string
-	for rows.Next() {
-		var packageName, link string
-		if err := rows.Scan(&packageName, &link); err != nil {
+func FetchAllLinks(db *sql.DB, repolist []string) (map[string][][]string, error) {
+	links := make(map[string][][]string)
+	var query string
+	for _, repo := range repolist {
+		query = fmt.Sprintf("SELECT package, homepage FROM %s_packages WHERE (git_link = '' or git_link = NULL) and homepage != ''", repo)
+		rows, err := db.Query(query)
+		if err != nil {
 			return nil, err
 		}
-		links = append(links, []string{link, packageName})
+		defer rows.Close()
+		for rows.Next() {
+			var packageName, link string
+			if err := rows.Scan(&packageName, &link); err != nil {
+				return nil, err
+			}
+			links[repo] = append(links[repo], []string{packageName, link})
+		}
 	}
-	fmt.Println("Fetched", len(links), "links")
 	return links, nil
 }
 
 func DownloadHTML(url string) (string, error) {
 	visitedLinks[url] = true
 
-	// 创建一个 http.Client 对象
 	client := &http.Client{}
 
-	// 创建一个 http.Request 对象
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		return "", err
 	}
 
-	// 设置 User-Agent
 	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36")
 
-	// 发送请求
 	resp, err := client.Do(req)
 	if err != nil {
 		return "", err
@@ -216,7 +197,7 @@ func FindGitRepository(homepageURL string, links []string, packageName string, a
 	} else {
 		prompt = fmt.Sprintf(PROMPT["home2git_nolink"], homepageURL)
 	}
-	fullResponse := InvokeModel(prompt, attempts, url)
+	fullResponse := InvokeModel(prompt, url)
 	if strings.Contains(fullResponse, "does not exist") {
 		if attempts < 3 {
 			return FindGitRepository(homepageURL, links, packageName, attempts+1, url)
@@ -236,4 +217,51 @@ func FindGitRepository(homepageURL string, links []string, packageName string, a
 func ProcessHomepage(packageName string, links []string, homepageURL string,url string) string {
 	githubURL := FindGitRepository(homepageURL, links, packageName, 3, url)
 	return githubURL
+}
+
+func UpdateBatch(db *sql.DB, batchSize int, resultMap map[string]map[string]string) error {
+    for repo, packages := range resultMap {
+        var updateList []struct {
+            PackageName string
+            GitLink     string
+        }
+
+        for packageName, gitLink := range packages {
+            updateList = append(updateList, struct {
+                PackageName string
+                GitLink     string
+            }{PackageName: packageName, GitLink: gitLink})
+        }
+
+        for i := 0; i < len(updateList); i += batchSize {
+            end := i + batchSize
+            if end > len(updateList) {
+                end = len(updateList)
+            }
+
+            query := "UPDATE " + repo + " SET git_link = CASE "
+            valueArgs := make([]interface{}, 0, 2*(end-i))
+
+            for idx, item := range updateList[i:end] {
+                query += fmt.Sprintf("WHEN package = $%d THEN $%d ", 2*idx+1, 2*idx+2)
+                valueArgs = append(valueArgs, item.PackageName, item.GitLink)
+            }
+
+            query += "END WHERE package IN ("
+            valueStrings := make([]string, 0, end-i)
+            for idx := range updateList[i:end] {
+                valueStrings = append(valueStrings, fmt.Sprintf("$%d", 2*idx+1))
+            }
+            query += strings.Join(valueStrings, ",") + ")"
+
+            valueArgs = append([]interface{}{repo}, valueArgs...)
+
+            _, err := db.Exec(query, valueArgs...)
+            if err != nil {
+                return fmt.Errorf("failed to execute batch update for repo %s: %v", repo, err)
+            }
+        }
+    }
+
+    return nil
 }
