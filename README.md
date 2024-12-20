@@ -44,6 +44,20 @@ docker compose exec app bash /gitlink.sh
 
 See [docs/](./docs/) for details
 
+## Public Data
+
+If you're interested in seeing a list of critical projects with their criticality
+score, we publish them in `csv` format.
+
+### CSV data
+
+The data is available on HUST mirror site and can be downloaded via [this link](https://mirrors.hust.edu.cn/core-oss/criticality_score_data/), which includes:
+
+- **[git_metrics_prod](https://mirrors.hust.edu.cn/core-oss/criticality_score_data/latest/git_metrics_prod.csv)**: The table contains important metrics and scores that are used to determine the criticality of various repositories. This table can help you assessment the criticality of repositories.
+- **[git_relationships](https://mirrors.hust.edu.cn/core-oss/criticality_score_data/latest/git_relationships.csv)**: The table contains information about dependencies between Git repositories, forming a graph that represents how different repositories are related to each other. This table is essential for tracking the relationships and dependencies between various repositories.
+
+
+
 ## Reference
 
 [1] <https://github.com/ossf/criticality_score>
