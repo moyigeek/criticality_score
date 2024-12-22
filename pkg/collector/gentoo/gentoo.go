@@ -219,7 +219,6 @@ func Gentoo(outputPath string) {
 	cmd := exec.Command("emerge", "--sync")
 	if err := cmd.Run(); err != nil {
 		fmt.Printf("Error executing emerge --sync: %v\n", err)
-		return
 	}
 
 	pkgInfoMap, err := FetchAndParseEbuildFiles(baseDirectory)

@@ -70,9 +70,23 @@ func Run(configPath string) {
 				projectType := getProjectTypeFromDB(link)
 				if projectType != "" {
 					latestVersion := getLatestVersion(owner, repo, projectType)
-					if latestVersion != "" {
-						queryDepsDev(link, projectType, repo, latestVersion)
+					var projectTypeList []string
+					var count int
+					if strings.Contains(projectType, " ") {
+						projectTypeList = strings.Split(projectType, " ")
+					}else {
+						projectTypeList = []string{projectType}
 					}
+					if latestVersion != "" {
+						for _, projectType := range projectTypeList {
+							count += queryDepsDev(link, projectType, repo, latestVersion)
+						}
+					}
+					err = updateDatabase(link, repo, count)
+						if err != nil {
+							fmt.Printf("Error updating database: %v\n", err)
+							return
+						}
 				}
 			}
 		}		
@@ -145,29 +159,24 @@ func getLatestVersion(owner, repo, projectType string) string {
 	return latestVersion
 }
 
-func queryDepsDev(link, projectType, projectName, version string) {
+func queryDepsDev(link, projectType, projectName, version string) int{
 	url := fmt.Sprintf("https://api.deps.dev/v3alpha/systems/%s/packages/%s/versions/%s:dependents", projectType, projectName, version)
 	resp, err := http.Get(url)
 	if err != nil {
 		fmt.Println("Error querying deps.dev:", err)
-		return
+		return 0
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
 		fmt.Println("Error: received non-200 response code")
-		return
+		return 0
 	}
 
 	var info DependentInfo
 	if err := json.NewDecoder(resp.Body).Decode(&info); err != nil {
 		fmt.Println("Error decoding response:", err)
-		return
+		return 0
 	}
-
-	err = updateDatabase(link, projectName, info.DependentCount)
-	if err != nil {
-		fmt.Printf("Error updating database: %v\n", err)
-		return
-	}
+	return info.DependentCount
 }

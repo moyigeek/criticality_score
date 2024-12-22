@@ -1,4 +1,4 @@
-package home2git
+package invoke_llm
 
 import (
 	"fmt"
@@ -7,6 +7,8 @@ import (
 	"io"
 	"strings"
 	"database/sql"
+	"encoding/csv"
+	"os"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 )
@@ -14,7 +16,7 @@ import (
 var visitedLinks = make(map[string]bool)
 
 
-func Home2git(flagConfigPath string, repolist []string, url string, batchSize int){
+func Home2git(flagConfigPath string, repolist []string, url string, batchSize int, outputCsv string){
 	err := storage.InitializeDatabase(flagConfigPath)
 	db, err := storage.GetDatabaseConnection()
 	if err != nil {
@@ -26,6 +28,14 @@ func Home2git(flagConfigPath string, repolist []string, url string, batchSize in
 		return
 	}
 	defer db.Close()
+	file, err := os.OpenFile(outputCsv, os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Printf("Error opening file: %v\n", err)
+		return
+	}
+	defer file.Close()
+	writer := csv.NewWriter(file)
+	defer writer.Flush()
 	fmt.Println("Starting to process the links...")
 	resultMap := make(map[string]map[string]string)
 	PackageListMap, _ := FetchAllLinks(db, repolist)
@@ -47,6 +57,10 @@ func Home2git(flagConfigPath string, repolist []string, url string, batchSize in
 				continue
 			}
 			resultMap[repo][packageName] = res
+			if err := writer.Write([]string{repo, packageName, res}); err != nil {
+				fmt.Println("Error writing to CSV:", err)
+			}
+			writer.Flush()
 			fmt.Println("repo:", repo, "packageName:", packageName, "res:", res)
 		}
 	}

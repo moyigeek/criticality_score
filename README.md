@@ -56,6 +56,17 @@ The data is available on HUST mirror site and can be downloaded via [this link](
 - **[git_metrics_prod](https://mirrors.hust.edu.cn/core-oss/criticality_score_data/latest/git_metrics_prod.csv)**: The table contains important metrics and scores that are used to determine the criticality of various repositories. This table can help you assessment the criticality of repositories.
 - **[git_relationships](https://mirrors.hust.edu.cn/core-oss/criticality_score_data/latest/git_relationships.csv)**: The table contains information about dependencies between Git repositories, forming a graph that represents how different repositories are related to each other. This table is essential for tracking the relationships and dependencies between various repositories.
 
+## Metrics description
+
+| **Metric**           | **Description**                                                             | **Reasoning**                                                                          |
+|-----------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| created_since         | The longer a project has existed, the more likely it is widely used or relied upon, representing maturity and stability. | Older projects tend to have a larger user base and more robust testing over time.     |
+| updated_since         | Projects not updated for a long time may no longer be maintained, reducing reliability and dependence.                 | Unmaintained projects are less likely to be secure or relevant for active use cases.  |
+| contributor_count     | A higher number of contributors indicates greater attention, community activity, and importance.                      | Diverse contributions demonstrate active engagement and widespread support.            |
+| org_count             | Contributions from multiple organizations indicate cross-organization dependencies and wide-ranging influence.         | Cross-organizational contributions highlight the project’s universal relevance.        |
+| commit_frequency      | Higher code change frequency shows project activity but may also indicate potential vulnerability risks.               | Active commits suggest responsiveness but may require monitoring for quality issues.   |
+| depsdev_count         | Reflects the number of dependencies on the project listed on the deps.dev platform, showing its importance in the development ecosystem. | Projects with more dependencies are critical to the development ecosystem.            |
+| deps_distro           | Indicates how widely the project is relied upon in different software distributions, showing its production use and stability. | Broad use in distributions highlights the project’s practical utility and reliability. |
 
 
 ## Reference

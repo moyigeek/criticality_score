@@ -1,4 +1,4 @@
-package home2git
+package invoke_llm
 
 import "regexp"
 

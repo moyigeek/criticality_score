@@ -1,4 +1,4 @@
-package home2git
+package invoke_llm
 import (
     "fmt"
     "database/sql"
@@ -10,6 +10,8 @@ import (
     "encoding/json"
     "log"
     "io/ioutil"
+    "encoding/csv"
+    "os"
 
     "github.com/HUSTSecLab/criticality_score/pkg/storage"
     "github.com/PuerkitoBio/goquery"
@@ -20,7 +22,7 @@ type RepoInfo struct {
 	Topics      []string `json:"topics"`
 }
 
-func IndustryID(flagConfigPath string, url string, batchSize int) {
+func IndustryID(flagConfigPath string, url string, batchSize int, outputCsv string) {
     err := storage.InitializeDatabase(flagConfigPath)
 	if err != nil {
 		fmt.Printf("Error initializing database: %v\n", err)
@@ -31,6 +33,13 @@ func IndustryID(flagConfigPath string, url string, batchSize int) {
         return
     }
     defer db.Close()
+    file, err := os.OpenFile(outputCsv, os.O_CREATE|os.O_WRONLY, 0644)
+    if err != nil {
+        fmt.Printf("Error opening file: %v\n", err)
+        return
+    }
+    defer file.Close()
+    writer := csv.NewWriter(file)
     gitlinks := fetchGitLink(db)
     GitHubToken := storage.GetGlobalConfig().GitHubToken
     gitIndustry := make(map[string]string)
@@ -45,6 +54,10 @@ func IndustryID(flagConfigPath string, url string, batchSize int) {
         }
         fullResponse := InvokeModel(prompt, url)
         gitIndustry[gitLink] = fullResponse
+        if err := writer.Write([]string{gitLink, fullResponse}); err != nil {
+            log.Fatal("Error writing to CSV:", err)
+        }
+        writer.Flush()
         log.Println("gitLink:", gitLink, "industry:", fullResponse)
     }
     err = UpdateIdxBatch(db, batchSize, gitIndustry)
