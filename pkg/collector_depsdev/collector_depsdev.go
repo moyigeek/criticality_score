@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strings"
 	"time"
+	"database/sql"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	_ "github.com/lib/pq" // Assuming PostgreSQL, adjust as needed
@@ -96,9 +97,8 @@ func Run(configPath string) {
 		fmt.Println("Error reading rows:", err)
 	}
 }
-
 func getProjectTypeFromDB(link string) string {
-	var projectType string
+	var projectType sql.NullString
 	db, err := storage.GetDatabaseConnection()
 	if err != nil {
 		fmt.Println("Error initializing database:", err)
@@ -111,7 +111,10 @@ func getProjectTypeFromDB(link string) string {
 		return ""
 	}
 
-	return projectType
+	if projectType.Valid {
+		return projectType.String
+	}
+	return ""
 }
 
 type VersionInfo struct {

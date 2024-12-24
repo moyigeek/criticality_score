@@ -22,24 +22,25 @@ func TestCalculateScore(t *testing.T) {
 	}
 
 	defer db.Close()
+	CalculaterepoCount(db)
 	var packageScore = make(map[string]LinkScore)
 	links := []string{
-		"https://github.com/WangYves/Tinyblog.git",
-		"https://github.com/ccoenraets/belgian-beer-explorer-ionic.git",
+		"https://github.com/gcc-mirror/gcc.git",
 	}
 	for _, link := range links{
 		linkCount := make(map[string]map[string]int)
 		for repo := range PackageList{
 			linkCount[repo] = FetchdLinkCount(repo, db)
 		}
-		CalculateDepsdistro(link, linkCount)
+		fmt.Println(linkCount["debian_packages"]["https://github.com/gcc-mirror/gcc.git"])
+		distro_scores := CalculateDepsdistro(link, linkCount)
 		data, err := FetchProjectData(db, link)
 		if err != nil {
 			log.Printf("Failed to fetch project data for %s: %v", link, err)
 			return
 		}
-		score := CalculateScore(*data, 0) * 100
-		packageScore[link] = LinkScore{Distro_scores: 0.0, Score: score}
+		score := CalculateScore(*data, distro_scores) * 100
+		packageScore[link] = LinkScore{Distro_scores: distro_scores, Score: score}
 	}
-	UpdateScore(db, packageScore, 1000)
+	fmt.Println(packageScore)
 }

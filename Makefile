@@ -14,7 +14,7 @@ all: build
 
 # Build the binaries
 build: build_show_distpkg_deps build_enumerate_github build_show_depsdev_deps \
-	build_invoke_llm build_gitmetricsync build_githubmetrics \
+	build_checkvalid build_invoke_llm build_gitmetricsync build_githubmetrics \
 	build_gen_scores build_package_calculator build_pkgdep2git update_git_metrics \
 	apiserver
 
@@ -48,6 +48,9 @@ update_git_metrics:
 build_pkgdep2git:
 	cd $(CURDIR) && $(GOBUILD) -o $(BIN_DIR)/pkgdep2git github.com/HUSTSecLab/criticality_score/cmd/pkgdep2git
 
+build_checkvalid:
+	cd $(CURDIR) && $(GOBUILD) -o $(BIN_DIR)/checkvalid github.com/HUSTSecLab/criticality_score/cmd/checkvalid
+
 apiserver:
 	cd $(CURDIR) && $(GOBUILD) -o $(BIN_DIR)/apiserver github.com/HUSTSecLab/criticality_score/cmd/apiserver
 
@@ -67,5 +70,5 @@ test:
 .PHONY: all build build_show_distpkg_deps build_enumerate_github \
 	build_show_depsdev_deps build_invoke_llm build_gitmetricsync \
 	build_githubmetrics build_gen_scores build_package_calculator \
-	update_git_metrics build_pkgdep2git apiserver \
+	build_checkvalid update_git_metrics build_pkgdep2git apiserver \
 	fmt clean test #run
