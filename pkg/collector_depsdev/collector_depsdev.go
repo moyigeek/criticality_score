@@ -7,7 +7,9 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"strconv"
 	"time"
+	"log"
 	"database/sql"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
@@ -20,17 +22,51 @@ type DependentInfo struct {
 	IndirectDependentCount int `json:"indirectDependentCount"`
 }
 
-func updateDatabase(link, projectName string, dependentCount int) error {
-	db, err := storage.GetDatabaseConnection()
-	if err != nil {
-		return err
+
+func updateDatabase(db *sql.DB, linkDepCountList map[string]int, batchSize int) error {
+	var linkDepList [][]string
+	for link, count := range linkDepCountList {
+		linkDepList = append(linkDepList, []string{link, fmt.Sprintf("%d", count)})
 	}
-	defer db.Close()
-	_, err = db.Exec("UPDATE git_metrics SET depsdev_count = $1 WHERE git_link = $2", dependentCount, link)
-	return err
+	for i := 0; i < len(linkDepList); i += batchSize {
+		end := i + batchSize
+		if end > len(linkDepList) {
+			end = len(linkDepList)
+		}
+		batch := linkDepList[i:end]
+		query := "UPDATE git_metrics SET depsdev_count = CASE git_link"
+		args := []interface{}{}
+		for j, link := range batch {
+			count, _ := strconv.Atoi(link[1]) 
+			query += fmt.Sprintf(" WHEN $%d THEN $%d::Integer", j*2+1, j*2+2)
+			args = append(args, link[0], count)
+		}
+		query += " END WHERE git_link IN ("
+		for j := 0; j < len(batch); j++ {
+			if j > 0 {
+				query += ", "
+			}
+			query += fmt.Sprintf("$%d", j*2+1)
+		}
+		query += ")"
+		
+		result, err := db.Exec(query, args...)
+		if err != nil {
+			log.Printf("Error executing query: %v", err)
+			return fmt.Errorf("failed to update batch: %w", err)
+		}
+
+		rowsAffected, err := result.RowsAffected()
+		if err != nil {
+			log.Printf("Error retrieving rows affected: %v", err)
+			return fmt.Errorf("failed to retrieve affected rows: %w", err)
+		}
+		log.Printf("Batch [%d - %d]: %d rows updated", i, end, rowsAffected)
+	}
+	return nil
 }
 
-func Run(configPath string) {
+func Run(configPath string, batchSize int) {
 	db, err := storage.GetDatabaseConnection()
 	if err != nil {
 		fmt.Errorf("Error initializing database: %v\n", err)
@@ -38,7 +74,6 @@ func Run(configPath string) {
 	}
 	defer db.Close()
 
-	// Query git_links from git_metrics table
 	rows, err := db.Query("SELECT git_link FROM git_metrics")
 	if err != nil {
 		fmt.Println("Error querying git_metrics:", err)
@@ -55,44 +90,39 @@ func Run(configPath string) {
 		}
 		gitLinks = append(gitLinks, gitLink)
 	}
-	// Process each git link
+	linkDepCountList := make(map[string]int)
 	for _, link := range gitLinks {
-		if strings.HasPrefix(link, "https://github.com/") || strings.HasPrefix(link, "https://gitlab.com/") || strings.HasPrefix(link, "https://bitbucket.org/") {
-			parts := strings.Split(link, "/")
-			if len(parts) >= 5 {
-				owner := parts[3]
-				repo := parts[4]
-		
-				// Remove the .git suffix if it exists
-				if strings.HasSuffix(repo, ".git") {
-					repo = strings.TrimSuffix(repo, ".git")
-				}
-		
-				projectType := getProjectTypeFromDB(link)
-				if projectType != "" {
-					latestVersion := getLatestVersion(owner, repo, projectType)
-					var projectTypeList []string
-					var count int
-					if strings.Contains(projectType, " ") {
-						projectTypeList = strings.Split(projectType, " ")
-					}else {
-						projectTypeList = []string{projectType}
-					}
-					if latestVersion != "" {
-						for _, projectType := range projectTypeList {
-							count += queryDepsDev(link, projectType, repo, latestVersion)
-						}
-					}
-					err = updateDatabase(link, repo, count)
-						if err != nil {
-							fmt.Printf("Error updating database: %v\n", err)
-							return
-						}
+		var repo string
+		if strings.HasSuffix(link, ".git") {
+			result := strings.Split(strings.TrimSuffix(link, ".git"), "/")
+			repo = result[len(result)-1]
+		} else {
+			result := strings.Split(link, "/")
+			repo = result[len(result)-1]
+		}
+		projectType := getProjectTypeFromDB(link)
+		if projectType != "" {
+			var projectTypeList []string
+			var count int
+			if strings.Contains(projectType, " ") {
+				projectTypeList = strings.Fields(projectType)
+			}else {
+				projectTypeList = []string{projectType}
+			}
+			for _, types := range projectTypeList {
+				latestVersion := getLatestVersion(repo, types)
+				if latestVersion != "" {
+					count += queryDepsDev(link, types, repo, latestVersion)
 				}
 			}
-		}		
+			linkDepCountList[link] = count
+		}
 	}
-
+	err = updateDatabase(db, linkDepCountList, batchSize)
+	if err != nil {
+		fmt.Printf("Error updating database: %v\n", err)
+		return
+	}
 	if err := rows.Err(); err != nil {
 		fmt.Println("Error reading rows:", err)
 	}
@@ -128,13 +158,11 @@ type PackageInfo struct {
 	Versions []VersionInfo `json:"versions"`
 }
 
-func getLatestVersion(owner, repo, projectType string) string {
+func getLatestVersion(repo, projectType string) string {
 	ctx := context.Background()
 
-	// 构造请求URL
 	url := fmt.Sprintf("https://api.deps.dev/v3alpha/systems/%s/packages/%s", projectType, repo)
 
-	// 发起HTTP GET请求
 	req, _ := http.NewRequest("GET", url, nil)
 	client := &http.Client{}
 	resp, err := client.Do(req.WithContext(ctx))
@@ -144,12 +172,10 @@ func getLatestVersion(owner, repo, projectType string) string {
 	}
 	defer resp.Body.Close()
 
-	// 解析响应体
 	body, _ := io.ReadAll(resp.Body)
 	var result PackageInfo
 	json.Unmarshal(body, &result)
 
-	// 寻找最新版本
 	var latestVersion string
 	var latestDate time.Time
 	for _, version := range result.Versions {
