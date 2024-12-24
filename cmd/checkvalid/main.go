@@ -9,6 +9,7 @@ import (
 
 var flagConfigPath = flag.String("config", "config.json", "path to the config file")
 var outputFile = flag.String("output", "output.csv", "path to the output file")
+var checkCloneValid = flag.Bool("checkCloneValid", false, "check clone valid")
 func main() {
 	flag.Parse()
 	storage.InitializeDatabase(*flagConfigPath)
@@ -18,7 +19,7 @@ func main() {
 	}
 
 	defer db.Close()
-	invalidLinks := checkvalid.CheckVaild(db)
+	invalidLinks := checkvalid.CheckVaild(db, *checkCloneValid)
 	checkvalid.WriteCsv(invalidLinks, *outputFile)
 	log.Println("checkvalid finished")
 }

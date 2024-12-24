@@ -5,6 +5,7 @@ import (
 	"os"
 	"time"
 	"strings"
+	"os/exec"
 )
 
 type Metrics struct {
@@ -13,7 +14,7 @@ type Metrics struct {
 	Score        	 float64
 }
 
-var repoList = []string{"debain_packages", "arch_packages", "gentoo_packages", "nix_packages", "homebrew_packages"}
+var repoList = []string{"debian_packages", "arch_packages", "gentoo_packages", "nix_packages", "homebrew_packages"}
 
 func fetchDistroGitlink(gitlink *sql.DB, repo string)[]string{
 	query := "SELECT git_link FROM " + repo
@@ -36,22 +37,22 @@ func fetchDistroGitlink(gitlink *sql.DB, repo string)[]string{
 	return gitLinks
 }
 
-func checkDistroValid(gitlink *sql.DB, repo string)[]string{
+func checkDistroValid(gitlink *sql.DB, repo string)[][]string{
 	gitLinks := fetchDistroGitlink(gitlink, repo)
-	var invalidLinks []string
+	var invalidLinks [][]string
 	for _, link := range gitLinks {
-		if link == "" || link == "NA" || link == "NAN" {
+		if link == "" || link == "NA" || link == "NaN" {
 			continue
 		}
 		if !strings.HasSuffix(link, ".git") {
-			invalidLinks = append(invalidLinks, link)
+			invalidLinks = append(invalidLinks, []string{link, "missing .git suffix"})
 		}
 	}
 	return invalidLinks
 }
 
 func fetchMetrics(db *sql.DB)map[string]Metrics{
-	query := "SELECT git_link, created_since, updated_since, score FROM git_metrics"
+	query := "SELECT git_link, created_since, updated_since, scores FROM git_metrics"
 	rows, err := db.Query(query)
 	if err != nil {
 		panic(err)
@@ -60,51 +61,98 @@ func fetchMetrics(db *sql.DB)map[string]Metrics{
 	MetricsList := make(map[string]Metrics)
 	for rows.Next() {
 		var gitLink string
-		var createdSince time.Time
-		var updatedSince time.Time
+		var createdSince sql.NullTime
+		var updatedSince sql.NullTime
+		var createdSinceres time.Time
+		var updatedSinceres time.Time
 		var score float64
 		err := rows.Scan(&gitLink, &createdSince, &updatedSince, &score)
 		if err != nil {
 			panic(err)
 		}
-		MetricsList[gitLink] = Metrics{CreatedSince: createdSince, UpdatedSince: updatedSince, Score: score}
+		if createdSince.Valid {
+			createdSinceres = createdSince.Time
+		}
+		if updatedSince.Valid {
+			updatedSinceres = updatedSince.Time
+		}
+		if !createdSince.Valid {
+			createdSinceres = time.Time{}
+		}
+		if !updatedSince.Valid {
+			updatedSinceres = time.Time{}
+		}
+		MetricsList[gitLink] = Metrics{CreatedSince: createdSinceres, UpdatedSince: updatedSinceres, Score: score}
 	}
 	return MetricsList
 }
 
-func checkMetricsValid(db *sql.DB)[]string{
+func checkMetricsValid(db *sql.DB)[][]string{
 	MetricsList := fetchMetrics(db)
-	var invalidLinks []string
+	var invalidLinks [][]string
 	for link, metrics := range MetricsList {
 		duration := metrics.CreatedSince.Sub(metrics.UpdatedSince)
 		if duration > 0 {
-            invalidLinks = append(invalidLinks, link)
+            invalidLinks = append(invalidLinks, []string{link, "created_since is after updated_since"})
         }
 		if metrics.Score < 0 {
-			invalidLinks = append(invalidLinks, link)
+			invalidLinks = append(invalidLinks, []string{link, "score is less than 0"})
 		}
 	}
 	return invalidLinks
 }
 
-func CheckVaild(db *sql.DB)[]string{
-	var invalidLinks []string
+func checkCloneValid(db *sql.DB)[][]string{
+	query := "SELECT git_link FROM git_metrics WHERE clone_valid = false"
+	rows, err := db.Query(query)
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+	var gitLinks []string
+	for rows.Next() {
+		var gitLink string
+		err := rows.Scan(&gitLink)
+		if err != nil {
+			panic(err)
+		}
+		gitLinks = append(gitLinks, gitLink)
+	}
+	var invalidLinks [][]string
+	for _, link := range gitLinks {
+		cmd := exec.Command("git", "clone", "--depth=1", link, "/tmp/test_repo")
+		err := cmd.Run()
+		if err != nil {
+			invalidLinks = append(invalidLinks, []string{link, "failed to clone"})
+		}
+		os.RemoveAll("/tmp/test_repo")
+	}
+	return invalidLinks
+}
+
+func CheckVaild(db *sql.DB, checkCloneValidflag bool)[][]string{
+	var invalidLinks [][]string
 	for _, repo := range repoList {
 		invalidLinks = append(invalidLinks, checkDistroValid(db, repo)...)
 	}
 	invalidLinks = append(invalidLinks, checkMetricsValid(db)...)
+	if checkCloneValidflag {
+		invalidLinks = append(invalidLinks, checkCloneValid(db)...)
+	}
 	return invalidLinks
 }
 
-func WriteCsv(invalidLinks []string, outputFile string){
+func WriteCsv(invalidLinks [][]string, outputFile string){
 	file, err := os.Create(outputFile)
 	if err != nil {
 		panic(err)
 	}
 	defer file.Close()
 	writer := csv.NewWriter(file)
-	for _, link := range invalidLinks {
-		writer.Write([]string{link})
+	for _, value := range invalidLinks {
+		link := value[0]
+		reason := value[1]
+		writer.Write([]string{link, reason})
 		writer.Flush()
 	}
 }
