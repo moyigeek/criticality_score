@@ -67,7 +67,7 @@ enumerate_github.rec: github_updated.src
 	rm -f /tmp/github.txt
 
 ifneq ($(GITHUB_TOKEN),)
-	$(APP_BIN)/enumerate_github -config $(CFG_FILE) -min-stars 50 -out /tmp/github.txt -workers 20
+	$(APP_BIN)/enumerate_github -config $(CFG_FILE) -min-stars 30 -out /tmp/github.txt -workers 20
 else
 	echo "! GitHub token not set, skipping GitHub enumeration"
 endif
