@@ -1,6 +1,6 @@
 /*
 * @Date: 2023-11-11 22:44:26
- * @LastEditTime: 2024-11-29 17:25:50
+ * @LastEditTime: 2024-12-16 19:00:08
 * @Description: Just Clone
 */
 package main
@@ -41,7 +41,6 @@ func main() {
 
 		gopool.Go(func() {
 			defer wg.Done()
-			// fmt.Printf("[*] Collecting %s\n", url[0])
 			u := url.ParseURL(input[0])
 			_, err := collector.Collect(&u)
 			if err != nil {

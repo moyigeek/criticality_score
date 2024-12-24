@@ -1,7 +1,7 @@
 /*
  * @Author: 7erry
  * @Date: 2024-09-29 14:41:35
- * @LastEditTime: 2024-12-14 16:50:39
+ * @LastEditTime: 2024-12-24 20:52:32
  * @Description: Parse Git Repositories to collect necessary metrics
  */
 
@@ -10,6 +10,7 @@ package git
 import (
 	"fmt"
 	"path/filepath"
+	"sort"
 	"strings"
 	"time"
 
@@ -284,23 +285,23 @@ func GetURL(r *git.Repository) (string, error) {
 	return u, nil
 }
 
-func GetLanguages(filename string, l *map[string]int) {
+func GetLanguages(filename string, filesize int64, l *map[string]int64) {
 	v, ok := parser.LANGUAGE_FILENAMES[filename]
 	if ok {
-		(*l)[v] += 1
+		(*l)[v] += filesize
 	} else {
 		ex := filepath.Ext(filename)
 		v, ok = parser.LANGUAGE_EXTENSIONS[ex]
 		if ok {
-			(*l)[v] += 1
+			(*l)[v] += filesize
 		}
 	}
 }
 
-func GetEcosystem(filename string, e *map[string]int) {
+func GetEcosystem(filename string, filesize int64, e *map[string]int64) {
 	v, ok := parser.ECOSYSTEM_MAP[filename]
 	if ok {
-		(*e)[v] += 1
+		(*e)[v] += filesize
 	}
 }
 
@@ -317,6 +318,23 @@ func GetLicense(f *object.File) (string, error) {
 	license := cov.Match[0].ID
 
 	return license, nil
+}
+
+func getTopNKeys(m map[string]int64) []string {
+	keys := make([]string, 0, len(m))
+
+	for key := range m {
+		keys = append(keys, key)
+	}
+
+	sort.Slice(keys, func(i, j int) bool {
+		return m[keys[i]] > m[keys[j]]
+	})
+
+	if len(keys) > parser.TOP_N {
+		return keys[:parser.TOP_N]
+	}
+	return keys
 }
 
 func (repo *Repo) WalkLog(r *git.Repository) error {
@@ -406,14 +424,16 @@ func (repo *Repo) WalkRepo(r *git.Repository) error {
 		return err
 	}
 
-	languages := make(map[string]int, 0)
-	ecosystems := make(map[string]int, 0)
+	languages := make(map[string]int64, 0)
+	ecosystems := make(map[string]int64, 0)
 
 	fIter := tree.Files()
+
 	err = fIter.ForEach(func(f *object.File) error {
 		filename := filepath.Base(f.Name)
-		GetLanguages(filename, &languages)
-		GetEcosystem(filename, &ecosystems)
+		filesize := f.Size
+		GetLanguages(filename, filesize, &languages)
+		GetEcosystem(filename, filesize, &ecosystems)
 		if repo.License == parser.UNKNOWN_LICENSE {
 			if _, ok := parser.LICENSE_FILENAMES[filename]; ok {
 				license, err := GetLicense(f)
@@ -432,17 +452,13 @@ func (repo *Repo) WalkRepo(r *git.Repository) error {
 	}
 
 	l := ""
-	for k, v := range languages {
-		if v >= parser.LANGUAGE_THRESHOLD {
-			l += fmt.Sprintf("%s ", k)
-		}
+	for _, s := range getTopNKeys(languages) {
+		l += fmt.Sprintf("%s ", s)
 	}
 
 	e := ""
-	for k, v := range ecosystems {
-		if v >= parser.ECOSYSTEM_THRESHOLD {
-			e += fmt.Sprintf("%s ", k)
-		}
+	for _, s := range getTopNKeys(ecosystems) {
+		e += fmt.Sprintf("%s ", s)
 	}
 
 	if len(l) != 0 {

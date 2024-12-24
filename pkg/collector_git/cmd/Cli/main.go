@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-09-06 21:09:14
- * @LastEditTime: 2024-12-09 19:31:36
+ * @LastEditTime: 2024-12-16 18:58:31
  * @Description: The Cli for collector
  */
 package main
@@ -37,7 +37,7 @@ func main() {
 			for _, path := range paths {
 				gopool.Go(func() {
 					defer wg.Done()
-					logger.Infof("Collecting %s\n", path)
+					logger.Infof("Collecting %s", path)
 
 					r := &gogit.Repository{}
 					var err error
