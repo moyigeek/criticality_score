@@ -310,6 +310,10 @@ func GetLicense(f *object.File) (string, error) {
 		return "", err
 	}
 	cov := licensecheck.Scan([]byte(text))
+	if cov.Match == nil || len(cov.Match) == 0 {
+		return parser.UNKNOWN_LICENSE, nil
+	}
+
 	license := cov.Match[0].ID
 
 	return license, nil
