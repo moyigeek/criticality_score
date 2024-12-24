@@ -11,6 +11,7 @@ import (
 	"time"
 	"log"
 	"database/sql"
+	"sync"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	_ "github.com/lib/pq" // Assuming PostgreSQL, adjust as needed
@@ -66,7 +67,7 @@ func updateDatabase(db *sql.DB, linkDepCountList map[string]int, batchSize int) 
 	return nil
 }
 
-func Run(configPath string, batchSize int) {
+func Run(configPath string, batchSize int, workerPoolSize int) {
 	db, err := storage.GetDatabaseConnection()
 	if err != nil {
 		fmt.Errorf("Error initializing database: %v\n", err)
@@ -91,33 +92,46 @@ func Run(configPath string, batchSize int) {
 		gitLinks = append(gitLinks, gitLink)
 	}
 	linkDepCountList := make(map[string]int)
+	typeList := getProjectTypeFromDB(db)
+	var wg sync.WaitGroup
+	var mu sync.Mutex
+	semaphore := make(chan struct{}, workerPoolSize)
 	for _, link := range gitLinks {
-		var repo string
-		if strings.HasSuffix(link, ".git") {
-			result := strings.Split(strings.TrimSuffix(link, ".git"), "/")
-			repo = result[len(result)-1]
-		} else {
-			result := strings.Split(link, "/")
-			repo = result[len(result)-1]
-		}
-		projectType := getProjectTypeFromDB(link)
-		if projectType != "" {
-			var projectTypeList []string
-			var count int
-			if strings.Contains(projectType, " ") {
-				projectTypeList = strings.Fields(projectType)
-			}else {
-				projectTypeList = []string{projectType}
+		wg.Add(1)
+		semaphore <- struct{}{}
+		go func(link string) {
+			defer wg.Done()
+			defer func() { <-semaphore }()
+			var repo string
+			if strings.HasSuffix(link, ".git") {
+				result := strings.Split(strings.TrimSuffix(link, ".git"), "/")
+				repo = result[len(result)-1]
+			} else {
+				result := strings.Split(link, "/")
+				repo = result[len(result)-1]
 			}
-			for _, types := range projectTypeList {
-				latestVersion := getLatestVersion(repo, types)
-				if latestVersion != "" {
-					count += queryDepsDev(link, types, repo, latestVersion)
+			projectType := typeList[link]
+			if projectType != "" {
+				var projectTypeList []string
+				var count int
+				if strings.Contains(projectType, " ") {
+					projectTypeList = strings.Fields(projectType)
+				} else {
+					projectTypeList = []string{projectType}
 				}
+				for _, types := range projectTypeList {
+					latestVersion := getLatestVersion(repo, types)
+					if latestVersion != "" {
+						count += queryDepsDev(link, types, repo, latestVersion)
+					}
+				}
+				mu.Lock()
+				linkDepCountList[link] = count
+				mu.Unlock()
 			}
-			linkDepCountList[link] = count
-		}
+		}(link)
 	}
+	wg.Wait()
 	err = updateDatabase(db, linkDepCountList, batchSize)
 	if err != nil {
 		fmt.Printf("Error updating database: %v\n", err)
@@ -127,24 +141,22 @@ func Run(configPath string, batchSize int) {
 		fmt.Println("Error reading rows:", err)
 	}
 }
-func getProjectTypeFromDB(link string) string {
-	var projectType sql.NullString
-	db, err := storage.GetDatabaseConnection()
-	if err != nil {
-		fmt.Println("Error initializing database:", err)
-		return ""
-	}
-	defer db.Close()
-	err = db.QueryRow("SELECT ecosystem FROM git_metrics WHERE git_link = $1", link).Scan(&projectType)
+func getProjectTypeFromDB(db *sql.DB) map[string]string {
+	gitList := make(map[string]string)
+	rows, err := db.Query("SELECT git_link, ecosystem FROM git_metrics")
 	if err != nil {
 		fmt.Println("Error querying project type:", err)
-		return ""
+		return nil
 	}
-
-	if projectType.Valid {
-		return projectType.String
+	for rows.Next() {
+		var projectType sql.NullString
+		var gitLink string
+		rows.Scan(&gitLink, &projectType)
+		if projectType.Valid {
+			gitList[gitLink] = projectType.String
+		}
 	}
-	return ""
+	return gitList
 }
 
 type VersionInfo struct {

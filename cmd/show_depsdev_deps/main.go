@@ -9,10 +9,11 @@ import (
 
 var flagConfigPath = flag.String("config", "config.json", "path to the config file")
 var flagBatchSize = flag.Int("batch", 100, "batch size")
+var workerCount = flag.Int("workers", 10, "number of workers")
 
 func main() {
 	flag.Parse()
 	storage.InitializeDatabase(*flagConfigPath)
 
-	collector_depsdev.Run(*flagConfigPath, *flagBatchSize)
+	collector_depsdev.Run(*flagConfigPath, *flagBatchSize, *workerCount)
 }
