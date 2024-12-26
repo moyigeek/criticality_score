@@ -1,7 +1,7 @@
 /*
  * @Author: 7erry
  * @Date: 2024-09-29 14:41:35
- * @LastEditTime: 2024-12-14 16:30:24
+ * @LastEditTime: 2024-12-24 20:59:53
  * @Description: Config for Parser
  */
 
@@ -25,6 +25,7 @@ const (
 
 	LANGUAGE_THRESHOLD  int = 0
 	ECOSYSTEM_THRESHOLD int = 0
+	TOP_N               int = 5
 )
 
 var (
