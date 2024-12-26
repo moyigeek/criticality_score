@@ -25,7 +25,8 @@ type DepInfo struct {
 	Homepage    string
 	Description string
 	GitLink     string
-	DepCount    int // 新增的依赖计数字段
+	DepCount    int
+	PageRank    float64	
 }
 
 func storeDependenciesInDatabase(pkgName string, dependencies []DepInfo) error {
@@ -44,7 +45,6 @@ func storeDependenciesInDatabase(pkgName string, dependencies []DepInfo) error {
 	return nil
 }
 
-// isValidNixIdentifier checks if a string is a valid Nix identifier
 func isValidNixIdentifier(s string) bool {
 	if len(s) == 0 {
 		return false
@@ -364,6 +364,34 @@ func getAllDep(packages map[string][]string, pkgName string, visited map[string]
 	}
 	return deps
 }
+
+func calculatePageRank(packages map[DepInfo][]DepInfo, iterations int, dampingFactor float64) map[DepInfo]float64 {
+	ranks := make(map[DepInfo]float64)
+	numPackages := float64(len(packages))
+
+	for pkg := range packages {
+		ranks[pkg] = 1.0 / numPackages
+	}
+
+	for i := 0; i < iterations; i++ {
+		newRanks := make(map[DepInfo]float64)
+		for pkg := range packages {
+			newRanks[pkg] = (1 - dampingFactor) / numPackages
+		}
+
+		for pkg, deps := range packages {
+			contribution := dampingFactor * ranks[pkg] / float64(len(deps))
+			for _, dep := range deps {
+				newRanks[dep] += contribution
+			}
+		}
+
+		ranks = newRanks
+	}
+
+	return ranks
+}
+
 func contains(slice []string, item string) bool {
 	for _, s := range slice {
 		if s == item {
@@ -468,6 +496,12 @@ func Nix(workerCount int, batchSize int) {
     // }
 	fmt.Println("Nix package information retrieved successfully")
     countDependencies(packages)
+
+	pageRanks := calculatePageRank(packages, 20, 0.85)
+	
+	for pkg, _ := range packages{
+		pkg.PageRank = pageRanks[pkg]
+	}
 	
 	fmt.Println("Nix package information updated successfully")
 
@@ -528,17 +562,19 @@ func updateOrInsertBatch(db *sql.DB, batch []DepInfo) error {
 	defer tx.Rollback()
 
 	query := `
-		INSERT INTO nix_packages (package, version, homepage, description, depends_count)
-		VALUES ($1, $2, $3, $4, $5)
+		INSERT INTO nix_packages (package, version, homepage, description, depends_count, page_rank)
+		VALUES ($1, $2, $3, $4, $5, $6)
 		ON CONFLICT (package) DO UPDATE
 		SET version = EXCLUDED.version,
 			homepage = EXCLUDED.homepage,
 			description = EXCLUDED.description,
 			depends_count = EXCLUDED.depends_count
+			page_rank = EXCLUDED.page_rank
+		}
 	`
 
 	for _, pkg := range batch {
-		_, err := tx.Exec(query, pkg.Name, pkg.Version, pkg.Homepage, pkg.Description, pkg.DepCount)
+		_, err := tx.Exec(query, pkg.Name, pkg.Version, pkg.Homepage, pkg.Description, pkg.DepCount, pkg.PageRank)
 		if err != nil {
 			return fmt.Errorf("error inserting or updating package %s: %w", pkg.Name, err)
 		}

@@ -32,14 +32,14 @@ func updateOrInsertDatabase(pkgInfoMap map[string]DepInfo) error {
 		}
 
 		if !exists {
-			_, err := db.Exec("INSERT INTO arch_packages (package, depends_count, description, homepage, version) VALUES ($1, $2, $3, $4, $5)",
-				pkgName, pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgInfo.Version)
+			_, err := db.Exec("INSERT INTO arch_packages (package, depends_count, description, homepage, version, page_rank) VALUES ($1, $2, $3, $4, $5, $6)",
+				pkgName, pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgInfo.Version, pkgInfo.PageRank)
 			if err != nil {
 				return err
 			}
 		} else {
-			_, err := db.Exec("UPDATE arch_packages SET depends_count = $1, description = $2, homepage = $3, version = $4 WHERE package = $5",
-				pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgInfo.Version, pkgName)
+			_, err := db.Exec("UPDATE arch_packages SET depends_count = $1, description = $2, homepage = $3, version = $4, page_rank = $5 WHERE package = $6",
+				pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgInfo.Version, pkgInfo.PageRank, pkgName)
 			if err != nil {
 				return err
 			}
@@ -71,6 +71,7 @@ type DepInfo struct {
 	Description  string
 	Homepage     string
 	DependsCount int
+	PageRank     float64
 }
 
 func toDep(dep string, rawContent string) DepInfo {
@@ -270,6 +271,40 @@ func getAllDep(packages map[string]map[string]interface{}, pkgName string, deps 
 	}
 	return deps
 }
+func calculatePageRank(packages map[string]map[string]interface{}, iterations int, dampingFactor float64) map[string]float64 {
+	pageRank := make(map[string]float64)
+	outgoingLinks := make(map[string]int)
+
+	for pkgName, pkgInfo := range packages {
+		pageRank[pkgName] = 1.0 / float64(len(packages))
+		if depends, ok := pkgInfo["Depends"].([]DepInfo); ok {
+			outgoingLinks[pkgName] = len(depends)
+		} else {
+			outgoingLinks[pkgName] = 0
+		}
+	}
+
+	for i := 0; i < iterations; i++ {
+		newPageRank := make(map[string]float64)
+		for pkgName := range packages {
+			newPageRank[pkgName] = (1 - dampingFactor) / float64(len(packages))
+		}
+
+		for pkgName, pkgInfo := range packages {
+			if depends, ok := pkgInfo["Depends"].([]DepInfo); ok {
+				for _, dep := range depends {
+					if outgoingLinks[dep.Name] > 0 {
+						newPageRank[dep.Name] += dampingFactor * pageRank[pkgName] / float64(outgoingLinks[pkgName])
+					}
+				}
+			}
+		}
+
+		pageRank = newPageRank
+	}
+
+	return pageRank
+}
 
 func contains(slice []string, item string) bool {
 	for _, s := range slice {
@@ -374,6 +409,7 @@ func Archlinux(outputPath string) {
 		depMap[pkgName] = deps
 	}
 
+	pagerank := calculatePageRank(packages, 20, 0.85)
 	log.Println("Calculating dependencies count...")
 	countMap := make(map[string]int)
 	for _, deps := range depMap {
@@ -397,6 +433,7 @@ func Archlinux(outputPath string) {
 			description = ""
 			homepage = ""
 		}
+		pageRank, _ := pagerank[pkgName]
 
 		pkgInfoMap[pkgName] = DepInfo{
 			Name:         pkgName,
@@ -404,6 +441,7 @@ func Archlinux(outputPath string) {
 			Description:  description,
 			Homepage:     homepage,
 			Version:      version,
+			PageRank:     pageRank,
 		}
 	}
 

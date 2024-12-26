@@ -22,6 +22,7 @@ type PackageInfo struct {
 	DependsCount int 
 	URL          string
 	GitRepo      string
+	PageRank     float64
 }
 func storeDependenciesInDatabase(pkgName string, dependencies []string) error {
 	db, err := storage.GetDatabaseConnection()
@@ -42,11 +43,15 @@ func CloneHomebrewRepo() (string, error) {
 	repoURL := "https://github.com/Homebrew/homebrew-core.git"
 	dir := "homebrew-core"
 
-	// if _, err := os.Stat(dir); err == nil {
-	// 	return dir, nil
-	// } else if !os.IsNotExist(err) {
-	// 	return "", fmt.Errorf("failed to check directory: %v", err)
-	// }
+	if _, err := os.Stat(dir); err == nil {
+		cmd := exec.Command("git", "-C", dir, "pull")
+		if err := cmd.Run(); err != nil {
+			return "", fmt.Errorf("failed to pull repository: %v", err)
+		}
+		return dir, nil
+	} else if !os.IsNotExist(err) {
+		return "", fmt.Errorf("failed to check directory: %v", err)
+	}
 
 	cmd := exec.Command("git", "clone", repoURL, dir)
 	if err := cmd.Run(); err != nil {
@@ -168,6 +173,33 @@ func getAllDep(packages map[string]PackageInfo, pkgName string, visited map[stri
 	return deps
 }
 
+func calculatePageRank(pkgInfoMap map[string]PackageInfo, iterations int, dampingFactor float64) map[string]float64 {
+    pageRank := make(map[string]float64)
+    numPackages := len(pkgInfoMap)
+
+    for pkgName := range pkgInfoMap {
+        pageRank[pkgName] = 1.0 / float64(numPackages)
+    }
+
+    for i := 0; i < iterations; i++ {
+        newPageRank := make(map[string]float64)
+
+        for pkgName := range pkgInfoMap {
+            newPageRank[pkgName] = (1 - dampingFactor) / float64(numPackages)
+        }
+
+        for pkgName, pkgInfo := range pkgInfoMap {
+            for _, depName := range pkgInfo.Depends {
+                if _, exists := pkgInfoMap[depName]; exists {
+                    newPageRank[depName] += dampingFactor * (pageRank[pkgName] / float64(len(pkgInfo.Depends)))
+                }
+            }
+        }
+        pageRank = newPageRank
+    }
+    return pageRank
+}
+
 func generateDependencyGraph(pkgInfoMap map[string]PackageInfo, outputPath string) error {
 	file, err := os.Create(outputPath)
 	if err != nil {
@@ -223,8 +255,12 @@ func Homebrew(outputPath string) {
 		}
 	}
 
+	pagerank := calculatePageRank(pkgInfoMap, 20, 0.85)
+
 	for pkgName, pkgInfo := range pkgInfoMap {
+		pagerankVal := pagerank[pkgName]
 		depCount := countMap[pkgName] 
+		pkgInfo.PageRank = pagerankVal
 		pkgInfo.DependsCount = depCount
 		pkgInfoMap[pkgName] = pkgInfo
 	}
@@ -267,24 +303,16 @@ func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
 			return err
 		}
 		if !exists {
-			_, err := db.Exec("INSERT INTO homebrew_packages (package, depends_count, description, homepage) VALUES ($1, $2, $3, $4)",
-				pkgName, pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage)
+			_, err := db.Exec("INSERT INTO homebrew_packages (package, depends_count, description, homepage, page_rank) VALUES ($1, $2, $3, $4, $5)",
+				pkgName, pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgInfo.PageRank)
 			if err != nil {
 				return err
 			}
 		} else {
-			var currentGitLink *string
-			err := db.QueryRow("SELECT git_link FROM homebrew_packages WHERE package = $1", pkgName).Scan(&currentGitLink)
+			_, err := db.Exec("UPDATE homebrew_packages SET depends_count = $1, description = $2, homepage = $3, page_rank = $4 WHERE package = $5",
+				pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgInfo.PageRank, pkgName)
 			if err != nil {
 				return err
-			}
-
-			if currentGitLink == nil {
-				_, err := db.Exec("UPDATE homebrew_packages SET depends_count = $1, description = $2, homepage = $3 WHERE package = $4",
-					pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgName)
-				if err != nil {
-					return err
-				}
 			}
 		}
 	}

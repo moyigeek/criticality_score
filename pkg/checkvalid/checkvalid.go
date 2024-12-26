@@ -6,6 +6,7 @@ import (
 	"time"
 	"strings"
 	"os/exec"
+	"sync"
 )
 
 type Metrics struct {
@@ -44,8 +45,10 @@ func checkDistroValid(gitlink *sql.DB, repo string)[][]string{
 		if link == "" || link == "NA" || link == "NaN" {
 			continue
 		}
-		if !strings.HasSuffix(link, ".git") {
-			invalidLinks = append(invalidLinks, []string{link, "missing .git suffix"})
+		if !strings.HasPrefix(link, "http://") && !strings.HasPrefix(link, "https://") && !strings.HasPrefix(link, "git://") {
+			invalidLinks = append(invalidLinks, []string{link, "invalid protocol"})
+		}else if strings.Contains(link, "/tree/") {
+			invalidLinks = append(invalidLinks, []string{link, "invalid link"})
 		}
 	}
 	return invalidLinks
@@ -94,15 +97,14 @@ func checkMetricsValid(db *sql.DB)[][]string{
 		duration := metrics.CreatedSince.Sub(metrics.UpdatedSince)
 		if duration > 0 {
             invalidLinks = append(invalidLinks, []string{link, "created_since is after updated_since"})
-        }
-		if metrics.Score < 0 {
+        }else if metrics.Score < 0 {
 			invalidLinks = append(invalidLinks, []string{link, "score is less than 0"})
 		}
 	}
 	return invalidLinks
 }
 
-func checkCloneValid(db *sql.DB)[][]string{
+func checkCloneValid(db *sql.DB, maxThreads int)[][]string{
 	query := "SELECT git_link FROM git_metrics WHERE clone_valid = false"
 	rows, err := db.Query(query)
 	if err != nil {
@@ -119,25 +121,119 @@ func checkCloneValid(db *sql.DB)[][]string{
 		gitLinks = append(gitLinks, gitLink)
 	}
 	var invalidLinks [][]string
+	sem := make(chan struct{}, maxThreads)
+	var wg sync.WaitGroup
+
 	for _, link := range gitLinks {
-		cmd := exec.Command("git", "clone", "--depth=1", link, "/tmp/test_repo")
-		err := cmd.Run()
-		if err != nil {
-			invalidLinks = append(invalidLinks, []string{link, "failed to clone"})
-		}
-		os.RemoveAll("/tmp/test_repo")
+		wg.Add(1)
+		sem <- struct{}{}
+		go func(gitLink string) {
+			tempDir, err := os.MkdirTemp("", "test_repo_*")
+			if err != nil {
+				invalidLinks = append(invalidLinks, []string{gitLink, "failed to create temp directory"})
+				return
+			}
+			defer os.RemoveAll(tempDir)
+
+			cmd := exec.Command("git", "clone", "--depth=1", gitLink, tempDir)
+			err = cmd.Start()
+			if err != nil {
+				invalidLinks = append(invalidLinks, []string{gitLink, "failed to clone"})
+				return
+			}
+			done := make(chan error, 1)
+			go func() {
+				done <- cmd.Wait()
+			}()
+			select {
+			case <-time.After(15 * time.Second):
+				cmd.Process.Kill()
+				invalidLinks = append(invalidLinks, []string{gitLink, "clone timed out"})
+			case err := <-done:
+				if err != nil {
+					invalidLinks = append(invalidLinks, []string{gitLink, "failed to clone"})
+				}
+			}
+		}(link)
 	}
 	return invalidLinks
 }
 
-func CheckVaild(db *sql.DB, checkCloneValidflag bool)[][]string{
+func checkCloneValidDefault(db *sql.DB, maxThreads int)[][]string{
+	query := "SELECT git_link, created_since FROM git_metrics"
+	rows, err := db.Query(query)
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+	var invalidLinks [][]string
+
+	sem := make(chan struct{}, maxThreads)
+	var wg sync.WaitGroup
+
+	for rows.Next() {
+		var gitLink string
+		var createdSince sql.NullTime
+		err := rows.Scan(&gitLink, &createdSince)
+		if err != nil {
+			panic(err)
+		}
+
+		wg.Add(1)
+		sem <- struct{}{}
+
+		go func(gitLink string, createdSince sql.NullTime) {
+			defer wg.Done()
+			defer func() { <-sem }()
+
+			if strings.Contains(gitLink, "sourceforge.net") || strings.Contains(gitLink, "sf.net") {
+				tempDir, err := os.MkdirTemp("", "test_repo_*")
+				if err != nil {
+					invalidLinks = append(invalidLinks, []string{gitLink, "failed to create temp directory"})
+					return
+				}
+				defer os.RemoveAll(tempDir)
+
+				cmd := exec.Command("git", "clone", "--depth=1", gitLink, tempDir)
+				err = cmd.Start()
+				if err != nil {
+					invalidLinks = append(invalidLinks, []string{gitLink, "failed to clone"})
+					return
+				}
+				done := make(chan error, 1)
+				go func() {
+					done <- cmd.Wait()
+				}()
+				select {
+				case <-time.After(15 * time.Second):
+					cmd.Process.Kill()
+					invalidLinks = append(invalidLinks, []string{gitLink, "clone timed out"})
+				case err := <-done:
+					if err != nil {
+						invalidLinks = append(invalidLinks, []string{gitLink, "failed to clone"})
+					}
+				}
+			}else if createdSince.Valid {
+				if createdSince.Time.Sub(time.Date(1, 1, 1, 0, 0, 0, 0, time.UTC)) == 0 {
+					invalidLinks = append(invalidLinks, []string{gitLink, "created_since is 0001-01-01, maybe cannot clone"})
+				}
+			}
+		}(gitLink, createdSince)
+	}
+
+	wg.Wait()
+	return invalidLinks
+}
+func CheckVaild(db *sql.DB, checkCloneValidflag bool, maxThreads int)[][]string{
 	var invalidLinks [][]string
 	for _, repo := range repoList {
 		invalidLinks = append(invalidLinks, checkDistroValid(db, repo)...)
 	}
 	invalidLinks = append(invalidLinks, checkMetricsValid(db)...)
 	if checkCloneValidflag {
-		invalidLinks = append(invalidLinks, checkCloneValid(db)...)
+		invalidLinks = append(invalidLinks, checkCloneValid(db, maxThreads)...)
+	}else{
+		invalidLinks = append(invalidLinks, checkCloneValidDefault(db, maxThreads)...)
 	}
 	return invalidLinks
 }

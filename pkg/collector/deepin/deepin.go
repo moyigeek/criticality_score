@@ -1,4 +1,4 @@
-package debian
+package deepin
 
 import (
 	"bufio"
@@ -15,7 +15,7 @@ import (
 	"github.com/lib/pq"
 )
 
-var cacheDir = "/tmp/cloc-debian-cache"
+var cacheDir = "/tmp/cloc-deepin-cache"
 
 type DepInfo struct {
 	Name        string
@@ -35,18 +35,18 @@ func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
 
 	for pkgName, pkgInfo := range pkgInfoMap {
 		var exists bool
-		err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM debian_packages WHERE package = $1)", pkgName).Scan(&exists)
+		err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM deepin_packages WHERE package = $1)", pkgName).Scan(&exists)
 		if err != nil {
 			return err
 		}
 		if !exists {
-			_, err := db.Exec("INSERT INTO debian_packages (package, depends_count, description, homepage, version, page_rank) VALUES ($1, $2, $3, $4, $5, $6)",
+			_, err := db.Exec("INSERT INTO deepin_packages (package, depends_count, description, homepage, version, page_rank) VALUES ($1, $2, $3, $4, $5, $6)",
 				pkgName, pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgInfo.Version, pkgInfo.PageRank)
 			if err != nil {
 				return err
 			}
 		} else {
-			_, err := db.Exec("UPDATE debian_packages SET depends_count = $1, description = $2, homepage = $3, version = $4, page_rank = $5 WHERE package = $6",
+			_, err := db.Exec("UPDATE deepin_packages SET depends_count = $1, description = $2, homepage = $3, version = $4, page_rank = $5 WHERE package = $6",
 				pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgInfo.Version, pkgInfo.PageRank, pkgName)
 			if err != nil {
 				return err
@@ -64,7 +64,7 @@ func storeDependenciesInDatabase(pkgName string, dependencies []DepInfo) error {
 	defer db.Close()
 
 	for _, dep := range dependencies {
-		_, err := db.Exec("INSERT INTO debian_relationships (frompackage, topackage) VALUES ($1, $2)", pkgName, dep.Name)
+		_, err := db.Exec("INSERT INTO deepin_relationships (frompackage, topackage) VALUES ($1, $2)", pkgName, dep.Name)
 		if err != nil {
 			return err
 		}
@@ -73,7 +73,7 @@ func storeDependenciesInDatabase(pkgName string, dependencies []DepInfo) error {
 }
 
 func getMirrorFile(path string) []byte {
-	resp, _ := http.Get("https://mirrors.hust.edu.cn/debian/" + path)
+	resp, _ := http.Get("https://mirrors.hust.edu.cn/deepin/" + path)
 	defer resp.Body.Close()
 
 	body, _ := ioutil.ReadAll(resp.Body)
@@ -90,7 +90,7 @@ func getDecompressedFile(path string) string {
 }
 
 func getPackageList() string {
-	return getDecompressedFile("dists/stable/main/binary-amd64/Packages.gz")
+	return getDecompressedFile("dists/apricot/main/binary-amd64/Packages.gz")
 }
 
 func parseList() map[string]map[string]interface{} {
@@ -265,7 +265,7 @@ func contains(slice []string, item string) bool {
 	return false
 }
 
-func Debian(outputPath string) {
+func Deepin(outputPath string) {
 	fmt.Println("Getting package list...")
 	packages := parseList()
 	fmt.Printf("Done, total: %d packages.\n", len(packages))

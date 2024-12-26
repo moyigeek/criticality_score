@@ -17,7 +17,7 @@ type DependentInfo struct {
 }
 
 var unionTables = [][]string{
-	[]string{"debian_packages", "arch_packages", "gentoo_packages", "homebrew_packages", "nix_packages"},
+	[]string{"debian_packages", "arch_packages", "gentoo_packages", "homebrew_packages", "nix_packages", "ubuntu_packages", "deepin_packages"},
 	[]string{"github_links"},
 }
 

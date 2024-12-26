@@ -6,6 +6,8 @@ import (
 
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/archlinux"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/debian"
+	"github.com/HUSTSecLab/criticality_score/pkg/collector/deepin"
+	"github.com/HUSTSecLab/criticality_score/pkg/collector/ubuntu"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/nix"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/homebrew"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/gentoo"
@@ -29,6 +31,10 @@ func main() {
 		archlinux.Archlinux(*flagGenDot)
 	case "debian":
 		debian.Debian(*flagGenDot)
+	case "deepin":
+		deepin.Deepin(*flagGenDot)
+	case "ubuntu":
+		ubuntu.Ubuntu(*flagGenDot)
 	case "nix":
 		if *flagGenDot == "" {
 			fmt.Errorf("Nix not support gendot")

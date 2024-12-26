@@ -22,6 +22,7 @@ type PackageInfo struct {
 	DependsCount int
 	URL          string
 	GitRepo      string
+	PageRank	 float64
 }
 
 func storeDependenciesInDatabase(pkgName string, dependencies []string) error {
@@ -192,14 +193,14 @@ func UpdateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
 			return err
 		}
 		if !exists {
-			_, err := db.Exec("INSERT INTO gentoo_packages (package, version, depends_count, description, homepage) VALUES ($1, $2, $3, $4, $5)",
-				pkgName, pkgInfo.Version, pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage)
+			_, err := db.Exec("INSERT INTO gentoo_packages (package, version, depends_count, description, homepage, page_rank) VALUES ($1, $2, $3, $4, $5, $6)",
+				pkgName, pkgInfo.Version, pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgInfo.PageRank)
 			if err != nil {
 				return err
 			}
 		} else {
-			_, err := db.Exec("UPDATE gentoo_packages SET version = $1, depends_count = $2, description = $3, homepage = $4 WHERE package = $5",
-				pkgInfo.Version, pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgName)
+			_, err := db.Exec("UPDATE gentoo_packages SET version = $1, depends_count = $2, description = $3, homepage = $4, page_rank = $5 WHERE package = $6",
+				pkgInfo.Version, pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgInfo.PageRank, pkgName)
 			if err != nil {
 				return err
 			}
@@ -243,7 +244,10 @@ func Gentoo(outputPath string) {
 		}
 	}
 
+	pageRankMap := pageRank(pkgInfoMap, 0.85, 20)
+
 	for pkgName, pkgInfo := range pkgInfoMap {
+		pkgInfo.PageRank = pageRankMap[pkgName]
 		depCount := countMap[pkgName]
 		pkgInfo.DependsCount = depCount
 		pkgInfoMap[pkgName] = pkgInfo
@@ -307,6 +311,34 @@ func getAllDep(packages map[string]PackageInfo, pkgName string, visited map[stri
 		}
 	}
 	return deps
+}
+
+func pageRank(pkgInfoMap map[string]PackageInfo, d float64, iterations int) map[string]float64 {
+	ranks := make(map[string]float64)
+	N := float64(len(pkgInfoMap))
+
+	// Initialize ranks
+	for pkgName := range pkgInfoMap {
+		ranks[pkgName] = 1.0 / N
+	}
+
+	for i := 0; i < iterations; i++ {
+		newRanks := make(map[string]float64)
+		for pkgName := range pkgInfoMap {
+			newRanks[pkgName] = (1 - d) / N
+		}
+
+		for pkgName, pkgInfo := range pkgInfoMap {
+			share := ranks[pkgName] / float64(len(pkgInfo.Depends))
+			for _, dep := range pkgInfo.Depends {
+				newRanks[dep] += d * share
+			}
+		}
+
+		ranks = newRanks
+	}
+
+	return ranks
 }
 
 func generateDependencyGraph(pkgInfoMap map[string]PackageInfo, outputPath string) error {
