@@ -60,7 +60,7 @@ def copy_table(table_name):
     logging.info(f"Copying {table_name}...")
     curr = conn.cursor()
     logging.info("Fetching data from source database...")
-    curr.execute("SELECT package, git_link FROM {}".format(table_name))
+    curr.execute("SELECT package, git_link, link_confidence FROM {}".format(table_name))
     while True:
         row = curr.fetchone()
         if row is None:
@@ -69,8 +69,8 @@ def copy_table(table_name):
         curr_dst = conn_dest.cursor()
         logging.debug("Updating package %s", row[0])
         curr_dst.execute(
-            "UPDATE {} SET git_link = %s WHERE package = %s".format(table_name),
-            (row[1], row[0]),
+            "UPDATE {} SET git_link = %s, link_confidence = %s WHERE package = %s".format(table_name),
+            (row[1], row[2], row[0]),
         )
         # if curr_dst.rowcount == 0:
         #     logging.warning("No row updated for package %s", row[0])
