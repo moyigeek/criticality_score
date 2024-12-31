@@ -189,9 +189,15 @@ func calculatePageRank(pkgInfoMap map[string]PackageInfo, iterations int, dampin
         }
 
         for pkgName, pkgInfo := range pkgInfoMap {
+			var depNum int
+			for _, depName := range pkgInfo.Depends {
+				if _, exists := pkgInfoMap[depName]; exists {
+					depNum++
+				}
+			}
             for _, depName := range pkgInfo.Depends {
                 if _, exists := pkgInfoMap[depName]; exists {
-                    newPageRank[depName] += dampingFactor * (pageRank[pkgName] / float64(len(pkgInfo.Depends)))
+                    newPageRank[depName] += dampingFactor * (pageRank[pkgName] / float64(depNum))
                 }
             }
         }

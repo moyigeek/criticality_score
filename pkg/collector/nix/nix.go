@@ -365,24 +365,32 @@ func getAllDep(packages map[string][]string, pkgName string, visited map[string]
 	return deps
 }
 
-func calculatePageRank(packages map[DepInfo][]DepInfo, iterations int, dampingFactor float64) map[DepInfo]float64 {
-	ranks := make(map[DepInfo]float64)
+func calculatePageRank(packages map[DepInfo][]DepInfo, iterations int, dampingFactor float64) map[string]float64 {
+	ranks := make(map[string]float64)
 	numPackages := float64(len(packages))
 
 	for pkg := range packages {
-		ranks[pkg] = 1.0 / numPackages
+		ranks[pkg.Name] = 1.0 / numPackages
 	}
 
 	for i := 0; i < iterations; i++ {
-		newRanks := make(map[DepInfo]float64)
+		newRanks := make(map[string]float64)
 		for pkg := range packages {
-			newRanks[pkg] = (1 - dampingFactor) / numPackages
+			newRanks[pkg.Name] = (1.0 - dampingFactor) / numPackages
 		}
 
 		for pkg, deps := range packages {
-			contribution := dampingFactor * ranks[pkg] / float64(len(deps))
+			depCount := 0
 			for _, dep := range deps {
-				newRanks[dep] += contribution
+				if _, exists := packages[dep]; exists {
+					depCount++
+				}
+			}
+			contribution := (dampingFactor * ranks[pkg.Name]) / float64(depCount)
+			for _, dep := range deps {
+				if _, exists := packages[dep]; exists {
+					newRanks[dep.Name] += contribution
+				}
 			}
 		}
 
@@ -499,8 +507,9 @@ func Nix(workerCount int, batchSize int) {
 
 	pageRanks := calculatePageRank(packages, 20, 0.85)
 	
-	for pkg, _ := range packages{
-		pkg.PageRank = pageRanks[pkg]
+	for pkgInfo := range packages{
+		pkgInfo.PageRank = pageRanks[pkgInfo.Name]
+		packages[pkgInfo] = packages[pkgInfo]
 	}
 	
 	fmt.Println("Nix package information updated successfully")
@@ -568,9 +577,8 @@ func updateOrInsertBatch(db *sql.DB, batch []DepInfo) error {
 		SET version = EXCLUDED.version,
 			homepage = EXCLUDED.homepage,
 			description = EXCLUDED.description,
-			depends_count = EXCLUDED.depends_count
+			depends_count = EXCLUDED.depends_count,
 			page_rank = EXCLUDED.page_rank
-		}
 	`
 
 	for _, pkg := range batch {
@@ -592,10 +600,12 @@ func findDepInfoByName(packages map[DepInfo][]DepInfo, name string) (DepInfo, bo
     return DepInfo{}, false
 }
 
-// normalizeGitLink 规范化 Git 链接
 func normalizeGitLink(link string) string {
-	// 检查并提取组织名和仓库名
 	var orgName, repoName string
+
+	if strings.HasSuffix(link, ".git") {
+		link = link[:len(link)-4]
+	}
 
 	if strings.HasPrefix(link, "https://github.com/") {
 		parts := strings.Split(link, "/")
@@ -644,14 +654,14 @@ func normalizeGitLink(link string) string {
 		if len(parts) >= 5 {
 			orgName = parts[3]
 			repoName = parts[4]
-			return fmt.Sprintf("https://bitbucket.org/%s/%s.git", orgName, repoName)
+			return fmt.Sprintf("https://bitbucket.org/%s/%s", orgName, repoName)
 		}
 	} else if strings.HasPrefix(link, "http://bitbucket.org/") {
 		parts := strings.Split(link, "/")
 		if len(parts) >= 5 {
 			orgName = parts[3]
 			repoName = parts[4]
-			return fmt.Sprintf("http://bitbucket.org/%s/%s.git", orgName, repoName)
+			return fmt.Sprintf("http://bitbucket.org/%s/%s", orgName, repoName)
 		}
 	}
 

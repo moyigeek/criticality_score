@@ -291,10 +291,18 @@ func calculatePageRank(packages map[string]map[string]interface{}, iterations in
 		}
 
 		for pkgName, pkgInfo := range packages {
+			var depNum int
 			if depends, ok := pkgInfo["Depends"].([]DepInfo); ok {
 				for _, dep := range depends {
 					if outgoingLinks[dep.Name] > 0 {
-						newPageRank[dep.Name] += dampingFactor * pageRank[pkgName] / float64(outgoingLinks[pkgName])
+						depNum++
+					}
+				}
+			}
+			if depends, ok := pkgInfo["Depends"].([]DepInfo); ok {
+				for _, dep := range depends {
+					if outgoingLinks[dep.Name] > 0 {
+						newPageRank[dep.Name] += dampingFactor * pageRank[pkgName] / float64(depNum)
 					}
 				}
 			}

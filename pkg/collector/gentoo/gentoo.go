@@ -329,9 +329,17 @@ func pageRank(pkgInfoMap map[string]PackageInfo, d float64, iterations int) map[
 		}
 
 		for pkgName, pkgInfo := range pkgInfoMap {
-			share := ranks[pkgName] / float64(len(pkgInfo.Depends))
+			var depNum int
+			for _, depName := range pkgInfo.Depends {
+				if _, exists := pkgInfoMap[depName]; exists {
+					depNum++
+				}
+			}
+			share := ranks[pkgName] / float64(depNum)
 			for _, dep := range pkgInfo.Depends {
-				newRanks[dep] += d * share
+				if _, exists := pkgInfoMap[dep]; exists {
+					newRanks[dep] += d * share
+				}
 			}
 		}
 

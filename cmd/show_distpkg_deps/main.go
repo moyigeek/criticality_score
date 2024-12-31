@@ -11,6 +11,8 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/nix"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/homebrew"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/gentoo"
+	"github.com/HUSTSecLab/criticality_score/pkg/collector/fedora"
+	"github.com/HUSTSecLab/criticality_score/pkg/collector/centos"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 )
 
@@ -44,5 +46,9 @@ func main() {
 		homebrew.Homebrew(*flagGenDot)	
 	case "gentoo":
 		gentoo.Gentoo(*flagGenDot)
+	case "fedora":
+		fedora.Fedora(*flagGenDot)
+	case "centos":
+		centos.Centos(*flagGenDot)
 	}
 }

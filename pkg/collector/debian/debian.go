@@ -242,10 +242,18 @@ func rankPage(packages map[string]map[string]interface{}, maxIterations int, dam
 
 		for pkgName, pkgInfo := range packages {
 			if depends, ok := pkgInfo["Depends"].([]interface{}); ok {
+				var depNum int
 				for _, depInterface := range depends {
 					if depInfo, ok := depInterface.(DepInfo); ok {
 						if _, ok := packages[depInfo.Name]; ok {
-							newRank[depInfo.Name] += dampingFactor * rank[pkgName] / float64(len(depends))
+							depNum++
+						}
+					}
+				}
+				for _, depInterface := range depends {
+					if depInfo, ok := depInterface.(DepInfo); ok {
+						if _, ok := packages[depInfo.Name]; ok {
+							newRank[depInfo.Name] += dampingFactor * rank[pkgName] / float64(depNum)
 						}
 					}
 				}
