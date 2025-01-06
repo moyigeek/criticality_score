@@ -77,15 +77,17 @@ func main() {
 			path := fmt.Sprintf("%s/%s%s", config.STORAGE_PATH, u.Resource, u.Pathname)
 			r, err := collector.Open(path)
 
-			if err != nil {
-				logger.Panicf("Open %s failed: %s", u.URL, err)
+			if err != nil || r == nil {
+				logger.Errorf("Open %s failed: %s", u.URL, err)
+				return
 			}
 
 			result := git.NewRepo()
 			err = result.WalkRepo(r)
 
 			if err != nil {
-				logger.Panicf("WalkRepo %s failed: %s", input, err)
+				logger.Errorf("WalkRepo %s failed: %s", input, err)
+				return
 			}
 
 			sqlResult, err := db.Exec(`UPDATE git_metrics SET
@@ -112,7 +114,11 @@ func main() {
 
 			if rowAffected == 0 {
 				logger.Warnf("Update %s failed: row affected = 0", input)
+				return
 			}
+
+			logger.Infof("Success: %s", input)
+
 		})
 	}
 	wg.Wait()
