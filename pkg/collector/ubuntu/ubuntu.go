@@ -90,7 +90,12 @@ func getDecompressedFile(path string) string {
 }
 
 func getPackageList() string {
-	return getDecompressedFile("dists/jammy/main/binary-amd64/Packages.gz")
+	var content string
+	content = getDecompressedFile("dists/jammy/main/binary-amd64/Packages.gz")
+	content += getDecompressedFile("dists/jammy/universe/binary-amd64/Packages.gz")
+	content += getDecompressedFile("dists/jammy/multiverse/binary-amd64/Packages.gz")
+	content += getDecompressedFile("dists/jammy/restricted/binary-amd64/Packages.gz")
+	return content
 }
 
 func parseList() map[string]map[string]interface{} {

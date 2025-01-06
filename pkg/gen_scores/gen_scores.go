@@ -288,3 +288,28 @@ func FetchAllLinks(db *sql.DB) ([]string, error) {
 	}
 	return links, nil
 }
+
+func FetchdLinkCountSingle(repo string, link string, db *sql.DB) int {
+	url := fmt.Sprintf("SELECT git_link, depends_count FROM %s WHERE git_link = '%s'", repo, link)
+	rows, err := db.Query(url)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer rows.Close()
+
+	var count int
+	for rows.Next() {
+		var gitLink sql.NullString
+		var dependsCount int
+
+		err := rows.Scan(&gitLink, &dependsCount)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		if gitLink.Valid {
+			count += dependsCount
+		}
+	}
+	return count
+}

@@ -14,7 +14,8 @@ import (
 	"sync"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
-	_ "github.com/lib/pq" // Assuming PostgreSQL, adjust as needed
+	_ "github.com/lib/pq"
+	"github.com/go-redis/redis/v8"
 )
 
 type DependentInfo struct {
@@ -220,4 +221,223 @@ func queryDepsDev(link, projectType, projectName, version string) int{
 		return 0
 	}
 	return info.DependentCount
+}
+
+func getGitlink(db *sql.DB)[]string {
+	rows, err := db.Query("SELECT git_link FROM git_metrics")
+	if err != nil {
+		fmt.Println("Error querying git_metrics:", err)
+		return nil
+	}
+	defer rows.Close()
+	var gitLinks []string
+	for rows.Next() {
+		var gitLink string
+		if err := rows.Scan(&gitLink); err != nil {
+			fmt.Println("Error scanning git_link:", err)
+			return nil
+		}
+		gitLinks = append(gitLinks, gitLink)
+	}
+	return gitLinks
+}
+
+func queryDepsName(gitlink string, rdb *redis.Client)(map[string][]string) {
+	depMap := make(map[string][]string)
+	if strings.Contains(gitlink, ".git"){
+		gitlink = strings.TrimSuffix(gitlink, ".git")
+	}
+	var repo, name string
+	if len(strings.Split(gitlink, "/")) == 5 {
+		repo = strings.Split(gitlink, "/")[3]
+		name = strings.Split(gitlink, "/")[4]
+	}
+	url := fmt.Sprintf("https://api.deps.dev/v3alpha/projects/github.com%%2f%s%%2f%s:packageversions", repo, name)
+	resp, err := http.Get(url)
+	if err != nil {
+		fmt.Println("Error querying deps.dev:", err)
+		return depMap
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		fmt.Println("Error: received non-200 response code")
+		return depMap
+	}
+	var result DepsDevInfo
+
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		fmt.Println("Error decoding response:", err)
+		return depMap
+	}
+
+	latestVersions := make(map[string]map[string]string)
+	for _, item := range result.Versions {
+		name := item.VersionKey.Name
+		version := item.VersionKey.Version
+		system := item.VersionKey.System
+		if strings.Contains(name, "\u003E") {
+			split := strings.Split(name, "\u003E")
+			name = split[len(split)-1]
+		}
+		if strings.Contains(name, "/") {
+			split := strings.Split(name, "/")
+			name = split[len(split)-1]
+		}
+		if _, exists := latestVersions[name]; !exists {
+			latestVersions[name] = make(map[string]string)
+		}
+		if currentVersion, exists := latestVersions[name][system]; !exists || version > currentVersion {
+			latestVersions[name][system] = version
+			depMap[name] = []string{system, version}
+			storage.SetKeyValue(rdb, name, gitlink)
+		}
+	}
+	return depMap
+}
+
+func Depsdev(configPath string, batchSize int, workerPoolSize int) {
+	storage.InitializeDatabase(configPath)
+	db, err := storage.GetDatabaseConnection()
+	rdb, _ := storage.InitRedis()
+	if err != nil {
+		fmt.Errorf("Error initializing database: %v\n", err)
+		return
+	}
+	defer db.Close()
+	// gitLinks := getGitlink(db)
+	gitLinks := []string{"https://github.com/facebook/react"}
+	pkgMap := make(map[string][]string)
+	for _, gitlink := range gitLinks {
+		depMap := queryDepsName(gitlink, rdb)
+		pkgdepMap := fetchDep(depMap, workerPoolSize)
+		for pkgName, pkgInfo := range pkgdepMap {
+			pkgMap[pkgName] = pkgInfo
+		}
+		storage.PersistData(rdb)
+	}
+	fmt.Println("pkgMap:", pkgMap)
+	page_rank := calculatePageRank(pkgMap, 100, 0.85)
+	fmt.Println("PageRank:", page_rank)
+}
+
+type Node struct {
+	VersionKey Version  `json:"versionKey"`
+	Bundled    bool     `json:"bundled"`
+	Relation   string   `json:"relation"`
+	Errors     []string `json:"errors"`
+}
+
+type Edge struct {
+	FromNode   int    `json:"fromNode"`
+	ToNode     int    `json:"toNode"`
+	Requirement string `json:"requirement"`
+}
+
+type Dependencies struct {
+	Nodes []Node `json:"nodes"`
+	Edges []Edge `json:"edges"`
+	Error string `json:"error"`
+}
+
+type Version struct {
+	System  string `json:"system"`
+	Name    string `json:"name"`
+	Version string `json:"version"`
+}
+
+type PkgInfo struct {
+	VersionKey Version
+	RelationType       string   `json:"relationType"`
+	RelationProvenance string   `json:"relationProvenance"`
+	SlsaProvenances    []string `json:"slsaProvenances"`
+	Attestations       []string `json:"attestations"`
+}
+
+type DepsDevInfo struct {
+	Versions []PkgInfo `json:"versions"`
+}
+func fetchDep(depMap map[string][]string, threadnum int)map[string][]string{
+	depMapNew := make(map[string][]string)
+	var wg sync.WaitGroup
+	semaphore := make(chan struct{}, threadnum)
+	var mu sync.Mutex
+	for depName, depInfo := range depMap {
+		wg.Add(1)
+		semaphore <- struct{}{}
+		go func(depName string, depInfo []string) {
+			defer wg.Done()
+			defer func() { <-semaphore }()
+			var system, name, version string
+			system = depInfo[0]
+			name = depName
+			version = depInfo[1]
+			result := getAndProcessDependencies(system, name, version)
+			mu.Lock()
+			depMapNew[name] = []string{}
+			for _, node := range result.Nodes {
+				if node.Relation == "direct" {
+					depMapNew[node.VersionKey.Name] = append(depMapNew[name], node.VersionKey.Name)
+				}
+			}
+			mu.Unlock()
+		}(depName, depInfo)
+	}
+	wg.Wait()
+	return depMapNew
+}
+
+func calculatePageRank(pkgInfoMap map[string][]string, iterations int, dampingFactor float64) map[string]float64 {
+	pageRank := make(map[string]float64)
+	numPackages := len(pkgInfoMap)
+
+	for pkgName := range pkgInfoMap {
+		pageRank[pkgName] = 1.0 / float64(numPackages)
+	}
+
+	for i := 0; i < iterations; i++ {
+		newPageRank := make(map[string]float64)
+
+		for pkgName := range pkgInfoMap {
+			newPageRank[pkgName] = (1 - dampingFactor) / float64(numPackages)
+		}
+
+		for pkgName, deps := range pkgInfoMap {
+			depNum := len(deps)
+			for _, depName := range deps {
+				if _, exists := pkgInfoMap[depName]; exists {
+					newPageRank[depName] += dampingFactor * (pageRank[pkgName] / float64(depNum))
+				}
+			}
+		}
+		pageRank = newPageRank
+	}
+	return pageRank
+}
+
+func getAndProcessDependencies(system, name, version string) Dependencies{
+	var result Dependencies
+	url := fmt.Sprintf("https://api.deps.dev/v3alpha/systems/%s/packages/%s/versions/%s:dependencies", system, name, version)
+	resp, err := http.Get(url)
+	if err != nil {
+		fmt.Println("Error querying deps.dev:", err)
+		return result
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		version = getLatestVersion(name, system)
+		url = fmt.Sprintf("https://api.deps.dev/v3alpha/systems/%s/packages/%s/versions/%s:dependencies", system, name, version)
+		resp, err = http.Get(url)
+		if err != nil {
+			fmt.Println("Error querying deps.dev:", err)
+			return result
+		}
+		defer resp.Body.Close()
+	}
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		fmt.Println("Error decoding response:", err)
+		return result
+	}
+
+	return result
 }

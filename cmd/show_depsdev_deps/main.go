@@ -15,5 +15,5 @@ func main() {
 	flag.Parse()
 	storage.InitializeDatabase(*flagConfigPath)
 
-	collector_depsdev.Run(*flagConfigPath, *flagBatchSize, *workerCount)
+	collector_depsdev.Depsdev(*flagConfigPath, *flagBatchSize, *workerCount)
 }

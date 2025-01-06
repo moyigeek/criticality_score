@@ -58,15 +58,15 @@ The data is available on HUST mirror site and can be downloaded via [this link](
 
 ## Metrics description
 
-| **Metric**           | **Description**                                                             | **Reasoning**                                                                          |
-|-----------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
-| created_since         | The longer a project has existed, the more likely it is widely used or relied upon, representing maturity and stability. | Older projects tend to have a larger user base and more robust testing over time.     |
-| updated_since         | Projects not updated for a long time may no longer be maintained, reducing reliability and dependence.                 | Unmaintained projects are less likely to be secure or relevant for active use cases.  |
-| contributor_count     | A higher number of contributors indicates greater attention, community activity, and importance.                      | Diverse contributions demonstrate active engagement and widespread support.            |
-| org_count             | Contributions from multiple organizations indicate cross-organization dependencies and wide-ranging influence.         | Cross-organizational contributions highlight the project’s universal relevance.        |
-| commit_frequency      | Higher code change frequency shows project activity but may also indicate potential vulnerability risks.               | Active commits suggest responsiveness but may require monitoring for quality issues.   |
-| depsdev_count         | Reflects the number of dependencies on the project listed on the deps.dev platform, showing its importance in the development ecosystem. | Projects with more dependencies are critical to the development ecosystem.            |
-| deps_distro           | Indicates how widely the project is relied upon in different software distributions, showing its production use and stability. | Broad use in distributions highlights the project’s practical utility and reliability. |
+| **Metric**           | **Description**                                                             | **Reasoning**                                                                          | **Threshold**  | **Weight**   |
+|----------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------|----------------|--------------|
+| created_since        | The longer a project has existed, the more likely it is widely used or relied upon, representing maturity and stability. | Older projects tend to have a larger user base and more robust testing over time.     | 120 months     | 1           |
+| updated_since        | Projects not updated for a long time may no longer be maintained, reducing reliability and dependence. | Unmaintained projects are less likely to be secure or relevant for active use cases.  | 120 months     | 1            |
+| contributor_count    | A higher number of contributors indicates greater attention, community activity, and importance. | Diverse contributions demonstrate active engagement and widespread support.            | 40,000         | 1           |
+| org_count            | Contributions from multiple organizations indicate cross-organization dependencies and wide-ranging influence. | Cross-organizational contributions highlight the project’s universal relevance.        | 8,400          | 1         |
+| commit_frequency     | Higher code change frequency shows project activity but may also indicate potential vulnerability risks. | Active commits suggest responsiveness but may require monitoring for quality issues.   | 1,000 commits  | 1          |
+| depsdev_count        | Reflects the number of dependencies on the project listed on the deps.dev platform, showing its importance in the development ecosystem. | Projects with more dependencies are critical to the development ecosystem.            | 30             | 1          |
+| deps_distro          | Indicates how widely the project is relied upon in different software distributions, showing its production use and stability. | Broad use in distributions highlights the project’s practical utility and reliability. | 1   | 5         |
 
 
 ## Reference
