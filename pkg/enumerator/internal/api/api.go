@@ -14,7 +14,7 @@ const (
 	TIME_INTERVAL = 2
 	TIMEOUT       = 1000
 
-	BITBUCKET_ENUMERATE_API_URL = "https://api.bitbucket.org/2.0/repositories"
+	BITBUCKET_ENUMERATE_API_URL = "https://api.bitbucket.org/2.0/repositories?pagelen=200"
 	GITLAB_ENUMERATE_API_URL    = "https://gitlab.com/api/v4/projects"
 	GITEE_ENUMERATE_API_URL     = "https://api.indexea.com/v1/search/widget/wjawvtmm7r5t25ms1u3d"
 	CRATES_IO_ENUMERATE_API_URL = "https://crates.io/api/v1/crates"
