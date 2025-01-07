@@ -1,6 +1,6 @@
 /*
  * @Date: 2023-11-11 22:44:26
- * @LastEditTime: 2024-12-14 16:48:46
+ * @LastEditTime: 2025-01-07 19:15:24
  * @Description: Integrate into Criticality Score system
  */
 package main
@@ -11,11 +11,11 @@ import (
 	"sync"
 	"time"
 
+	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/collector"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/config"
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/collector"
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/logger"
-	git "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/git"
-	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/url"
+	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/logger"
+	git "github.com/HUSTSecLab/criticality_score/pkg/collector_git/parser/git"
+	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/parser/url"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	"github.com/bytedance/gopkg/util/gopool"
 )

@@ -1,6 +1,6 @@
 /*
  * @Date: 2024-09-06 21:09:14
- * @LastEditTime: 2025-01-07 18:55:39
+ * @LastEditTime: 2025-01-07 19:12:42
  * @Description: The Cli for collector
  */
 package main
@@ -10,10 +10,10 @@ import (
 	"strings"
 	"sync"
 
-	collector "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/collector"
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/logger"
-	git "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/git"
-	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/url"
+	collector "github.com/HUSTSecLab/criticality_score/pkg/collector_git/collector"
+	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/logger"
+	git "github.com/HUSTSecLab/criticality_score/pkg/collector_git/parser/git"
+	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/parser/url"
 	"github.com/bytedance/gopkg/util/gopool"
 	gogit "github.com/go-git/go-git/v5"
 	"github.com/urfave/cli/v2"

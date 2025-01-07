@@ -1,7 +1,7 @@
 /*
  * @Author: 7erry
  * @Date: 2024-08-31 03:50:13
- * @LastEditTime: 2024-12-14 16:43:59
+ * @LastEditTime: 2025-01-07 19:08:57
  * @Description:
  */
 package git
@@ -10,8 +10,8 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/collector"
-	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/internal/parser/url"
+	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/collector"
+	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/parser/url"
 
 	"github.com/stretchr/testify/require"
 )
