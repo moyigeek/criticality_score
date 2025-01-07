@@ -6,24 +6,24 @@
 package main
 
 import (
+	"database/sql"
+	"fmt"
+	"log"
 	"os"
 	"strings"
 	"sync"
-	"log"
-	"database/sql"
-	"fmt"
- 
+
 	collector "github.com/HUSTSecLab/criticality_score/internal/collector"
 	"github.com/HUSTSecLab/criticality_score/internal/logger"
 	git "github.com/HUSTSecLab/criticality_score/internal/parser/git"
 	url "github.com/HUSTSecLab/criticality_score/internal/parser/url"
+	scores "github.com/HUSTSecLab/criticality_score/pkg/gen_scores"
+	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	"github.com/bytedance/gopkg/util/gopool"
 	gogit "github.com/go-git/go-git/v5"
 	"github.com/urfave/cli/v2"
-	scores "github.com/HUSTSecLab/criticality_score/pkg/gen_scores"
-	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 )
- 
+
 func main() {
 	app := &cli.App{
 		Name:  "collector_git",
@@ -43,20 +43,20 @@ func main() {
 			configPath := c.String("config")
 			updateDB := c.Bool("update-db")
 			paths := c.Args().Slice()
- 
+
 			var wg sync.WaitGroup
 			wg.Add(len(paths))
- 
+
 			repos := make([]*git.Repo, 0)
- 
+
 			for _, path := range paths {
 				gopool.Go(func() {
 					defer wg.Done()
 					logger.Infof("Collecting %s", path)
- 
+
 					r := &gogit.Repository{}
 					var err error
-					
+
 					if strings.Contains(path, "://") {
 						u := url.ParseURL(path)
 						r, err = collector.EzCollect(&u)
@@ -69,24 +69,24 @@ func main() {
 							logger.Panicf("Opening %s Failed", path)
 						}
 					}
- 
+
 					repo, err := git.ParseRepo(r)
 					if err != nil {
 						logger.Panicf("Parsing %s Failed", path)
 					}
- 
+
 					repos = append(repos, repo)
 					logger.Infof("%s Collected", repo.Name)
 				})
 			}
- 
+
 			wg.Wait()
 			storage.InitDatabase(configPath)
 			db, err := storage.GetDatabaseConnection()
 			if err != nil {
 				log.Fatalf("Failed to connect to database: %v", err)
 			}
- 
+
 			defer db.Close()
 			for _, repo := range repos {
 				repo.Show()
@@ -136,7 +136,7 @@ func updateGitMetrics(db *sql.DB, repo *git.Repo, score float64, depsDistro floa
 	return nil
 }
 
-func FetchDepsdev(db *sql.DB, git_link string) int{
+func FetchDepsdev(db *sql.DB, git_link string) int {
 	query := fmt.Sprintf("SELECT depsdev_count FROM git_metrics WHERE git_link = '%s'", git_link)
 	var depsdev_count int
 	err := db.QueryRow(query).Scan(&depsdev_count)

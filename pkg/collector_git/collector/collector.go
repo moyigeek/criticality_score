@@ -1,7 +1,7 @@
 /*
  * @Author: 7erry
  * @Date: 2024-09-29 14:41:35
- * @LastEditTime: 2024-12-14 16:49:04
+ * @LastEditTime: 2025-01-07 19:05:13
  * @Description: Collect Git Repositories - Download and Read by go-git
  */
 
@@ -10,10 +10,10 @@ package collector
 import (
 	"fmt"
 
-	"github.com/HUSTSecLab/criticality_score/internal/logger"
-	parser "github.com/HUSTSecLab/criticality_score/internal/parser"
-	url "github.com/HUSTSecLab/criticality_score/internal/parser/url"
 	config "github.com/HUSTSecLab/criticality_score/pkg/collector_git/config"
+	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/logger"
+	parser "github.com/HUSTSecLab/criticality_score/pkg/collector_git/parser"
+	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/parser/url"
 
 	gogit "github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/storage/memory"
