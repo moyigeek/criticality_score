@@ -2,20 +2,21 @@ package collector_depsdev
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"io"
-	"net/http"
-	"strings"
-	"strconv"
-	"time"
 	"log"
-	"database/sql"
+	"net/http"
+	"regexp"
+	"strconv"
+	"strings"
 	"sync"
+	"time"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
-	_ "github.com/lib/pq"
 	"github.com/go-redis/redis/v8"
+	_ "github.com/lib/pq"
 )
 
 type DependentInfo struct {
@@ -24,11 +25,10 @@ type DependentInfo struct {
 	IndirectDependentCount int `json:"indirectDependentCount"`
 }
 
-
-func updateDatabase(db *sql.DB, linkDepCountList map[string]int, batchSize int) error {
+func updateDatabase(db *sql.DB, linkDepCountList map[string][]float64, batchSize int) error {
 	var linkDepList [][]string
-	for link, count := range linkDepCountList {
-		linkDepList = append(linkDepList, []string{link, fmt.Sprintf("%d", count)})
+	for link, counts := range linkDepCountList {
+		linkDepList = append(linkDepList, []string{link, fmt.Sprintf("%d", int(counts[1])), fmt.Sprintf("%f", counts[0])})
 	}
 	for i := 0; i < len(linkDepList); i += batchSize {
 		end := i + batchSize
@@ -36,22 +36,26 @@ func updateDatabase(db *sql.DB, linkDepCountList map[string]int, batchSize int) 
 			end = len(linkDepList)
 		}
 		batch := linkDepList[i:end]
-		query := "UPDATE git_metrics SET depsdev_count = CASE git_link"
+		query := "UPDATE git_metrics SET depsdev_count = CASE"
 		args := []interface{}{}
 		for j, link := range batch {
-			count, _ := strconv.Atoi(link[1]) 
-			query += fmt.Sprintf(" WHEN $%d THEN $%d::Integer", j*2+1, j*2+2)
-			args = append(args, link[0], count)
+			depsdevCount, _ := strconv.Atoi(link[1])
+			depsdevPagerank, _ := strconv.ParseFloat(link[2], 64)
+			query += fmt.Sprintf(" WHEN git_link = $%d THEN $%d::Int", j*3+1, j*3+2)
+			args = append(args, link[0], depsdevCount, depsdevPagerank)
+		}
+		query += " END, depsdev_pagerank = CASE"
+		for j, _ := range batch {
+			query += fmt.Sprintf(" WHEN git_link = $%d THEN $%d::Float8", j*3+1, j*3+3)
 		}
 		query += " END WHERE git_link IN ("
 		for j := 0; j < len(batch); j++ {
 			if j > 0 {
 				query += ", "
 			}
-			query += fmt.Sprintf("$%d", j*2+1)
+			query += fmt.Sprintf("$%d", j*3+1)
 		}
 		query += ")"
-		
 		result, err := db.Exec(query, args...)
 		if err != nil {
 			log.Printf("Error executing query: %v", err)
@@ -66,98 +70,6 @@ func updateDatabase(db *sql.DB, linkDepCountList map[string]int, batchSize int) 
 		log.Printf("Batch [%d - %d]: %d rows updated", i, end, rowsAffected)
 	}
 	return nil
-}
-
-func Run(configPath string, batchSize int, workerPoolSize int) {
-	db, err := storage.GetDatabaseConnection()
-	if err != nil {
-		fmt.Errorf("Error initializing database: %v\n", err)
-		return
-	}
-	defer db.Close()
-
-	rows, err := db.Query("SELECT git_link FROM git_metrics")
-	if err != nil {
-		fmt.Println("Error querying git_metrics:", err)
-		return
-	}
-	defer rows.Close()
-
-	var gitLinks []string
-	for rows.Next() {
-		var gitLink string
-		if err := rows.Scan(&gitLink); err != nil {
-			fmt.Println("Error scanning git_link:", err)
-			return
-		}
-		gitLinks = append(gitLinks, gitLink)
-	}
-	linkDepCountList := make(map[string]int)
-	typeList := getProjectTypeFromDB(db)
-	var wg sync.WaitGroup
-	var mu sync.Mutex
-	semaphore := make(chan struct{}, workerPoolSize)
-	for _, link := range gitLinks {
-		wg.Add(1)
-		semaphore <- struct{}{}
-		go func(link string) {
-			defer wg.Done()
-			defer func() { <-semaphore }()
-			var repo string
-			if strings.HasSuffix(link, ".git") {
-				result := strings.Split(strings.TrimSuffix(link, ".git"), "/")
-				repo = result[len(result)-1]
-			} else {
-				result := strings.Split(link, "/")
-				repo = result[len(result)-1]
-			}
-			projectType := typeList[link]
-			if projectType != "" {
-				var projectTypeList []string
-				var count int
-				if strings.Contains(projectType, " ") {
-					projectTypeList = strings.Fields(projectType)
-				} else {
-					projectTypeList = []string{projectType}
-				}
-				for _, types := range projectTypeList {
-					latestVersion := getLatestVersion(repo, types)
-					if latestVersion != "" {
-						count += queryDepsDev(link, types, repo, latestVersion)
-					}
-				}
-				mu.Lock()
-				linkDepCountList[link] = count
-				mu.Unlock()
-			}
-		}(link)
-	}
-	wg.Wait()
-	err = updateDatabase(db, linkDepCountList, batchSize)
-	if err != nil {
-		fmt.Printf("Error updating database: %v\n", err)
-		return
-	}
-	if err := rows.Err(); err != nil {
-		fmt.Println("Error reading rows:", err)
-	}
-}
-func getProjectTypeFromDB(db *sql.DB) map[string]string {
-	gitList := make(map[string]string)
-	rows, err := db.Query("SELECT git_link, ecosystem FROM git_metrics")
-	if err != nil {
-		fmt.Println("Error querying project type:", err)
-		return nil
-	}
-	for rows.Next() {
-		var projectType sql.NullString
-		var gitLink string
-		rows.Scan(&gitLink, &projectType)
-		if projectType.Valid {
-			gitList[gitLink] = projectType.String
-		}
-	}
-	return gitList
 }
 
 type VersionInfo struct {
@@ -201,17 +113,22 @@ func getLatestVersion(repo, projectType string) string {
 	return latestVersion
 }
 
-func queryDepsDev(link, projectType, projectName, version string) int{
+func queryDepsDev(projectType, projectName, version string) int {
 	url := fmt.Sprintf("https://api.deps.dev/v3alpha/systems/%s/packages/%s/versions/%s:dependents", projectType, projectName, version)
 	resp, err := http.Get(url)
 	if err != nil {
-		fmt.Println("Error querying deps.dev:", err)
-		return 0
+		version = getLatestVersion(projectName, projectType)
+		url = fmt.Sprintf("https://api.deps.dev/v3alpha/systems/%s/packages/%s/versions/%s:dependents", projectType, projectName, version)
+		resp, err = http.Get(url)
+		if err != nil {
+			fmt.Println("Error fetching package information:", err)
+			return 0
+		}
+		defer resp.Body.Close()
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		fmt.Println("Error: received non-200 response code")
 		return 0
 	}
 
@@ -223,7 +140,7 @@ func queryDepsDev(link, projectType, projectName, version string) int{
 	return info.DependentCount
 }
 
-func getGitlink(db *sql.DB)[]string {
+func getGitlink(db *sql.DB) []string {
 	rows, err := db.Query("SELECT git_link FROM git_metrics")
 	if err != nil {
 		fmt.Println("Error querying git_metrics:", err)
@@ -242,9 +159,9 @@ func getGitlink(db *sql.DB)[]string {
 	return gitLinks
 }
 
-func queryDepsName(gitlink string, rdb *redis.Client)(map[string][]string) {
+func queryDepsName(gitlink string, rdb *redis.Client) map[string][]string {
 	depMap := make(map[string][]string)
-	if strings.Contains(gitlink, ".git"){
+	if strings.Contains(gitlink, ".git") {
 		gitlink = strings.TrimSuffix(gitlink, ".git")
 	}
 	var repo, name string
@@ -260,7 +177,6 @@ func queryDepsName(gitlink string, rdb *redis.Client)(map[string][]string) {
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		fmt.Println("Error: received non-200 response code")
 		return depMap
 	}
 	var result DepsDevInfo
@@ -304,20 +220,47 @@ func Depsdev(configPath string, batchSize int, workerPoolSize int) {
 		return
 	}
 	defer db.Close()
-	// gitLinks := getGitlink(db)
-	gitLinks := []string{"https://github.com/facebook/react"}
+	gitLinks := getGitlink(db)
 	pkgMap := make(map[string][]string)
+	gitMap := make(map[string][]float64)
+	pkgDepMap := make(map[string]int)
 	for _, gitlink := range gitLinks {
 		depMap := queryDepsName(gitlink, rdb)
+		for pkgName, pkgInfo := range depMap {
+			pkgDepMap[pkgName] = queryDepsDev(pkgInfo[0], pkgName, pkgInfo[1])
+		}
 		pkgdepMap := fetchDep(depMap, workerPoolSize)
 		for pkgName, pkgInfo := range pkgdepMap {
 			pkgMap[pkgName] = pkgInfo
 		}
 		storage.PersistData(rdb)
 	}
-	fmt.Println("pkgMap:", pkgMap)
 	page_rank := calculatePageRank(pkgMap, 100, 0.85)
-	fmt.Println("PageRank:", page_rank)
+	var mu sync.Mutex
+	var wg sync.WaitGroup
+	semaphore := make(chan struct{}, workerPoolSize)
+	for pkgName := range pkgMap {
+		wg.Add(1)
+		semaphore <- struct{}{}
+		go func(pkgName string) {
+			defer wg.Done()
+			defer func() { <-semaphore }()
+			key, err := storage.GetKeyValue(rdb, pkgName)
+			if err != nil {
+				fmt.Println("Error getting key:", err)
+				return
+			}
+			mu.Lock()
+			if _, exists := gitMap[key]; !exists {
+				gitMap[key] = []float64{0.0, 0.0}
+			}
+			gitMap[key][0] += page_rank[pkgName]
+			gitMap[key][1] += float64(pkgDepMap[pkgName])
+			mu.Unlock()
+		}(pkgName)
+	}
+	wg.Wait()
+	updateDatabase(db, gitMap, batchSize)
 }
 
 type Node struct {
@@ -328,8 +271,8 @@ type Node struct {
 }
 
 type Edge struct {
-	FromNode   int    `json:"fromNode"`
-	ToNode     int    `json:"toNode"`
+	FromNode    int    `json:"fromNode"`
+	ToNode      int    `json:"toNode"`
 	Requirement string `json:"requirement"`
 }
 
@@ -346,7 +289,7 @@ type Version struct {
 }
 
 type PkgInfo struct {
-	VersionKey Version
+	VersionKey         Version
 	RelationType       string   `json:"relationType"`
 	RelationProvenance string   `json:"relationProvenance"`
 	SlsaProvenances    []string `json:"slsaProvenances"`
@@ -356,7 +299,8 @@ type PkgInfo struct {
 type DepsDevInfo struct {
 	Versions []PkgInfo `json:"versions"`
 }
-func fetchDep(depMap map[string][]string, threadnum int)map[string][]string{
+
+func fetchDep(depMap map[string][]string, threadnum int) map[string][]string {
 	depMapNew := make(map[string][]string)
 	var wg sync.WaitGroup
 	semaphore := make(chan struct{}, threadnum)
@@ -375,8 +319,8 @@ func fetchDep(depMap map[string][]string, threadnum int)map[string][]string{
 			mu.Lock()
 			depMapNew[name] = []string{}
 			for _, node := range result.Nodes {
-				if node.Relation == "direct" {
-					depMapNew[node.VersionKey.Name] = append(depMapNew[name], node.VersionKey.Name)
+				if node.Relation == "DIRECT" {
+					depMapNew[name] = append(depMapNew[name], node.VersionKey.Name)
 				}
 			}
 			mu.Unlock()
@@ -414,7 +358,7 @@ func calculatePageRank(pkgInfoMap map[string][]string, iterations int, dampingFa
 	return pageRank
 }
 
-func getAndProcessDependencies(system, name, version string) Dependencies{
+func getAndProcessDependencies(system, name, version string) Dependencies {
 	var result Dependencies
 	url := fmt.Sprintf("https://api.deps.dev/v3alpha/systems/%s/packages/%s/versions/%s:dependencies", system, name, version)
 	resp, err := http.Get(url)
@@ -434,10 +378,21 @@ func getAndProcessDependencies(system, name, version string) Dependencies{
 		}
 		defer resp.Body.Close()
 	}
-	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
-		fmt.Println("Error decoding response:", err)
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Println("Error reading response body:", err)
+		return result
+	}
+	cleanedBody := removeInvisibleChars(string(body))
+	err = json.Unmarshal([]byte(cleanedBody), &result)
+	if err != nil {
 		return result
 	}
 
 	return result
+}
+
+func removeInvisibleChars(input string) string {
+	re := regexp.MustCompile(`[[:cntrl:]]+`)
+	return re.ReplaceAllString(input, "")
 }

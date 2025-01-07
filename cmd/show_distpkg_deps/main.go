@@ -14,6 +14,7 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/fedora"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/centos"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/alpine"
+	"github.com/HUSTSecLab/criticality_score/pkg/collector/aur"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 )
 
@@ -53,5 +54,7 @@ func main() {
 		centos.Centos(*flagGenDot)
 	case "alpine":
 		alpine.Alpine(*flagGenDot)
+	case "aur":
+		aur.Aur(*flagGenDot)
 	}
 }

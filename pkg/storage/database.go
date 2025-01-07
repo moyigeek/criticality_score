@@ -1,14 +1,15 @@
 package storage
 
 import (
+	"context"
 	"database/sql"
 	"encoding/json"
 	"flag"
 	"fmt"
 	"os"
-	"context"
-	_ "github.com/lib/pq"
+
 	"github.com/go-redis/redis/v8"
+	_ "github.com/lib/pq"
 )
 
 var globalConfig Config
@@ -45,11 +46,11 @@ func InitializeDatabase(configPath string) error {
 	return nil
 }
 
-func InitRedis()(*redis.Client, error) {
+func InitRedis() (*redis.Client, error) {
 	rdb := redis.NewClient(&redis.Options{
 		Addr:     "localhost:6379",
 		Password: "",
-		DB:       0, 
+		DB:       0,
 	})
 	return rdb, nil
 }
@@ -85,7 +86,6 @@ func PersistData(rdb *redis.Client) error {
 	if err != nil {
 		return fmt.Errorf("could not trigger RDB save: %v", err)
 	}
-	fmt.Println("RDB persistence triggered")
 	return nil
 }
 
