@@ -15,8 +15,8 @@ var flagMaxThreads = flag.Int("maxThreads", 10, "max threads")
 
 func main() {
 	flag.Parse()
-	storage.InitializeDatabase(*flagConfigPath)
-	db, err := storage.GetDatabaseConnection()
+	storage.InitializeDefaultAppDatabase(*flagConfigPath)
+	db, err := storage.GetDefaultAppDatabaseConnection()
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}

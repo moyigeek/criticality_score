@@ -217,8 +217,8 @@ type GitMetrics struct {
 }
 
 func Depsdev(configPath string, batchSize int, workerPoolSize int, calculatePageRankFlag bool) {
-	storage.InitializeDatabase(configPath)
-	db, err := storage.GetDatabaseConnection()
+	storage.InitializeDefaultAppDatabase(configPath)
+	db, err := storage.GetDefaultAppDatabaseConnection()
 	rdb, _ := storage.InitRedis()
 	if err != nil {
 		fmt.Errorf("Error initializing database: %v\n", err)

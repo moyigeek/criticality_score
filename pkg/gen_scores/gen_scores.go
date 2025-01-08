@@ -107,7 +107,7 @@ func CalculaterepoCount(db *sql.DB) {
 
 func GetProjectTypeFromDB(link string) string {
 	var projectType string
-	db, err := storage.GetDatabaseConnection()
+	db, err := storage.GetDefaultAppDatabaseConnection()
 	if err != nil {
 		fmt.Println("Error initializing database:", err)
 		return ""

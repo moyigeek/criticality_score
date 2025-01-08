@@ -24,12 +24,12 @@ type RepoInfo struct {
 }
 
 func IndustryID(flagConfigPath string, url string, batchSize int, outputCsv string) {
-	err := storage.InitializeDatabase(flagConfigPath)
+	err := storage.InitializeDefaultAppDatabase(flagConfigPath)
 	if err != nil {
 		fmt.Printf("Error initializing database: %v\n", err)
 		return
 	}
-	db, _ := storage.GetDatabaseConnection()
+	db, _ := storage.GetDefaultAppDatabaseConnection()
 	if db == nil {
 		return
 	}

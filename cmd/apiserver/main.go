@@ -11,7 +11,7 @@ var flagConfigPath = flag.String("config", "config.json", "path to the config fi
 
 func main() {
 	flag.Parse()
-	storage.InitializeDatabase(*flagConfigPath)
+	storage.InitializeDefaultAppDatabase(*flagConfigPath)
 
 	server.RegisterService()
 	server.StartWebServer("0.0.0.0", 8080)

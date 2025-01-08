@@ -82,7 +82,7 @@ func main() {
 
 			wg.Wait()
 			storage.InitDatabase(configPath)
-			db, err := storage.GetDatabaseConnection()
+			db, err := storage.GetDefaultAppDatabaseConnection()
 			if err != nil {
 				log.Fatalf("Failed to connect to database: %v", err)
 			}

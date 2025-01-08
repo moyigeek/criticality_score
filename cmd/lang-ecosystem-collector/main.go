@@ -14,7 +14,7 @@ var calculatePageRank = flag.Bool("pagerank", false, "calculate page rank")
 
 func main() {
 	flag.Parse()
-	storage.InitializeDatabase(*flagConfigPath)
+	storage.InitializeDefaultAppDatabase(*flagConfigPath)
 
 	collector_depsdev.Depsdev(*flagConfigPath, *flagBatchSize, *workerCount, *calculatePageRank)
 }

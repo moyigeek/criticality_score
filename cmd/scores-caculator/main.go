@@ -15,8 +15,8 @@ var batchSize = flag.Int("batch", 1000, "batch size")
 
 func main() {
 	flag.Parse()
-	storage.InitializeDatabase(*flagConfigPath)
-	db, err := storage.GetDatabaseConnection()
+	storage.InitializeDefaultAppDatabase(*flagConfigPath)
+	db, err := storage.GetDefaultAppDatabaseConnection()
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}

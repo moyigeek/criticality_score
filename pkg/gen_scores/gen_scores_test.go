@@ -16,8 +16,8 @@ var flagConfigPath = flag.String("config", "config.json", "path to the config fi
 func TestCalculateScore(t *testing.T) {
 	fmt.Println("Testing CalculateScore")
 	flag.Parse()
-	storage.InitializeDatabase(*flagConfigPath)
-	db, err := storage.GetDatabaseConnection()
+	storage.InitializeDefaultAppDatabase(*flagConfigPath)
+	db, err := storage.GetDefaultAppDatabaseConnection()
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}

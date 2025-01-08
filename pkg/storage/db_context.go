@@ -104,7 +104,7 @@ func InitializeDefaultAppDatabase(configPath string) (AppDatabaseContext, error)
 }
 
 // Deprecated: Do not use global app database
-func GetDefaultDatabaseConnection() (*sql.DB, error) {
+func GetDefaultAppDatabaseConnection() (*sql.DB, error) {
 	if DefaultAppDatabase == nil {
 		return nil, fmt.Errorf("default app database is not initialized")
 	}
