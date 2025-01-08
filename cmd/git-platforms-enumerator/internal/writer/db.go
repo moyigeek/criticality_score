@@ -7,7 +7,6 @@ import (
 )
 
 type DatabaseWriter struct {
-	configPath  string
 	dbCtx       storage.AppDatabaseContext
 	repo        repositories.PlatformLinkRepository
 	tablePrefix string
@@ -16,9 +15,9 @@ type DatabaseWriter struct {
 	bufferSize int
 }
 
-func NewDatabaseWriter(configPath string, tablePrefix string) *DatabaseWriter {
+func NewDatabaseWriter(ctx storage.AppDatabaseContext, tablePrefix string) *DatabaseWriter {
 	return &DatabaseWriter{
-		configPath:  configPath,
+		dbCtx:       ctx,
 		tablePrefix: tablePrefix,
 		buffer:      make([]string, 0),
 		bufferSize:  1000,
@@ -27,16 +26,23 @@ func NewDatabaseWriter(configPath string, tablePrefix string) *DatabaseWriter {
 
 func (w *DatabaseWriter) Open() error {
 	repo := repositories.NewPlatformLinkRepository(w.dbCtx, repositories.PlatformLinkTablePrefix(w.tablePrefix))
-
+	w.repo = repo
 	return repo.ClearLinks()
 }
 
 func (w *DatabaseWriter) Close() error {
+	w.flush()
 	return nil
 }
 
 func (w *DatabaseWriter) flush() error {
-	return w.repo.BatchInsertLinks(w.buffer)
+	err := w.repo.BatchInsertLinks(w.buffer)
+	if err != nil {
+		logger.Error("Failed to insert links: %v", err)
+		return err
+	}
+	w.buffer = make([]string, 0)
+	return nil
 }
 
 func (w *DatabaseWriter) Write(url string) error {

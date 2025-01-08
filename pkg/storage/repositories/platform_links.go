@@ -60,7 +60,7 @@ func (r *platformLinkRepository) BatchInsertLinks(links []string) error {
 		return nil
 	}
 
-	query := fmt.Sprintf(`INSERT INTO %s (link) VALUES`, getPlatformTableName(r.Platform))
+	query := fmt.Sprintf(`INSERT INTO %s (git_link) VALUES`, getPlatformTableName(r.Platform))
 	args := make([]interface{}, 0, len(links))
 	for i, link := range links {
 		if i == 0 {

@@ -1,13 +1,14 @@
 package main
 
 import (
-	"flag"
 	"strings"
 	"time"
 
 	"github.com/HUSTSecLab/criticality_score/cmd/git-platforms-enumerator/internal/enumerator"
 	"github.com/HUSTSecLab/criticality_score/cmd/git-platforms-enumerator/internal/writer"
+	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	log "github.com/sirupsen/logrus"
+	"github.com/spf13/pflag"
 )
 
 // dateFlag implements the flag.Value interface to simplify the input and validation of
@@ -33,32 +34,37 @@ func (d *dateFlag) Time() time.Time {
 	return time.Time(*d)
 }
 
+func (d *dateFlag) Type() string {
+	return "date"
+}
+
 func main() {
 	// flags
 	var (
-		flagConfig      = flag.String("config", "", "path to the configuration file, when output type is db")
-		flagPlatforms   = flag.String("platforms", "", "comma separated list of platforms to enumerate")
-		flagOutputType  = flag.String("output", "stdout", "output type: allow stdout, file, db")
-		flagOutputFilev = flag.String("output-file", "", "output file")
-		flagJobs        = flag.Int("jobs", 10, "number of concurrent jobs")
-		flagTake        = flag.Int("take", 1000, "number of repositories to enumerate")
+		flagPlatforms   = pflag.String("platforms", "", "comma separated list of platforms to enumerate")
+		flagOutputType  = pflag.String("output", "stdout", "output type: allow stdout, file, db")
+		flagOutputFilev = pflag.String("output-file", "", "output file")
+		flagJobs        = pflag.IntP("jobs", "j", 10, "number of concurrent jobs")
+		flagTake        = pflag.Int("take", 1000, "number of repositories to enumerate, only for gitlab and bitbucket")
 	)
 
 	// github flags
 	var (
-		flagMinStars        = flag.Int("min-stars", 100, "minimum number of stars")
-		flagStarOverlap     = flag.Int("star-overlap", 5, "minimum number of stars overlap")
-		flagRequireMinStars = flag.Bool("require-min-stars", false, "require minimum number of stars")
-		flagQuery           = flag.String("query", "is:public", "sets the base query")
+		flagMinStars        = pflag.Int("min-stars", 100, "minimum number of stars")
+		flagStarOverlap     = pflag.Int("star-overlap", 5, "minimum number of stars overlap")
+		flagRequireMinStars = pflag.Bool("require-min-stars", false, "require minimum number of stars")
+		flagQuery           = pflag.String("query", "is:public", "sets the base query")
 		flagStartDate       = dateFlag(enumerator.GithubEpochDate)
 		flagEndDate         = dateFlag(time.Now().UTC().Truncate(time.Hour * 24))
 	)
 
-	flag.Var(&flagStartDate, "start-date", "start date for the search")
-	flag.Var(&flagEndDate, "end-date", "end date for the search")
-	flag.Parse()
+	pflag.StringP("config", "c", "", "path to the configuration file, when output type is db")
+	pflag.Var(&flagStartDate, "start-date", "start date for the search")
+	pflag.Var(&flagEndDate, "end-date", "end date for the search")
+	pflag.Parse()
 
-	configPath := *flagConfig
+	storage.BindDefaultConfigPath("config")
+
 	platforms := strings.Split(*flagPlatforms, ",")
 
 	for _, platform := range platforms {
@@ -95,7 +101,7 @@ func main() {
 		case "file":
 			w = writer.NewTextFileWriter(*flagOutputFilev)
 		case "db":
-			w = writer.NewDatabaseWriter(*&configPath, tablePrefix)
+			w = writer.NewDatabaseWriter(storage.GetDefaultAppDatabaseContext(), tablePrefix)
 		default:
 			panic("unknown output type")
 		}
@@ -107,7 +113,5 @@ func main() {
 		if err != nil {
 			log.WithError(err).Errorf("failed to enumerate %s", platform)
 		}
-
 	}
-
 }

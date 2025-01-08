@@ -10,6 +10,7 @@ import (
 
 type AppDatabaseContext interface {
 	GetConfig() Config
+	SetSQLLog(enable bool)
 	NewBatchExecContext(config *BatchExecContextConfig) BatchExecContext
 	GetDatabaseConnection() (*sql.DB, error)
 	Exec(query string, args ...interface{}) (sql.Result, error)
@@ -48,6 +49,10 @@ func (appDb *appDatabaseContext) ensureDatabaseConnection() error {
 
 func (appDb *appDatabaseContext) GetConfig() Config {
 	return appDb.config
+}
+
+func (appDb *appDatabaseContext) SetSQLLog(enable bool) {
+	appDb.enableSQLLog = enable
 }
 
 func (appDb *appDatabaseContext) NewBatchExecContext(config *BatchExecContextConfig) BatchExecContext {
