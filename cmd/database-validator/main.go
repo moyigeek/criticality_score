@@ -1,16 +1,18 @@
 package main
+
 import (
 	"flag"
 	"log"
 
+	checkvalid "github.com/HUSTSecLab/criticality_score/pkg/database-validator"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
-	"github.com/HUSTSecLab/criticality_score/pkg/checkvalid"
 )
 
 var flagConfigPath = flag.String("config", "config.json", "path to the config file")
 var outputFile = flag.String("output", "output.csv", "path to the output file")
 var checkCloneValid = flag.Bool("checkCloneValid", false, "check clone valid")
 var maxThreads = flag.Int("maxThreads", 10, "max threads")
+
 func main() {
 	flag.Parse()
 	storage.InitializeDatabase(*flagConfigPath)
