@@ -24,7 +24,7 @@ type RepoInfo struct {
 }
 
 func IndustryID(flagConfigPath string, url string, batchSize int, outputCsv string) {
-	err := storage.InitializeDefaultAppDatabase(flagConfigPath)
+	_, err := storage.InitializeDefaultAppDatabase(flagConfigPath)
 	if err != nil {
 		fmt.Printf("Error initializing database: %v\n", err)
 		return
@@ -42,7 +42,8 @@ func IndustryID(flagConfigPath string, url string, batchSize int, outputCsv stri
 	defer file.Close()
 	writer := csv.NewWriter(file)
 	gitlinks := fetchGitLink(db)
-	GitHubToken := storage.GetGlobalConfig().GitHubToken
+	config, err := storage.GetDefaultConfig()
+	GitHubToken := config.GitHubToken
 	gitIndustry := make(map[string]string)
 	for _, gitLink := range gitlinks {
 		repoInfo := fetchDesTopic(gitLink, GitHubToken)

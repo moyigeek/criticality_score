@@ -12,8 +12,19 @@ import (
 
 type GitMetricsFrom int
 
-type GitMetricsRepository struct {
-	AppDb *storage.AppDatabase
+type GitMetricsRepository interface {
+	GetGitMetricsByLinkIncludingDeleted(gitLink string) (*GitMetrics, error)
+	GetGitMetricsByLink(gitLink string) (*GitMetrics, error)
+	UpdateGitMetrics(data *GitMetrics) error
+	DeleteGitMetricsByLink(gitLink string) error
+	BatchInsertGitMetrics(data []*GitMetrics) error
+	BatchDeleteGitMetricsByLink(data []string) error
+	GetEmptyGitLinks() ([]string, error)
+	GetNeedUpdateGitLinks(olderThan time.Time, updateType GitLinkUpdateType) ([]string, error)
+}
+
+type gitmetricsRepository struct {
+	appDb storage.AppDatabaseContext
 }
 
 // const (
@@ -49,12 +60,12 @@ type GitMetrics struct {
 	UpdateTime             *time.Time `column:"update_time"`
 }
 
-func NewGitMetricsRepository(appDb *storage.AppDatabase) *GitMetricsRepository {
-	return &GitMetricsRepository{AppDb: appDb}
+func NewGitMetricsRepository(appDb storage.AppDatabaseContext) *gitmetricsRepository {
+	return &gitmetricsRepository{appDb: appDb}
 }
 
-func (r *GitMetricsRepository) GetGitMetricsByLinkIncludingDeleted(gitLink string) (*GitMetrics, error) {
-	rows, err := getDataFromTable[GitMetrics](r.AppDb, "git_metrics_history", "WHERE git_link = $1 ORDER BY id DESC LIMIT 1", gitLink)
+func (r *gitmetricsRepository) GetGitMetricsByLinkIncludingDeleted(gitLink string) (*GitMetrics, error) {
+	rows, err := getDataFromTable[GitMetrics](r.appDb, "git_metrics_history", "WHERE git_link = $1 ORDER BY id DESC LIMIT 1", gitLink)
 	if err != nil {
 		return nil, err
 	}
@@ -62,8 +73,8 @@ func (r *GitMetricsRepository) GetGitMetricsByLinkIncludingDeleted(gitLink strin
 	return rows.Next()
 }
 
-func (r *GitMetricsRepository) GetGitMetricsByLink(gitLink string) (*GitMetrics, error) {
-	rows, err := getDataFromTable[GitMetrics](r.AppDb, "git_metrics_history", "WHERE git_link = $1 and is_deleted = FALSE ORDER BY id DESC LIMIT 1", gitLink)
+func (r *gitmetricsRepository) GetGitMetricsByLink(gitLink string) (*GitMetrics, error) {
+	rows, err := getDataFromTable[GitMetrics](r.appDb, "git_metrics_history", "WHERE git_link = $1 and is_deleted = FALSE ORDER BY id DESC LIMIT 1", gitLink)
 	if err != nil {
 		return nil, err
 	}
@@ -71,7 +82,7 @@ func (r *GitMetricsRepository) GetGitMetricsByLink(gitLink string) (*GitMetrics,
 	return rows.Next()
 }
 
-func (r *GitMetricsRepository) UpdateGitMetrics(data *GitMetrics) error {
+func (r *gitmetricsRepository) UpdateGitMetrics(data *GitMetrics) error {
 	if data.GitLink == nil {
 		return fmt.Errorf("GitLink is required")
 	}
@@ -116,10 +127,10 @@ func (r *GitMetricsRepository) UpdateGitMetrics(data *GitMetrics) error {
 	data.UpdateTime = &t
 	data.SeqId = nil
 
-	return insertDataIntoTable(r.AppDb, "git_metrics_history", data)
+	return insertDataIntoTable(r.appDb, "git_metrics_history", data)
 }
 
-func (r *GitMetricsRepository) DeleteGitMetricsByLink(gitLink string) error {
+func (r *gitmetricsRepository) DeleteGitMetricsByLink(gitLink string) error {
 	link, _ := r.GetGitMetricsByLink(gitLink)
 	if link == nil {
 		return fmt.Errorf("GitMetrics not found")
@@ -127,18 +138,18 @@ func (r *GitMetricsRepository) DeleteGitMetricsByLink(gitLink string) error {
 
 	*link.IsDeleted = true
 	link.SeqId = nil
-	return insertDataIntoTable(r.AppDb, "git_metrics_history", link)
+	return insertDataIntoTable(r.appDb, "git_metrics_history", link)
 }
 
-func (r *GitMetricsRepository) BatchInsertGitMetrics(data []*GitMetrics) error {
+func (r *gitmetricsRepository) BatchInsertGitMetrics(data []*GitMetrics) error {
 	for _, d := range data {
 		d.SeqId = nil
 	}
-	return batchInsertDataIntoTable(r.AppDb, "git_metrics_history", data)
+	return batchInsertDataIntoTable(r.appDb, "git_metrics_history", data)
 }
 
 // NOTE: this function will not examine whether the data exists
-func (r *GitMetricsRepository) BatchDeleteGitMetricsByLink(data []string) error {
+func (r *gitmetricsRepository) BatchDeleteGitMetricsByLink(data []string) error {
 	toDelete := make([]*GitMetrics, 0)
 	for _, d := range data {
 		toDelete = append(toDelete, &GitMetrics{GitLink: &d, IsDeleted: lo.ToPtr(true)})
@@ -152,11 +163,11 @@ const (
 	GitMetricsNeedUpdate GitLinkUpdateType = iota
 )
 
-func (r *GitMetricsRepository) GetEmptyGitLinks() ([]string, error) {
+func (r *gitmetricsRepository) GetEmptyGitLinks() ([]string, error) {
 	return nil, fmt.Errorf("not implemented")
 }
 
-func (r *GitMetricsRepository) GetNeedUpdateGitLinks(olderThan time.Time, updateType GitLinkUpdateType) ([]string, error) {
+func (r *gitmetricsRepository) GetNeedUpdateGitLinks(olderThan time.Time, updateType GitLinkUpdateType) ([]string, error) {
 	return nil, fmt.Errorf("not implemented")
 
 }

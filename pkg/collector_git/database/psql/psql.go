@@ -17,7 +17,11 @@ import (
 )
 
 func InitDBFromStorageConfig() (*gorm.DB, error) {
-	config := storage.GetGlobalConfig()
+	config, err := storage.GetDefaultConfig()
+
+	if err != nil {
+		return nil, err
+	}
 
 	dsn := fmt.Sprintf(
 		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
