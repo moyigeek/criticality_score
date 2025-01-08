@@ -4,7 +4,7 @@ import (
 	"flag"
 	"log"
 
-	"github.com/HUSTSecLab/criticality_score/pkg/gitmetricsync"
+	"github.com/HUSTSecLab/criticality_score/cmd/git-metrics-sync/internal/gmsync"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 )
 
@@ -16,7 +16,7 @@ func main() {
 	storage.InitializeDefaultAppDatabase(*flagConfigPath)
 
 	log.Println("Starting synchronization...")
-	gitmetricsync.Run()
+	gmsync.Run()
 	log.Println("Synchronization complete.")
-	gitmetricsync.Union_repo(*batchSize)
+	gmsync.Union_repo(*batchSize)
 }
