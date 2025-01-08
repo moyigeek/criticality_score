@@ -101,7 +101,7 @@ func getMetrics(request *restful.Request, response *restful.Response) {
 		org_count,
 		commit_frequency,
 		depsdev_count,
-		deps_distro,
+		dist_impact,
 		license,
 		language,
 		CASE WHEN industry IS NULL

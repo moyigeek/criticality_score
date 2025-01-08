@@ -23,7 +23,7 @@ type DepInfo struct {
 	Version     string
 	Description string
 	Homepage    string
-	PageRank   float64
+	PageRank    float64
 }
 
 func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
@@ -84,17 +84,16 @@ func getDecompressedFile(path string) string {
 	file := getMirrorFile(path)
 	reader, _ := gzip.NewReader(strings.NewReader(string(file)))
 	defer reader.Close()
-
 	decompressed, _ := ioutil.ReadAll(reader)
 	return string(decompressed)
 }
 
-func getPackageList() string {
-	return getDecompressedFile("dists/apricot/main/binary-amd64/Packages.gz")
+func getBeigePackageList() string {
+	return getDecompressedFile("beige/dists/beige/main/binary-amd64/Packages.gz")
 }
 
 func parseList() map[string]map[string]interface{} {
-	content := getPackageList()
+	content := getBeigePackageList()
 	lists := strings.Split(content, "\n\n")
 	packages := make(map[string]map[string]interface{})
 
@@ -363,7 +362,7 @@ type PackageInfo struct {
 	DependsCount int
 	Description  string
 	Homepage     string
-	Version		 string
+	Version      string
 	PageRank     float64
 }
 

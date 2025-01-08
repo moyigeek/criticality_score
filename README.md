@@ -72,14 +72,14 @@ We have established a model that includes three dimensions:
 2. **Distribution Dependencies**:
     | **Metric**           | **Description**                                                             | **Reasoning**                                                                          | **Threshold**  | **Weight**   |
     |----------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------|----------------|--------------|
-    | deps_distro          | Indicates how widely the project is relied upon in different software distributions, showing its production use and stability. | Broad use in distributions highlights the project’s practical utility and reliability. | 1              | 5          |
+    | dist_impact          | Indicates how widely the project is relied upon in different software distributions, showing its production use and stability. | Broad use in distributions highlights the project’s practical utility and reliability. | 1              | 5          |
     | pagerank             | Calculated by the proportion of dependencies in each distribution and the corresponding package's PageRank score. | Higher PageRank in distributions indicates greater importance and influence.           | 1              | 5          |
     | default_install      | Indicates whether the project is included by default in the installation of some distributions (1 if included, 0 if not). **TODO**: Further details on the default installation metric will be provided. | Default inclusion in installations signifies the project's essential role and reliability. | 1              | 2.5        |
 
 3. **Language Ecosystem (npm, pypi)**:
     | **Metric**           | **Description**                                                             | **Reasoning**                                                                          | **Threshold**  | **Weight**   |
     |----------------------|-----------------------------------------------------------------------------|---------------------------------------------------------------------------------------|----------------|--------------|
-    | deps_distro          | Calculated by the proportion of dependencies in the language ecosystem, showing its importance in the development ecosystem. | Projects with more dependencies are critical to the development ecosystem.            | 1            | 5          |
+    | dist_impact          | Calculated by the proportion of dependencies in the language ecosystem, showing its importance in the development ecosystem. | Projects with more dependencies are critical to the development ecosystem.            | 1            | 5          |
     | pagerank             | Importance of each package in the dependency graph; we use the PageRank algorithm to calculate this metric. **TODO**: Further details on the PageRank calculation will be provided. | Projects with higher PageRank are more critical in the ecosystem.                     | 1            | 5        |
 
 

@@ -13,10 +13,10 @@ import (
 	"strings"
 	"sync"
 
-	collector "github.com/HUSTSecLab/criticality_score/internal/collector"
-	"github.com/HUSTSecLab/criticality_score/internal/logger"
-	git "github.com/HUSTSecLab/criticality_score/internal/parser/git"
-	url "github.com/HUSTSecLab/criticality_score/internal/parser/url"
+	collector "github.com/HUSTSecLab/criticality_score/pkg/collector_git/collector"
+	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/logger"
+	git "github.com/HUSTSecLab/criticality_score/pkg/collector_git/parser/git"
+	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/parser/url"
 	scores "github.com/HUSTSecLab/criticality_score/pkg/gen_scores"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	"github.com/bytedance/gopkg/util/gopool"
@@ -100,17 +100,17 @@ func main() {
 					Pkg_Manager:      &repo.Ecosystems,
 					DepsdevCount:     &depsdev_count,
 				}
-				linkCount := make(map[string]map[string]int)
+				linkCount := make(map[string]map[string]scores.PackageData)
 				scores.CalculaterepoCount(db)
 				for pkg := range scores.PackageList {
-					linkCount[pkg] = make(map[string]int)
+					linkCount[pkg] = make(map[string]scores.PackageData)
 					count := scores.FetchdLinkCountSingle(pkg, repo.URL, db)
 					linkCount[pkg][strings.ToLower(repo.URL)] = count
 				}
-				deps_distro := scores.CalculateDepsdistro(repo.URL, linkCount)
-				score := scores.CalculateScore(projectData, deps_distro)
+				dist_impact, pagerank := scores.CalculateDepsdistro(repo.URL, linkCount)
+				score := scores.CalculateScore(projectData, scores.LinkScore{DistroScores: dist_impact, PageRank: pagerank})
 				if updateDB {
-					err = updateGitMetrics(db, repo, score, deps_distro)
+					err = updateGitMetrics(db, repo, score, dist_impact)
 					if err != nil {
 						logger.Fatal(err)
 					}
@@ -125,12 +125,13 @@ func main() {
 }
 func updateGitMetrics(db *sql.DB, repo *git.Repo, score float64, depsDistro float64) error {
 	query := `
-		UPDATE git_metrics 
-		SET created_since = $1, updated_since = $2, contributor_count = $3, commit_frequency = $4, org_count = $5, scores = $6, deps_distro = $7
-		WHERE git_link = $8
-	`
+		 UPDATE git_metrics 
+		 SET created_since = $1, updated_since = $2, contributor_count = $3, commit_frequency = $4, org_count = $5, scores = $6, dist_impact = $7
+		 WHERE git_link = $8
+	 `
 	_, err := db.Exec(query, repo.CreatedSince, repo.UpdatedSince, repo.ContributorCount, repo.CommitFrequency, repo.OrgCount, score, depsDistro, repo.URL)
 	if err != nil {
+		fmt.Print(err)
 		return err
 	}
 	return nil
@@ -138,10 +139,13 @@ func updateGitMetrics(db *sql.DB, repo *git.Repo, score float64, depsDistro floa
 
 func FetchDepsdev(db *sql.DB, git_link string) int {
 	query := fmt.Sprintf("SELECT depsdev_count FROM git_metrics WHERE git_link = '%s'", git_link)
-	var depsdev_count int
+	var depsdev_count sql.NullInt64
 	err := db.QueryRow(query).Scan(&depsdev_count)
 	if err != nil {
 		log.Fatal(err)
 	}
-	return depsdev_count
+	if !depsdev_count.Valid {
+		return 0
+	}
+	return int(depsdev_count.Int64)
 }

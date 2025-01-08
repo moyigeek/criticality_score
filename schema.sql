@@ -37,7 +37,7 @@ create table if not exists public.git_metrics
     contributor_count integer          default 0,
     commit_frequency  double precision default 0,
     depsdev_count     integer          default 0,
-    deps_distro       double precision default 0,
+    dist_impact       double precision default 0,
     scores            double precision default 0,
     org_count         integer          default 0,
     _name             varchar(255),

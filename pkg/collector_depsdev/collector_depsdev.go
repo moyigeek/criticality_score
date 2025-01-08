@@ -25,10 +25,10 @@ type DependentInfo struct {
 	IndirectDependentCount int `json:"indirectDependentCount"`
 }
 
-func updateDatabase(db *sql.DB, linkDepCountList map[string][]float64, batchSize int) error {
+func updateDatabase(db *sql.DB, linkDepCountList map[string]GitMetrics, batchSize int) error {
 	var linkDepList [][]string
-	for link, counts := range linkDepCountList {
-		linkDepList = append(linkDepList, []string{link, fmt.Sprintf("%d", int(counts[1])), fmt.Sprintf("%f", counts[0])})
+	for link, metrics := range linkDepCountList {
+		linkDepList = append(linkDepList, []string{link, fmt.Sprintf("%f", metrics.LangEcoImpact), fmt.Sprintf("%f", metrics.LangEcoPageRank)})
 	}
 	for i := 0; i < len(linkDepList); i += batchSize {
 		end := i + batchSize
@@ -39,12 +39,12 @@ func updateDatabase(db *sql.DB, linkDepCountList map[string][]float64, batchSize
 		query := "UPDATE git_metrics SET depsdev_count = CASE"
 		args := []interface{}{}
 		for j, link := range batch {
-			depsdevCount, _ := strconv.Atoi(link[1])
+			depsdevCount, _ := strconv.ParseFloat(link[1], 64)
 			depsdevPagerank, _ := strconv.ParseFloat(link[2], 64)
-			query += fmt.Sprintf(" WHEN git_link = $%d THEN $%d::Int", j*3+1, j*3+2)
+			query += fmt.Sprintf(" WHEN git_link = $%d THEN $%d::Float8", j*3+1, j*3+2)
 			args = append(args, link[0], depsdevCount, depsdevPagerank)
 		}
-		query += " END, depsdev_pagerank = CASE"
+		query += " END, lang_eco_pagerank = CASE"
 		for j, _ := range batch {
 			query += fmt.Sprintf(" WHEN git_link = $%d THEN $%d::Float8", j*3+1, j*3+3)
 		}
@@ -211,7 +211,12 @@ func queryDepsName(gitlink string, rdb *redis.Client) map[string][]string {
 	return depMap
 }
 
-func Depsdev(configPath string, batchSize int, workerPoolSize int) {
+type GitMetrics struct {
+	LangEcoImpact   float64
+	LangEcoPageRank float64
+}
+
+func Depsdev(configPath string, batchSize int, workerPoolSize int, calculatePageRankFlag bool) {
 	storage.InitializeDatabase(configPath)
 	db, err := storage.GetDatabaseConnection()
 	rdb, _ := storage.InitRedis()
@@ -222,20 +227,30 @@ func Depsdev(configPath string, batchSize int, workerPoolSize int) {
 	defer db.Close()
 	gitLinks := getGitlink(db)
 	pkgMap := make(map[string][]string)
-	gitMap := make(map[string][]float64)
+	gitMap := make(map[string]GitMetrics)
 	pkgDepMap := make(map[string]int)
 	for _, gitlink := range gitLinks {
 		depMap := queryDepsName(gitlink, rdb)
 		for pkgName, pkgInfo := range depMap {
 			pkgDepMap[pkgName] = queryDepsDev(pkgInfo[0], pkgName, pkgInfo[1])
 		}
-		pkgdepMap := fetchDep(depMap, workerPoolSize)
-		for pkgName, pkgInfo := range pkgdepMap {
-			pkgMap[pkgName] = pkgInfo
+		if calculatePageRankFlag {
+			pkgdepMap := fetchDep(depMap, workerPoolSize)
+			for pkgName, pkgInfo := range pkgdepMap {
+				pkgMap[pkgName] = pkgInfo
+			}
+			storage.PersistData(rdb)
 		}
-		storage.PersistData(rdb)
 	}
-	page_rank := calculatePageRank(pkgMap, 100, 0.85)
+	var pageRank map[string]float64
+	if calculatePageRankFlag {
+		pageRank = calculatePageRank(pkgMap, 100, 0.85)
+	} else {
+		pageRank = make(map[string]float64)
+		for pkgName := range pkgMap {
+			pageRank[pkgName] = 0.0
+		}
+	}
 	var mu sync.Mutex
 	var wg sync.WaitGroup
 	semaphore := make(chan struct{}, workerPoolSize)
@@ -252,10 +267,12 @@ func Depsdev(configPath string, batchSize int, workerPoolSize int) {
 			}
 			mu.Lock()
 			if _, exists := gitMap[key]; !exists {
-				gitMap[key] = []float64{0.0, 0.0}
+				gitMap[key] = GitMetrics{0.0, 0.0}
 			}
-			gitMap[key][0] += page_rank[pkgName]
-			gitMap[key][1] += float64(pkgDepMap[pkgName])
+			gitMap[key] = GitMetrics{
+				LangEcoImpact:   gitMap[key].LangEcoImpact + float64(pkgDepMap[pkgName]),
+				LangEcoPageRank: gitMap[key].LangEcoPageRank + pageRank[pkgName],
+			}
 			mu.Unlock()
 		}(pkgName)
 	}
