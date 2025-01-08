@@ -12,7 +12,8 @@ BIN_DIR=./bin
 # foreach dir in cmd/*/main.go, set * as the target
 # APPS = $(patsubst cmd/%/main.go,%,$(wildcard cmd/**/*/main.go))
 APP_ENTRIES = $(wildcard cmd/*/main.go) $(wildcard cmd/*/*/main.go)
-APPS = $(patsubst cmd/%/main.go,%,$(APP_ENTRIES))
+APPS_ALL = $(patsubst cmd/%/main.go,%,$(APP_ENTRIES))
+APPS = $(filter-out archives/%,$(APPS_ALL))
 
 # $(info $(APPS))
 
@@ -31,7 +32,7 @@ fmt:
 
 clean:
 	$(GOCLEAN)
-	rm -f $(BIN_DIR)/*
+	rm -rf $(BIN_DIR)
 
 test:
 	$(GOTEST) -v ./...
