@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/HUSTSecLab/criticality_score/pkg/package_calculator"
+	"github.com/HUSTSecLab/criticality_score/cmd/archives/package_calculator/internal/package_calculator"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 )
 
