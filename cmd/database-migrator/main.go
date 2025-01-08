@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"os"
 	"regexp"
@@ -9,22 +8,20 @@ import (
 	"time"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
+	"github.com/spf13/pflag"
 )
 
 func main() {
-	flagConfigPath := flag.String("config", "", "config file path")
-	flag.Parse()
+	flagConfigPath := pflag.StringP("config", "c", "", "config file path")
+	pflag.Parse()
+	storage.BindDefaultConfigPath("config")
 
 	if *flagConfigPath == "" {
 		fmt.Println("Please provide config file path, use -h for help")
 		return
 	}
 
-	appDb, err := storage.NewAppDatabase(*flagConfigPath)
-
-	if err != nil {
-		panic(err)
-	}
+	ctx := storage.GetDefaultAppDatabaseContext()
 
 	result, err := os.ReadDir("migrations")
 	if err != nil {
@@ -77,7 +74,7 @@ func main() {
 		fmt.Printf("  %s (%s) in `%s`\n", migration.Version, migration.Name, migration.FileName)
 	}
 
-	dbResult, err := appDb.Query("SELECT version FROM _migrations_history ORDER BY id DESC LIMIT 1")
+	dbResult, err := ctx.Query("SELECT version FROM _migrations_history ORDER BY id DESC LIMIT 1")
 
 	var lastVersion string = ""
 
@@ -132,13 +129,13 @@ func main() {
 			return
 		}
 
-		_, err = appDb.Exec(string(file))
+		_, err = ctx.Exec(string(file))
 		if err != nil {
 			fmt.Printf("Failed to execute migration: %v\n", err)
 			return
 		}
 
-		_, err = appDb.Exec("INSERT INTO _migrations_history (version, name, time) VALUES ($1, $2, $3)", migration.Version, migration.Name, time.Now())
+		_, err = ctx.Exec("INSERT INTO _migrations_history (version, name, time) VALUES ($1, $2, $3)", migration.Version, migration.Name, time.Now())
 
 		if err != nil {
 			fmt.Printf("Failed to update migration history: %v\n", err)
