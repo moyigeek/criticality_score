@@ -4,7 +4,7 @@ import (
 	"flag"
 	"strings"
 
-	"github.com/HUSTSecLab/criticality_score/pkg/llm-invoker"
+	"github.com/HUSTSecLab/criticality_score/pkg/llm"
 )
 
 var flagConfigPath = flag.String("config", "config.json", "path to the config file")
