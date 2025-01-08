@@ -10,8 +10,8 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/collector"
-	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/parser/url"
+	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/collector"
+	url "github.com/HUSTSecLab/criticality_score/pkg/gitfile/parser/url"
 
 	"github.com/stretchr/testify/require"
 )

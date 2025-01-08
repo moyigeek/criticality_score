@@ -9,10 +9,10 @@ import (
 	"fmt"
 	"os"
 
-	config "github.com/HUSTSecLab/criticality_score/pkg/collector_git/config"
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/logger"
-	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/parser/url"
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/utils"
+	config "github.com/HUSTSecLab/criticality_score/pkg/gitfile/config"
+	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/logger"
+	url "github.com/HUSTSecLab/criticality_score/pkg/gitfile/parser/url"
+	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/utils"
 
 	"github.com/go-git/go-git/v5"
 )

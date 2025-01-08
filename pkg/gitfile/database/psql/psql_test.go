@@ -1,19 +1,19 @@
 /*
  * @Author: 7erry
  * @Date: 2024-10-18 20:26:31
- * @LastEditTime: 2025-01-07 19:03:45
+ * @LastEditTime: 2025-01-07 19:07:13
  * @Description:
  */
-package sqlite
+package psql
 
 import (
 	"strconv"
 	"testing"
 
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/collector"
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/database"
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/parser/git"
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/parser/url"
+	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/collector"
+	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/database"
+	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/parser/git"
+	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/parser/url"
 )
 
 func TestInsertTable(t *testing.T) {

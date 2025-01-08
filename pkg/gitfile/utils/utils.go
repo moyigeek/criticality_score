@@ -4,7 +4,7 @@ import (
 	"encoding/csv"
 	"os"
 
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/config"
+	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/config"
 )
 
 func GetCSVInput(path string) ([][]string, error) {

@@ -8,8 +8,8 @@ package sqlite
 import (
 	"fmt"
 
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/config"
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/database"
+	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/config"
+	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/database"
 
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"

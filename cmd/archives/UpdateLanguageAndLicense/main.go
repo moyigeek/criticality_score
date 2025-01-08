@@ -6,11 +6,11 @@ import (
 	"log"
 	"sync"
 
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/collector"
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/config"
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/logger"
-	git "github.com/HUSTSecLab/criticality_score/pkg/collector_git/parser/git"
-	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/parser/url"
+	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/collector"
+	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/config"
+	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/logger"
+	git "github.com/HUSTSecLab/criticality_score/pkg/gitfile/parser/git"
+	url "github.com/HUSTSecLab/criticality_score/pkg/gitfile/parser/url"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	"github.com/bytedance/gopkg/util/gopool"
 )

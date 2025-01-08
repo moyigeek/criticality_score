@@ -8,7 +8,7 @@ package database
 import (
 	"time"
 
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/parser/git"
+	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/parser/git"
 )
 
 const (

@@ -9,7 +9,7 @@ package collector
 import (
 	"testing"
 
-	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/parser/url"
+	url "github.com/HUSTSecLab/criticality_score/pkg/gitfile/parser/url"
 	"github.com/stretchr/testify/require"
 )
 
