@@ -2,7 +2,8 @@ package main
 
 import (
 	"flag"
-	"github.com/HUSTSecLab/criticality_score/pkg/apiserver"
+
+	"github.com/HUSTSecLab/criticality_score/cmd/apiserver/internal/server"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 )
 
@@ -12,6 +13,6 @@ func main() {
 	flag.Parse()
 	storage.InitializeDatabase(*flagConfigPath)
 
-	apiserver.RegisterService()
-	apiserver.StartWebServer("0.0.0.0", 8080)
+	server.RegisterService()
+	server.StartWebServer("0.0.0.0", 8080)
 }
