@@ -63,7 +63,7 @@ func TestUpdateIdxBatch(t *testing.T) {
 		WithArgs("https://gitlink1.com", "industry1", "https://gitlink2.com", "industry2").
 		WillReturnResult(sqlmock.NewResult(1, 2))
 
-	err = UpdateIdxBatch(db, batchSize, gitIndustry)
+	err = llm.UpdateIdxBatch(db, batchSize, gitIndustry)
 
 	if err := mock.ExpectationsWereMet(); err != nil {
 		t.Errorf("there were unmet expectations: %v", err)
