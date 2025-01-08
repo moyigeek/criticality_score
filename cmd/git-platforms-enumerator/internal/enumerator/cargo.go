@@ -2,12 +2,11 @@ package enumerator
 
 import (
 	"fmt"
-	"os"
 	"sync"
 	"time"
 
 	"github.com/HUSTSecLab/criticality_score/cmd/git-platforms-enumerator/internal/api"
-	"github.com/HUSTSecLab/criticality_score/cmd/git-platforms-enumerator/internal/config"
+	"github.com/HUSTSecLab/criticality_score/pkg/logger"
 	"github.com/bytedance/gopkg/util/gopool"
 	"github.com/sirupsen/logrus"
 )
@@ -28,14 +27,14 @@ func (c *enumeratorBase) EnumerateCargo() {
 				"per_page", api.PER_PAGE,
 				"page", page,
 			)
-			res, err := c.fetch(u)
+			_, err := c.fetch(u)
 			if err != nil {
 				logrus.Panic("Cargo", err)
 			}
-			data := res.Bytes()
-			err = os.WriteFile(config.OUTPUT_DIR+config.CRATES_IO_OUTPUT_FILEPATH, data, 0644)
+			// _ := res.Bytes()
+			// err = os.WriteFile(config.OUTPUT_DIR+config.CRATES_IO_OUTPUT_FILEPATH, data, 0644)
 			if err != nil {
-				logrus.Panic("Cargo", err)
+				logger.Panic("Cargo", err)
 			}
 		})
 	}
