@@ -6,8 +6,6 @@
 
 Criticality Score 项目旨在基于开源项目在开源生态系统中的关键性和下载量开展关键开源项目评估和排名。与仅依赖 GitHub 指标的传统方法不同，该项目结合了来自各种 Linux 发行版的数据，以提供更全面的分析。
 
-This project aims to evaluate and rank open-source projects based on their criticality within the open source ecosystem and download volume. Unlike traditional methods that rely solely on GitHub metrics, this project incorporates data from various Linux distributions and more code hosting platforms to provide a more comprehensive analysis.
-
 通过收集和分析来自多个来源的指标，该项目提供了一个评估开源项目关键性的强大和全面的框架。
 
 ## 与 [ossf/criticality_score](https://github.com/ossf/criticality_score) 的区别
