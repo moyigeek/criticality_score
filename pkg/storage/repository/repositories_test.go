@@ -1,4 +1,4 @@
-package repositories_test
+package repository_test
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
-	"github.com/HUSTSecLab/criticality_score/pkg/storage/repositories"
+	"github.com/HUSTSecLab/criticality_score/pkg/storage/repository"
 	"github.com/samber/lo"
 )
 
@@ -18,13 +18,13 @@ func TestGithubInsert(t *testing.T) {
 		t.Fatalf("failed to create db: %v", err)
 	}
 
-	repo := repositories.NewGitMetricsRepository(db)
+	repo := repository.NewGitMetricsRepository(db)
 
 	var error error
 
 	url := "https://github.com/neovim/neovim"
 
-	error = repo.InsertOrUpdateGitMetrics(&repositories.GitMetrics{
+	error = repo.InsertOrUpdateGitMetrics(&repository.GitMetrics{
 		GitLink:      lo.ToPtr(url),
 		CreatedSince: lo.ToPtr(time.Now()),
 	})
@@ -35,7 +35,7 @@ func TestGithubInsert(t *testing.T) {
 
 	testTime, _ := time.Parse("2006-01-02", "2021-01-01")
 
-	error = repo.InsertOrUpdateGitMetrics(&repositories.GitMetrics{
+	error = repo.InsertOrUpdateGitMetrics(&repository.GitMetrics{
 		GitLink:         lo.ToPtr(url),
 		CreatedSince:    lo.ToPtr(testTime),
 		CommitFrequency: lo.ToPtr(123.0),
@@ -63,7 +63,7 @@ func TestGithubQuery(t *testing.T) {
 		t.Fatalf("failed to create db: %v", err)
 	}
 
-	repo := repositories.NewGitMetricsRepository(db)
+	repo := repository.NewGitMetricsRepository(db)
 
 	url := "https://github.com/neovim/neovim"
 

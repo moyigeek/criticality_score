@@ -3,12 +3,12 @@ package writer
 import (
 	"github.com/HUSTSecLab/criticality_score/pkg/logger"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
-	"github.com/HUSTSecLab/criticality_score/pkg/storage/repositories"
+	"github.com/HUSTSecLab/criticality_score/pkg/storage/repository"
 )
 
 type DatabaseWriter struct {
 	dbCtx       storage.AppDatabaseContext
-	repo        repositories.PlatformLinkRepository
+	repo        repository.PlatformLinkRepository
 	tablePrefix string
 
 	buffer     []string
@@ -25,7 +25,7 @@ func NewDatabaseWriter(ctx storage.AppDatabaseContext, tablePrefix string) *Data
 }
 
 func (w *DatabaseWriter) Open() error {
-	repo := repositories.NewPlatformLinkRepository(w.dbCtx, repositories.PlatformLinkTablePrefix(w.tablePrefix))
+	repo := repository.NewPlatformLinkRepository(w.dbCtx, repository.PlatformLinkTablePrefix(w.tablePrefix))
 	w.repo = repo
 	return repo.ClearLinks()
 }
