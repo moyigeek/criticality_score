@@ -1,23 +1,24 @@
 package checkvalid
+
 import (
 	"database/sql"
 	"encoding/csv"
 	"os"
-	"time"
-	"strings"
 	"os/exec"
+	"strings"
 	"sync"
+	"time"
 )
 
 type Metrics struct {
-	CreatedSince     time.Time
-	UpdatedSince     time.Time
-	Score        	 float64
+	CreatedSince time.Time
+	UpdatedSince time.Time
+	Score        float64
 }
 
 var repoList = []string{"debian_packages", "arch_packages", "gentoo_packages", "nix_packages", "homebrew_packages"}
 
-func fetchDistroGitlink(gitlink *sql.DB, repo string)[]string{
+func fetchDistroGitlink(gitlink *sql.DB, repo string) []string {
 	query := "SELECT git_link FROM " + repo
 	rows, err := gitlink.Query(query)
 	if err != nil {
@@ -38,7 +39,7 @@ func fetchDistroGitlink(gitlink *sql.DB, repo string)[]string{
 	return gitLinks
 }
 
-func checkDistroValid(gitlink *sql.DB, repo string)[][]string{
+func checkDistroValid(gitlink *sql.DB, repo string) [][]string {
 	gitLinks := fetchDistroGitlink(gitlink, repo)
 	var invalidLinks [][]string
 	for _, link := range gitLinks {
@@ -47,14 +48,14 @@ func checkDistroValid(gitlink *sql.DB, repo string)[][]string{
 		}
 		if !strings.HasPrefix(link, "http://") && !strings.HasPrefix(link, "https://") && !strings.HasPrefix(link, "git://") {
 			invalidLinks = append(invalidLinks, []string{link, "invalid protocol"})
-		}else if strings.Contains(link, "/tree/") {
+		} else if strings.Contains(link, "/tree/") {
 			invalidLinks = append(invalidLinks, []string{link, "invalid link"})
 		}
 	}
 	return invalidLinks
 }
 
-func fetchMetrics(db *sql.DB)map[string]Metrics{
+func fetchMetrics(db *sql.DB) map[string]Metrics {
 	query := "SELECT git_link, created_since, updated_since, scores FROM git_metrics"
 	rows, err := db.Query(query)
 	if err != nil {
@@ -90,21 +91,21 @@ func fetchMetrics(db *sql.DB)map[string]Metrics{
 	return MetricsList
 }
 
-func checkMetricsValid(db *sql.DB)[][]string{
+func checkMetricsValid(db *sql.DB) [][]string {
 	MetricsList := fetchMetrics(db)
 	var invalidLinks [][]string
 	for link, metrics := range MetricsList {
 		duration := metrics.CreatedSince.Sub(metrics.UpdatedSince)
 		if duration > 0 {
-            invalidLinks = append(invalidLinks, []string{link, "created_since is after updated_since"})
-        }else if metrics.Score < 0 {
+			invalidLinks = append(invalidLinks, []string{link, "created_since is after updated_since"})
+		} else if metrics.Score < 0 {
 			invalidLinks = append(invalidLinks, []string{link, "score is less than 0"})
 		}
 	}
 	return invalidLinks
 }
 
-func checkCloneValid(db *sql.DB, maxThreads int)[][]string{
+func checkCloneValid(db *sql.DB, maxThreads int) [][]string {
 	query := "SELECT git_link FROM git_metrics WHERE clone_valid = false"
 	rows, err := db.Query(query)
 	if err != nil {
@@ -159,7 +160,7 @@ func checkCloneValid(db *sql.DB, maxThreads int)[][]string{
 	return invalidLinks
 }
 
-func checkCloneValidDefault(db *sql.DB, maxThreads int)[][]string{
+func checkCloneValidDefault(db *sql.DB, maxThreads int) [][]string {
 	query := "SELECT git_link, created_since FROM git_metrics"
 	rows, err := db.Query(query)
 	if err != nil {
@@ -213,7 +214,7 @@ func checkCloneValidDefault(db *sql.DB, maxThreads int)[][]string{
 						invalidLinks = append(invalidLinks, []string{gitLink, "failed to clone"})
 					}
 				}
-			}else if createdSince.Valid {
+			} else if createdSince.Valid {
 				if createdSince.Time.Sub(time.Date(1, 1, 1, 0, 0, 0, 0, time.UTC)) == 0 {
 					invalidLinks = append(invalidLinks, []string{gitLink, "created_since is 0001-01-01, maybe cannot clone"})
 				}
@@ -224,7 +225,7 @@ func checkCloneValidDefault(db *sql.DB, maxThreads int)[][]string{
 	wg.Wait()
 	return invalidLinks
 }
-func CheckVaild(db *sql.DB, checkCloneValidflag bool, maxThreads int)[][]string{
+func CheckVaild(db *sql.DB, checkCloneValidflag bool, maxThreads int) [][]string {
 	var invalidLinks [][]string
 	for _, repo := range repoList {
 		invalidLinks = append(invalidLinks, checkDistroValid(db, repo)...)
@@ -232,13 +233,13 @@ func CheckVaild(db *sql.DB, checkCloneValidflag bool, maxThreads int)[][]string{
 	invalidLinks = append(invalidLinks, checkMetricsValid(db)...)
 	if checkCloneValidflag {
 		invalidLinks = append(invalidLinks, checkCloneValid(db, maxThreads)...)
-	}else{
+	} else {
 		invalidLinks = append(invalidLinks, checkCloneValidDefault(db, maxThreads)...)
 	}
 	return invalidLinks
 }
 
-func WriteCsv(invalidLinks [][]string, outputFile string){
+func WriteCsv(invalidLinks [][]string, outputFile string) {
 	file, err := os.Create(outputFile)
 	if err != nil {
 		panic(err)

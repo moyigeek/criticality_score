@@ -4,14 +4,14 @@ import (
 	"flag"
 	"log"
 
-	checkvalid "github.com/HUSTSecLab/criticality_score/pkg/database-validator"
+	"github.com/HUSTSecLab/criticality_score/cmd/database-validator/internal/checkvalid"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 )
 
 var flagConfigPath = flag.String("config", "config.json", "path to the config file")
-var outputFile = flag.String("output", "output.csv", "path to the output file")
-var checkCloneValid = flag.Bool("checkCloneValid", false, "check clone valid")
-var maxThreads = flag.Int("maxThreads", 10, "max threads")
+var flagOutputFile = flag.String("output", "output.csv", "path to the output file")
+var flagCheckCloneValid = flag.Bool("checkCloneValid", false, "check clone valid")
+var flagMaxThreads = flag.Int("maxThreads", 10, "max threads")
 
 func main() {
 	flag.Parse()
@@ -22,7 +22,7 @@ func main() {
 	}
 
 	defer db.Close()
-	invalidLinks := checkvalid.CheckVaild(db, *checkCloneValid, *maxThreads)
-	checkvalid.WriteCsv(invalidLinks, *outputFile)
+	invalidLinks := checkvalid.CheckVaild(db, *flagCheckCloneValid, *flagMaxThreads)
+	checkvalid.WriteCsv(invalidLinks, *flagOutputFile)
 	log.Println("checkvalid finished")
 }
