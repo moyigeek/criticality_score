@@ -24,8 +24,8 @@ func main() {
 		log.Fatal("Method must be either 'bfs' or 'dfs'")
 	}
 
-	storage.InitializeDefaultAppDatabase(*flagConfigPath)
-	db, err := storage.GetDefaultAppDatabaseConnection()
+	storage.BindDefaultConfigPath("config")
+	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		log.Fatalf("Error connecting to database: %v", err)
 	}

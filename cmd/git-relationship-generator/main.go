@@ -1,20 +1,20 @@
 package main
 
 import (
-	"flag"
 	"log"
 
 	"github.com/HUSTSecLab/criticality_score/cmd/git-relationship-generator/internal/pkgdep2git"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
+	"github.com/spf13/pflag"
 )
 
-var flagConfigPath = flag.String("config", "config.json", "path to the config file")
-var batchSize = flag.Int("batch", 1000, "batch size for updating scores")
+var flagConfigPath = pflag.String("config", "config.json", "path to the config file")
+var batchSize = pflag.Int("batch", 1000, "batch size for updating scores")
 
 func main() {
-	flag.Parse()
-	storage.InitializeDefaultAppDatabase(*flagConfigPath)
-	db, err := storage.GetDefaultAppDatabaseConnection()
+	pflag.Parse()
+	storage.BindDefaultConfigPath("config")
+	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}

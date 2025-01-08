@@ -212,7 +212,7 @@ func isUniqueViolation(err error) bool {
 }
 
 func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
-	db, err := storage.GetDefaultAppDatabaseConnection()
+	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return err
 	}
@@ -242,7 +242,7 @@ func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
 }
 
 func storeDependenciesInDatabase(pkgName string, dependencies []string) error {
-	db, err := storage.GetDefaultAppDatabaseConnection()
+	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return err
 	}

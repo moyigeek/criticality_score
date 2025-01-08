@@ -72,7 +72,7 @@ func getMetrics(request *restful.Request, response *restful.Response) {
 	}
 	take, err := strconv.Atoi(takeStr)
 
-	conn, err := storage.GetDefaultAppDatabaseConnection()
+	conn, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	defer conn.Close()
 	if err != nil {
 		response.WriteErrorString(http.StatusInternalServerError, err.Error())

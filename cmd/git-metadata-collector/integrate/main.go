@@ -26,7 +26,8 @@ var flagJobsCount = pflag.IntP("jobs", "j", 256, "jobs count")
 var flagForceUpdateAll = pflag.Bool("force-update-all", false, "force update all repositories")
 
 func getUrls() ([]string, error) {
-	conn, err := storage.GetDefaultAppDatabaseConnection()
+	storage.BindDefaultConfigPath("config")
+	conn, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return nil, err
 	}
@@ -59,7 +60,7 @@ func main() {
 	viper.BindPFlag(viperStorageKey, pflag.Lookup("storage"))
 	viper.BindEnv(viperStorageKey, "STORAGE_PATH")
 
-	storage.InitializeDefaultAppDatabase(*flagConfigPath)
+	storage.BindDefaultConfigPath("storage")
 
 	urls, err := getUrls()
 	if err != nil {
@@ -70,7 +71,7 @@ func main() {
 	logger.Infof("%d urls in total", len(urls))
 	wg.Add(len(urls))
 
-	db, err := storage.GetDefaultAppDatabaseConnection()
+	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		logger.Fatal("Connecting Database Failed")
 	}

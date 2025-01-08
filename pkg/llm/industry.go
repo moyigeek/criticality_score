@@ -23,13 +23,8 @@ type RepoInfo struct {
 	Topics      []string `json:"topics"`
 }
 
-func IndustryID(flagConfigPath string, url string, batchSize int, outputCsv string) {
-	_, err := storage.InitializeDefaultAppDatabase(flagConfigPath)
-	if err != nil {
-		fmt.Printf("Error initializing database: %v\n", err)
-		return
-	}
-	db, _ := storage.GetDefaultAppDatabaseConnection()
+func IndustryID(ctx storage.AppDatabaseContext, flagConfigPath string, url string, batchSize int, outputCsv string) {
+	db, _ := ctx.GetDatabaseConnection()
 	if db == nil {
 		return
 	}
@@ -42,6 +37,7 @@ func IndustryID(flagConfigPath string, url string, batchSize int, outputCsv stri
 	defer file.Close()
 	writer := csv.NewWriter(file)
 	gitlinks := fetchGitLink(db)
+	// TODO: remove it
 	config, err := storage.GetDefaultConfig()
 	GitHubToken := config.GitHubToken
 	gitIndustry := make(map[string]string)

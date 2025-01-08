@@ -30,7 +30,7 @@ type DepInfo struct {
 }
 
 func storeDependenciesInDatabase(pkgName string, dependencies []DepInfo) error {
-	db, err := storage.GetDefaultAppDatabaseConnection()
+	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return err
 	}
@@ -529,7 +529,7 @@ func Nix(workerCount int, batchSize int) {
 }
 
 func batchupdateOrInsertNixPackages(packages map[DepInfo][]DepInfo, batchSize int) error {
-	db, err := storage.GetDefaultAppDatabaseConnection()
+	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return fmt.Errorf("error connecting to database: %w", err)
 	}

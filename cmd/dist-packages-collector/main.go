@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/alpine"
@@ -16,19 +15,20 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/nix"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/ubuntu"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
+	"github.com/spf13/pflag"
 )
 
 var (
-	flagConfigPath = flag.String("config", "config.json", "path to the config file")
-	flagType       = flag.String("type", "", "type of the distribution")
-	flagGenDot     = flag.String("gendot", "", "output dot file")
-	workerCount    = flag.Int("worker", 1, "number of workers")
-	batchSize      = flag.Int("batch", 1000, "batch size")
+	flagConfigPath = pflag.String("config", "config.json", "path to the config file")
+	flagType       = pflag.String("type", "", "type of the distribution")
+	flagGenDot     = pflag.String("gendot", "", "output dot file")
+	workerCount    = pflag.Int("worker", 1, "number of workers")
+	batchSize      = pflag.Int("batch", 1000, "batch size")
 )
 
 func main() {
-	flag.Parse()
-	storage.InitializeDefaultAppDatabase(*flagConfigPath)
+	pflag.Parse()
+	storage.BindDefaultConfigPath("config")
 
 	switch *flagType {
 	case "archlinux":

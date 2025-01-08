@@ -2,7 +2,6 @@ package storage
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 )
 
@@ -15,15 +14,6 @@ type Config struct {
 	GitHubToken string `json:"GitHubToken"`
 	GitLabToken string `json:"GitLabToken"`
 	Redispass   string `json:"redispass"`
-}
-
-func GetDefaultConfig() (*Config, error) {
-	if DefaultAppDatabase == nil {
-		return nil, fmt.Errorf("default app database is not initialized")
-	}
-
-	config := DefaultAppDatabase.GetConfig()
-	return &config, nil
 }
 
 func loadConfig(configPath string) (Config, error) {

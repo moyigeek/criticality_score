@@ -15,9 +15,8 @@ import (
 
 var visitedLinks = make(map[string]bool)
 
-func Home2git(flagConfigPath string, repolist []string, url string, batchSize int, outputCsv string) {
-	_, err := storage.InitializeDefaultAppDatabase(flagConfigPath)
-	db, err := storage.GetDefaultAppDatabaseConnection()
+func Home2git(ctx storage.AppDatabaseContext, flagConfigPath string, repolist []string, url string, batchSize int, outputCsv string) {
+	db, err := ctx.GetDatabaseConnection()
 	if err != nil {
 		fmt.Printf("Error initializing database: %v\n", err)
 		return

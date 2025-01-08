@@ -18,7 +18,7 @@ import (
 )
 
 func updateOrInsertDatabase(pkgInfoMap map[string]DepInfo) error {
-	db, err := storage.GetDefaultAppDatabaseConnection()
+	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return err
 	}
@@ -49,7 +49,7 @@ func updateOrInsertDatabase(pkgInfoMap map[string]DepInfo) error {
 }
 
 func storeDependenciesInDatabase(pkgName string, dependencies []DepInfo) error {
-	db, err := storage.GetDefaultAppDatabaseConnection()
+	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return err
 	}

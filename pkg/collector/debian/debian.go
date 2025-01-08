@@ -27,7 +27,7 @@ type DepInfo struct {
 }
 
 func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
-	db, err := storage.GetDefaultAppDatabaseConnection()
+	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return err
 	}
@@ -57,7 +57,7 @@ func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
 }
 
 func storeDependenciesInDatabase(pkgName string, dependencies []DepInfo) error {
-	db, err := storage.GetDefaultAppDatabaseConnection()
+	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return err
 	}

@@ -24,8 +24,6 @@ type appDatabaseContext struct {
 	db           *sql.DB
 }
 
-var DefaultAppDatabase AppDatabaseContext
-
 func NewAppDatabase(configPath string) (AppDatabaseContext, error) {
 	config, err := loadConfig(configPath)
 	if err != nil {
@@ -108,22 +106,4 @@ func (app *appDatabaseContext) Close() error {
 		return app.db.Close()
 	}
 	return nil
-}
-
-// Deprecated: Do not use global app database
-func InitializeDefaultAppDatabase(configPath string) (AppDatabaseContext, error) {
-	var err error
-	DefaultAppDatabase, err = NewAppDatabase(configPath)
-	if err != nil {
-		return nil, err
-	}
-	return DefaultAppDatabase, nil
-}
-
-// Deprecated: Do not use global app database
-func GetDefaultAppDatabaseConnection() (*sql.DB, error) {
-	if DefaultAppDatabase == nil {
-		return nil, fmt.Errorf("default app database is not initialized")
-	}
-	return DefaultAppDatabase.GetDatabaseConnection()
 }

@@ -1,19 +1,19 @@
 package main
 
 import (
-	"flag"
 	"log"
 
 	"github.com/HUSTSecLab/criticality_score/cmd/git-metrics-sync/internal/gmsync"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
+	"github.com/spf13/pflag"
 )
 
-var flagConfigPath = flag.String("config", "config.json", "path to the config file")
-var batchSize = flag.Int("batch", 1000, "batch size")
+var flagConfigPath = pflag.String("config", "config.json", "path to the config file")
+var batchSize = pflag.Int("batch", 1000, "batch size")
 
 func main() {
-	flag.Parse()
-	storage.InitializeDefaultAppDatabase(*flagConfigPath)
+	pflag.Parse()
+	storage.BindDefaultConfigPath("config")
 
 	log.Println("Starting synchronization...")
 	gmsync.Run()

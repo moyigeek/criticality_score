@@ -25,7 +25,7 @@ var flagDisableUpdateInfo = pflag.Bool("disable-update-info", false, "disable up
 var flagDisableUpdateLog = pflag.Bool("disable-update-log", false, "disable update log, like commit frequency")
 
 func getUrls() ([]string, error) {
-	conn, err := storage.GetDefaultAppDatabaseConnection()
+	conn, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +64,7 @@ func main() {
 	viper.BindEnv(viperStorageKey, "STORAGE_PATH")
 
 	pflag.Parse()
-	storage.InitializeDefaultAppDatabase(*flagConfigPath)
+	storage.BindDefaultConfigPath("config")
 
 	urls, err := getUrls()
 	if err != nil {
@@ -75,7 +75,7 @@ func main() {
 	logger.Infof("%d urls in total", len(urls))
 	wg.Add(len(urls))
 
-	db, err := storage.GetDefaultAppDatabaseConnection()
+	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		logger.Fatal("Connecting Database Failed")
 	}

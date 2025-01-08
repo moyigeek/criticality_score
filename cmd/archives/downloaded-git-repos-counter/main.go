@@ -1,21 +1,18 @@
-/*
- * @Date: 2023-11-11 22:44:26
- * @LastEditTime: 2025-01-07 19:14:21
- * @Description: Just Count downloaded repos
- */
 package main
 
 import (
 	"fmt"
 	"os"
 
-	config "github.com/HUSTSecLab/criticality_score/pkg/gitfile/config"
 	url "github.com/HUSTSecLab/criticality_score/pkg/gitfile/parser/url"
-	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/utils"
+	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/util"
 	"github.com/HUSTSecLab/criticality_score/pkg/logger"
+	"github.com/spf13/pflag"
 
 	"github.com/go-git/go-git/v5"
 )
+
+var flagStoragePath = pflag.StringP("storage", "s", "./storage", "path to git storage location")
 
 func main() {
 	var path string
@@ -24,14 +21,14 @@ func main() {
 	} else {
 		path = ""
 	}
-	inputs, err := utils.GetCSVInput(path)
+	inputs, err := util.GetCSVInput(path)
 	if err != nil {
 		logger.Fatalf("Reading %s Failed", path)
 	}
 	var count int
 	for _, input := range inputs {
 		u := url.ParseURL(input[0])
-		path = config.STORAGE_PATH + u.Pathname
+		path = *flagStoragePath + u.Pathname
 		_, err := git.PlainOpen(path)
 		if err == git.ErrRepositoryNotExists {
 			logger.Infof("%s Not Collected", input[0])

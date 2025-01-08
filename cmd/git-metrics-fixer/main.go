@@ -1,7 +1,9 @@
+// This file can manual fix the git metrics of a repository
 package main
 
 import (
 	"database/sql"
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -16,106 +18,98 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	"github.com/bytedance/gopkg/util/gopool"
 	gogit "github.com/go-git/go-git/v5"
-	"github.com/urfave/cli/v2"
+	"github.com/spf13/pflag"
+)
+
+var (
+	flagConfigPath = pflag.String("config", "config.json", "path to the config file")
+	flagUpdateDB   = pflag.Bool("update-db", false, "Whether to update the database")
 )
 
 func main() {
-	app := &cli.App{
-		Name:  "collector_git",
-		Usage: "Collect Git-based Repository Metrics",
-		Flags: []cli.Flag{
-			&cli.StringFlag{
-				Name:     "config",
-				Usage:    "Path to config.json",
-				Required: true,
-			},
-			&cli.BoolFlag{
-				Name:  "update-db",
-				Usage: "Whether to update the database",
-			},
-		},
-		Action: func(c *cli.Context) error {
-			configPath := c.String("config")
-			updateDB := c.Bool("update-db")
-			paths := c.Args().Slice()
+	pflag.Usage = func() {
+		fmt.Fprintf(os.Stderr, "This program collects metrics for git repositories.\n")
+		fmt.Fprintf(os.Stderr, "This tool can be used to fix the git metrics of a repository manually.\n")
+		fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
+		pflag.PrintDefaults()
+	}
+	pflag.Parse()
+	storage.BindDefaultConfigPath("config")
 
-			var wg sync.WaitGroup
-			wg.Add(len(paths))
+	updateDB := *flagUpdateDB
+	paths := flag.Args()
 
-			repos := make([]*git.Repo, 0)
+	var wg sync.WaitGroup
+	wg.Add(len(paths))
 
-			for _, path := range paths {
-				gopool.Go(func() {
-					defer wg.Done()
-					logger.Infof("Collecting %s", path)
+	repos := make([]*git.Repo, 0)
 
-					r := &gogit.Repository{}
-					var err error
+	for _, path := range paths {
+		gopool.Go(func() {
+			defer wg.Done()
+			logger.Infof("Collecting %s", path)
 
-					if strings.Contains(path, "://") {
-						u := url.ParseURL(path)
-						r, err = collector.EzCollect(&u)
-						if err != nil {
-							logger.Panicf("Collecting %s Failed", u.URL)
-						}
-					} else {
-						r, err = collector.Open(path)
-						if err != nil {
-							logger.Panicf("Opening %s Failed", path)
-						}
-					}
+			r := &gogit.Repository{}
+			var err error
 
-					repo, err := git.ParseRepo(r)
-					if err != nil {
-						logger.Panicf("Parsing %s Failed", path)
-					}
-
-					repos = append(repos, repo)
-					logger.Infof("%s Collected", repo.Name)
-				})
+			if strings.Contains(path, "://") {
+				u := url.ParseURL(path)
+				r, err = collector.EzCollect(&u)
+				if err != nil {
+					logger.Panicf("Collecting %s Failed", u.URL)
+				}
+			} else {
+				r, err = collector.Open(path)
+				if err != nil {
+					logger.Panicf("Opening %s Failed", path)
+				}
 			}
 
-			wg.Wait()
-			storage.InitializeDefaultAppDatabase(configPath)
-			db, err := storage.GetDefaultAppDatabaseConnection()
+			repo, err := git.ParseRepo(r)
 			if err != nil {
-				log.Fatalf("Failed to connect to database: %v", err)
+				logger.Panicf("Parsing %s Failed", path)
 			}
 
-			defer db.Close()
-			for _, repo := range repos {
-				repo.Show()
-				depsdev_count := FetchDepsdev(db, repo.URL)
-				projectData := scores.ProjectData{
-					CommitFrequency:  &repo.CommitFrequency,
-					ContributorCount: &repo.ContributorCount,
-					CreatedSince:     &repo.CreatedSince,
-					UpdatedSince:     &repo.UpdatedSince,
-					Org_Count:        &repo.OrgCount,
-					Pkg_Manager:      &repo.Ecosystems,
-					DepsdevCount:     &depsdev_count,
-				}
-				linkCount := make(map[string]map[string]scores.PackageData)
-				scores.CalculaterepoCount(db)
-				for pkg := range scores.PackageList {
-					linkCount[pkg] = make(map[string]scores.PackageData)
-					count := scores.FetchdLinkCountSingle(pkg, repo.URL, db)
-					linkCount[pkg][strings.ToLower(repo.URL)] = count
-				}
-				dist_impact, pagerank := scores.CalculateDepsdistro(repo.URL, linkCount)
-				score := scores.CalculateScore(projectData, scores.LinkScore{DistroScores: dist_impact, PageRank: pagerank})
-				if updateDB {
-					err = updateGitMetrics(db, repo, score, dist_impact)
-					if err != nil {
-						logger.Fatal(err)
-					}
-				}
-			}
-			return nil
-		}}
-	err := app.Run(os.Args)
+			repos = append(repos, repo)
+			logger.Infof("%s Collected", repo.Name)
+		})
+	}
+
+	wg.Wait()
+	storage.BindDefaultConfigPath("config")
+	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
-		logger.Fatal(err)
+		log.Fatalf("Failed to connect to database: %v", err)
+	}
+
+	defer db.Close()
+	for _, repo := range repos {
+		repo.Show()
+		depsdev_count := FetchDepsdev(db, repo.URL)
+		projectData := scores.ProjectData{
+			CommitFrequency:  &repo.CommitFrequency,
+			ContributorCount: &repo.ContributorCount,
+			CreatedSince:     &repo.CreatedSince,
+			UpdatedSince:     &repo.UpdatedSince,
+			Org_Count:        &repo.OrgCount,
+			Pkg_Manager:      &repo.Ecosystems,
+			DepsdevCount:     &depsdev_count,
+		}
+		linkCount := make(map[string]map[string]scores.PackageData)
+		scores.CalculaterepoCount(db)
+		for pkg := range scores.PackageList {
+			linkCount[pkg] = make(map[string]scores.PackageData)
+			count := scores.FetchdLinkCountSingle(pkg, repo.URL, db)
+			linkCount[pkg][strings.ToLower(repo.URL)] = count
+		}
+		dist_impact, pagerank := scores.CalculateDepsdistro(repo.URL, linkCount)
+		score := scores.CalculateScore(projectData, scores.LinkScore{DistroScores: dist_impact, PageRank: pagerank})
+		if updateDB {
+			err = updateGitMetrics(db, repo, score, dist_impact)
+			if err != nil {
+				logger.Fatal(err)
+			}
+		}
 	}
 }
 func updateGitMetrics(db *sql.DB, repo *git.Repo, score float64, depsDistro float64) error {

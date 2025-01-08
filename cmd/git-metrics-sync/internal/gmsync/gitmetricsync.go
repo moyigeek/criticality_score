@@ -22,7 +22,7 @@ var unionTables = [][]string{
 }
 
 func Run() {
-	db, err := storage.GetDefaultAppDatabaseConnection()
+	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -135,7 +135,7 @@ func getKeys(m map[string]bool) []string {
 }
 
 func fetchMetricsLinks() (map[string]string, error) {
-	db, err := storage.GetDefaultAppDatabaseConnection()
+	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return nil, err
 	}
@@ -159,7 +159,7 @@ func fetchMetricsLinks() (map[string]string, error) {
 }
 
 func fetchUnionRepoLinks() (map[string]string, error) {
-	db, err := storage.GetDefaultAppDatabaseConnection()
+	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return nil, err
 	}
@@ -182,7 +182,7 @@ func fetchUnionRepoLinks() (map[string]string, error) {
 	return links, nil
 }
 func batchInsertLinks(links []string, batchSize int) error {
-	db, err := storage.GetDefaultAppDatabaseConnection()
+	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return err
 	}
