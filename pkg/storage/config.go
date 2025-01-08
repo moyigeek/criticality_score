@@ -22,7 +22,8 @@ func GetDefaultConfig() (*Config, error) {
 		return nil, fmt.Errorf("default app database is not initialized")
 	}
 
-	return &DefaultAppDatabase.Config, nil
+	config := DefaultAppDatabase.GetConfig()
+	return &config, nil
 }
 
 func loadConfig(configPath string) (Config, error) {

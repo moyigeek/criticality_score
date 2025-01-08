@@ -18,8 +18,8 @@ type AppDatabaseContext interface {
 }
 
 type appDatabaseContext struct {
-	Config       Config
-	EnableSQLLog bool
+	config       Config
+	enableSQLLog bool
 }
 
 var DefaultAppDatabase AppDatabaseContext
@@ -30,11 +30,11 @@ func NewAppDatabase(configPath string) (AppDatabaseContext, error) {
 		fmt.Errorf("Failed to load config:", err)
 		return nil, err
 	}
-	return &appDatabaseContext{Config: config}, nil
+	return &appDatabaseContext{config: config}, nil
 }
 
 func (appDb *appDatabaseContext) GetConfig() Config {
-	return appDb.Config
+	return appDb.config
 }
 
 func (appDb *appDatabaseContext) NewBatchExecContext(config *BatchExecContextConfig) BatchExecContext {
@@ -49,13 +49,13 @@ func (appDb *appDatabaseContext) NewBatchExecContext(config *BatchExecContextCon
 
 func (app *appDatabaseContext) GetDatabaseConnection() (*sql.DB, error) {
 	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		app.Config.Host, app.Config.Port, app.Config.User, app.Config.Password, app.Config.Database)
+		app.config.Host, app.config.Port, app.config.User, app.config.Password, app.config.Database)
 	db, err := sql.Open("postgres", connStr)
 	return db, err
 }
 
 func (app *appDatabaseContext) Exec(query string, args ...interface{}) (sql.Result, error) {
-	if app.EnableSQLLog {
+	if app.enableSQLLog {
 		logger.Info("Exec SQL: ", query)
 	}
 
@@ -68,7 +68,7 @@ func (app *appDatabaseContext) Exec(query string, args ...interface{}) (sql.Resu
 }
 
 func (app *appDatabaseContext) Query(query string, args ...interface{}) (*sql.Rows, error) {
-	if app.EnableSQLLog {
+	if app.enableSQLLog {
 		logger.Info("Query SQL: ", query)
 	}
 
@@ -81,7 +81,7 @@ func (app *appDatabaseContext) Query(query string, args ...interface{}) (*sql.Ro
 }
 
 func (app *appDatabaseContext) QueryRow(query string, args ...interface{}) *sql.Row {
-	if app.EnableSQLLog {
+	if app.enableSQLLog {
 		logger.Info("QueryRow SQL: ", query)
 	}
 
