@@ -1,7 +1,6 @@
-package invoke_llm
+package llm
 
 import "regexp"
-
 
 var gitLinkPatterns = []*regexp.Regexp{
 	regexp.MustCompile(`https?://github\.com/([A-Za-z0-9]+)/([A-Za-z0-9]+)`),
@@ -26,7 +25,7 @@ func CheckIfGitLink(url string) *GitLink {
 }
 
 var PROMPT = map[string]string{
-	"home2git_link": "Given the list of repository links [%s] and the homepage URL '%s', select the most likely repository link that matches the homepage. If a direct match is found, return the URL in the format 'URL is: [matched_url]'. If no direct match is found, check other repositories on GitHub, GitLab, or Gitee. If a related repository exists, respond with 'URL is: [url]'. If no relevant repository can be identified, respond with 'does not exist'.",
+	"home2git_link":   "Given the list of repository links [%s] and the homepage URL '%s', select the most likely repository link that matches the homepage. If a direct match is found, return the URL in the format 'URL is: [matched_url]'. If no direct match is found, check other repositories on GitHub, GitLab, or Gitee. If a related repository exists, respond with 'URL is: [url]'. If no relevant repository can be identified, respond with 'does not exist'.",
 	"home2git_nolink": "Check if there is a git repository for %s hosted on platforms like GitHub, GitLab, or Gitee. If it exists, respond in the format 'URL is: [url]'. If no repository exists, respond with 'does not exist'.",
 	"industry_idx": `
 Next I'll give you a url that represents a github repository, the repository's readme, description, and topics, and you'll need to have a rough idea of the nature of the repository based on what you know about its contents, uses, etc. 

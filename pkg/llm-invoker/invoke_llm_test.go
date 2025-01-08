@@ -1,9 +1,10 @@
-package invoke_llm
+package llm_test
 
 import (
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
+	"github.com/HUSTSecLab/criticality_score/pkg/llm-invoker"
 )
 
 func TestUpdateBatch(t *testing.T) {
@@ -33,7 +34,7 @@ func TestUpdateBatch(t *testing.T) {
 		WithArgs("repo2", "package3", "https://gitlink3.com").
 		WillReturnResult(sqlmock.NewResult(1, 1))
 
-	err = UpdateBatch(db, batchSize, resultMap)
+	err = llm.UpdateBatch(db, batchSize, resultMap)
 	if err != nil {
 		t.Errorf("UpdateBatch failed: %v", err)
 	}

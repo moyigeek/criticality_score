@@ -1,4 +1,4 @@
-package invoke_llm
+package llm
 
 import (
 	"bufio"
@@ -12,7 +12,7 @@ type Response struct {
 	Done     bool   `json:"done"`
 }
 
-func InvokeModel(prompt string, url string)string{
+func InvokeModel(prompt string, url string) string {
 	headers := map[string]string{
 		"Content-Type": "application/json",
 	}

@@ -3,8 +3,10 @@ package main
 import (
 	"flag"
 	"strings"
-	"github.com/HUSTSecLab/criticality_score/pkg/invoke_llm"
+
+	"github.com/HUSTSecLab/criticality_score/pkg/llm-invoker"
 )
+
 var flagConfigPath = flag.String("config", "config.json", "path to the config file")
 var choice = flag.String("choice", "", "which function to run etc. home2git, identifyCountry, identifyIndustry")
 var repo = flag.String("repo", "", "input repo name")
@@ -16,10 +18,9 @@ func main() {
 	flag.Parse()
 	if *choice == "home2git" {
 		repolist := strings.Split(*repo, ",")
-		invoke_llm.Home2git(*flagConfigPath, repolist, *url, *batchSize, *outputCsv)
+		llm.Home2git(*flagConfigPath, repolist, *url, *batchSize, *outputCsv)
 	}
-	if  *choice == "identifyIndustry" {
-		invoke_llm.IndustryID(*flagConfigPath, *url, *batchSize, *outputCsv)
+	if *choice == "identifyIndustry" {
+		llm.IndustryID(*flagConfigPath, *url, *batchSize, *outputCsv)
 	}
 }
-
