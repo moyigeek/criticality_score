@@ -5,7 +5,7 @@ import (
 	"log"
 	"math"
 
-	scores "github.com/HUSTSecLab/criticality_score/pkg/gen_scores"
+	scores "github.com/HUSTSecLab/criticality_score/pkg/score"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	_ "github.com/lib/pq"
 )
