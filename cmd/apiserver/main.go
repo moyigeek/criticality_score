@@ -4,6 +4,7 @@ import (
 	"flag"
 
 	"github.com/HUSTSecLab/criticality_score/cmd/apiserver/internal/server"
+	"github.com/HUSTSecLab/criticality_score/pkg/logger"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 )
 
@@ -11,6 +12,10 @@ var flagConfigPath = flag.String("config", "config.json", "path to the config fi
 
 func main() {
 	flag.Parse()
+	logger.Config(&logger.AppLoggerConfig{
+		Level:      logger.LoggerLevelInfo,
+		FormatType: logger.LoggerFormatJSON,
+	})
 	storage.InitializeDefaultAppDatabase(*flagConfigPath)
 
 	server.RegisterService()

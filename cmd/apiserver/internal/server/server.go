@@ -2,11 +2,11 @@ package server
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	"strconv"
 	"time"
 
+	"github.com/HUSTSecLab/criticality_score/pkg/logger"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	"github.com/emicklei/go-restful"
 )
@@ -29,9 +29,9 @@ func RegisterService() *restful.WebService {
 }
 
 func StartWebServer(host string, port int) {
-	log.Printf("Starting server on %d, endpoint is %s", port, "/"+SERVICE_VERSION)
+	logger.Infof("Starting server on %d, endpoint is %s", port, "/"+SERVICE_VERSION)
 	restful.Add(RegisterService())
-	log.Fatal(http.ListenAndServe(host+":"+strconv.Itoa(port), nil))
+	logger.Fatal(http.ListenAndServe(host+":"+strconv.Itoa(port), nil))
 }
 
 type metricsVO struct {
@@ -120,7 +120,7 @@ func getMetrics(request *restful.Request, response *restful.Response) {
 
 	if err != nil {
 		response.WriteErrorString(http.StatusInternalServerError, "Fetch data error")
-		log.Print(err)
+		logger.Info(err)
 		return
 	}
 
@@ -154,12 +154,12 @@ func getMetrics(request *restful.Request, response *restful.Response) {
 			&metrics.Domestic,
 			&metrics.Score)
 		if err != nil {
-			log.Print("err at scan: ", err)
+			logger.Error("err at scan: ", err)
 			return
 		}
 		jsonBytes, err := json.Marshal(metrics)
 		if err != nil {
-			log.Print("err at json marshal: ", err)
+			logger.Error("err at json marshal: ", err)
 			return
 		}
 		response.Write(jsonBytes)
