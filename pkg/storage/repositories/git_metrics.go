@@ -13,14 +13,26 @@ import (
 type GitMetricsFrom int
 
 type GitMetricsRepository interface {
+	/** QUERY **/
+
+	GetGitMetricsRankingLatest(take int, skip int) ([]*GitMetrics, error)
+	GetGitMetricsRankingUntil(take int, skip int, until time.Time) ([]*GitMetrics, error)
+	GetGitMetricsHistoryByLink(gitLink string) ([]*GitMetrics, error)
+
 	GetGitMetricsByLinkIncludingDeleted(gitLink string) (*GitMetrics, error)
 	GetGitMetricsByLink(gitLink string) (*GitMetrics, error)
-	UpdateGitMetrics(data *GitMetrics) error
-	DeleteGitMetricsByLink(gitLink string) error
+
+	/** INSERT/UPDATE **/
+
+	InsertOrUpdateGitMetrics(data *GitMetrics) error
+	// this function will only insert the data, but not update
 	BatchInsertGitMetrics(data []*GitMetrics) error
+
+	/** DELETE **/
+
+	DeleteGitMetricsByLink(gitLink string) error
+	// this function will not examine whether the data exists
 	BatchDeleteGitMetricsByLink(data []string) error
-	GetEmptyGitLinks() ([]string, error)
-	GetNeedUpdateGitLinks(olderThan time.Time, updateType GitLinkUpdateType) ([]string, error)
 }
 
 type gitmetricsRepository struct {
@@ -60,8 +72,20 @@ type GitMetrics struct {
 	UpdateTime             *time.Time `column:"update_time"`
 }
 
-func NewGitMetricsRepository(appDb storage.AppDatabaseContext) *gitmetricsRepository {
+func NewGitMetricsRepository(appDb storage.AppDatabaseContext) GitMetricsRepository {
 	return &gitmetricsRepository{appDb: appDb}
+}
+
+func (r *gitmetricsRepository) GetGitMetricsHistoryByLink(gitLink string) ([]*GitMetrics, error) {
+	panic("unimplemented")
+}
+
+func (r *gitmetricsRepository) GetGitMetricsRankingLatest(take int, skip int) ([]*GitMetrics, error) {
+	panic("unimplemented")
+}
+
+func (r *gitmetricsRepository) GetGitMetricsRankingUntil(take int, skip int, until time.Time) ([]*GitMetrics, error) {
+	panic("unimplemented")
 }
 
 func (r *gitmetricsRepository) GetGitMetricsByLinkIncludingDeleted(gitLink string) (*GitMetrics, error) {
@@ -82,7 +106,7 @@ func (r *gitmetricsRepository) GetGitMetricsByLink(gitLink string) (*GitMetrics,
 	return rows.Next()
 }
 
-func (r *gitmetricsRepository) UpdateGitMetrics(data *GitMetrics) error {
+func (r *gitmetricsRepository) InsertOrUpdateGitMetrics(data *GitMetrics) error {
 	if data.GitLink == nil {
 		return fmt.Errorf("GitLink is required")
 	}
@@ -155,19 +179,4 @@ func (r *gitmetricsRepository) BatchDeleteGitMetricsByLink(data []string) error 
 		toDelete = append(toDelete, &GitMetrics{GitLink: &d, IsDeleted: lo.ToPtr(true)})
 	}
 	return r.BatchInsertGitMetrics(toDelete)
-}
-
-type GitLinkUpdateType int
-
-const (
-	GitMetricsNeedUpdate GitLinkUpdateType = iota
-)
-
-func (r *gitmetricsRepository) GetEmptyGitLinks() ([]string, error) {
-	return nil, fmt.Errorf("not implemented")
-}
-
-func (r *gitmetricsRepository) GetNeedUpdateGitLinks(olderThan time.Time, updateType GitLinkUpdateType) ([]string, error) {
-	return nil, fmt.Errorf("not implemented")
-
 }

@@ -24,7 +24,7 @@ func TestGithubInsert(t *testing.T) {
 
 	url := "https://github.com/neovim/neovim"
 
-	error = repo.UpdateGitMetrics(&repositories.GitMetrics{
+	error = repo.InsertOrUpdateGitMetrics(&repositories.GitMetrics{
 		GitLink:      lo.ToPtr(url),
 		CreatedSince: lo.ToPtr(time.Now()),
 	})
@@ -35,7 +35,7 @@ func TestGithubInsert(t *testing.T) {
 
 	testTime, _ := time.Parse("2006-01-02", "2021-01-01")
 
-	error = repo.UpdateGitMetrics(&repositories.GitMetrics{
+	error = repo.InsertOrUpdateGitMetrics(&repositories.GitMetrics{
 		GitLink:         lo.ToPtr(url),
 		CreatedSince:    lo.ToPtr(testTime),
 		CommitFrequency: lo.ToPtr(123.0),
