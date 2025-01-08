@@ -18,9 +18,8 @@ import (
 	"context"
 	"errors"
 
+	"github.com/HUSTSecLab/criticality_score/pkg/logger"
 	"github.com/hasura/go-graphql-client"
-
-	"go.uber.org/zap"
 )
 
 // empty is a convenience wrapper for the empty struct.
@@ -31,7 +30,7 @@ var ErrorUnableToListAllResult = errors.New("unable to list all results")
 type Searcher struct {
 	ctx     context.Context
 	client  *graphql.Client
-	logger  *zap.Logger
+	logger  logger.AppLogger
 	perPage int
 }
 
@@ -49,7 +48,7 @@ func PerPage(perPage int) Option {
 	return option(func(s *Searcher) { s.perPage = perPage })
 }
 
-func NewSearcher(ctx context.Context, client *graphql.Client, logger *zap.Logger, options ...Option) *Searcher {
+func NewSearcher(ctx context.Context, client *graphql.Client, logger logger.AppLogger, options ...Option) *Searcher {
 	s := &Searcher{
 		ctx:     ctx,
 		client:  client,
