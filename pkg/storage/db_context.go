@@ -15,11 +15,13 @@ type AppDatabaseContext interface {
 	Exec(query string, args ...interface{}) (sql.Result, error)
 	Query(query string, args ...interface{}) (*sql.Rows, error)
 	QueryRow(query string, args ...interface{}) *sql.Row
+	Close() error
 }
 
 type appDatabaseContext struct {
 	config       Config
 	enableSQLLog bool
+	db           *sql.DB
 }
 
 var DefaultAppDatabase AppDatabaseContext
@@ -31,6 +33,19 @@ func NewAppDatabase(configPath string) (AppDatabaseContext, error) {
 		return nil, err
 	}
 	return &appDatabaseContext{config: config}, nil
+}
+
+func (appDb *appDatabaseContext) ensureDatabaseConnection() error {
+	if appDb.db == nil {
+		connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
+			appDb.config.Host, appDb.config.Port, appDb.config.User, appDb.config.Password, appDb.config.Database)
+		db, err := sql.Open("postgres", connStr)
+		if err != nil {
+			return err
+		}
+		appDb.db = db
+	}
+	return nil
 }
 
 func (appDb *appDatabaseContext) GetConfig() Config {
@@ -48,10 +63,8 @@ func (appDb *appDatabaseContext) NewBatchExecContext(config *BatchExecContextCon
 }
 
 func (app *appDatabaseContext) GetDatabaseConnection() (*sql.DB, error) {
-	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
-		app.config.Host, app.config.Port, app.config.User, app.config.Password, app.config.Database)
-	db, err := sql.Open("postgres", connStr)
-	return db, err
+	err := app.ensureDatabaseConnection()
+	return app.db, err
 }
 
 func (app *appDatabaseContext) Exec(query string, args ...interface{}) (sql.Result, error) {
@@ -63,7 +76,6 @@ func (app *appDatabaseContext) Exec(query string, args ...interface{}) (sql.Resu
 	if err != nil {
 		return nil, err
 	}
-	defer conn.Close()
 	return conn.Exec(query, args...)
 }
 
@@ -76,7 +88,6 @@ func (app *appDatabaseContext) Query(query string, args ...interface{}) (*sql.Ro
 	if err != nil {
 		return nil, err
 	}
-	defer conn.Close()
 	return conn.Query(query, args...)
 }
 
@@ -89,8 +100,14 @@ func (app *appDatabaseContext) QueryRow(query string, args ...interface{}) *sql.
 	if err != nil {
 		return nil
 	}
-	defer conn.Close()
 	return conn.QueryRow(query, args...)
+}
+
+func (app *appDatabaseContext) Close() error {
+	if app.db != nil {
+		return app.db.Close()
+	}
+	return nil
 }
 
 // Deprecated: Do not use global app database
