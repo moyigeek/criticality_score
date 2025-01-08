@@ -4,7 +4,7 @@ import (
 	"flag"
 	"log"
 
-	"github.com/HUSTSecLab/criticality_score/pkg/pkgdep2git"
+	"github.com/HUSTSecLab/criticality_score/cmd/git-relationship-generator/internal/pkgdep2git"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 )
 
