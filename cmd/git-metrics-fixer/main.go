@@ -1,8 +1,3 @@
-/*
- * @Date: 2024-09-06 21:09:14
- * @LastEditTime: 2024-12-16 18:58:31
- * @Description: The Cli for collector
- */
 package main
 
 import (
@@ -14,10 +9,10 @@ import (
 	"sync"
 
 	collector "github.com/HUSTSecLab/criticality_score/pkg/collector_git/collector"
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_git/logger"
 	git "github.com/HUSTSecLab/criticality_score/pkg/collector_git/parser/git"
 	url "github.com/HUSTSecLab/criticality_score/pkg/collector_git/parser/url"
 	scores "github.com/HUSTSecLab/criticality_score/pkg/gen_scores"
+	"github.com/HUSTSecLab/criticality_score/pkg/logger"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	"github.com/bytedance/gopkg/util/gopool"
 	gogit "github.com/go-git/go-git/v5"
@@ -81,7 +76,7 @@ func main() {
 			}
 
 			wg.Wait()
-			storage.InitDatabase(configPath)
+			storage.InitializeDefaultAppDatabase(configPath)
 			db, err := storage.GetDefaultAppDatabaseConnection()
 			if err != nil {
 				log.Fatalf("Failed to connect to database: %v", err)
