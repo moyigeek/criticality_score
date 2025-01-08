@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/HUSTSecLab/criticality_score/pkg/githubmetrics"
+	"github.com/HUSTSecLab/criticality_score/cmd/archives/githubmetrics/internal/githubmetrics"
 	_ "github.com/lib/pq"
 )
 
