@@ -10,9 +10,9 @@ import (
 	"os"
 
 	config "github.com/HUSTSecLab/criticality_score/pkg/gitfile/config"
-	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/logger"
 	url "github.com/HUSTSecLab/criticality_score/pkg/gitfile/parser/url"
 	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/utils"
+	"github.com/HUSTSecLab/criticality_score/pkg/logger"
 
 	"github.com/go-git/go-git/v5"
 )

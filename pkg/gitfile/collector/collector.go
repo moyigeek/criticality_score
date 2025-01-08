@@ -10,20 +10,20 @@ package collector
 import (
 	"fmt"
 
-	config "github.com/HUSTSecLab/criticality_score/pkg/gitfile/config"
-	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/logger"
 	parser "github.com/HUSTSecLab/criticality_score/pkg/gitfile/parser"
 	url "github.com/HUSTSecLab/criticality_score/pkg/gitfile/parser/url"
+	"github.com/HUSTSecLab/criticality_score/pkg/logger"
 
 	gogit "github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/storage/memory"
 )
 
-func Collect(u *url.RepoURL) (*gogit.Repository, error) {
-	r, err := Clone(u)
+// clone or update the repository, and collect metadata
+func Collect(u *url.RepoURL, storagePath string) (*gogit.Repository, error) {
+	r, err := Clone(u, storagePath)
 
 	if err == gogit.ErrRepositoryAlreadyExists {
-		r, err = Update(u)
+		r, err = Update(u, storagePath)
 		if err != nil {
 			logger.Errorf("Failed to Update %s, %v", u.URL, err)
 		}
@@ -34,21 +34,7 @@ func Collect(u *url.RepoURL) (*gogit.Repository, error) {
 	return r, err
 }
 
-func BriefCollect(u *url.RepoURL) (*gogit.Repository, error) {
-	r, err := BriefClone(u)
-
-	if err == gogit.ErrRepositoryAlreadyExists {
-		r, err = Update(u)
-		if err != nil {
-			logger.Errorf("Failed to Update %s", u.URL)
-		}
-	} else {
-		logger.Errorf("Failed to Clone %s", u.URL)
-	}
-
-	return r, err
-}
-
+// mem clone the repository, and collect metadata
 func EzCollect(u *url.RepoURL) (*gogit.Repository, error) {
 	r, err := MemClone(u)
 
@@ -59,8 +45,9 @@ func EzCollect(u *url.RepoURL) (*gogit.Repository, error) {
 	return r, err
 }
 
-func Clone(u *url.RepoURL) (*gogit.Repository, error) {
-	path := fmt.Sprintf("%s/%s%s", config.STORAGE_PATH, u.Resource, u.Pathname)
+// only clone the repository, if it exists, return error
+func Clone(u *url.RepoURL, storagePath string) (*gogit.Repository, error) {
+	path := fmt.Sprintf("%s/%s%s", storagePath, u.Resource, u.Pathname)
 
 	r, err := gogit.PlainClone(path, false, &gogit.CloneOptions{
 		URL: u.URL,
@@ -71,18 +58,7 @@ func Clone(u *url.RepoURL) (*gogit.Repository, error) {
 	return r, err
 }
 
-func BriefClone(u *url.RepoURL) (*gogit.Repository, error) {
-	path := fmt.Sprintf("%s/%s%s", config.STORAGE_PATH, u.Resource, u.Pathname)
-
-	r, err := gogit.PlainClone(path, true, &gogit.CloneOptions{
-		URL: u.URL,
-		// Progress:     os.Stdout,
-		SingleBranch: false,
-	})
-
-	return r, err
-}
-
+// only clone the repository into memory
 func MemClone(u *url.RepoURL) (*gogit.Repository, error) {
 	r, err := gogit.Clone(memory.NewStorage(), nil, &gogit.CloneOptions{
 		URL: u.URL,
@@ -93,11 +69,13 @@ func MemClone(u *url.RepoURL) (*gogit.Repository, error) {
 	return r, err
 }
 
+// open the repository
 func Open(path string) (*gogit.Repository, error) {
 	r, err := gogit.PlainOpen(path)
 	return r, err
 }
 
+// pull the repository
 func Pull(r *gogit.Repository, url string) error {
 	wt, err := r.Worktree()
 
@@ -164,8 +142,8 @@ func Fetch(r *gogit.Repository, path string) error {
 }
 */
 
-func Update(u *url.RepoURL) (*gogit.Repository, error) {
-	path := fmt.Sprintf("%s/%s%s", config.STORAGE_PATH, u.Resource, u.Pathname)
+func Update(u *url.RepoURL, storagePath string) (*gogit.Repository, error) {
+	path := fmt.Sprintf("%s/%s%s", storagePath, u.Resource, u.Pathname)
 	url := u.URL
 	r, err := Open(path)
 

@@ -9,6 +9,7 @@ import (
 
 type AppLogger interface {
 	Config(config *AppLoggerConfig) error
+
 	Trace(args ...interface{})
 	Debug(args ...interface{})
 	Info(args ...interface{})
@@ -16,6 +17,17 @@ type AppLogger interface {
 	Error(args ...interface{})
 	Fatal(args ...interface{})
 	Panic(args ...interface{})
+	Print(args ...interface{})
+
+	Traceln(args ...interface{})
+	Debugln(args ...interface{})
+	Infoln(args ...interface{})
+	Warnln(args ...interface{})
+	Errorln(args ...interface{})
+	Fatalln(args ...interface{})
+	Panicln(args ...interface{})
+	Println(args ...interface{})
+
 	Tracef(format string, args ...interface{})
 	Debugf(format string, args ...interface{})
 	Infof(format string, args ...interface{})
@@ -23,6 +35,8 @@ type AppLogger interface {
 	Errorf(format string, args ...interface{})
 	Fatalf(format string, args ...interface{})
 	Panicf(format string, args ...interface{})
+	Printf(format string, args ...interface{})
+
 	WithFields(fields map[string]interface{}) AppLogger
 }
 
@@ -62,10 +76,22 @@ const (
 type LoggerFormatType int
 
 const (
-	LoggerFormatConsole LoggerFormatType = iota
-	LoggerFormatMessageOnly
+	LoggerFormatText LoggerFormatType = iota
+	LoggerFormatCliTool
 	LoggerFormatJSON
 )
+
+type cliFormatter struct{}
+
+func (f *cliFormatter) Format(entry *logrus.Entry) ([]byte, error) {
+	if entry.Level == logrus.WarnLevel {
+		return []byte(fmt.Sprintf("\033[33m%s\033[0m\n", entry.Message)), nil
+	} else if entry.Level <= logrus.ErrorLevel {
+		return []byte(fmt.Sprintf("\033[31m%s\033[0m\n", entry.Message)), nil
+	}
+
+	return []byte(fmt.Sprintf("%s\n", entry.Message)), nil
+}
 
 type logrusLogger struct {
 	logger *logrus.Logger
@@ -76,7 +102,7 @@ func NewLogrusLogger(config *AppLoggerConfig) AppLogger {
 	if config == nil {
 		config = &AppLoggerConfig{
 			Level:      string(LoggerLevelInfo),
-			FormatType: LoggerFormatConsole,
+			FormatType: LoggerFormatText,
 			Output:     LoggerOutputStderr,
 		}
 	}
@@ -99,12 +125,10 @@ func (l *logrusLogger) Config(config *AppLoggerConfig) error {
 	var formatter logrus.Formatter
 
 	switch config.FormatType {
-	case LoggerFormatConsole:
+	case LoggerFormatText:
 		formatter = &logrus.TextFormatter{}
-	case LoggerFormatMessageOnly:
-		formatter = &logrus.TextFormatter{
-			DisableTimestamp: true,
-		}
+	case LoggerFormatCliTool:
+		formatter = &cliFormatter{}
 	case LoggerFormatJSON:
 		formatter = &logrus.JSONFormatter{}
 	default:
@@ -185,6 +209,14 @@ func (l *logrusLogger) Panic(args ...interface{}) {
 	}
 }
 
+func (l *logrusLogger) Print(args ...interface{}) {
+	if l.fields != nil {
+		l.logger.WithFields(l.fields).Print(args...)
+	} else {
+		l.logger.Print(args...)
+	}
+}
+
 func (l *logrusLogger) Tracef(format string, args ...interface{}) {
 	if l.fields != nil {
 		l.logger.WithFields(l.fields).Tracef(format, args...)
@@ -238,6 +270,78 @@ func (l *logrusLogger) Panicf(format string, args ...interface{}) {
 		l.logger.WithFields(l.fields).Panicf(format, args...)
 	} else {
 		l.logger.Panicf(format, args...)
+	}
+}
+
+func (l *logrusLogger) Printf(format string, args ...interface{}) {
+	if l.fields != nil {
+		l.logger.WithFields(l.fields).Printf(format, args...)
+	} else {
+		l.logger.Printf(format, args...)
+	}
+}
+
+func (l *logrusLogger) Debugln(args ...interface{}) {
+	if l.fields != nil {
+		l.logger.WithFields(l.fields).Debugln(args...)
+	} else {
+		l.logger.Debugln(args...)
+	}
+}
+
+func (l *logrusLogger) Traceln(args ...interface{}) {
+	if l.fields != nil {
+		l.logger.WithFields(l.fields).Traceln(args...)
+	} else {
+		l.logger.Traceln(args...)
+	}
+}
+
+func (l *logrusLogger) Infoln(args ...interface{}) {
+	if l.fields != nil {
+		l.logger.WithFields(l.fields).Infoln(args...)
+	} else {
+		l.logger.Infoln(args...)
+	}
+}
+
+func (l *logrusLogger) Warnln(args ...interface{}) {
+	if l.fields != nil {
+		l.logger.WithFields(l.fields).Warnln(args...)
+	} else {
+		l.logger.Warnln(args...)
+	}
+}
+
+func (l *logrusLogger) Errorln(args ...interface{}) {
+	if l.fields != nil {
+		l.logger.WithFields(l.fields).Errorln(args...)
+	} else {
+		l.logger.Errorln(args...)
+	}
+}
+
+func (l *logrusLogger) Fatalln(args ...interface{}) {
+	if l.fields != nil {
+		l.logger.WithFields(l.fields).Fatalln(args...)
+	} else {
+		l.logger.Fatalln(args...)
+	}
+}
+
+func (l *logrusLogger) Panicln(args ...interface{}) {
+	if l.fields != nil {
+		l.logger.WithFields(l.fields).Panicln(args...)
+	} else {
+		l.logger.Panicln(args...)
+	}
+}
+
+func (l *logrusLogger) Println(args ...interface{}) {
+	if l.fields != nil {
+		l.logger.WithFields(l.fields).Println(args...)
+	} else {
+		l.logger.Println(args...)
 	}
 }
 

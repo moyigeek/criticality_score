@@ -18,7 +18,7 @@ func TestCollect(t *testing.T) {
 		input    string
 		expected error
 	}{
-		{input: "https://github.com/gin-gonic/gin123456", expected: nil},
+		{input: "https://github.com/gin-gonic/gin", expected: nil},
 		{input: "https://gitee.com/teocloud/teo-docs-search-engine.git", expected: nil},
 		{input: "https://gitlab.com/Sasha-Zayets/nx-ci-cd.git", expected: nil},
 		{input: "https://salsa.debian.org/med-team/kmer.git", expected: nil},
@@ -26,26 +26,7 @@ func TestCollect(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.input, func(t *testing.T) {
 			u := url.ParseURL(test.input)
-			_, err := Collect(&u)
-			require.Equal(t, test.expected, err)
-		})
-	}
-}
-
-func TestBriefCollect(t *testing.T) {
-	tests := []struct {
-		input    string
-		expected error
-	}{
-		{input: "https://github.com/gin-gonic/gin123456", expected: nil},
-		{input: "https://gitee.com/teocloud/teo-docs-search-engine.git", expected: nil},
-		{input: "https://gitlab.com/Sasha-Zayets/nx-ci-cd.git", expected: nil},
-		{input: "https://salsa.debian.org/med-team/kmer.git", expected: nil},
-	}
-	for _, test := range tests {
-		t.Run(test.input, func(t *testing.T) {
-			u := url.ParseURL(test.input)
-			_, err := BriefCollect(&u)
+			_, err := Collect(&u, t.TempDir())
 			require.Equal(t, test.expected, err)
 		})
 	}
@@ -56,7 +37,7 @@ func TestEzCollect(t *testing.T) {
 		input    string
 		expected error
 	}{
-		{input: "https://github.com/gin-gonic/gin123456", expected: nil},
+		{input: "https://github.com/gin-gonic/gin", expected: nil},
 		{input: "https://gitee.com/teocloud/teo-docs-search-engine.git", expected: nil},
 		{input: "https://gitlab.com/Sasha-Zayets/nx-ci-cd.git", expected: nil},
 		{input: "https://salsa.debian.org/med-team/kmer.git", expected: nil},

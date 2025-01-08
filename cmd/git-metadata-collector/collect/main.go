@@ -1,96 +1,139 @@
-/*
- * @Date: 2023-11-11 22:44:26
- * @LastEditTime: 2025-01-07 19:14:08
- * @Description: Collect Remote / Local Repo
- */
+// this tool is used to collect git metadata in storage path, but not clone the repository.
 package main
 
 import (
-	// collector "github.com/HUSTSecLab/criticality_score/pkg/gitfile/collector"
-	"os"
-	"time"
+	"fmt"
+	"log"
+	"sync"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/collector"
-	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/config"
-	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/database"
-	psql "github.com/HUSTSecLab/criticality_score/pkg/gitfile/database/psql"
-	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/logger"
 	git "github.com/HUSTSecLab/criticality_score/pkg/gitfile/parser/git"
 	url "github.com/HUSTSecLab/criticality_score/pkg/gitfile/parser/url"
-	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/utils"
+	gitUtil "github.com/HUSTSecLab/criticality_score/pkg/gitfile/util"
+	"github.com/HUSTSecLab/criticality_score/pkg/logger"
+	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	"github.com/bytedance/gopkg/util/gopool"
-
-	//"fmt"
-	"sync"
+	"github.com/spf13/pflag"
+	"github.com/spf13/viper"
 )
 
-func getPath() string {
-	var path string
-	if len(os.Args) == 2 {
-		path = os.Args[1]
-	} else {
-		path = ""
+var flagConfigPath = pflag.StringP("config", "c", "config.json", "path to the config file")
+var flagStoragePath = pflag.StringP("storage", "s", "./storage", "path to git storage location")
+var flagJobsCount = pflag.IntP("jobs", "j", 256, "jobs count")
+var flagForceUpdateAll = pflag.Bool("force-update-all", false, "force update all repositories")
+var flagDisableUpdateInfo = pflag.Bool("disable-update-info", false, "disable update meta, like language and license")
+var flagDisableUpdateLog = pflag.Bool("disable-update-log", false, "disable update log, like commit frequency")
+
+func getUrls() ([]string, error) {
+	conn, err := storage.GetDefaultAppDatabaseConnection()
+	if err != nil {
+		return nil, err
 	}
-	return path
+
+	var sqlStatement string
+
+	if *flagForceUpdateAll {
+		sqlStatement = `SELECT git_link from git_metrics`
+	} else {
+		sqlStatement = `SELECT git_link from git_metrics where need_update = true`
+	}
+
+	rows, err := conn.Query(sqlStatement)
+	if err != nil {
+		return nil, err
+	}
+	var ret []string
+	for rows.Next() {
+		var link string
+		rows.Scan(&link)
+		ret = append(ret, link)
+	}
+	return ret, nil
 }
 
 func main() {
-	path := getPath()
-	urls, err := utils.GetCSVInput(path)
+	pflag.Usage = func() {
+		fmt.Println("This tool is used to collect git metadata in storage path, but not clone the repository.")
+		pflag.PrintDefaults()
+	}
+
+	const viperStorageKey = "storage"
+
+	pflag.Parse()
+	viper.BindPFlag(viperStorageKey, pflag.Lookup("storage"))
+	viper.BindEnv(viperStorageKey, "STORAGE_PATH")
+
+	pflag.Parse()
+	storage.InitializeDefaultAppDatabase(*flagConfigPath)
+
+	urls, err := getUrls()
 	if err != nil {
-		logger.Fatalf("Failed to read %s", path)
+		log.Fatal(err)
 	}
 
 	var wg sync.WaitGroup
 	logger.Infof("%d urls in total", len(urls))
-
-	ch := make(chan database.GitMetrics, config.BATCH_SIZE)
-
-	db, err := psql.InitDB()
-	if err != nil {
-		logger.Fatal("Failed to connect database")
-	}
-	psql.CreateTable(db)
-
-	wg.Add(1)
-	gopool.Go(func() {
-		defer wg.Done()
-		var data database.GitMetrics
-		var ok bool
-		for {
-			data, ok = <-ch
-			if !ok {
-				break
-			}
-			psql.InsertTable(db, &data)
-		}
-	})
-
 	wg.Add(len(urls))
-	for index, input := range urls {
-		if index%10 == 0 {
-			time.Sleep(5 * time.Second)
-		} else {
-			time.Sleep(2 * time.Second)
-		}
+
+	db, err := storage.GetDefaultAppDatabaseConnection()
+	if err != nil {
+		logger.Fatal("Connecting Database Failed")
+	}
+
+	gopool.SetCap(int32(*flagJobsCount))
+
+	for _, input := range urls {
 
 		gopool.Go(func() {
 			defer wg.Done()
-			u := url.ParseURL(input[0])
-			r, err := collector.Collect(&u)
-			if err != nil {
-				logger.Panicf("Collecting %s Failed", input)
+			u := url.ParseURL(input)
+
+			path := gitUtil.GetGitRepositoryPath(viper.GetString(viperStorageKey), &u)
+			r, err := collector.Open(path)
+
+			if err != nil || r == nil {
+				logger.Errorf("Open %s failed: %s", u.URL, err)
+				return
 			}
 
-			repo, err := git.ParseRepo(r)
+			result := git.NewRepo()
+			err = result.WalkRepo(r)
+
 			if err != nil {
-				logger.Panicf("[!] Paring %s Failed", input)
+				logger.Errorf("WalkRepo %s failed: %s", input, err)
+				return
 			}
 
-			output := database.Repo2Metrics(repo)
-			ch <- output
+			sqlResult, err := db.Exec(`UPDATE git_metrics SET
+				ecosystem = $1,
+				license = $2,
+				language = $3
+				WHERE git_link = $4`,
+				result.Ecosystems,
+				result.License,
+				result.Languages,
+				input)
+
+			if err != nil {
+				logger.Errorf("Update database for %s failed: %v", input, err)
+				return
+			}
+
+			rowAffected, err := sqlResult.RowsAffected()
+
+			if err != nil {
+				logger.Errorf("Get RowsAffected for %s Failed: %v", input, err)
+				return
+			}
+
+			if rowAffected == 0 {
+				logger.Warnf("Update %s failed: row affected = 0", input)
+				return
+			}
+
+			logger.Infof("Success: %s", input)
+
 		})
 	}
 	wg.Wait()
-	close(ch)
 }

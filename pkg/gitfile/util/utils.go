@@ -1,17 +1,14 @@
-package utils
+package util
 
 import (
 	"encoding/csv"
 	"os"
+	"path"
 
-	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/config"
+	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/parser/url"
 )
 
 func GetCSVInput(path string) ([][]string, error) {
-	if path == "" {
-		path = config.INPUT_CSV_PATH
-	}
-
 	file, err := os.Open(path)
 
 	if err != nil {
@@ -30,8 +27,8 @@ func GetCSVInput(path string) ([][]string, error) {
 	return urls, nil
 }
 
-func Save2CSV(content [][]string) error {
-	file, err := os.Create(config.OUTPUT_CSV_PATH)
+func Save2CSV(outputPath string, content [][]string) error {
+	file, err := os.Create(outputPath)
 	if err != nil {
 		return err
 	}
@@ -43,4 +40,9 @@ func Save2CSV(content [][]string) error {
 	writer.WriteAll(content)
 
 	return nil
+}
+
+func GetGitRepositoryPath(storagePath string, u *url.RepoURL) string {
+	// join path
+	return path.Join(storagePath, u.Resource, u.Pathname)
 }
