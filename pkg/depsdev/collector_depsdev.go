@@ -1,4 +1,4 @@
-package collector_depsdev
+package depsdev
 
 import (
 	"context"

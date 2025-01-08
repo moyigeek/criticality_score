@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 
-	"github.com/HUSTSecLab/criticality_score/pkg/collector_depsdev"
+	"github.com/HUSTSecLab/criticality_score/pkg/depsdev"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 )
 
@@ -16,5 +16,5 @@ func main() {
 	flag.Parse()
 	storage.InitializeDefaultAppDatabase(*flagConfigPath)
 
-	collector_depsdev.Depsdev(*flagConfigPath, *flagBatchSize, *workerCount, *calculatePageRank)
+	depsdev.Depsdev(*flagConfigPath, *flagBatchSize, *workerCount, *calculatePageRank)
 }
