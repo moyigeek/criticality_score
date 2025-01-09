@@ -1,13 +1,14 @@
 /*
  * @Author: 7erry
  * @Date: 2024-09-29 14:41:35
- * @LastEditTime: 2024-12-24 20:52:32
+ * @LastEditTime: 2025-01-09 15:08:40
  * @Description: Parse Git Repositories to collect necessary metrics
  */
 
 package git
 
 import (
+	"errors"
 	"fmt"
 	"path/filepath"
 	"sort"
@@ -22,6 +23,10 @@ import (
 	"github.com/go-git/go-git/v5/plumbing"
 	"github.com/go-git/go-git/v5/plumbing/object"
 	"github.com/google/licensecheck"
+)
+
+var (
+	errUrlNotFound = errors.New("Repo URL not found")
 )
 
 type Repo struct {
@@ -504,41 +509,45 @@ func ParseRepo(r *git.Repository) (*Repo, error) {
 	u, err := GetURL(r)
 	if err != nil {
 		logger.Errorf("Failed to Get RepoURL for %v", err)
+		return nil, err
 	}
 
 	var name, owner, source string
 	if u == "" {
-		source = parser.UNKNOWN_SOURCE
-		u = parser.UNKNOWN_URL
+		//* source = parser.UNKNOWN_SOURCE
+		//* u = parser.UNKNOWN_URL
+		//* name = parser.UNKNOWN_NAME
+		//* owner = parser.UNKNOWN_OWNER
+		return nil, errUrlNotFound
+	}
+
+	uu := url.ParseURL(u)
+
+	if uu.Pathname == "" {
 		name = parser.UNKNOWN_NAME
 		owner = parser.UNKNOWN_OWNER
 	} else {
-		uu := url.ParseURL(u)
+		path := strings.Split(uu.Pathname, "/")
+		name = strings.Split(path[len(path)-1], ".")[0]
+		owner = path[len(path)-2]
+	}
 
-		if uu.Pathname == "" {
-			name = parser.UNKNOWN_NAME
-			owner = parser.UNKNOWN_OWNER
-		} else {
-			path := strings.Split(uu.Pathname, "/")
-			name = strings.Split(path[len(path)-1], ".")[0]
-			owner = path[len(path)-2]
-		}
-
-		if uu.Resource == "" {
-			source = parser.UNKNOWN_SOURCE
-		} else {
-			source = uu.Resource
-		}
+	if uu.Resource == "" {
+		source = parser.UNKNOWN_SOURCE
+	} else {
+		source = uu.Resource
 	}
 
 	err = repo.WalkRepo(r)
 	if err != nil {
 		logger.Errorf("Failed to Walk Repo for %v", err)
+		return nil, err
 	}
 
 	err = repo.WalkLog(r)
 	if err != nil {
 		logger.Errorf("Failed to Walk Log for %v", err)
+		return nil, err
 	}
 
 	repo.Name = name
