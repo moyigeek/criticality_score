@@ -13,7 +13,6 @@ import (
 	"github.com/hasura/go-graphql-client"
 	"github.com/ossf/scorecard/v4/clients/githubrepo/roundtripper"
 	"github.com/ossf/scorecard/v4/log"
-	"go.uber.org/zap/zapcore"
 
 	"github.com/HUSTSecLab/criticality_score/cmd/git-platforms-enumerator/internal/githubapi"
 	"github.com/HUSTSecLab/criticality_score/cmd/git-platforms-enumerator/internal/githubsearch"
@@ -23,7 +22,6 @@ import (
 const (
 	reposPerPage     = 100
 	oneDay           = time.Hour * 24
-	defaultLogLevel  = zapcore.InfoLevel
 	runIDToken       = "[[runid]]"
 	runIDDateFormat  = "20060102-1504"
 	githubDateFormat = "2006-01-02"
