@@ -1,7 +1,7 @@
 /*
  * @Author: 7erry
  * @Date: 2024-09-29 14:41:35
- * @LastEditTime: 2025-01-09 15:08:40
+ * @LastEditTime: 2025-01-09 15:37:17
  * @Description: Parse Git Repositories to collect necessary metrics
  */
 
@@ -26,7 +26,10 @@ import (
 )
 
 var (
-	errUrlNotFound = errors.New("Repo URL not found")
+	errUrlNotFound      = errors.New("repo URL not found")
+	errWalkRepoFailed   = errors.New("walk repo failed")
+	errWalkLogFailed    = errors.New("walk log failed")
+	errPathNameNotFound = errors.New("repo pathname not found")
 )
 
 type Repo struct {
@@ -316,7 +319,7 @@ func GetLicense(f *object.File) (string, error) {
 		return "", err
 	}
 	cov := licensecheck.Scan([]byte(text))
-	if cov.Match == nil || len(cov.Match) == 0 {
+	if len(cov.Match) == 0 {
 		return parser.UNKNOWN_LICENSE, nil
 	}
 
@@ -375,7 +378,6 @@ func (repo *Repo) WalkLog(r *git.Repository) error {
 		commit_count++
 	}
 
-	flag := true
 	created_since := latest_commit.Committer.When
 
 	err = cIter.ForEach(func(c *object.Commit) error {
@@ -390,12 +392,8 @@ func (repo *Repo) WalkLog(r *git.Repository) error {
 		contributors[author]++
 		orgs[org]++
 
-		if flag {
-			if created_since.After(parser.LAST_YEAR) {
-				commit_count++
-			} else {
-				flag = false
-			}
+		if created_since.After(parser.LAST_YEAR) {
+			commit_count++
 		}
 
 		return nil
@@ -451,7 +449,6 @@ func (repo *Repo) WalkRepo(r *git.Repository) error {
 		}
 		return nil
 	})
-
 	if err != nil {
 		return err
 	}
@@ -512,48 +509,34 @@ func ParseRepo(r *git.Repository) (*Repo, error) {
 		return nil, err
 	}
 
-	var name, owner, source string
 	if u == "" {
-		//* source = parser.UNKNOWN_SOURCE
-		//* u = parser.UNKNOWN_URL
-		//* name = parser.UNKNOWN_NAME
-		//* owner = parser.UNKNOWN_OWNER
 		return nil, errUrlNotFound
 	}
 
+	repo.URL = u
+
 	uu := url.ParseURL(u)
 
-	if uu.Pathname == "" {
-		name = parser.UNKNOWN_NAME
-		owner = parser.UNKNOWN_OWNER
-	} else {
-		path := strings.Split(uu.Pathname, "/")
-		name = strings.Split(path[len(path)-1], ".")[0]
-		owner = path[len(path)-2]
+	if uu.Pathname == "" || uu.Resource == "" {
+		return nil, errPathNameNotFound
 	}
 
-	if uu.Resource == "" {
-		source = parser.UNKNOWN_SOURCE
-	} else {
-		source = uu.Resource
-	}
+	path := strings.Split(uu.Pathname, "/")
+	repo.Name = strings.Split(path[len(path)-1], ".")[0]
+	repo.Owner = path[len(path)-2]
+	repo.Source = uu.Resource
 
 	err = repo.WalkRepo(r)
 	if err != nil {
 		logger.Errorf("Failed to Walk Repo for %v", err)
-		return nil, err
+		return nil, errWalkRepoFailed
 	}
 
 	err = repo.WalkLog(r)
 	if err != nil {
 		logger.Errorf("Failed to Walk Log for %v", err)
-		return nil, err
+		return nil, errWalkLogFailed
 	}
-
-	repo.Name = name
-	repo.Owner = owner
-	repo.Source = source
-	repo.URL = u
 
 	return &repo, nil
 }
