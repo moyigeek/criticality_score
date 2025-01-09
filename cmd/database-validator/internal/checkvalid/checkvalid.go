@@ -124,14 +124,20 @@ func checkCloneValid(db *sql.DB, maxThreads int) [][]string {
 	var invalidLinks [][]string
 	sem := make(chan struct{}, maxThreads)
 	var wg sync.WaitGroup
+	var mu sync.Mutex
 
 	for _, link := range gitLinks {
 		wg.Add(1)
 		sem <- struct{}{}
 		go func(gitLink string) {
+			defer wg.Done()
+			defer func() { <-sem }()
+
 			tempDir, err := os.MkdirTemp("", "test_repo_*")
 			if err != nil {
+				mu.Lock()
 				invalidLinks = append(invalidLinks, []string{gitLink, "failed to create temp directory"})
+				mu.Unlock()
 				return
 			}
 			defer os.RemoveAll(tempDir)
@@ -139,7 +145,9 @@ func checkCloneValid(db *sql.DB, maxThreads int) [][]string {
 			cmd := exec.Command("git", "clone", "--depth=1", gitLink, tempDir)
 			err = cmd.Start()
 			if err != nil {
+				mu.Lock()
 				invalidLinks = append(invalidLinks, []string{gitLink, "failed to clone"})
+				mu.Unlock()
 				return
 			}
 			done := make(chan error, 1)
@@ -149,14 +157,19 @@ func checkCloneValid(db *sql.DB, maxThreads int) [][]string {
 			select {
 			case <-time.After(15 * time.Second):
 				cmd.Process.Kill()
+				mu.Lock()
 				invalidLinks = append(invalidLinks, []string{gitLink, "clone timed out"})
+				mu.Unlock()
 			case err := <-done:
 				if err != nil {
+					mu.Lock()
 					invalidLinks = append(invalidLinks, []string{gitLink, "failed to clone"})
+					mu.Unlock()
 				}
 			}
 		}(link)
 	}
+	wg.Wait()
 	return invalidLinks
 }
 

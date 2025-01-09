@@ -69,21 +69,18 @@ var thresholds = map[string]float64{
 	"org_count":         8400,
 }
 
-var PackageManagerData = map[string]int{
-	"npm":   3400000,
-	"go":    1230000,
-	"maven": 636000,
-	"pypi":  538000,
-	"nuget": 406000,
-	"cargo": 155000,
-}
-
 var PackageList = map[string]int{
 	"debian_packages":   0,
 	"arch_packages":     0,
 	"nix_packages":      0,
 	"homebrew_packages": 0,
 	"gentoo_packages":   0,
+	"alpine_packages":   0,
+	"fedora_packages":   0,
+	"ubuntu_packages":   0,
+	"deepin_packages":   0,
+	"aur_packages":      0,
+	"centos_packages":   0,
 }
 
 func CalculateDependencyRatio(link, packageType string, linkCount map[string]map[string]PackageData) (float64, error) {
