@@ -10,7 +10,6 @@ import (
 	"strings"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
-	"github.com/samber/lo"
 )
 
 func camelToSnake(s string) string {
@@ -29,9 +28,17 @@ func getFieldColumnName(f reflect.StructField) string {
 	return column
 }
 
-var typeColumnToFieldIdxMapCache = make(map[reflect.Type]map[string]int)
+type fieldInfo struct {
+	idx         int
+	isPk        bool
+	isGenerated bool
+}
 
-func getTypeColumnToFieldIdxMap(t reflect.Type) map[string]int {
+type columnToFieldInfo map[string]fieldInfo
+
+var typeColumnToFieldIdxMapCache = make(map[reflect.Type]columnToFieldInfo)
+
+func getTypeColumnToFieldInfo(t reflect.Type) columnToFieldInfo {
 	// if t is pointer, get the element type
 	if t.Kind() == reflect.Pointer {
 		t = t.Elem()
@@ -43,15 +50,37 @@ func getTypeColumnToFieldIdxMap(t reflect.Type) map[string]int {
 	}
 
 	// build map
-	ret := make(map[string]int)
+	ret := make(columnToFieldInfo)
+
+	pkFound := false
 
 	for i := 0; i < t.NumField(); i++ {
 		field := t.Field(i)
 		if field.IsExported() != false && field.Tag.Get("ignore") != "true" {
-			ret[getFieldColumnName(field)] = i
+			f := fieldInfo{
+				idx: i,
+			}
+			if field.Tag.Get("pk") == "true" {
+				f.isPk = true
+				pkFound = true
+			}
+			if field.Tag.Get("generated") == "true" {
+				f.isGenerated = true
+			}
+			ret[getFieldColumnName(field)] = f
 		}
 	}
 
+	if pkFound == false {
+		// if no pk found, find if id field exists
+		if f, ok := ret["id"]; ok {
+			ret["id"] = fieldInfo{
+				idx:         f.idx,
+				isPk:        true,
+				isGenerated: f.isGenerated,
+			}
+		}
+	}
 	// save to cache
 	typeColumnToFieldIdxMapCache[t] = ret
 	return ret
@@ -68,29 +97,15 @@ func getTypePrimaryKey(t reflect.Type) []string {
 		return ret
 	}
 
+	cToFMap := getTypeColumnToFieldInfo(t)
+
 	pkColumn := make([]string, 0)
-	fallBack := ""
-	for i := 0; i < t.NumField(); i++ {
-		field := t.Field(i)
-		if field.IsExported() == false || field.Tag.Get("ignore") == "true" {
-			continue
-		}
-		if field.Tag.Get("pk") == "true" {
-			column := field.Tag.Get("column")
-			if column == "" {
-				column = camelToSnake(field.Name)
-			}
-			pkColumn = append(pkColumn, column)
-		}
-		if field.Name == "ID" || field.Name == "Id" {
-			fallBack = field.Name
+
+	for k, v := range cToFMap {
+		if v.isPk {
+			pkColumn = append(pkColumn, k)
 		}
 	}
-
-	if len(pkColumn) == 0 && fallBack != "" {
-		pkColumn = append(pkColumn, camelToSnake(fallBack))
-	}
-
 	typePrimaryKeyCache[t] = pkColumn
 	return pkColumn
 }
@@ -101,7 +116,7 @@ func rowsToEntity[T any](rows *sql.Rows) (*T, error) {
 	reflectVal := reflect.New(reflectType).Elem()
 	addressList := make([]interface{}, 0)
 
-	cToFMap := getTypeColumnToFieldIdxMap(reflectType)
+	cToFMap := getTypeColumnToFieldInfo(reflectType)
 
 	columnNames, err := rows.Columns()
 	if err != nil {
@@ -115,7 +130,7 @@ func rowsToEntity[T any](rows *sql.Rows) (*T, error) {
 			addressList = append(addressList, &ignore)
 			continue
 		}
-		fieldVal := reflectVal.Field(fieldIdx)
+		fieldVal := reflectVal.Field(fieldIdx.idx)
 		newObj := reflect.New(fieldVal.Type().Elem())
 		fieldVal.Set(newObj)
 		addressList = append(addressList, newObj.Interface())
@@ -150,14 +165,15 @@ func getInsertQueryAndArgs[T any](tableName string, data *T) (string, []interfac
 	columns := make([]string, 0)
 	values := make([]interface{}, 0)
 
-	cToFMap := getTypeColumnToFieldIdxMap(reflectType)
+	cToFMap := getTypeColumnToFieldInfo(reflectType)
 
 	for k, v := range cToFMap {
-		if reflectVal.Field(v).IsNil() {
+		// if generated or nil, ignore
+		if v.isGenerated || reflectVal.Field(v.idx).IsNil() {
 			continue
 		}
 		columns = append(columns, k)
-		values = append(values, reflectVal.Field(v).Elem().Interface())
+		values = append(values, reflectVal.Field(v.idx).Elem().Interface())
 	}
 
 	if len(columns) == 0 {
@@ -188,19 +204,16 @@ func getUpdateQueryAndArgs[T any](tableName string, data *T) (string, []interfac
 	whereColumns := make([]string, 0)
 	whereValues := make([]interface{}, 0)
 
-	cToFMap := getTypeColumnToFieldIdxMap(reflectType)
+	cToFMap := getTypeColumnToFieldInfo(reflectType)
 	pkColumns := getTypePrimaryKey(reflectType)
 
 	for k, v := range cToFMap {
-		if reflectVal.Field(v).IsNil() {
-			continue
-		}
-		if lo.IndexOf(pkColumns, k) != -1 {
-			// primary key column should not be updated
+		// if pk or generated or nil, ignore
+		if v.isPk || v.isGenerated || reflectVal.Field(v.idx).IsNil() {
 			continue
 		}
 		columns = append(columns, k)
-		values = append(values, reflectVal.Field(v).Elem().Interface())
+		values = append(values, reflectVal.Field(v.idx).Elem().Interface())
 	}
 
 	if len(columns) == 0 {
@@ -223,15 +236,15 @@ func getUpdateQueryAndArgs[T any](tableName string, data *T) (string, []interfac
 	whereStr := strings.Join(whereArr, " AND ")
 
 	for _, pkColumn := range pkColumns {
-		fieldIdx, ok := cToFMap[pkColumn]
+		fieldInfo, ok := cToFMap[pkColumn]
 		if !ok {
 			return "", nil, fmt.Errorf("primary key column %s not found in struct", pkColumn)
 		}
 		whereColumns = append(whereColumns, pkColumn)
-		if reflectVal.Field(fieldIdx).IsNil() {
+		if reflectVal.Field(fieldInfo.idx).IsNil() {
 			return "", nil, fmt.Errorf("primary key column %s is nil", pkColumn)
 		}
-		whereValues = append(whereValues, reflectVal.Field(fieldIdx).Elem().Interface())
+		whereValues = append(whereValues, reflectVal.Field(fieldInfo.idx).Elem().Interface())
 	}
 
 	values = append(values, whereValues...)
@@ -249,7 +262,7 @@ func getDeleteQueryAndArgs[T any](tableName string, data *T) (string, []interfac
 	whereColumns := make([]string, 0)
 	whereValues := make([]interface{}, 0)
 
-	cToFMap := getTypeColumnToFieldIdxMap(reflectType)
+	cToFMap := getTypeColumnToFieldInfo(reflectType)
 	pkColumns := getTypePrimaryKey(reflectType)
 
 	queryPlacement := 1
@@ -261,15 +274,15 @@ func getDeleteQueryAndArgs[T any](tableName string, data *T) (string, []interfac
 	whereStr := strings.Join(whereArr, " AND ")
 
 	for _, pkColumn := range pkColumns {
-		fieldIdx, ok := cToFMap[pkColumn]
+		fieldInfo, ok := cToFMap[pkColumn]
 		if !ok {
 			return "", nil, fmt.Errorf("primary key column %s not found in struct", pkColumn)
 		}
 		whereColumns = append(whereColumns, pkColumn)
-		if reflectVal.Field(fieldIdx).IsNil() {
+		if reflectVal.Field(fieldInfo.idx).IsNil() {
 			return "", nil, fmt.Errorf("primary key column %s is nil", pkColumn)
 		}
-		whereValues = append(whereValues, reflectVal.Field(fieldIdx).Elem().Interface())
+		whereValues = append(whereValues, reflectVal.Field(fieldInfo.idx).Elem().Interface())
 	}
 
 	deleteSentenceTemplate := `DELETE FROM %s WHERE %s`
@@ -303,11 +316,11 @@ func getSelectQuery[T any](from string, afterFrom string) string {
 	data := new(T)
 	reflectType := reflect.TypeOf(*data)
 
-	cToFMap := getTypeColumnToFieldIdxMap(reflectType)
+	cToFMap := getTypeColumnToFieldInfo(reflectType)
 
 	fields := make([]string, 0)
 
-	for k, _ := range cToFMap {
+	for k := range cToFMap {
 		fields = append(fields, k)
 	}
 
@@ -393,7 +406,7 @@ func MergeStruct[T any](old *T, dst *T) {
 	for i := 0; i < srcVal.NumField(); i++ {
 		srcField := srcVal.Field(i)
 		dstField := dstVal.Field(i)
-		if dstVal.IsNil() {
+		if dstField.IsNil() {
 			dstField.Set(srcField)
 		}
 	}

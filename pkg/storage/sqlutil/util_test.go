@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/DATA-DOG/go-sqlmock"
-	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	"github.com/samber/lo"
 )
 
@@ -37,6 +36,12 @@ type a struct {
 	ID               *int
 	Name             *string
 	SomeStrangeField *string `column:"abcdeSSSS"`
+}
+
+type b struct {
+	ID    *int `generated:"true"`
+	Type  *int `column:"type" pk:"true"`
+	Event *string
 }
 
 type queryBuilderWant struct {
@@ -70,7 +75,7 @@ func assertQueryBuilderWant(t *testing.T, query string, args []interface{}, err 
 func TestInsertSentence(t *testing.T) {
 	type testArgs struct {
 		tableName string
-		data      *a
+		data      any
 	}
 
 	tests := []struct {
@@ -108,11 +113,29 @@ func TestInsertSentence(t *testing.T) {
 				{"INSERT INTO table (abcdeSSSS, name, id) VALUES ($1, $2, $3)", []any{"test", "test", 1}},
 			},
 		},
+		{
+			args: testArgs{
+				tableName: "table",
+				data:      &b{ID: lo.ToPtr(1), Type: lo.ToPtr(2), Event: lo.ToPtr("test")},
+			},
+			want: []queryBuilderWant{
+				{"INSERT INTO table (type, event) VALUES ($1, $2)", []any{2, "test"}},
+				{"INSERT INTO table (event, type) VALUES ($1, $2)", []any{"test", 2}},
+			},
+		},
 	}
 
 	for i, tt := range tests {
 		t.Run(fmt.Sprintf("TestInsertSentence%d", i), func(t *testing.T) {
-			got, args, err := getInsertQueryAndArgs(tt.args.tableName, tt.args.data)
+			var got string
+			var args []interface{}
+			var err error
+			switch tt.args.data.(type) {
+			case *a:
+				got, args, err = getInsertQueryAndArgs(tt.args.tableName, tt.args.data.(*a))
+			case *b:
+				got, args, err = getInsertQueryAndArgs(tt.args.tableName, tt.args.data.(*b))
+			}
 			assertQueryBuilderWant(t, got, args, err, tt.wantErr, tt.want)
 		})
 	}
@@ -180,7 +203,7 @@ func isStructEqual[T any](a, b *T) bool {
 	reflectValB := reflect.ValueOf(b).Elem()
 
 	for i := 0; i < reflectType.NumField(); i++ {
-		if reflectValA.Field(i).Interface() != reflectValB.Field(i).Interface() {
+		if reflectValA.Field(i).Elem().Interface() != reflectValB.Field(i).Elem().Interface() {
 			return false
 		}
 	}
@@ -210,11 +233,37 @@ func TestRowsToEntity(t *testing.T) {
 	}
 
 	want := &a{ID: lo.ToPtr(1), Name: lo.ToPtr("test"), SomeStrangeField: lo.ToPtr("test")}
-	if isStructEqual(got, want) {
+	if !isStructEqual(got, want) {
 		t.Errorf("RowsToEntity() = %v, want %v", got, want)
 	}
 }
 
-// public function test
+func TestMergeStruct(t *testing.T) {
+	type testCase struct {
+		oldStruct *a
+		newStruct *a
+		want      *a
+	}
 
-var ctx storage.AppDatabaseContext
+	tests := []testCase{
+		{
+			oldStruct: &a{ID: lo.ToPtr(1), Name: lo.ToPtr("test"), SomeStrangeField: lo.ToPtr("test")},
+			newStruct: &a{ID: lo.ToPtr(2), Name: lo.ToPtr("test"), SomeStrangeField: lo.ToPtr("test")},
+			want:      &a{ID: lo.ToPtr(2), Name: lo.ToPtr("test"), SomeStrangeField: lo.ToPtr("test")},
+		},
+		{
+			oldStruct: &a{ID: nil, Name: nil, SomeStrangeField: lo.ToPtr("test")},
+			newStruct: &a{ID: lo.ToPtr(2), Name: lo.ToPtr("test"), SomeStrangeField: lo.ToPtr("test2")},
+			want:      &a{ID: lo.ToPtr(2), Name: lo.ToPtr("test"), SomeStrangeField: lo.ToPtr("test2")},
+		},
+	}
+
+	for i, tt := range tests {
+		t.Run(fmt.Sprintf("TestMergeStruct%d", i), func(t *testing.T) {
+			MergeStruct(tt.oldStruct, tt.newStruct)
+			if !isStructEqual(tt.newStruct, tt.want) {
+				t.Errorf("MergeStruct() = %v, want %v", tt.newStruct, tt.want)
+			}
+		})
+	}
+}
