@@ -27,16 +27,16 @@ func NewDatabaseWriter(ctx storage.AppDatabaseContext, tablePrefix string) *Data
 func (w *DatabaseWriter) Open() error {
 	repo := repository.NewPlatformLinkRepository(w.dbCtx, repository.PlatformLinkTablePrefix(w.tablePrefix))
 	w.repo = repo
-	return repo.ClearLinks()
+	return repo.BeginTemp()
 }
 
 func (w *DatabaseWriter) Close() error {
 	w.flush()
-	return nil
+	return w.repo.CommitTemp()
 }
 
 func (w *DatabaseWriter) flush() error {
-	err := w.repo.BatchInsertLinks(w.buffer)
+	err := w.repo.BatchInsertTemp(w.buffer)
 	if err != nil {
 		logger.Error("Failed to insert links: %v", err)
 		return err

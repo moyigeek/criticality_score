@@ -1,8 +1,8 @@
 package enumerator
 
 import (
-	"github.com/HUSTSecLab/criticality_score/cmd/git-platforms-enumerator/internal/api"
-	"github.com/HUSTSecLab/criticality_score/cmd/git-platforms-enumerator/internal/api/bitbucket"
+	"github.com/HUSTSecLab/criticality_score/pkg/linkenumerator/api"
+	"github.com/HUSTSecLab/criticality_score/pkg/linkenumerator/api/bitbucket"
 	"github.com/sirupsen/logrus"
 )
 

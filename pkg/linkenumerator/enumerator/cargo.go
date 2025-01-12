@@ -5,7 +5,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/HUSTSecLab/criticality_score/cmd/git-platforms-enumerator/internal/api"
+	"github.com/HUSTSecLab/criticality_score/pkg/linkenumerator/api"
 	"github.com/HUSTSecLab/criticality_score/pkg/logger"
 	"github.com/bytedance/gopkg/util/gopool"
 	"github.com/sirupsen/logrus"

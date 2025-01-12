@@ -14,8 +14,8 @@ import (
 	"github.com/ossf/scorecard/v4/clients/githubrepo/roundtripper"
 	"github.com/ossf/scorecard/v4/log"
 
-	"github.com/HUSTSecLab/criticality_score/cmd/git-platforms-enumerator/internal/githubapi"
-	"github.com/HUSTSecLab/criticality_score/cmd/git-platforms-enumerator/internal/githubsearch"
+	"github.com/HUSTSecLab/criticality_score/pkg/linkenumerator/githubapi"
+	"github.com/HUSTSecLab/criticality_score/pkg/linkenumerator/githubsearch"
 	"github.com/HUSTSecLab/criticality_score/pkg/logger"
 )
 

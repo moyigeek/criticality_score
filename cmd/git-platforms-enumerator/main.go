@@ -4,8 +4,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/HUSTSecLab/criticality_score/cmd/git-platforms-enumerator/internal/enumerator"
-	"github.com/HUSTSecLab/criticality_score/cmd/git-platforms-enumerator/internal/writer"
+	"github.com/HUSTSecLab/criticality_score/pkg/linkenumerator/enumerator"
+	"github.com/HUSTSecLab/criticality_score/pkg/linkenumerator/writer"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/pflag"
@@ -109,7 +109,6 @@ func main() {
 		en.SetWriter(w)
 
 		err := en.Enumerate()
-
 		if err != nil {
 			log.WithError(err).Errorf("failed to enumerate %s", platform)
 		}

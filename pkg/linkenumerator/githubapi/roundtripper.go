@@ -26,7 +26,7 @@ import (
 
 	"github.com/google/go-github/v47/github"
 
-	"github.com/HUSTSecLab/criticality_score/cmd/git-platforms-enumerator/internal/retry"
+	"github.com/HUSTSecLab/criticality_score/pkg/linkenumerator/retry"
 	"github.com/HUSTSecLab/criticality_score/pkg/logger"
 )
 

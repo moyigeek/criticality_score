@@ -3,9 +3,9 @@ package api
 import (
 	"encoding/json"
 
-	"github.com/HUSTSecLab/criticality_score/cmd/git-platforms-enumerator/internal/api/bitbucket"
-	"github.com/HUSTSecLab/criticality_score/cmd/git-platforms-enumerator/internal/api/cargo"
-	"github.com/HUSTSecLab/criticality_score/cmd/git-platforms-enumerator/internal/api/gitlab"
+	"github.com/HUSTSecLab/criticality_score/pkg/linkenumerator/api/bitbucket"
+	"github.com/HUSTSecLab/criticality_score/pkg/linkenumerator/api/cargo"
+	"github.com/HUSTSecLab/criticality_score/pkg/linkenumerator/api/gitlab"
 	"github.com/imroc/req/v3"
 )
 
