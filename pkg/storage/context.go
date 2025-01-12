@@ -34,6 +34,10 @@ func NewAppDatabase(configPath string) (AppDatabaseContext, error) {
 	return &appDatabaseContext{config: config}, nil
 }
 
+func NewAppDatabaseWithDb(db *sql.DB) AppDatabaseContext {
+	return &appDatabaseContext{config: Config{}, db: db}
+}
+
 func (appDb *appDatabaseContext) ensureDatabaseConnection() error {
 	if appDb.db == nil {
 		connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",

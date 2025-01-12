@@ -8,8 +8,9 @@ import (
 
 type PlatformLinkRepository interface {
 	IsLinkInPlatform(link string) (bool, error)
-	ClearLinks() error
-	BatchInsertLinks(links []string) error
+	BeginTemp() error
+	BatchInsertTemp(links []string) error
+	CommitTemp() error
 }
 
 type PlatformLinkTablePrefix string
@@ -25,6 +26,8 @@ type platformLinkRepository struct {
 	AppDb    storage.AppDatabaseContext
 	Platform PlatformLinkTablePrefix
 }
+
+var _ PlatformLinkRepository = (*platformLinkRepository)(nil)
 
 func NewPlatformLinkRepository(appDb storage.AppDatabaseContext, platform PlatformLinkTablePrefix) PlatformLinkRepository {
 	return &platformLinkRepository{
@@ -49,18 +52,22 @@ func (r *platformLinkRepository) IsLinkInPlatform(link string) (bool, error) {
 	return exists, nil
 }
 
-func (r *platformLinkRepository) ClearLinks() error {
-	query := fmt.Sprintf(`DELETE FROM %s`, getPlatformTableName(r.Platform))
+func (r *platformLinkRepository) BeginTemp() error {
+	tn := getPlatformTableName(r.Platform)
+	query := fmt.Sprintf(`
+		DROP TABLE IF EXSITS %s_tmp;
+		CREATE TABLE %s_tmp AS TABLE %s WITH NO DATA;
+	`, tn, tn, tn)
 	_, err := r.AppDb.Exec(query)
 	return err
 }
 
-func (r *platformLinkRepository) BatchInsertLinks(links []string) error {
+// BatchInsertTemp implements PlatformLinkRepository.
+func (r *platformLinkRepository) BatchInsertTemp(links []string) error {
 	if len(links) == 0 {
 		return nil
 	}
-
-	query := fmt.Sprintf(`INSERT INTO %s (git_link) VALUES`, getPlatformTableName(r.Platform))
+	query := fmt.Sprintf(`INSERT INTO %s_tmp (git_link) VALUES`, getPlatformTableName(r.Platform))
 	args := make([]interface{}, 0, len(links))
 	for i, link := range links {
 		if i == 0 {
@@ -72,4 +79,17 @@ func (r *platformLinkRepository) BatchInsertLinks(links []string) error {
 	}
 	_, err := r.AppDb.Exec(query, args...)
 	return err
+}
+
+// CommitTemp implements PlatformLinkRepository.
+func (r *platformLinkRepository) CommitTemp() error {
+	tn := getPlatformTableName(r.Platform)
+	query := fmt.Sprintf(`
+		DELETE FROM %s;
+		INSERT INTO %s (SELECT * FROM %s_tmp);
+		DROP TABLE %s_tmp;
+	`, tn, tn, tn, tn)
+	_, err := r.AppDb.Exec(query)
+	return err
+
 }

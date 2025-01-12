@@ -23,6 +23,8 @@
         - `pk`: primary key, value is `true` or other string
         - `generated`: generated column, value is `true` or other string, if the column is generated, it will be ignored when inserting
 
+    NOTE: if no `pk` tag is specified, the ID or Id field will be used as the primary key
+
 
 2. create an `AppDatabaseContext`, and then use public function in this package
    to interact with the database
