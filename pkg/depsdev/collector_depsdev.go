@@ -15,8 +15,10 @@ import (
 	"time"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
+	"github.com/HUSTSecLab/criticality_score/pkg/storage/repository"
 	"github.com/go-redis/redis/v8"
 	_ "github.com/lib/pq"
+	"github.com/samber/lo"
 )
 
 type DependentInfo struct {
@@ -263,18 +265,21 @@ type GitMetrics struct {
 }
 
 func Depsdev(configPath string, batchSize int, workerPoolSize int, calculatePageRankFlag bool) {
-	storage.BindDefaultConfigPath("config")
-	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
+	db, err := storage.NewAppDatabase(configPath)
+	if err != nil {
+		fmt.Printf("failed to create db: %v", err)
+		return
+	}
+	repo := repository.NewLangEcoLinkRepository(db)
 	rdb, _ := storage.InitRedis()
 	if err != nil {
-		fmt.Errorf("Error initializing database: %v\n", err)
+		fmt.Printf("Error initializing database: %v\n", err)
 		return
 	}
 	defer db.Close()
 	// gitLinks := getGitlink(db)
 	gitLinks := []string{"https://github.com/facebook/react.git"}
 	pkgMap := make(map[string][]Version)
-	gitMap := make(map[string]GitMetrics)
 	pkgDepMap := make(map[string]map[string]int)
 	for _, gitlink := range gitLinks {
 		depMap := queryDepsName(gitlink, rdb)
@@ -306,9 +311,10 @@ func Depsdev(configPath string, batchSize int, workerPoolSize int, calculatePage
 	var mu sync.Mutex
 	var wg sync.WaitGroup
 	semaphore := make(chan struct{}, workerPoolSize)
-	var ecoGitMap = make(map[string]map[string]GitMetrics)
+	UpdateLangEco := make(map[string]*repository.LangEcoInfo)
+
 	for system, pkgMap := range pkgDepMap {
-		for pkgName, _ := range pkgMap {
+		for pkgName := range pkgMap {
 			wg.Add(1)
 			semaphore <- struct{}{}
 			go func(system, pkgName string) {
@@ -319,24 +325,54 @@ func Depsdev(configPath string, batchSize int, workerPoolSize int, calculatePage
 					fmt.Println("Error getting key:", err)
 					return
 				}
+
 				mu.Lock()
-				if _, exists := ecoGitMap[system]; !exists {
-					ecoGitMap[system] = make(map[string]GitMetrics)
+				if _, exists := UpdateLangEco[pkgName]; !exists {
+					UpdateLangEco[pkgName] = &repository.LangEcoInfo{
+						CargoNum: lo.ToPtr(0),
+						GoNum:    lo.ToPtr(0),
+						MavenNum: lo.ToPtr(0),
+						NpmNum:   lo.ToPtr(0),
+						NuGetNum: lo.ToPtr(0),
+						PypiNum:  lo.ToPtr(0),
+					}
 				}
-				if _, exists := ecoGitMap[system][pkgName]; !exists {
-					ecoGitMap[system][pkgName] = GitMetrics{0.0, 0.0}
-				}
-				ecoGitMap[system][pkgName] = GitMetrics{
-					LangEcoImpact:   ecoGitMap[system][pkgName].LangEcoImpact + float64(pkgDepMap[system][pkgName]),
-					LangEcoPageRank: ecoGitMap[system][pkgName].LangEcoPageRank + pageRank[pkgName],
+
+				switch strings.ToLower(system) {
+				case "cargo":
+					UpdateLangEco[pkgName].CargoNum = lo.ToPtr(pkgDepMap[system][pkgName] + *UpdateLangEco[pkgName].CargoNum)
+				case "go":
+					UpdateLangEco[pkgName].GoNum = lo.ToPtr(pkgDepMap[system][pkgName] + *UpdateLangEco[pkgName].GoNum)
+				case "maven":
+					UpdateLangEco[pkgName].MavenNum = lo.ToPtr(pkgDepMap[system][pkgName] + *UpdateLangEco[pkgName].MavenNum)
+				case "npm":
+					UpdateLangEco[pkgName].NpmNum = lo.ToPtr(pkgDepMap[system][pkgName] + *UpdateLangEco[pkgName].NpmNum)
+				case "nuget":
+					UpdateLangEco[pkgName].NuGetNum = lo.ToPtr(pkgDepMap[system][pkgName] + *UpdateLangEco[pkgName].NuGetNum)
+				case "pypi":
+					UpdateLangEco[pkgName].PypiNum = lo.ToPtr(pkgDepMap[system][pkgName] + *UpdateLangEco[pkgName].PypiNum)
 				}
 				mu.Unlock()
 			}(system, pkgName)
 		}
 	}
 	wg.Wait()
-
-	updateDatabase(db, gitMap, batchSize)
+	var ecoGitArray []*repository.LangEcoInfo
+	for pkgName, info := range UpdateLangEco {
+		ecoGitArray = append(ecoGitArray, lo.ToPtr(repository.LangEcoInfo{
+			GitLink:  lo.ToPtr(pkgName),
+			CargoNum: info.CargoNum,
+			GoNum:    info.GoNum,
+			MavenNum: info.MavenNum,
+			NpmNum:   info.NpmNum,
+			NuGetNum: info.NuGetNum,
+			PypiNum:  info.PypiNum,
+		}))
+	}
+	err = repo.BatchInsertOrUpdateDistLinks(ecoGitArray)
+	if err != nil {
+		fmt.Printf("Error updating database: %v\n", err)
+	}
 }
 
 func fetchDep(depMap map[string]Version, threadnum int) map[string][]Version {

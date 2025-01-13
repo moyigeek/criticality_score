@@ -11,24 +11,34 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 )
 
-type ProjectData struct {
+type LinkScore struct {
+	GitMetadata  GitMetadata
+	LangEcoScore LangEcoScore
+	DistScore    DistScore
+	Score        float64
+}
+
+type GitMetadata struct {
 	StarCount        *int
 	ForkCount        *int
 	CreatedSince     *time.Time
 	UpdatedSince     *time.Time
 	ContributorCount *int
 	CommitFrequency  *float64
-	DepsdevCount     *int
-	dist_impact      *float64
-	Pkg_Manager      *string
 	Org_Count        *int
+	GitMetadataScore float64
 }
 
-type LinkScore struct {
-	DepsdevDistroScores float64
-	PageRank            float64
-	DistroScores        float64
-	Score               float64
+type DistScore struct {
+	DistImpact   float64
+	DistPageRank float64
+	DistScore    float64
+}
+
+type LangEcoScore struct {
+	LangEcoImpact   float64
+	LangEcoPageRank float64
+	LangEcoScore    float64
 }
 
 type PackageData struct {
@@ -43,30 +53,44 @@ type UpdateData struct {
 }
 
 // Define weights (αi) and max thresholds (Ti)
-var weights = map[string]float64{
-	// "star_count":        1,
-	// "fork_count":        1,
-	"created_since":     1,
-	"updated_since":     -1,
-	"contributor_count": 2,
-	"commit_frequency":  1,
-	"lang_eco_impact":   5,
-	"dist_impact":       5,
-	"dist_pagerank":     5,
-	"org_count":         1,
+var weights = map[string]map[string]float64{
+	"gitMetadataScore": {
+		"created_since":     1,
+		"updated_since":     -1,
+		"contributor_count": 2,
+		"commit_frequency":  1,
+		"org_count":         1,
+		"gitMetadataScore":  1,
+	},
+	"distScore": {
+		"dist_impact":   1,
+		"dist_pagerank": 1,
+		"distScore":     5,
+	},
+	"langEcoScore": {
+		"lang_eco_impact": 1,
+		"langEcoScore":    5,
+	},
 }
 
-var thresholds = map[string]float64{
-	// "star_count":        10000,
-	// "fork_count":        5000,
-	"created_since":     120, // in months
-	"updated_since":     120, // in months
-	"contributor_count": 40000,
-	"commit_frequency":  1000,
-	"lang_eco_impact":   30,
-	"dist_impact":       1,
-	"dist_pagerank":     1,
-	"org_count":         8400,
+var thresholds = map[string]map[string]float64{
+	"gitMetadataScore": {
+		"created_since":     120,
+		"updated_since":     120,
+		"contributor_count": 40000,
+		"commit_frequency":  1000,
+		"org_count":         8400,
+		"gitMetadataScore":  1,
+	},
+	"distScore": {
+		"dist_impact":   1,
+		"dist_pagerank": 1,
+		"distScore":     1,
+	},
+	"langEcoScore": {
+		"lang_eco_impact": 1,
+		"langEcoScore":    1,
+	},
 }
 
 var PackageList = map[string]int{
@@ -118,63 +142,93 @@ func GetProjectTypeFromDB(link string) string {
 
 	return projectType
 }
+func (langEcoScore *LangEcoScore) CalculateLangEcoScore() {
+}
 
-func CalculateScore(data ProjectData, distro_scores LinkScore) float64 {
-	score := 0.0
+func NewLangEcoScore() *LangEcoScore {
+	return &LangEcoScore{}
+}
+
+func (data *GitMetadata) CalculateGitMetadataScore() {
+	var score float64
 	var createdSinceScore, updatedSinceScore, contributorCountScore, commitFrequencyScore, Org_CountScore float64
+
 	if data.CreatedSince != nil {
 		monthsSinceCreation := time.Since(*data.CreatedSince).Hours() / (24 * 30)
-		normalized := math.Log(monthsSinceCreation+1) / math.Log(math.Max(monthsSinceCreation, thresholds["created_since"])+1)
-		createdSinceScore = weights["created_since"] * normalized
+		normalized := math.Log(monthsSinceCreation+1) / math.Log(math.Max(monthsSinceCreation, thresholds["gitMetadataScore"]["created_since"])+1)
+		createdSinceScore = weights["gitMetadataScore"]["created_since"] * normalized
 		score += createdSinceScore
 	}
 
 	if data.UpdatedSince != nil {
 		monthsSinceUpdate := time.Since(*data.UpdatedSince).Hours() / (24 * 30)
-		normalized := math.Log(monthsSinceUpdate+1) / math.Log(math.Max(monthsSinceUpdate, thresholds["updated_since"])+1)
-		updatedSinceScore = weights["updated_since"] * normalized
+		normalized := math.Log(monthsSinceUpdate+1) / math.Log(math.Max(monthsSinceUpdate, thresholds["gitMetadataScore"]["updated_since"])+1)
+		updatedSinceScore = weights["gitMetadataScore"]["updated_since"] * normalized
 		score += updatedSinceScore
 	}
 
 	if data.ContributorCount != nil {
-		normalized := math.Log(float64(*data.ContributorCount)+1) / math.Log(math.Max(float64(*data.ContributorCount), thresholds["contributor_count"])+1)
-		contributorCountScore = weights["contributor_count"] * normalized
+		normalized := math.Log(float64(*data.ContributorCount)+1) / math.Log(math.Max(float64(*data.ContributorCount), thresholds["gitMetadataScore"]["contributor_count"])+1)
+		contributorCountScore = weights["gitMetadataScore"]["contributor_count"] * normalized
 		score += contributorCountScore
 	}
 
 	if data.CommitFrequency != nil {
-		normalized := math.Log(float64(*data.CommitFrequency)+1) / math.Log(math.Max(float64(*data.CommitFrequency), thresholds["commit_frequency"])+1)
-		commitFrequencyScore = weights["commit_frequency"] * normalized
+		normalized := math.Log(float64(*data.CommitFrequency)+1) / math.Log(math.Max(float64(*data.CommitFrequency), thresholds["gitMetadataScore"]["commit_frequency"])+1)
+		commitFrequencyScore = weights["gitMetadataScore"]["commit_frequency"] * normalized
 		score += commitFrequencyScore
 	}
+
 	if data.Org_Count != nil {
-		normalized := math.Log(float64(*data.Org_Count)+1) / math.Log(math.Max(float64(*data.Org_Count), thresholds["org_count"])+1)
-		Org_CountScore = weights["org_count"] * normalized
+		normalized := math.Log(float64(*data.Org_Count)+1) / math.Log(math.Max(float64(*data.Org_Count), thresholds["gitMetadataScore"]["org_count"])+1)
+		Org_CountScore = weights["gitMetadataScore"]["org_count"] * normalized
 		score += Org_CountScore
 	}
-	normalized := math.Log(distro_scores.DepsdevDistroScores+1) / math.Log(math.Max(distro_scores.DepsdevDistroScores, thresholds["lang_eco_impact"])+1)
-	score += weights["lang_eco_impact"] * normalized
-
-	normalized = math.Log(distro_scores.DistroScores+1) / math.Log(math.Max(distro_scores.DistroScores, thresholds["dist_impact"])+1)
-	score += weights["dist_impact"] * normalized
-
-	normalized = math.Log(distro_scores.PageRank+1) / math.Log(math.Max(distro_scores.PageRank, thresholds["dist_pagerank"])+1)
-	score += weights["dist_pagerank"] * normalized
-
-	var totalnum float64
-	for _, weight := range weights {
-		totalnum += weight
-	}
-	return score / totalnum
+	data.GitMetadataScore = score
 }
 
-func UpdateScore(db *sql.DB, packageScore map[string]LinkScore, batchSize int) error {
+func NewGitMetadata() *GitMetadata {
+	return &GitMetadata{}
+}
+
+func (distScore *DistScore) CalculateDistScore() {
+	distScore.DistScore = weights["distScore"]["dist_impact"]*distScore.DistImpact + weights["distScore"]["dist_pagerank"]*distScore.DistPageRank
+}
+func (linkScore *LinkScore) CalculateScore() {
+	score := 0.0
+
+	score += weights["gitMetadataScore"]["gitMetadataScore"] * linkScore.GitMetadata.GitMetadataScore
+
+	score += weights["lang_eco_impact"]["lang_eco_impact"] * linkScore.LangEcoScore.LangEcoScore
+
+	score += weights["distScore"]["distScore"] * linkScore.DistScore.DistScore
+
+	var totalnum float64
+	for nameScore, value := range weights {
+		for nameSubScore := range value {
+			if nameSubScore != nameScore {
+				totalnum += weights["gitMetadataScore"][nameSubScore]
+			}
+		}
+	}
+	linkScore.Score = score / totalnum
+}
+
+func NewLinkScore(gitMetadata *GitMetadata, distScore *DistScore, langEcoScore *LangEcoScore) *LinkScore {
+	return &LinkScore{
+		LangEcoScore: *langEcoScore,
+		DistScore:    *distScore,
+		GitMetadata:  *gitMetadata,
+	}
+}
+
+func UpdateScore(db *sql.DB, packageScore map[string]*LinkScore, batchSize int, flag string) error {
 	updates := make([]UpdateData, 0, len(packageScore))
 
 	for link, score := range packageScore {
 		updates = append(updates, UpdateData{
 			Link:         link,
-			DistroScores: float64(score.DistroScores),
+			DistroScores: float64(score.DistScore.DistImpact),
 			Score:        float64(score.Score),
 		})
 	}
@@ -229,29 +283,35 @@ func UpdateScore(db *sql.DB, packageScore map[string]LinkScore, batchSize int) e
 	return nil
 }
 
-func FetchProjectData(db *sql.DB, gitLink string) (*ProjectData, error) {
-	row := db.QueryRow("SELECT created_since, updated_since, contributor_count, commit_frequency, depsdev_count, ecosystem, org_count FROM git_metrics WHERE git_link = $1", gitLink)
-	var data ProjectData
-	err := row.Scan(&data.CreatedSince, &data.UpdatedSince, &data.ContributorCount, &data.CommitFrequency, &data.DepsdevCount, &data.Pkg_Manager, &data.Org_Count)
+func (gitMetadata *GitMetadata) FetchGitMetadata(db *sql.DB, gitLink string) error {
+	row := db.QueryRow("SELECT created_since, updated_since, contributor_count, commit_frequency, org_count FROM git_metrics WHERE git_link = $1", gitLink)
+	err := row.Scan(&gitMetadata.CreatedSince, &gitMetadata.UpdatedSince, &gitMetadata.ContributorCount, &gitMetadata.CommitFrequency, &gitMetadata.Org_Count)
 	if err != nil {
 		log.Printf("Failed to fetch data for git link %s: %v", gitLink, err)
-		return nil, err
+		return err
 	}
-	return &data, nil
+	return nil
 }
 
-func CalculateDepsdistro(link string, linkCount map[string]map[string]PackageData) (float64, float64) {
-	totalRatio := 0.0
-	totalPageRank := 0.0
+func (distScore *DistScore) CalculateDistSubScore(link string, linkCount map[string]map[string]PackageData) {
+	dist_impact := 0.0
+	dist_pagerank := 0.0
 	for repo := range PackageList {
 		depRatio, err := CalculateDependencyRatio(link, repo, linkCount)
 		if err == nil {
-			totalRatio += depRatio
+			dist_impact += depRatio
 		}
 		pageRank := linkCount[repo][link].PageRank
-		totalPageRank += pageRank
+		dist_pagerank += pageRank
 	}
-	return totalRatio, totalPageRank
+	dist_impact = LogNormalize(dist_impact, thresholds["distScore"]["dist_impact"])
+	dist_pagerank = LogNormalize(dist_pagerank, thresholds["distScore"]["dist_pagerank"])
+	distScore.DistImpact = dist_impact
+	distScore.DistPageRank = dist_pagerank
+}
+
+func NewDistScore() *DistScore {
+	return &DistScore{}
 }
 
 func FetchdLinkCount(repo string, db *sql.DB) map[string]PackageData {
@@ -336,4 +396,8 @@ func FetchdLinkCountSingle(repo string, link string, db *sql.DB) PackageData {
 		}
 	}
 	return data
+}
+
+func LogNormalize(value, threshold float64) float64 {
+	return math.Log(value+1) / math.Log(math.Max(value, threshold)+1)
 }

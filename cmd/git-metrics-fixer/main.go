@@ -85,15 +85,12 @@ func main() {
 	defer db.Close()
 	for _, repo := range repos {
 		repo.Show()
-		depsdev_count := FetchDepsdev(db, repo.URL)
-		projectData := scores.ProjectData{
+		gitMetadata := &scores.GitMetadata{
 			CommitFrequency:  &repo.CommitFrequency,
 			ContributorCount: &repo.ContributorCount,
 			CreatedSince:     &repo.CreatedSince,
 			UpdatedSince:     &repo.UpdatedSince,
 			Org_Count:        &repo.OrgCount,
-			Pkg_Manager:      &repo.Ecosystems,
-			DepsdevCount:     &depsdev_count,
 		}
 		linkCount := make(map[string]map[string]scores.PackageData)
 		scores.CalculaterepoCount(db)
@@ -102,10 +99,15 @@ func main() {
 			count := scores.FetchdLinkCountSingle(pkg, repo.URL, db)
 			linkCount[pkg][strings.ToLower(repo.URL)] = count
 		}
-		dist_impact, pagerank := scores.CalculateDepsdistro(repo.URL, linkCount)
-		score := scores.CalculateScore(projectData, scores.LinkScore{DistroScores: dist_impact, PageRank: pagerank})
+		distScore := scores.NewDistScore()
+		distScore.CalculateDistSubScore(repo.URL, linkCount)
+		gitMetadata.CalculateGitMetadataScore()
+		langEcoScore := scores.NewLangEcoScore()
+		langEcoScore.CalculateLangEcoScore()
+		linkScore := scores.LinkScore{GitMetadata: *gitMetadata, DistScore: *distScore, LangEcoScore: *langEcoScore}
+		linkScore.CalculateScore()
 		if updateDB {
-			err = updateGitMetrics(db, repo, score, dist_impact)
+			err = updateGitMetrics(db, repo, linkScore.Score, distScore.DistImpact)
 			if err != nil {
 				logger.Fatal(err)
 			}
