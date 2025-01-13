@@ -4,6 +4,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/HUSTSecLab/criticality_score/pkg/config"
 	"github.com/HUSTSecLab/criticality_score/pkg/linkenumerator/enumerator"
 	"github.com/HUSTSecLab/criticality_score/pkg/linkenumerator/writer"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
@@ -58,12 +59,10 @@ func main() {
 		flagEndDate         = dateFlag(time.Now().UTC().Truncate(time.Hour * 24))
 	)
 
-	pflag.StringP("config", "c", "", "path to the configuration file, when output type is db")
 	pflag.Var(&flagStartDate, "start-date", "start date for the search")
 	pflag.Var(&flagEndDate, "end-date", "end date for the search")
-	pflag.Parse()
-
-	storage.BindDefaultConfigPath("config")
+	config.RegistCommonFlags(pflag.CommandLine)
+	config.ParseFlags(pflag.CommandLine)
 
 	platforms := strings.Split(*flagPlatforms, ",")
 

@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"github.com/HUSTSecLab/criticality_score/pkg/config"
 	scores "github.com/HUSTSecLab/criticality_score/pkg/score"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	_ "github.com/lib/pq"
@@ -10,14 +11,13 @@ import (
 )
 
 var (
-	flagConfigPath = pflag.String("config", "config.json", "path to the config file")
-	batchSize      = pflag.Int("batch", 1000, "batch size")
-	calcType       = pflag.String("calc", "all", "calculation type: distro, git, langeco, all")
+	batchSize = pflag.Int("batch", 1000, "batch size")
+	calcType  = pflag.String("calc", "all", "calculation type: distro, git, langeco, all")
 )
 
 func main() {
-	pflag.Parse()
-	storage.BindDefaultConfigPath("config")
+	config.RegistCommonFlags(pflag.CommandLine)
+	config.ParseFlags(pflag.CommandLine)
 	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)

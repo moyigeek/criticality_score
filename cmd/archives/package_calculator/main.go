@@ -1,20 +1,21 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"log"
 
 	"github.com/HUSTSecLab/criticality_score/cmd/archives/package_calculator/internal/package_calculator"
+	"github.com/HUSTSecLab/criticality_score/pkg/config"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
+	"github.com/spf13/pflag"
 )
 
-var flagConfigPath = flag.String("config", "config.json", "path to the config file")
-var flagRepoName = flag.String("repo", "", "name of the repository")
-var flagMethod = flag.String("method", "", "method to use for calculation (bfs or dfs)")
+var flagRepoName = pflag.String("repo", "", "name of the repository")
+var flagMethod = pflag.String("method", "", "method to use for calculation (bfs or dfs)")
 
 func main() {
-	flag.Parse()
+	config.RegistCommonFlags(pflag.CommandLine)
+	config.ParseFlags(pflag.CommandLine)
 
 	if *flagRepoName == "" {
 		log.Fatal("Repository name must be provided")
@@ -24,7 +25,6 @@ func main() {
 		log.Fatal("Method must be either 'bfs' or 'dfs'")
 	}
 
-	storage.BindDefaultConfigPath("config")
 	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		log.Fatalf("Error connecting to database: %v", err)

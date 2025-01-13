@@ -10,6 +10,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/HUSTSecLab/criticality_score/pkg/config"
 	collector "github.com/HUSTSecLab/criticality_score/pkg/gitfile/collector"
 	git "github.com/HUSTSecLab/criticality_score/pkg/gitfile/parser/git"
 	url "github.com/HUSTSecLab/criticality_score/pkg/gitfile/parser/url"
@@ -22,8 +23,7 @@ import (
 )
 
 var (
-	flagConfigPath = pflag.String("config", "config.json", "path to the config file")
-	flagUpdateDB   = pflag.Bool("update-db", false, "Whether to update the database")
+	flagUpdateDB = pflag.Bool("update-db", false, "Whether to update the database")
 )
 
 func main() {
@@ -33,8 +33,9 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Usage of %s:\n", os.Args[0])
 		pflag.PrintDefaults()
 	}
-	pflag.Parse()
-	storage.BindDefaultConfigPath("config")
+
+	config.RegistCommonFlags(pflag.CommandLine)
+	config.ParseFlags(pflag.CommandLine)
 
 	updateDB := *flagUpdateDB
 	paths := flag.Args()
@@ -76,7 +77,6 @@ func main() {
 	}
 
 	wg.Wait()
-	storage.BindDefaultConfigPath("config")
 	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)

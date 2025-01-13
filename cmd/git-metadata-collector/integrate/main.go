@@ -1,8 +1,3 @@
-/*
- * @Date: 2023-11-11 22:44:26
- * @LastEditTime: 2025-01-07 19:15:24
- * @Description: Integrate into Criticality Score system
- */
 package main
 
 import (
@@ -10,6 +5,7 @@ import (
 	"sync"
 	"time"
 
+	"github.com/HUSTSecLab/criticality_score/pkg/config"
 	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/collector"
 	git "github.com/HUSTSecLab/criticality_score/pkg/gitfile/parser/git"
 	url "github.com/HUSTSecLab/criticality_score/pkg/gitfile/parser/url"
@@ -17,16 +13,12 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	"github.com/bytedance/gopkg/util/gopool"
 	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
-var flagConfigPath = pflag.StringP("config", "c", "config.json", "path to the config file")
-var flagStoragePath = pflag.StringP("storage", "s", "./storage", "path to git storage location")
 var flagJobsCount = pflag.IntP("jobs", "j", 256, "jobs count")
 var flagForceUpdateAll = pflag.Bool("force-update-all", false, "force update all repositories")
 
 func getUrls() ([]string, error) {
-	storage.BindDefaultConfigPath("config")
 	conn, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return nil, err
@@ -54,13 +46,9 @@ func getUrls() ([]string, error) {
 }
 
 func main() {
-	const viperStorageKey = "storage"
-
-	pflag.Parse()
-	viper.BindPFlag(viperStorageKey, pflag.Lookup("storage"))
-	viper.BindEnv(viperStorageKey, "STORAGE_PATH")
-
-	storage.BindDefaultConfigPath("storage")
+	config.RegistCommonFlags(pflag.CommandLine)
+	config.RegistGitStorageFlags(pflag.CommandLine)
+	config.ParseFlags(pflag.CommandLine)
 
 	urls, err := getUrls()
 	if err != nil {
@@ -88,7 +76,7 @@ func main() {
 		gopool.Go(func() {
 			defer wg.Done()
 			u := url.ParseURL(input)
-			r, err := collector.Collect(&u, viper.GetString(viperStorageKey))
+			r, err := collector.Collect(&u, config.GetGitStoragePath())
 			if err != nil {
 				logger.Panicf("Collecting %s Failed", u.URL)
 			}

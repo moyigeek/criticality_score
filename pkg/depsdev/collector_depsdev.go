@@ -264,19 +264,10 @@ type GitMetrics struct {
 	LangEcoPageRank float64
 }
 
-func Depsdev(configPath string, batchSize int, workerPoolSize int, calculatePageRankFlag bool) {
-	db, err := storage.NewAppDatabase(configPath)
-	if err != nil {
-		fmt.Printf("failed to create db: %v", err)
-		return
-	}
+func Depsdev(batchSize int, workerPoolSize int, calculatePageRankFlag bool) {
+	db := storage.GetDefaultAppDatabaseContext()
 	repo := repository.NewLangEcoLinkRepository(db)
 	rdb, _ := storage.InitRedis()
-	if err != nil {
-		fmt.Printf("Error initializing database: %v\n", err)
-		return
-	}
-	defer db.Close()
 	// gitLinks := getGitlink(db)
 	gitLinks := []string{"https://github.com/facebook/react.git"}
 	pkgMap := make(map[string][]Version)
@@ -311,7 +302,7 @@ func Depsdev(configPath string, batchSize int, workerPoolSize int, calculatePage
 	var mu sync.Mutex
 	var wg sync.WaitGroup
 	semaphore := make(chan struct{}, workerPoolSize)
-	UpdateLangEco := make(map[string]*repository.LangEcoInfo)
+	UpdateLangEco := make(map[string]*repository.LangEcosystem)
 
 	for system, pkgMap := range pkgDepMap {
 		for pkgName := range pkgMap {

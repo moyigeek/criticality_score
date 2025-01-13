@@ -6,6 +6,7 @@ import (
 	"log"
 	"sync"
 
+	"github.com/HUSTSecLab/criticality_score/pkg/config"
 	"github.com/HUSTSecLab/criticality_score/pkg/gitfile/collector"
 	git "github.com/HUSTSecLab/criticality_score/pkg/gitfile/parser/git"
 	url "github.com/HUSTSecLab/criticality_score/pkg/gitfile/parser/url"
@@ -14,10 +15,8 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	"github.com/bytedance/gopkg/util/gopool"
 	"github.com/spf13/pflag"
-	"github.com/spf13/viper"
 )
 
-var flagConfigPath = pflag.StringP("config", "c", "config.json", "path to the config file")
 var flagStoragePath = pflag.StringP("storage", "s", "./storage", "path to git storage location")
 var flagJobsCount = pflag.IntP("jobs", "j", 256, "jobs count")
 var flagForceUpdateAll = pflag.Bool("force-update-all", false, "force update all repositories")
@@ -57,14 +56,9 @@ func main() {
 		pflag.PrintDefaults()
 	}
 
-	const viperStorageKey = "storage"
-
-	pflag.Parse()
-	viper.BindPFlag(viperStorageKey, pflag.Lookup("storage"))
-	viper.BindEnv(viperStorageKey, "STORAGE_PATH")
-
-	pflag.Parse()
-	storage.BindDefaultConfigPath("config")
+	config.RegistGitStorageFlags(pflag.CommandLine)
+	config.RegistCommonFlags(pflag.CommandLine)
+	config.ParseFlags(pflag.CommandLine)
 
 	urls, err := getUrls()
 	if err != nil {
@@ -88,7 +82,7 @@ func main() {
 			defer wg.Done()
 			u := url.ParseURL(input)
 
-			path := gitUtil.GetGitRepositoryPath(viper.GetString(viperStorageKey), &u)
+			path := gitUtil.GetGitRepositoryPath(config.GetGitStoragePath(), &u)
 			r, err := collector.Open(path)
 
 			if err != nil || r == nil {

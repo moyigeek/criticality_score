@@ -7,19 +7,16 @@ import (
 	"sort"
 	"time"
 
+	"github.com/HUSTSecLab/criticality_score/pkg/config"
+	"github.com/HUSTSecLab/criticality_score/pkg/logger"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	"github.com/spf13/pflag"
 )
 
 func main() {
-	flagConfigPath := pflag.StringP("config", "c", "", "config file path")
-	pflag.Parse()
-	storage.BindDefaultConfigPath("config")
-
-	if *flagConfigPath == "" {
-		fmt.Println("Please provide config file path, use -h for help")
-		return
-	}
+	config.RegistCommonFlags(pflag.CommandLine)
+	config.ParseFlags(pflag.CommandLine)
+	logger.ConfigAsCommandLineTool()
 
 	ctx := storage.GetDefaultAppDatabaseContext()
 
@@ -54,7 +51,7 @@ func main() {
 		matches := reg.FindStringSubmatch(file.Name())
 
 		if len(matches) != 3 {
-			fmt.Errorf("Invalid migration file name: %s", file.Name())
+			logger.Errorf("Invalid migration file name: %s", file.Name())
 			continue
 		}
 

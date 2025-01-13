@@ -20,22 +20,18 @@ type AppDatabaseContext interface {
 }
 
 type appDatabaseContext struct {
-	config       Config
+	config       *Config
 	enableSQLLog bool
 	db           *sql.DB
 }
 
-func NewAppDatabase(configPath string) (AppDatabaseContext, error) {
-	config, err := loadConfig(configPath)
-	if err != nil {
-		fmt.Errorf("Failed to load config:", err)
-		return nil, err
-	}
-	return &appDatabaseContext{config: config}, nil
+func NewAppDatabase(config *Config) AppDatabaseContext {
+	cfgCopy := *config
+	return &appDatabaseContext{config: &cfgCopy}
 }
 
 func NewAppDatabaseWithDb(db *sql.DB) AppDatabaseContext {
-	return &appDatabaseContext{config: Config{}, db: db}
+	return &appDatabaseContext{config: nil, db: db}
 }
 
 func (appDb *appDatabaseContext) ensureDatabaseConnection() error {
@@ -52,7 +48,7 @@ func (appDb *appDatabaseContext) ensureDatabaseConnection() error {
 }
 
 func (appDb *appDatabaseContext) GetConfig() Config {
-	return appDb.config
+	return *appDb.config
 }
 
 func (appDb *appDatabaseContext) SetSQLLog(enable bool) {

@@ -41,14 +41,15 @@ type AppLogger interface {
 }
 
 type AppLoggerConfig struct {
-	Level      string
+	Level      LoggerLevel
 	FormatType LoggerFormatType
 	Output     LoggerOutput
-	// OutputPath is the path to the log file
-	//
-	// If Output is LoggerOutputFile, OutputPath is the path to the log file, and
-	// if Output is LoggerOutputStdout or LoggerOutputStderr, OutputPath is ignored, can be empty
+	// the path to the log file, take effect only when output = LoggerOutputFile
 	OutputPath string
+	// the elastic search url, take effect only when output = LoggerOutputElasticSearch
+	OutputEsURL string
+	// the elastic search index, take effect only when output = LoggerOutputElasticSearch
+	OutputEsIndex string
 }
 
 type LoggerOutput int
@@ -59,6 +60,7 @@ const (
 	LoggerOutputFile
 	// Not implemented yet
 	LoggerOutputDatabase
+	LoggerOutputElasticSearch
 )
 
 type LoggerLevel string
@@ -101,7 +103,7 @@ type logrusLogger struct {
 func NewLogrusLogger(config *AppLoggerConfig) AppLogger {
 	if config == nil {
 		config = &AppLoggerConfig{
-			Level:      string(LoggerLevelInfo),
+			Level:      LoggerLevelInfo,
 			FormatType: LoggerFormatText,
 			Output:     LoggerOutputStderr,
 		}
@@ -116,7 +118,7 @@ func NewLogrusLogger(config *AppLoggerConfig) AppLogger {
 }
 
 func (l *logrusLogger) Config(config *AppLoggerConfig) error {
-	level, err := logrus.ParseLevel(config.Level)
+	level, err := logrus.ParseLevel(string(config.Level))
 	if err != nil {
 		level = logrus.InfoLevel
 	}
@@ -141,7 +143,7 @@ func (l *logrusLogger) Config(config *AppLoggerConfig) error {
 	case LoggerOutputStdout:
 		l.logger.SetOutput(os.Stdout)
 	case LoggerOutputFile:
-		file, err := os.OpenFile(config.OutputPath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0666)
+		file, err := os.OpenFile(config.OutputPath, os.O_CREATE|os.O_WRONLY|os.O_APPEND, 0o666)
 		if err != nil {
 			panic(fmt.Sprintf("Failed to open log file: %v", err))
 		}

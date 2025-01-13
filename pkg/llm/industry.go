@@ -14,6 +14,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/HUSTSecLab/criticality_score/pkg/config"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	"github.com/PuerkitoBio/goquery"
 )
@@ -23,7 +24,7 @@ type RepoInfo struct {
 	Topics      []string `json:"topics"`
 }
 
-func IndustryID(ctx storage.AppDatabaseContext, flagConfigPath string, url string, batchSize int, outputCsv string) {
+func IndustryID(ctx storage.AppDatabaseContext, url string, batchSize int, outputCsv string) {
 	db, _ := ctx.GetDatabaseConnection()
 	if db == nil {
 		return
@@ -37,12 +38,10 @@ func IndustryID(ctx storage.AppDatabaseContext, flagConfigPath string, url strin
 	defer file.Close()
 	writer := csv.NewWriter(file)
 	gitlinks := fetchGitLink(db)
-	// TODO: remove it
-	config, err := storage.GetDefaultConfig()
-	GitHubToken := config.GitHubToken
+	gitHubToken := config.GetGithubToken()
 	gitIndustry := make(map[string]string)
 	for _, gitLink := range gitlinks {
-		repoInfo := fetchDesTopic(gitLink, GitHubToken)
+		repoInfo := fetchDesTopic(gitLink, gitHubToken)
 		readme := getReadmeText(gitLink)
 		var prompt string
 		if repoInfo == nil {
