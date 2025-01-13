@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/alpine"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/archlinux"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/aur"
@@ -15,6 +13,7 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/nix"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/ubuntu"
 	"github.com/HUSTSecLab/criticality_score/pkg/config"
+	"github.com/HUSTSecLab/criticality_score/pkg/logger"
 	"github.com/spf13/pflag"
 )
 
@@ -40,7 +39,7 @@ func main() {
 		ubuntu.Ubuntu(*flagGenDot)
 	case "nix":
 		if *flagGenDot == "" {
-			fmt.Errorf("Nix not support gendot")
+			logger.Errorf("Nix not support gendot")
 		}
 		nix.Nix(*workerCount, *batchSize)
 	case "homebrew":

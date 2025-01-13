@@ -6,10 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"regexp"
-	"strconv"
 	"strings"
 	"sync"
 	"time"
@@ -82,53 +80,6 @@ type EcoSystemRatio struct {
 	PyPiRatio  float64
 	NuGetRatio float64
 	CargoRatio float64
-}
-
-func updateDatabase(db *sql.DB, linkDepCountList map[string]GitMetrics, batchSize int) error {
-	var linkDepList [][]string
-	for link, metrics := range linkDepCountList {
-		linkDepList = append(linkDepList, []string{link, fmt.Sprintf("%f", metrics.LangEcoImpact), fmt.Sprintf("%f", metrics.LangEcoPageRank)})
-	}
-	for i := 0; i < len(linkDepList); i += batchSize {
-		end := i + batchSize
-		if end > len(linkDepList) {
-			end = len(linkDepList)
-		}
-		batch := linkDepList[i:end]
-		query := "UPDATE git_metrics SET depsdev_count = CASE"
-		args := []interface{}{}
-		for j, link := range batch {
-			depsdevCount, _ := strconv.ParseFloat(link[1], 64)
-			depsdevPagerank, _ := strconv.ParseFloat(link[2], 64)
-			query += fmt.Sprintf(" WHEN git_link = $%d THEN $%d::Float8", j*3+1, j*3+2)
-			args = append(args, link[0], depsdevCount, depsdevPagerank)
-		}
-		query += " END, lang_eco_pagerank = CASE"
-		for j, _ := range batch {
-			query += fmt.Sprintf(" WHEN git_link = $%d THEN $%d::Float8", j*3+1, j*3+3)
-		}
-		query += " END WHERE git_link IN ("
-		for j := 0; j < len(batch); j++ {
-			if j > 0 {
-				query += ", "
-			}
-			query += fmt.Sprintf("$%d", j*3+1)
-		}
-		query += ")"
-		result, err := db.Exec(query, args...)
-		if err != nil {
-			log.Printf("Error executing query: %v", err)
-			return fmt.Errorf("failed to update batch: %w", err)
-		}
-
-		rowsAffected, err := result.RowsAffected()
-		if err != nil {
-			log.Printf("Error retrieving rows affected: %v", err)
-			return fmt.Errorf("failed to retrieve affected rows: %w", err)
-		}
-		log.Printf("Batch [%d - %d]: %d rows updated", i, end, rowsAffected)
-	}
-	return nil
 }
 
 func getLatestVersion(repo, projectType string) string {
@@ -302,7 +253,12 @@ func Depsdev(batchSize int, workerPoolSize int, calculatePageRankFlag bool) {
 	var mu sync.Mutex
 	var wg sync.WaitGroup
 	semaphore := make(chan struct{}, workerPoolSize)
-	UpdateLangEco := make(map[string]*repository.LangEcosystem)
+	type langEcoKey struct {
+		gitLink string
+		ltype   repository.LangEcosystemType
+	}
+
+	langEco := make(map[langEcoKey]int)
 
 	for system, pkgMap := range pkgDepMap {
 		for pkgName := range pkgMap {
@@ -318,49 +274,48 @@ func Depsdev(batchSize int, workerPoolSize int, calculatePageRankFlag bool) {
 				}
 
 				mu.Lock()
-				if _, exists := UpdateLangEco[pkgName]; !exists {
-					UpdateLangEco[pkgName] = &repository.LangEcoInfo{
-						CargoNum: lo.ToPtr(0),
-						GoNum:    lo.ToPtr(0),
-						MavenNum: lo.ToPtr(0),
-						NpmNum:   lo.ToPtr(0),
-						NuGetNum: lo.ToPtr(0),
-						PypiNum:  lo.ToPtr(0),
-					}
-				}
 
+				var ltype repository.LangEcosystemType
 				switch strings.ToLower(system) {
 				case "cargo":
-					UpdateLangEco[pkgName].CargoNum = lo.ToPtr(pkgDepMap[system][pkgName] + *UpdateLangEco[pkgName].CargoNum)
+					ltype = repository.Cargo
 				case "go":
-					UpdateLangEco[pkgName].GoNum = lo.ToPtr(pkgDepMap[system][pkgName] + *UpdateLangEco[pkgName].GoNum)
+					ltype = repository.Go
 				case "maven":
-					UpdateLangEco[pkgName].MavenNum = lo.ToPtr(pkgDepMap[system][pkgName] + *UpdateLangEco[pkgName].MavenNum)
+					ltype = repository.Maven
 				case "npm":
-					UpdateLangEco[pkgName].NpmNum = lo.ToPtr(pkgDepMap[system][pkgName] + *UpdateLangEco[pkgName].NpmNum)
+					ltype = repository.Npm
 				case "nuget":
-					UpdateLangEco[pkgName].NuGetNum = lo.ToPtr(pkgDepMap[system][pkgName] + *UpdateLangEco[pkgName].NuGetNum)
+					ltype = repository.NuGet
 				case "pypi":
-					UpdateLangEco[pkgName].PypiNum = lo.ToPtr(pkgDepMap[system][pkgName] + *UpdateLangEco[pkgName].PypiNum)
+					ltype = repository.Pypi
 				}
+
+				key := langEcoKey{
+					gitLink: pkgName,
+					ltype:   ltype,
+				}
+
+				if _, exists := langEco[key]; !exists {
+					langEco[key] = 0
+				} else {
+					langEco[key] += pkgDepMap[system][pkgName]
+				}
+
 				mu.Unlock()
 			}(system, pkgName)
 		}
 	}
 	wg.Wait()
-	var ecoGitArray []*repository.LangEcoInfo
-	for pkgName, info := range UpdateLangEco {
-		ecoGitArray = append(ecoGitArray, lo.ToPtr(repository.LangEcoInfo{
-			GitLink:  lo.ToPtr(pkgName),
-			CargoNum: info.CargoNum,
-			GoNum:    info.GoNum,
-			MavenNum: info.MavenNum,
-			NpmNum:   info.NpmNum,
-			NuGetNum: info.NuGetNum,
-			PypiNum:  info.PypiNum,
+	var toUpdateList []*repository.LangEcosystem
+	for key, info := range langEco {
+		toUpdateList = append(toUpdateList, lo.ToPtr(repository.LangEcosystem{
+			GitLink:  lo.ToPtr(key.gitLink),
+			Type:     lo.ToPtr(key.ltype),
+			DepCount: lo.ToPtr(info),
 		}))
 	}
-	err = repo.BatchInsertOrUpdateDistLinks(ecoGitArray)
+	err := repo.BatchInsertOrUpdate(toUpdateList)
 	if err != nil {
 		fmt.Printf("Error updating database: %v\n", err)
 	}
