@@ -14,8 +14,10 @@ const DistDependencyTableName = "distribution_dependencies"
 type DistDependencyRepository interface {
 	/** QUERY **/
 
+	Query() (iter.Seq[*DistLinkInfo], error) // Query all distribution information.
 	QueryByType(distType int) (iter.Seq[*DistLinkInfo], error)
 	GetByLink(packageName string, distType int) (*DistLinkInfo, error)
+	QueryDistCountByType(distType int) (int, error) // Get the total number of packages in a Distro.
 
 	/** INSERT/UPDATE **/
 	// update_time will be updated automatically
@@ -55,6 +57,16 @@ type DistLinkInfo struct {
 
 func NewDistDependencyRepository(appDb storage.AppDatabaseContext) DistDependencyRepository {
 	return &distLinkRepository{ctx: appDb}
+}
+
+// Query implements DistributionDependencyRepository.
+func (r *distLinkRepository) Query() (iter.Seq[*DistLinkInfo], error) {
+	panic("unimplemented")
+}
+
+// QueryDistCountByType implements DistributionDependencyRepository.
+func (r *distLinkRepository) QueryDistCountByType(distType int) (int, error) {
+	panic("unimplemented")
 }
 
 // GetByLink implements DistributionDependencyRepository.

@@ -18,8 +18,6 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 )
 
-var URL = "https://mirrors.aliyun.com/fedora/releases/41/Everything/source/tree/repodata/df7750a80c5a4e4ff04ff5a1a499d32b6379dd50680b29140638e6edb1d71d68-primary.xml.gz"
-
 type PackageInfo struct {
 	Depends      []string
 	DependsCount int
@@ -32,16 +30,28 @@ type PackageInfo struct {
 	Version      string
 }
 
-func Fedora(outputPath string) {
-	pkgInfoMap, err := getDependencies()
+type FedoraCollector struct {
+	URL        string
+	PkgInfoMap map[string]PackageInfo
+}
+
+func NewFedoraCollector() *FedoraCollector {
+	return &FedoraCollector{
+		URL:        "https://mirrors.aliyun.com/fedora/releases/41/Everything/source/tree/repodata/df7750a80c5a4e4ff04ff5a1a499d32b6379dd50680b29140638e6edb1d71d68-primary.xml.gz",
+		PkgInfoMap: make(map[string]PackageInfo),
+	}
+}
+
+func (fc *FedoraCollector) Collect(outputPath string) {
+	err := fc.getDependencies()
 	if err != nil {
 		log.Fatal(err)
 	}
 
 	depMap := make(map[string][]string)
-	for pkgName := range pkgInfoMap {
+	for pkgName := range fc.PkgInfoMap {
 		visited := make(map[string]bool)
-		deps := getAllDep(pkgInfoMap, pkgName, visited, []string{})
+		deps := fc.getAllDep(pkgName, visited, []string{})
 		depMap[pkgName] = deps
 	}
 
@@ -52,22 +62,22 @@ func Fedora(outputPath string) {
 		}
 	}
 
-	pagerank := calculatePageRank(pkgInfoMap, 20, 0.85)
+	pagerank := fc.calculatePageRank(20, 0.85)
 
-	for pkgName, pkgInfo := range pkgInfoMap {
+	for pkgName, pkgInfo := range fc.PkgInfoMap {
 		pagerankVal := pagerank[pkgName]
 		depCount := countMap[pkgName]
 		pkgInfo.PageRank = pagerankVal
 		pkgInfo.DependsCount = depCount
-		pkgInfoMap[pkgName] = pkgInfo
+		fc.PkgInfoMap[pkgName] = pkgInfo
 	}
-	err = updateOrInsertDatabase(pkgInfoMap)
+	err = fc.updateOrInsertDatabase()
 	if err != nil {
 		fmt.Printf("Error updating database: %v\n", err)
 		return
 	}
-	for pkgName, pkgInfo := range pkgInfoMap {
-		if err := storeDependenciesInDatabase(pkgName, pkgInfo.Depends); err != nil {
+	for pkgName, pkgInfo := range fc.PkgInfoMap {
+		if err := fc.storeDependenciesInDatabase(pkgName, pkgInfo.Depends); err != nil {
 			if isUniqueViolation(err) {
 				continue
 			}
@@ -77,7 +87,7 @@ func Fedora(outputPath string) {
 	fmt.Println("Database updated successfully.")
 
 	if outputPath != "" {
-		err := generateDependencyGraph(pkgInfoMap, outputPath)
+		err := fc.generateDependencyGraph(outputPath)
 		if err != nil {
 			fmt.Printf("Error generating dependency graph: %v\n", err)
 			return
@@ -86,7 +96,7 @@ func Fedora(outputPath string) {
 	}
 }
 
-func getAllDep(packages map[string]PackageInfo, pkgName string, visited map[string]bool, deps []string) []string {
+func (fc *FedoraCollector) getAllDep(pkgName string, visited map[string]bool, deps []string) []string {
 	if visited[pkgName] {
 		return deps
 	}
@@ -94,9 +104,9 @@ func getAllDep(packages map[string]PackageInfo, pkgName string, visited map[stri
 	visited[pkgName] = true
 	deps = append(deps, pkgName)
 
-	if pkg, ok := packages[pkgName]; ok {
+	if pkg, ok := fc.PkgInfoMap[pkgName]; ok {
 		for _, depName := range pkg.Depends {
-			deps = getAllDep(packages, depName, visited, deps)
+			deps = fc.getAllDep(depName, visited, deps)
 		}
 	}
 	return deps
@@ -116,23 +126,23 @@ func decompressGzip(data []byte) (string, error) {
 
 	return string(uncompressedData), nil
 }
-func getDependencies() (map[string]PackageInfo, error) {
-	resp, err := http.Get(URL)
+
+func (fc *FedoraCollector) getDependencies() error {
+	resp, err := http.Get(fc.URL)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	data, err := decompressGzip(body)
 	if err != nil {
-		return nil, err
+		return err
 	}
 	data = strings.Replace(data, "\x00", "", -1)
-	packages := make(map[string]PackageInfo)
 	decoder := xml.NewDecoder(strings.NewReader(data))
 	decoder.CharsetReader = func(charset string, input io.Reader) (io.Reader, error) {
 		if charset == "utf-8" {
@@ -146,7 +156,7 @@ func getDependencies() (map[string]PackageInfo, error) {
 			if err == io.EOF {
 				break
 			}
-			return nil, err
+			return err
 		}
 
 		switch se := tok.(type) {
@@ -158,7 +168,7 @@ func getDependencies() (map[string]PackageInfo, error) {
 				}
 				err := decoder.DecodeElement(&pkgData, &se)
 				if err != nil {
-					return nil, err
+					return err
 				}
 
 				if pkgData.Type == "rpm" {
@@ -171,17 +181,17 @@ func getDependencies() (map[string]PackageInfo, error) {
 					trimmedXML := strings.Join(lines, "\n")
 					pkgInfo, err := parsePackageXML(trimmedXML[1:])
 					if err != nil {
-						return nil, err
+						return err
 					}
 
-					if _, exists := packages[pkgInfo.Name]; !exists {
-						packages[pkgInfo.Name] = pkgInfo
+					if _, exists := fc.PkgInfoMap[pkgInfo.Name]; !exists {
+						fc.PkgInfoMap[pkgInfo.Name] = pkgInfo
 					}
 				}
 			}
 		}
 	}
-	return packages, nil
+	return nil
 }
 
 func parsePackageXML(data string) (PackageInfo, error) {
@@ -260,30 +270,30 @@ func parsePackageXML(data string) (PackageInfo, error) {
 	return pkgInfo, nil
 }
 
-func calculatePageRank(pkgInfoMap map[string]PackageInfo, iterations int, dampingFactor float64) map[string]float64 {
+func (fc *FedoraCollector) calculatePageRank(iterations int, dampingFactor float64) map[string]float64 {
 	pageRank := make(map[string]float64)
-	numPackages := len(pkgInfoMap)
+	numPackages := len(fc.PkgInfoMap)
 
-	for pkgName := range pkgInfoMap {
+	for pkgName := range fc.PkgInfoMap {
 		pageRank[pkgName] = 1.0 / float64(numPackages)
 	}
 
 	for i := 0; i < iterations; i++ {
 		newPageRank := make(map[string]float64)
 
-		for pkgName := range pkgInfoMap {
+		for pkgName := range fc.PkgInfoMap {
 			newPageRank[pkgName] = (1 - dampingFactor) / float64(numPackages)
 		}
 
-		for pkgName, pkgInfo := range pkgInfoMap {
+		for pkgName, pkgInfo := range fc.PkgInfoMap {
 			var depNum int
 			for _, depName := range pkgInfo.Depends {
-				if _, exists := pkgInfoMap[depName]; exists {
+				if _, exists := fc.PkgInfoMap[depName]; exists {
 					depNum++
 				}
 			}
 			for _, depName := range pkgInfo.Depends {
-				if _, exists := pkgInfoMap[depName]; exists {
+				if _, exists := fc.PkgInfoMap[depName]; exists {
 					newPageRank[depName] += dampingFactor * (pageRank[pkgName] / float64(depNum))
 				}
 			}
@@ -300,14 +310,14 @@ func isUniqueViolation(err error) bool {
 	return false
 }
 
-func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
+func (fc *FedoraCollector) updateOrInsertDatabase() error {
 	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return err
 	}
 	defer db.Close()
 
-	for pkgName, pkgInfo := range pkgInfoMap {
+	for pkgName, pkgInfo := range fc.PkgInfoMap {
 		var exists bool
 		err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM fedora_packages WHERE package = $1)", pkgName).Scan(&exists)
 		if err != nil {
@@ -330,7 +340,7 @@ func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
 	return nil
 }
 
-func storeDependenciesInDatabase(pkgName string, dependencies []string) error {
+func (fc *FedoraCollector) storeDependenciesInDatabase(pkgName string, dependencies []string) error {
 	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return err
@@ -346,7 +356,7 @@ func storeDependenciesInDatabase(pkgName string, dependencies []string) error {
 	return nil
 }
 
-func generateDependencyGraph(pkgInfoMap map[string]PackageInfo, outputPath string) error {
+func (fc *FedoraCollector) generateDependencyGraph(outputPath string) error {
 	file, err := os.Create(outputPath)
 	if err != nil {
 		return err
@@ -359,14 +369,14 @@ func generateDependencyGraph(pkgInfoMap map[string]PackageInfo, outputPath strin
 	packageIndices := make(map[string]int)
 	index := 0
 
-	for pkgName, pkgInfo := range pkgInfoMap {
+	for pkgName, pkgInfo := range fc.PkgInfoMap {
 		packageIndices[pkgName] = index
 		label := fmt.Sprintf("%s@%s", pkgName, pkgInfo.Description)
 		writer.WriteString(fmt.Sprintf("  %d [label=\"%s\"];\n", index, label))
 		index++
 	}
 
-	for pkgName, pkgInfo := range pkgInfoMap {
+	for pkgName, pkgInfo := range fc.PkgInfoMap {
 		pkgIndex := packageIndices[pkgName]
 		for _, depName := range pkgInfo.Depends {
 			if depIndex, ok := packageIndices[depName]; ok {

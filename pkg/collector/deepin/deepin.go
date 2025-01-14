@@ -26,7 +26,25 @@ type DepInfo struct {
 	PageRank    float64
 }
 
-func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
+type PackageInfo struct {
+	DependsCount int
+	Description  string
+	Homepage     string
+	Version      string
+	PageRank     float64
+}
+
+type DeepinCollector struct {
+	packages map[string]map[string]interface{}
+}
+
+func NewDeepinCollector() *DeepinCollector {
+	return &DeepinCollector{
+		packages: make(map[string]map[string]interface{}),
+	}
+}
+
+func (dc *DeepinCollector) updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
 	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return err
@@ -56,7 +74,7 @@ func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
 	return nil
 }
 
-func storeDependenciesInDatabase(pkgName string, dependencies []DepInfo) error {
+func (dc *DeepinCollector) storeDependenciesInDatabase(pkgName string, dependencies []DepInfo) error {
 	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return err
@@ -72,7 +90,7 @@ func storeDependenciesInDatabase(pkgName string, dependencies []DepInfo) error {
 	return nil
 }
 
-func getMirrorFile(path string) []byte {
+func (dc *DeepinCollector) getMirrorFile(path string) []byte {
 	resp, _ := http.Get("https://mirrors.hust.edu.cn/deepin/" + path)
 	defer resp.Body.Close()
 
@@ -80,22 +98,22 @@ func getMirrorFile(path string) []byte {
 	return body
 }
 
-func getDecompressedFile(path string) string {
-	file := getMirrorFile(path)
+func (dc *DeepinCollector) getDecompressedFile(path string) string {
+	file := dc.getMirrorFile(path)
 	reader, _ := gzip.NewReader(strings.NewReader(string(file)))
 	defer reader.Close()
 	decompressed, _ := ioutil.ReadAll(reader)
 	return string(decompressed)
 }
 
-func getBeigePackageList() string {
-	return getDecompressedFile("beige/dists/beige/main/binary-amd64/Packages.gz")
+func (dc *DeepinCollector) getBeigePackageList() string {
+	return dc.getDecompressedFile("beige/dists/beige/main/binary-amd64/Packages.gz")
 }
 
-func parseList() map[string]map[string]interface{} {
-	content := getBeigePackageList()
+func (dc *DeepinCollector) parseList() {
+	content := dc.getBeigePackageList()
 	lists := strings.Split(content, "\n\n")
-	packages := make(map[string]map[string]interface{})
+	dc.packages = make(map[string]map[string]interface{})
 
 	for _, packageStr := range lists {
 		if strings.TrimSpace(packageStr) == "" {
@@ -127,21 +145,19 @@ func parseList() map[string]map[string]interface{} {
 			depList := strings.Split(depends, ",")
 			var depStrings []interface{}
 			for _, dep := range depList {
-				depInfo := toDep(strings.TrimSpace(dep), packageStr)
+				depInfo := dc.toDep(strings.TrimSpace(dep), packageStr)
 				depStrings = append(depStrings, depInfo)
 			}
 			pkg["Depends"] = depStrings
 		}
 
 		if packageName, ok := pkg["Package"].(string); ok {
-			packages[packageName] = pkg
+			dc.packages[packageName] = pkg
 		}
 	}
-
-	return packages
 }
 
-func toDep(dep string, rawContent string) DepInfo {
+func (dc *DeepinCollector) toDep(dep string, rawContent string) DepInfo {
 	re := regexp.MustCompile(`^(.+?)(:.+?)?(\s\((.+)\))?(\s\|.+)?$`)
 	matches := re.FindStringSubmatch(dep)
 
@@ -171,7 +187,7 @@ func toDep(dep string, rawContent string) DepInfo {
 	return depInfo
 }
 
-func generateDependencyGraph(packages map[string]map[string]interface{}, outputPath string) error {
+func (dc *DeepinCollector) generateDependencyGraph(outputPath string) error {
 	file, err := os.Create(outputPath)
 	if err != nil {
 		return err
@@ -184,14 +200,14 @@ func generateDependencyGraph(packages map[string]map[string]interface{}, outputP
 	packageIndices := make(map[string]int)
 	index := 0
 
-	for pkgName, pkgInfo := range packages {
+	for pkgName, pkgInfo := range dc.packages {
 		packageIndices[pkgName] = index
 		label := fmt.Sprintf("%s@%s", pkgName, pkgInfo["Version"].(string))
 		writer.WriteString(fmt.Sprintf("  %d [label=\"%s\"];\n", index, label))
 		index++
 	}
 
-	for pkgName, pkgInfo := range packages {
+	for pkgName, pkgInfo := range dc.packages {
 		pkgIndex := packageIndices[pkgName]
 		if depends, ok := pkgInfo["Depends"].([]interface{}); ok {
 			for _, depInterface := range depends {
@@ -209,15 +225,15 @@ func generateDependencyGraph(packages map[string]map[string]interface{}, outputP
 	return nil
 }
 
-func getAllDep(packages map[string]map[string]interface{}, pkgName string, deps []string) []string {
+func (dc *DeepinCollector) getAllDep(pkgName string, deps []string) []string {
 	deps = append(deps, pkgName)
-	if pkg, ok := packages[pkgName]; ok {
+	if pkg, ok := dc.packages[pkgName]; ok {
 		if depends, ok := pkg["Depends"].([]interface{}); ok {
 			for _, depInterface := range depends {
 				if depMap, ok := depInterface.(DepInfo); ok {
 					pkgname := depMap.Name
 					if !contains(deps, pkgname) {
-						deps = getAllDep(packages, pkgname, deps)
+						deps = dc.getAllDep(pkgname, deps)
 					}
 				}
 			}
@@ -226,24 +242,24 @@ func getAllDep(packages map[string]map[string]interface{}, pkgName string, deps 
 	return deps
 }
 
-func rankPage(packages map[string]map[string]interface{}, maxIterations int, dampingFactor float64) map[string]float64 {
+func (dc *DeepinCollector) rankPage(maxIterations int, dampingFactor float64) map[string]float64 {
 	rank := make(map[string]float64)
-	N := len(packages)
-	for pkgName := range packages {
+	N := len(dc.packages)
+	for pkgName := range dc.packages {
 		rank[pkgName] = 1.0 / float64(N)
 	}
 
 	for i := 0; i < maxIterations; i++ {
 		newRank := make(map[string]float64)
-		for pkgName := range packages {
+		for pkgName := range dc.packages {
 			newRank[pkgName] = (1 - dampingFactor) / float64(N)
 		}
 
-		for pkgName, pkgInfo := range packages {
+		for pkgName, pkgInfo := range dc.packages {
 			if depends, ok := pkgInfo["Depends"].([]interface{}); ok {
 				for _, depInterface := range depends {
 					if depInfo, ok := depInterface.(DepInfo); ok {
-						if _, ok := packages[depInfo.Name]; ok {
+						if _, ok := dc.packages[depInfo.Name]; ok {
 							newRank[depInfo.Name] += dampingFactor * rank[pkgName] / float64(len(depends))
 						}
 					}
@@ -255,6 +271,7 @@ func rankPage(packages map[string]map[string]interface{}, maxIterations int, dam
 	}
 	return rank
 }
+
 func contains(slice []string, item string) bool {
 	for _, a := range slice {
 		if a == item {
@@ -264,21 +281,21 @@ func contains(slice []string, item string) bool {
 	return false
 }
 
-func Deepin(outputPath string) {
+func (dc *DeepinCollector) Collect(outputPath string) {
 	fmt.Println("Getting package list...")
-	packages := parseList()
-	fmt.Printf("Done, total: %d packages.\n", len(packages))
+	dc.parseList()
+	fmt.Printf("Done, total: %d packages.\n", len(dc.packages))
 	fmt.Println("Building dependencies graph...")
 
-	keys := make([]string, 0, len(packages))
-	for k := range packages {
+	keys := make([]string, 0, len(dc.packages))
+	for k := range dc.packages {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
 
 	depMap := make(map[string][]string)
 	for _, pkgName := range keys {
-		deps := getAllDep(packages, pkgName, []string{})
+		deps := dc.getAllDep(pkgName, []string{})
 		depMap[pkgName] = deps
 	}
 	fmt.Println("Calculating dependencies count...")
@@ -289,11 +306,11 @@ func Deepin(outputPath string) {
 		}
 	}
 
-	pagerank := rankPage(packages, 20, 0.85)
+	pagerank := dc.rankPage(20, 0.85)
 
 	pkgInfoMap := make(map[string]PackageInfo)
 
-	for pkgName, pkgInfo := range packages {
+	for pkgName, pkgInfo := range dc.packages {
 		depCount := countMap[pkgName]
 
 		description, ok := pkgInfo["Description"].(string)
@@ -322,12 +339,12 @@ func Deepin(outputPath string) {
 		}
 	}
 
-	err := updateOrInsertDatabase(pkgInfoMap)
+	err := dc.updateOrInsertDatabase(pkgInfoMap)
 	if err != nil {
 		fmt.Printf("Error updating database: %v\n", err)
 		return
 	}
-	for _, pkgInfo := range packages {
+	for _, pkgInfo := range dc.packages {
 		if packageName, ok := pkgInfo["Package"].(string); ok {
 			if depends, ok := pkgInfo["Depends"].([]interface{}); ok {
 				dependencies := make([]DepInfo, len(depends))
@@ -336,7 +353,7 @@ func Deepin(outputPath string) {
 						dependencies[i] = depInfo
 					}
 				}
-				if err := storeDependenciesInDatabase(packageName, dependencies); err != nil {
+				if err := dc.storeDependenciesInDatabase(packageName, dependencies); err != nil {
 					if isUniqueViolation(err) {
 						continue
 					}
@@ -349,21 +366,13 @@ func Deepin(outputPath string) {
 	fmt.Println("Database updated successfully.")
 
 	if outputPath != "" {
-		err := generateDependencyGraph(packages, outputPath)
+		err := dc.generateDependencyGraph(outputPath)
 		if err != nil {
 			fmt.Printf("Error generating dependency graph: %v\n", err)
 			return
 		}
 		fmt.Println("Dependency graph generated successfully.")
 	}
-}
-
-type PackageInfo struct {
-	DependsCount int
-	Description  string
-	Homepage     string
-	Version      string
-	PageRank     float64
 }
 
 func isUniqueViolation(err error) bool {

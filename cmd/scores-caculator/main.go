@@ -18,43 +18,30 @@ var (
 func main() {
 	config.RegistCommonFlags(pflag.CommandLine)
 	config.ParseFlags(pflag.CommandLine)
-	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
-	if err != nil {
-		log.Fatalf("Failed to connect to database: %v", err)
-	}
+	ac := storage.GetDefaultAppDatabaseContext()
+	scores.UpdatePackageList(ac)
+	linksMap := scores.FetchGitLink(ac)
+	gitMeticMap := scores.FetchGitMetrics(ac)
+	langEcoMetricMap := scores.FetchLangEcoMetadata(ac)
+	distMetricMap := scores.FetchDistMetadata(ac)
 
-	defer db.Close()
-
-	links, err := scores.FetchAllLinks(db)
-	if err != nil {
-		log.Fatalf("Failed to fetch git links: %v", err)
-	}
-	scores.CalculaterepoCount(db)
 	packageScore := make(map[string]*scores.LinkScore)
-	linkCount := make(map[string]map[string]scores.PackageData)
-	for repo := range scores.PackageList {
-		linkCount[repo] = scores.FetchdLinkCount(repo, db)
-	}
-	for _, link := range links {
-		gitMetadata := scores.NewGitMetadata()
+
+	for _, link := range linksMap {
 		distScore := scores.NewDistScore()
+		distScore.CalculateDistMerics(distMetricMap[link], scores.PackageList[distMetricMap[link].Type])
+		distScore.CalculateDistScore()
+
 		langEcoScore := scores.NewLangEcoScore()
-		gitMetadata.FetchGitMetadata(db, link)
+		langEcoScore.CalulateLangEcoMeritcs(langEcoMetricMap[link], scores.PackageCounts[langEcoMetricMap[link].Type])
+		langEcoScore.CalculateLangEcoScore()
 
-		if *calcType == "distro" || *calcType == "all" {
-			distScore.CalculateDistSubScore(link, linkCount)
-			distScore.CalculateDistScore()
-		}
-		if *calcType == "git" || *calcType == "all" {
-			gitMetadata.CalculateGitMetadataScore()
-		}
-		if *calcType == "langeco" || *calcType == "all" {
-			langEcoScore.CalculateLangEcoScore()
-		}
+		gitMetadataScore := scores.NewGitMetadataScore()
+		gitMetadataScore.CalculateGitMetadataScore(gitMeticMap[link])
 
-		packageScore[link] = scores.NewLinkScore(gitMetadata, distScore, langEcoScore)
+		packageScore[link] = scores.NewLinkScore(gitMetadataScore, distScore, langEcoScore)
 		packageScore[link].CalculateScore()
 	}
 	log.Println("Updating database...")
-	scores.UpdateScore(db, packageScore, *batchSize, *calcType)
+	scores.UpdateScore(ac, packageScore)
 }

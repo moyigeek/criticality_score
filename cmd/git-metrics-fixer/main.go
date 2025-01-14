@@ -3,12 +3,9 @@ package main
 
 import (
 	"database/sql"
-	"flag"
 	"fmt"
 	"log"
 	"os"
-	"strings"
-	"sync"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/config"
 	collector "github.com/HUSTSecLab/criticality_score/pkg/gitfile/collector"
@@ -17,13 +14,13 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/logger"
 	scores "github.com/HUSTSecLab/criticality_score/pkg/score"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
-	"github.com/bytedance/gopkg/util/gopool"
 	gogit "github.com/go-git/go-git/v5"
 	"github.com/spf13/pflag"
 )
 
 var (
-	flagUpdateDB = pflag.Bool("update-db", false, "Whether to update the database")
+	flagUpdateDB   = pflag.Bool("update-db", false, "Whether to update the database")
+	flagUpdateLink = pflag.String("update-link", "", "Which link to update")
 )
 
 func main() {
@@ -36,82 +33,51 @@ func main() {
 
 	config.RegistCommonFlags(pflag.CommandLine)
 	config.ParseFlags(pflag.CommandLine)
+	ac := storage.GetDefaultAppDatabaseContext()
 
 	updateDB := *flagUpdateDB
-	paths := flag.Args()
+	link := *flagUpdateLink
 
-	var wg sync.WaitGroup
-	wg.Add(len(paths))
-
-	repos := make([]*git.Repo, 0)
-
-	for _, path := range paths {
-		gopool.Go(func() {
-			defer wg.Done()
-			logger.Infof("Collecting %s", path)
-
-			r := &gogit.Repository{}
-			var err error
-
-			if strings.Contains(path, "://") {
-				u := url.ParseURL(path)
-				r, err = collector.EzCollect(&u)
-				if err != nil {
-					logger.Panicf("Collecting %s Failed", u.URL)
-				}
-			} else {
-				r, err = collector.Open(path)
-				if err != nil {
-					logger.Panicf("Opening %s Failed", path)
-				}
-			}
-
-			repo, err := git.ParseRepo(r)
-			if err != nil {
-				logger.Panicf("Parsing %s Failed", path)
-			}
-
-			repos = append(repos, repo)
-			logger.Infof("%s Collected", repo.Name)
-		})
-	}
-
-	wg.Wait()
-	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
+	logger.Infof("Collecting %s", link)
+	r := &gogit.Repository{}
+	var err error
+	u := url.ParseURL(link)
+	r, err = collector.EzCollect(&u)
 	if err != nil {
-		log.Fatalf("Failed to connect to database: %v", err)
+		logger.Panicf("Collecting %s Failed", u.URL)
 	}
 
-	defer db.Close()
-	for _, repo := range repos {
-		repo.Show()
-		gitMetadata := &scores.GitMetadata{
-			CommitFrequency:  &repo.CommitFrequency,
-			ContributorCount: &repo.ContributorCount,
-			CreatedSince:     &repo.CreatedSince,
-			UpdatedSince:     &repo.UpdatedSince,
-			Org_Count:        &repo.OrgCount,
-		}
-		linkCount := make(map[string]map[string]scores.PackageData)
-		scores.CalculaterepoCount(db)
-		for pkg := range scores.PackageList {
-			linkCount[pkg] = make(map[string]scores.PackageData)
-			count := scores.FetchdLinkCountSingle(pkg, repo.URL, db)
-			linkCount[pkg][strings.ToLower(repo.URL)] = count
-		}
-		distScore := scores.NewDistScore()
-		distScore.CalculateDistSubScore(repo.URL, linkCount)
-		gitMetadata.CalculateGitMetadataScore()
-		langEcoScore := scores.NewLangEcoScore()
-		langEcoScore.CalculateLangEcoScore()
-		linkScore := scores.LinkScore{GitMetadata: *gitMetadata, DistScore: *distScore, LangEcoScore: *langEcoScore}
-		linkScore.CalculateScore()
-		if updateDB {
-			err = updateGitMetrics(db, repo, linkScore.Score, distScore.DistImpact)
-			if err != nil {
-				logger.Fatal(err)
-			}
-		}
+	repo, err := git.ParseRepo(r)
+	if err != nil {
+		logger.Panicf("Parsing %s Failed", link)
+	}
+	logger.Infof("%s Collected", repo.Name)
+
+	repo.Show()
+	gitMetadata := &scores.GitMetadata{
+		CommitFrequency:  repo.CommitFrequency,
+		ContributorCount: repo.ContributorCount,
+		CreatedSince:     repo.CreatedSince,
+		UpdatedSince:     repo.UpdatedSince,
+		Org_Count:        repo.OrgCount,
+	}
+	gitMetadataScore := scores.NewGitMetadataScore()
+	gitMetadataScore.CalculateGitMetadataScore(gitMetadata)
+
+	distScore := scores.NewDistScore()
+	distMetadata := scores.FetchDistMetadataSingle(ac, link)
+	distScore.CalculateDistMerics(distMetadata[link], scores.PackageList[distMetadata[link].Type])
+	distScore.CalculateDistScore()
+
+	langEcoScore := scores.NewLangEcoScore()
+	langEcoMetadata := scores.FetchLangEcoMetadataSingle(ac, link)
+	langEcoScore.CalulateLangEcoMeritcs(langEcoMetadata[link], scores.PackageCounts[langEcoMetadata[link].Type])
+	langEcoScore.CalculateLangEcoScore()
+
+	if updateDB {
+		scores.UpdateScore(ac, map[string]*scores.LinkScore{
+			link: scores.NewLinkScore(gitMetadataScore, distScore, langEcoScore),
+		})
 	}
 }
 func updateGitMetrics(db *sql.DB, repo *git.Repo, score float64, depsDistro float64) error {

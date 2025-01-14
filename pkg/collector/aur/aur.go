@@ -2,8 +2,6 @@ package aur
 
 import (
 	"bufio"
-	"bytes"
-	"compress/gzip"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -30,51 +28,40 @@ type PackageInfo struct {
 	Version      string
 }
 
-func Aur(outputPath string) {
-	pkgInfoMap, err := getDependencies()
+type AurCollector struct {
+	PkgInfoMap map[string]PackageInfo
+	DepMap     map[string][]string
+	CountMap   map[string]int
+	PageRank   map[string]float64
+}
+
+func NewAurCollector() *AurCollector {
+	return &AurCollector{
+		PkgInfoMap: make(map[string]PackageInfo),
+		DepMap:     make(map[string][]string),
+		CountMap:   make(map[string]int),
+		PageRank:   make(map[string]float64),
+	}
+}
+
+func (ac *AurCollector) Collect(outputPath string) {
+	err := ac.getDependencies()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	depMap := make(map[string][]string)
-	for pkgName := range pkgInfoMap {
-		visited := make(map[string]bool)
-		deps := getAllDep(pkgInfoMap, pkgName, visited, []string{})
-		depMap[pkgName] = deps
-	}
-
-	countMap := make(map[string]int)
-	for _, deps := range depMap {
-		for _, dep := range deps {
-			countMap[dep]++
-		}
-	}
-
-	pagerank := calculatePageRank(pkgInfoMap, 20, 0.85)
-	for pkgName, pkgInfo := range pkgInfoMap {
-		pagerankVal := pagerank[pkgName]
-		depCount := countMap[pkgName]
-		pkgInfo.PageRank = pagerankVal
-		pkgInfo.DependsCount = depCount
-		pkgInfoMap[pkgName] = pkgInfo
-	}
-	err = updateOrInsertDatabase(pkgInfoMap)
+	ac.calculateDependencies()
+	ac.calculatePageRank(20, 0.85)
+	err = ac.updateOrInsertDatabase()
 	if err != nil {
 		fmt.Printf("Error updating database: %v\n", err)
 		return
 	}
-	for pkgName, pkgInfo := range pkgInfoMap {
-		if err := storeDependenciesInDatabase(pkgName, pkgInfo.Depends); err != nil {
-			if isUniqueViolation(err) {
-				continue
-			}
-			fmt.Printf("Error storing dependencies for package %s: %v\n", pkgName, err)
-		}
-	}
+	ac.storeDependenciesInDatabase()
 	fmt.Println("Database updated successfully.")
 
 	if outputPath != "" {
-		err := generateDependencyGraph(pkgInfoMap, outputPath)
+		err := ac.generateDependencyGraph(outputPath)
 		if err != nil {
 			fmt.Printf("Error generating dependency graph: %v\n", err)
 			return
@@ -83,7 +70,44 @@ func Aur(outputPath string) {
 	}
 }
 
-func getAllDep(packages map[string]PackageInfo, pkgName string, visited map[string]bool, deps []string) []string {
+func (ac *AurCollector) getDependencies() error {
+	resp, err := http.Get(URL)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+	var packages []PackageInfo
+	err = json.Unmarshal([]byte(body), &packages)
+	if err != nil {
+		return err
+	}
+
+	for _, pkg := range packages {
+		ac.PkgInfoMap[pkg.Name] = pkg
+	}
+	return nil
+}
+
+func (ac *AurCollector) calculateDependencies() {
+	for pkgName := range ac.PkgInfoMap {
+		visited := make(map[string]bool)
+		deps := ac.getAllDep(pkgName, visited, []string{})
+		ac.DepMap[pkgName] = deps
+	}
+
+	for _, deps := range ac.DepMap {
+		for _, dep := range deps {
+			ac.CountMap[dep]++
+		}
+	}
+}
+
+func (ac *AurCollector) getAllDep(pkgName string, visited map[string]bool, deps []string) []string {
 	if visited[pkgName] {
 		return deps
 	}
@@ -91,101 +115,59 @@ func getAllDep(packages map[string]PackageInfo, pkgName string, visited map[stri
 	visited[pkgName] = true
 	deps = append(deps, pkgName)
 
-	if pkg, ok := packages[pkgName]; ok {
+	if pkg, ok := ac.PkgInfoMap[pkgName]; ok {
 		for _, depName := range pkg.Depends {
-			deps = getAllDep(packages, depName, visited, deps)
+			deps = ac.getAllDep(depName, visited, deps)
 		}
 	}
 	return deps
 }
 
-func decompressGzip(data []byte) (string, error) {
-	reader, err := gzip.NewReader(bytes.NewReader(data))
-	if err != nil {
-		return "", err
-	}
-	defer reader.Close()
+func (ac *AurCollector) calculatePageRank(iterations int, dampingFactor float64) {
+	numPackages := len(ac.PkgInfoMap)
 
-	uncompressedData, err := ioutil.ReadAll(reader)
-	if err != nil {
-		return "", err
-	}
-
-	return string(uncompressedData), nil
-}
-
-func getDependencies() (map[string]PackageInfo, error) {
-	resp, err := http.Get(URL)
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
-	var packages []PackageInfo
-	err = json.Unmarshal([]byte(body), &packages)
-	if err != nil {
-		return nil, err
-	}
-
-	pkgMap := make(map[string]PackageInfo)
-	for _, pkg := range packages {
-		pkgMap[pkg.Name] = pkg
-	}
-	return pkgMap, nil
-}
-
-func calculatePageRank(pkgInfoMap map[string]PackageInfo, iterations int, dampingFactor float64) map[string]float64 {
-	pageRank := make(map[string]float64)
-	numPackages := len(pkgInfoMap)
-
-	for pkgName := range pkgInfoMap {
-		pageRank[pkgName] = 1.0 / float64(numPackages)
+	for pkgName := range ac.PkgInfoMap {
+		ac.PageRank[pkgName] = 1.0 / float64(numPackages)
 	}
 
 	for i := 0; i < iterations; i++ {
 		newPageRank := make(map[string]float64)
 
-		for pkgName := range pkgInfoMap {
+		for pkgName := range ac.PkgInfoMap {
 			newPageRank[pkgName] = (1 - dampingFactor) / float64(numPackages)
 		}
 
-		for pkgName, pkgInfo := range pkgInfoMap {
+		for pkgName, pkgInfo := range ac.PkgInfoMap {
 			var depNum int
 			for _, depName := range pkgInfo.Depends {
-				if _, exists := pkgInfoMap[depName]; exists {
+				if _, exists := ac.PkgInfoMap[depName]; exists {
 					depNum++
 				}
 			}
 			for _, depName := range pkgInfo.Depends {
-				if _, exists := pkgInfoMap[depName]; exists {
-					newPageRank[depName] += dampingFactor * (pageRank[pkgName] / float64(depNum))
+				if _, exists := ac.PkgInfoMap[depName]; exists {
+					newPageRank[depName] += dampingFactor * (ac.PageRank[pkgName] / float64(depNum))
 				}
 			}
 		}
-		pageRank = newPageRank
+		ac.PageRank = newPageRank
 	}
-	return pageRank
+
+	for pkgName, pkgInfo := range ac.PkgInfoMap {
+		pkgInfo.PageRank = ac.PageRank[pkgName]
+		pkgInfo.DependsCount = ac.CountMap[pkgName]
+		ac.PkgInfoMap[pkgName] = pkgInfo
+	}
 }
 
-func isUniqueViolation(err error) bool {
-	if pqErr, ok := err.(*pq.Error); ok {
-		return pqErr.Code == "23505"
-	}
-	return false
-}
-
-func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
+func (ac *AurCollector) updateOrInsertDatabase() error {
 	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return err
 	}
 	defer db.Close()
 
-	for pkgName, pkgInfo := range pkgInfoMap {
+	for pkgName, pkgInfo := range ac.PkgInfoMap {
 		var exists bool
 		err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM aur_packages WHERE package = $1)", pkgName).Scan(&exists)
 		if err != nil {
@@ -208,23 +190,27 @@ func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
 	return nil
 }
 
-func storeDependenciesInDatabase(pkgName string, dependencies []string) error {
+func (ac *AurCollector) storeDependenciesInDatabase() {
 	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
-		return err
+		log.Fatal(err)
 	}
 	defer db.Close()
 
-	for _, dep := range dependencies {
-		_, err := db.Exec("INSERT INTO aur_relationships (frompackage, topackage) VALUES ($1, $2)", pkgName, dep)
-		if err != nil {
-			return err
+	for pkgName, pkgInfo := range ac.PkgInfoMap {
+		for _, dep := range pkgInfo.Depends {
+			_, err := db.Exec("INSERT INTO aur_relationships (frompackage, topackage) VALUES ($1, $2)", pkgName, dep)
+			if err != nil {
+				if isUniqueViolation(err) {
+					continue
+				}
+				fmt.Printf("Error storing dependencies for package %s: %v\n", pkgName, err)
+			}
 		}
 	}
-	return nil
 }
 
-func generateDependencyGraph(pkgInfoMap map[string]PackageInfo, outputPath string) error {
+func (ac *AurCollector) generateDependencyGraph(outputPath string) error {
 	file, err := os.Create(outputPath)
 	if err != nil {
 		return err
@@ -237,14 +223,14 @@ func generateDependencyGraph(pkgInfoMap map[string]PackageInfo, outputPath strin
 	packageIndices := make(map[string]int)
 	index := 0
 
-	for pkgName, pkgInfo := range pkgInfoMap {
+	for pkgName, pkgInfo := range ac.PkgInfoMap {
 		packageIndices[pkgName] = index
 		label := fmt.Sprintf("%s@%s", pkgName, pkgInfo.Description)
 		writer.WriteString(fmt.Sprintf("  %d [label=\"%s\"];\n", index, label))
 		index++
 	}
 
-	for pkgName, pkgInfo := range pkgInfoMap {
+	for pkgName, pkgInfo := range ac.PkgInfoMap {
 		pkgIndex := packageIndices[pkgName]
 		for _, depName := range pkgInfo.Depends {
 			if depIndex, ok := packageIndices[depName]; ok {
@@ -256,4 +242,11 @@ func generateDependencyGraph(pkgInfoMap map[string]PackageInfo, outputPath strin
 	writer.WriteString("}\n")
 	writer.Flush()
 	return nil
+}
+
+func isUniqueViolation(err error) bool {
+	if pqErr, ok := err.(*pq.Error); ok {
+		return pqErr.Code == "23505"
+	}
+	return false
 }

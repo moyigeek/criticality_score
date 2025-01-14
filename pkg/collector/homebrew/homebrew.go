@@ -25,53 +25,49 @@ type PackageInfo struct {
 	PageRank     float64
 }
 
-func storeDependenciesInDatabase(pkgName string, dependencies []string) error {
-	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-
-	for _, dep := range dependencies {
-		_, err := db.Exec("INSERT INTO homebrew_relationships (frompackage, topackage) VALUES ($1, $2)", pkgName, dep)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
+type HomebrewCollector struct {
+	RepoDir    string
+	PkgInfoMap map[string]PackageInfo
 }
-func CloneHomebrewRepo() (string, error) {
+
+func NewHomebrewCollector() *HomebrewCollector {
+	return &HomebrewCollector{
+		PkgInfoMap: make(map[string]PackageInfo),
+	}
+}
+
+func (hc *HomebrewCollector) CloneHomebrewRepo() error {
 	repoURL := "https://github.com/Homebrew/homebrew-core.git"
 	dir := "homebrew-core"
 
 	if _, err := os.Stat(dir); err == nil {
 		cmd := exec.Command("git", "-C", dir, "pull")
 		if err := cmd.Run(); err != nil {
-			return "", fmt.Errorf("failed to pull repository: %v", err)
+			return fmt.Errorf("failed to pull repository: %v", err)
 		}
-		return dir, nil
+		hc.RepoDir = dir
+		return nil
 	} else if !os.IsNotExist(err) {
-		return "", fmt.Errorf("failed to check directory: %v", err)
+		return fmt.Errorf("failed to check directory: %v", err)
 	}
 
 	cmd := exec.Command("git", "clone", repoURL, dir)
 	if err := cmd.Run(); err != nil {
-		return "", fmt.Errorf("failed to clone repository: %v", err)
+		return fmt.Errorf("failed to clone repository: %v", err)
 	}
 
-	return dir, nil
+	hc.RepoDir = dir
+	return nil
 }
 
-func FetchAndParseFormulaFiles() (map[string]PackageInfo, error) {
-	repoDir, err := CloneHomebrewRepo()
-	if err != nil {
-		return nil, err
+func (hc *HomebrewCollector) FetchAndParseFormulaFiles() error {
+	if err := hc.CloneHomebrewRepo(); err != nil {
+		return err
 	}
 
-	formulaDir := filepath.Join(repoDir, "Formula")
-	pkgInfoMap := make(map[string]PackageInfo)
+	formulaDir := filepath.Join(hc.RepoDir, "Formula")
 
-	err = filepath.Walk(formulaDir, func(path string, info os.FileInfo, err error) error {
+	err := filepath.Walk(formulaDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
 		}
@@ -81,22 +77,22 @@ func FetchAndParseFormulaFiles() (map[string]PackageInfo, error) {
 				return fmt.Errorf("failed to read formula file %s: %v", path, err)
 			}
 
-			pkgInfo := parseFormulaContent(string(formulaContent), info.Name())
+			pkgInfo := hc.parseFormulaContent(string(formulaContent), info.Name())
 			if pkgInfo.Name != "" {
 				pkgInfo.DependsCount = len(pkgInfo.Depends)
-				pkgInfoMap[pkgInfo.Name] = pkgInfo
+				hc.PkgInfoMap[pkgInfo.Name] = pkgInfo
 			}
 		}
 		return nil
 	})
 	if err != nil {
-		return nil, fmt.Errorf("failed to walk through formula directory: %v", err)
+		return fmt.Errorf("failed to walk through formula directory: %v", err)
 	}
 
-	return pkgInfoMap, nil
+	return nil
 }
 
-func parseFormulaContent(content string, fileName string) PackageInfo {
+func (hc *HomebrewCollector) parseFormulaContent(content string, fileName string) PackageInfo {
 	var pkgInfo PackageInfo
 
 	baseName := strings.TrimSuffix(fileName, filepath.Ext(fileName))
@@ -158,7 +154,7 @@ func parseFormulaContent(content string, fileName string) PackageInfo {
 	return pkgInfo
 }
 
-func getAllDep(packages map[string]PackageInfo, pkgName string, visited map[string]bool, deps []string) []string {
+func (hc *HomebrewCollector) getAllDep(pkgName string, visited map[string]bool, deps []string) []string {
 	if visited[pkgName] {
 		return deps
 	}
@@ -166,38 +162,38 @@ func getAllDep(packages map[string]PackageInfo, pkgName string, visited map[stri
 	visited[pkgName] = true
 	deps = append(deps, pkgName)
 
-	if pkg, ok := packages[pkgName]; ok {
+	if pkg, ok := hc.PkgInfoMap[pkgName]; ok {
 		for _, depName := range pkg.Depends {
-			deps = getAllDep(packages, depName, visited, deps)
+			deps = hc.getAllDep(depName, visited, deps)
 		}
 	}
 	return deps
 }
 
-func calculatePageRank(pkgInfoMap map[string]PackageInfo, iterations int, dampingFactor float64) map[string]float64 {
+func (hc *HomebrewCollector) calculatePageRank(iterations int, dampingFactor float64) map[string]float64 {
 	pageRank := make(map[string]float64)
-	numPackages := len(pkgInfoMap)
+	numPackages := len(hc.PkgInfoMap)
 
-	for pkgName := range pkgInfoMap {
+	for pkgName := range hc.PkgInfoMap {
 		pageRank[pkgName] = 1.0 / float64(numPackages)
 	}
 
 	for i := 0; i < iterations; i++ {
 		newPageRank := make(map[string]float64)
 
-		for pkgName := range pkgInfoMap {
+		for pkgName := range hc.PkgInfoMap {
 			newPageRank[pkgName] = (1 - dampingFactor) / float64(numPackages)
 		}
 
-		for pkgName, pkgInfo := range pkgInfoMap {
+		for pkgName, pkgInfo := range hc.PkgInfoMap {
 			var depNum int
 			for _, depName := range pkgInfo.Depends {
-				if _, exists := pkgInfoMap[depName]; exists {
+				if _, exists := hc.PkgInfoMap[depName]; exists {
 					depNum++
 				}
 			}
 			for _, depName := range pkgInfo.Depends {
-				if _, exists := pkgInfoMap[depName]; exists {
+				if _, exists := hc.PkgInfoMap[depName]; exists {
 					newPageRank[depName] += dampingFactor * (pageRank[pkgName] / float64(depNum))
 				}
 			}
@@ -207,7 +203,7 @@ func calculatePageRank(pkgInfoMap map[string]PackageInfo, iterations int, dampin
 	return pageRank
 }
 
-func generateDependencyGraph(pkgInfoMap map[string]PackageInfo, outputPath string) error {
+func (hc *HomebrewCollector) generateDependencyGraph(outputPath string) error {
 	file, err := os.Create(outputPath)
 	if err != nil {
 		return err
@@ -220,14 +216,14 @@ func generateDependencyGraph(pkgInfoMap map[string]PackageInfo, outputPath strin
 	packageIndices := make(map[string]int)
 	index := 0
 
-	for pkgName, pkgInfo := range pkgInfoMap {
+	for pkgName, pkgInfo := range hc.PkgInfoMap {
 		packageIndices[pkgName] = index
 		label := fmt.Sprintf("%s@%s", pkgName, pkgInfo.Description)
 		writer.WriteString(fmt.Sprintf("  %d [label=\"%s\"];\n", index, label))
 		index++
 	}
 
-	for pkgName, pkgInfo := range pkgInfoMap {
+	for pkgName, pkgInfo := range hc.PkgInfoMap {
 		pkgIndex := packageIndices[pkgName]
 		for _, depName := range pkgInfo.Depends {
 			if depIndex, ok := packageIndices[depName]; ok {
@@ -241,69 +237,30 @@ func generateDependencyGraph(pkgInfoMap map[string]PackageInfo, outputPath strin
 	return nil
 }
 
-func Homebrew(outputPath string) {
-	pkgInfoMap, err := FetchAndParseFormulaFiles()
-	if err != nil {
-		fmt.Printf("Error fetching package info: %v\n", err)
-		return
-	}
-
-	depMap := make(map[string][]string)
-	for pkgName := range pkgInfoMap {
-		visited := make(map[string]bool)
-		deps := getAllDep(pkgInfoMap, pkgName, visited, []string{})
-		depMap[pkgName] = deps
-	}
-
-	countMap := make(map[string]int)
-	for _, deps := range depMap {
-		for _, dep := range deps {
-			countMap[dep]++
-		}
-	}
-
-	pagerank := calculatePageRank(pkgInfoMap, 20, 0.85)
-
-	for pkgName, pkgInfo := range pkgInfoMap {
-		pagerankVal := pagerank[pkgName]
-		depCount := countMap[pkgName]
-		pkgInfo.PageRank = pagerankVal
-		pkgInfo.DependsCount = depCount
-		pkgInfoMap[pkgName] = pkgInfo
-	}
-	err = updateOrInsertDatabase(pkgInfoMap)
-	if err != nil {
-		fmt.Printf("Error updating database: %v\n", err)
-		return
-	}
-	for pkgName, pkgInfo := range pkgInfoMap {
-		if err := storeDependenciesInDatabase(pkgName, pkgInfo.Depends); err != nil {
-			if isUniqueViolation(err) {
-				continue
-			}
-			fmt.Printf("Error storing dependencies for package %s: %v\n", pkgName, err)
-		}
-	}
-	fmt.Println("Database updated successfully.")
-
-	if outputPath != "" {
-		err := generateDependencyGraph(pkgInfoMap, outputPath)
-		if err != nil {
-			fmt.Printf("Error generating dependency graph: %v\n", err)
-			return
-		}
-		fmt.Println("Dependency graph generated successfully.")
-	}
-}
-
-func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
+func (hc *HomebrewCollector) storeDependenciesInDatabase(pkgName string, dependencies []string) error {
 	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return err
 	}
 	defer db.Close()
 
-	for pkgName, pkgInfo := range pkgInfoMap {
+	for _, dep := range dependencies {
+		_, err := db.Exec("INSERT INTO homebrew_relationships (frompackage, topackage) VALUES ($1, $2)", pkgName, dep)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (hc *HomebrewCollector) updateOrInsertDatabase() error {
+	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	for pkgName, pkgInfo := range hc.PkgInfoMap {
 		var exists bool
 		err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM homebrew_packages WHERE package = $1)", pkgName).Scan(&exists)
 		if err != nil {
@@ -326,9 +283,63 @@ func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
 	return nil
 }
 
-func isUniqueViolation(err error) bool {
+func (hc *HomebrewCollector) isUniqueViolation(err error) bool {
 	if pqErr, ok := err.(*pq.Error); ok {
 		return pqErr.Code == "23505"
 	}
 	return false
+}
+
+func (hc *HomebrewCollector) Collect(outputPath string) {
+	if err := hc.FetchAndParseFormulaFiles(); err != nil {
+		fmt.Printf("Error fetching package info: %v\n", err)
+		return
+	}
+
+	depMap := make(map[string][]string)
+	for pkgName := range hc.PkgInfoMap {
+		visited := make(map[string]bool)
+		deps := hc.getAllDep(pkgName, visited, []string{})
+		depMap[pkgName] = deps
+	}
+
+	countMap := make(map[string]int)
+	for _, deps := range depMap {
+		for _, dep := range deps {
+			countMap[dep]++
+		}
+	}
+
+	pagerank := hc.calculatePageRank(20, 0.85)
+
+	for pkgName, pkgInfo := range hc.PkgInfoMap {
+		pagerankVal := pagerank[pkgName]
+		depCount := countMap[pkgName]
+		pkgInfo.PageRank = pagerankVal
+		pkgInfo.DependsCount = depCount
+		hc.PkgInfoMap[pkgName] = pkgInfo
+	}
+	err := hc.updateOrInsertDatabase()
+	if err != nil {
+		fmt.Printf("Error updating database: %v\n", err)
+		return
+	}
+	for pkgName, pkgInfo := range hc.PkgInfoMap {
+		if err := hc.storeDependenciesInDatabase(pkgName, pkgInfo.Depends); err != nil {
+			if hc.isUniqueViolation(err) {
+				continue
+			}
+			fmt.Printf("Error storing dependencies for package %s: %v\n", pkgName, err)
+		}
+	}
+	fmt.Println("Database updated successfully.")
+
+	if outputPath != "" {
+		err := hc.generateDependencyGraph(outputPath)
+		if err != nil {
+			fmt.Printf("Error generating dependency graph: %v\n", err)
+			return
+		}
+		fmt.Println("Dependency graph generated successfully.")
+	}
 }

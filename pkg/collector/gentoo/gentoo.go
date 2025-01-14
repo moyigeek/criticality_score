@@ -25,7 +25,18 @@ type PackageInfo struct {
 	PageRank     float64
 }
 
-func storeDependenciesInDatabase(pkgName string, dependencies []string) error {
+type GentooCollector struct {
+	RepoDir    string
+	PkgInfoMap map[string]PackageInfo
+}
+
+func NewGentooCollector() *GentooCollector {
+	return &GentooCollector{
+		PkgInfoMap: make(map[string]PackageInfo),
+	}
+}
+
+func (hc *GentooCollector) storeDependenciesInDatabase(pkgName string, dependencies []string) error {
 	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return err
@@ -64,7 +75,7 @@ func extractNameAndVersion(fileName string) (string, string) {
 	return "", ""
 }
 
-func ParseEbuild(filePath string) (PackageInfo, error) {
+func (hc *GentooCollector) ParseEbuild(filePath string) (PackageInfo, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
 		return PackageInfo{}, fmt.Errorf("Error opening ebuild file: %v", err)
@@ -75,7 +86,7 @@ func ParseEbuild(filePath string) (PackageInfo, error) {
 	scanner := bufio.NewScanner(file)
 
 	fileName := filepath.Base(filePath)
-	pkgInfo.Name, pkgInfo.Version = extractNameAndVersion(fileName)
+	pkgInfo.Name, _ = extractNameAndVersion(fileName)
 
 	reDescription := regexp.MustCompile(`^DESCRIPTION="(.+)"$`)
 	reHomepage := regexp.MustCompile(`^HOMEPAGE="(.+)"$`)
@@ -113,7 +124,7 @@ func ParseEbuild(filePath string) (PackageInfo, error) {
 	if err := scanner.Err(); err != nil {
 		return PackageInfo{}, fmt.Errorf("Error reading ebuild file: %v", err)
 	}
-	dependencies, err := getDependenciesFromCommand(pkgInfo.Name + "-" + pkgInfo.Version)
+	dependencies, err := getDependenciesFromCommand(pkgInfo.Name)
 	if err != nil {
 		pkgInfo.Depends = nil
 	} else {
@@ -151,9 +162,7 @@ func getDependenciesFromCommand(pkgName string) ([]string, error) {
 	return dependencies, nil
 }
 
-func FetchAndParseEbuildFiles(directory string) (map[string]PackageInfo, error) {
-	pkgInfoMap := make(map[string]PackageInfo)
-
+func (hc *GentooCollector) FetchAndParseEbuildFiles(directory string) error {
 	err := filepath.Walk(directory, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err
@@ -162,31 +171,31 @@ func FetchAndParseEbuildFiles(directory string) (map[string]PackageInfo, error) 
 			return nil
 		}
 		if strings.HasSuffix(info.Name(), ".ebuild") {
-			pkgInfo, err := ParseEbuild(path)
+			pkgInfo, err := hc.ParseEbuild(path)
 			if err != nil {
 				return fmt.Errorf("failed to parse ebuild file %s: %v", path, err)
 			}
 			if pkgInfo.Name != "" {
-				pkgInfoMap[pkgInfo.Name] = pkgInfo
+				hc.PkgInfoMap[pkgInfo.Name] = pkgInfo
 			}
 		}
 		return nil
 	})
 	if err != nil {
-		return nil, fmt.Errorf("failed to walk through ebuild directory: %v", err)
+		return fmt.Errorf("failed to walk through ebuild directory: %v", err)
 	}
 
-	return pkgInfoMap, nil
+	return nil
 }
 
-func UpdateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
+func (hc *GentooCollector) UpdateOrInsertDatabase() error {
 	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return err
 	}
 	defer db.Close()
 
-	for pkgName, pkgInfo := range pkgInfoMap {
+	for pkgName, pkgInfo := range hc.PkgInfoMap {
 		var exists bool
 		err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM gentoo_packages WHERE package = $1)", pkgName).Scan(&exists)
 		if err != nil {
@@ -209,7 +218,7 @@ func UpdateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
 	return nil
 }
 
-func Gentoo(outputPath string) {
+func (hc *GentooCollector) Collect(outputPath string) {
 	baseDirectory := "gentoo"
 	err := cloneGentooRepo(baseDirectory)
 	if err != nil {
@@ -222,7 +231,7 @@ func Gentoo(outputPath string) {
 		fmt.Printf("Error executing emerge --sync: %v\n", err)
 	}
 
-	pkgInfoMap, err := FetchAndParseEbuildFiles(baseDirectory)
+	err = hc.FetchAndParseEbuildFiles(baseDirectory)
 	if err != nil {
 		fmt.Printf("Error fetching package info: %v\n", err)
 		return
@@ -231,9 +240,9 @@ func Gentoo(outputPath string) {
 	fmt.Println("Fetched and parsed ebuild files successfully.")
 
 	depMap := make(map[string][]string)
-	for pkgName := range pkgInfoMap {
+	for pkgName := range hc.PkgInfoMap {
 		visited := make(map[string]bool)
-		deps := getAllDep(pkgInfoMap, pkgName, visited, []string{})
+		deps := getAllDep(hc.PkgInfoMap, pkgName, visited, []string{})
 		depMap[pkgName] = deps
 	}
 
@@ -244,23 +253,23 @@ func Gentoo(outputPath string) {
 		}
 	}
 
-	pageRankMap := pageRank(pkgInfoMap, 0.85, 20)
+	pageRankMap := pageRank(hc.PkgInfoMap, 0.85, 20)
 
-	for pkgName, pkgInfo := range pkgInfoMap {
+	for pkgName, pkgInfo := range hc.PkgInfoMap {
 		pkgInfo.PageRank = pageRankMap[pkgName]
 		depCount := countMap[pkgName]
 		pkgInfo.DependsCount = depCount
-		pkgInfoMap[pkgName] = pkgInfo
+		hc.PkgInfoMap[pkgName] = pkgInfo
 	}
 
-	err = UpdateOrInsertDatabase(pkgInfoMap)
+	err = hc.UpdateOrInsertDatabase()
 	if err != nil {
 		fmt.Printf("Error updating database: %v\n", err)
 		return
 	}
-	for pkgName, pkgInfo := range pkgInfoMap {
+	for pkgName, pkgInfo := range hc.PkgInfoMap {
 		fmt.Println("Storing dependencies for package", pkgName, pkgInfo.Depends)
-		if err := storeDependenciesInDatabase(pkgName, pkgInfo.Depends); err != nil {
+		if err := hc.storeDependenciesInDatabase(pkgName, pkgInfo.Depends); err != nil {
 			if isUniqueViolation(err) {
 				continue
 			}
@@ -270,7 +279,7 @@ func Gentoo(outputPath string) {
 	fmt.Println("Database updated successfully.")
 
 	if outputPath != "" {
-		err := generateDependencyGraph(pkgInfoMap, outputPath)
+		err := generateDependencyGraph(hc.PkgInfoMap, outputPath)
 		if err != nil {
 			fmt.Printf("Error generating dependency graph: %v\n", err)
 			return

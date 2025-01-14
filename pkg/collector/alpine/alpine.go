@@ -5,7 +5,7 @@ import (
 	"bytes"
 	"compress/gzip"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -26,19 +26,43 @@ type PackageInfo struct {
 	Depends      []string
 }
 
-var URL = "https://mirrors.aliyun.com/alpine/v3.21/main/%s/APKINDEX.tar.gz"
+func (pkg *PackageInfo) GetAllDependencies(packages map[string]PackageInfo, visited map[string]bool, deps []string) []string {
+	if visited[pkg.PackageName] {
+		return deps
+	}
 
-var Archlist = []string{"x86_64"}
+	visited[pkg.PackageName] = true
+	deps = append(deps, pkg.PackageName)
 
-func Alpine(outputPath string) {
-	pkgInfoMap, err := getPackageList()
+	for _, depName := range pkg.Depends {
+		if depPkg, ok := packages[depName]; ok {
+			deps = depPkg.GetAllDependencies(packages, visited, deps)
+		}
+	}
+	return deps
+}
+
+type AlpineCollector struct {
+	URL      string
+	Archlist []string
+}
+
+func NewAlpineCollector() *AlpineCollector {
+	return &AlpineCollector{
+		URL:      "https://mirrors.aliyun.com/alpine/v3.21/main/%s/APKINDEX.tar.gz",
+		Archlist: []string{"x86_64"},
+	}
+}
+
+func (ac *AlpineCollector) Collect(outputPath string) {
+	pkgInfoMap, err := ac.getPackageList()
 	if err != nil {
 		log.Fatal(err)
 	}
 	depMap := make(map[string][]string)
-	for pkgName := range pkgInfoMap {
+	for pkgName, pkgInfo := range pkgInfoMap {
 		visited := make(map[string]bool)
-		deps := getAllDep(pkgInfoMap, pkgName, visited, []string{})
+		deps := pkgInfo.GetAllDependencies(pkgInfoMap, visited, []string{})
 		depMap[pkgName] = deps
 	}
 
@@ -49,7 +73,7 @@ func Alpine(outputPath string) {
 		}
 	}
 
-	pagerank := calculatePageRank(pkgInfoMap, 20, 0.85)
+	pagerank := ac.calculatePageRank(pkgInfoMap, 20, 0.85)
 
 	for pkgName, pkgInfo := range pkgInfoMap {
 		pagerankVal := pagerank[pkgName]
@@ -58,14 +82,14 @@ func Alpine(outputPath string) {
 		pkgInfo.DependsCount = depCount
 		pkgInfoMap[pkgName] = pkgInfo
 	}
-	err = updateOrInsertDatabase(pkgInfoMap)
+	err = ac.updateOrInsertDatabase(pkgInfoMap)
 	if err != nil {
 		fmt.Printf("Error updating database: %v\n", err)
 		return
 	}
 	for pkgName, pkgInfo := range pkgInfoMap {
-		if err := storeDependenciesInDatabase(pkgName, pkgInfo.Depends); err != nil {
-			if isUniqueViolation(err) {
+		if err := ac.storeDependenciesInDatabase(pkgName, pkgInfo.Depends); err != nil {
+			if ac.isUniqueViolation(err) {
 				continue
 			}
 			fmt.Printf("Error storing dependencies for package %s: %v\n", pkgName, err)
@@ -74,7 +98,7 @@ func Alpine(outputPath string) {
 	fmt.Println("Database updated successfully.")
 
 	if outputPath != "" {
-		err := generateDependencyGraph(pkgInfoMap, outputPath)
+		err := ac.generateDependencyGraph(pkgInfoMap, outputPath)
 		if err != nil {
 			fmt.Printf("Error generating dependency graph: %v\n", err)
 			return
@@ -83,36 +107,20 @@ func Alpine(outputPath string) {
 	}
 }
 
-func getAllDep(packages map[string]PackageInfo, pkgName string, visited map[string]bool, deps []string) []string {
-	if visited[pkgName] {
-		return deps
-	}
-
-	visited[pkgName] = true
-	deps = append(deps, pkgName)
-
-	if pkg, ok := packages[pkgName]; ok {
-		for _, depName := range pkg.Depends {
-			deps = getAllDep(packages, depName, visited, deps)
-		}
-	}
-	return deps
-}
-
-func getPackageList() (map[string]PackageInfo, error) {
+func (ac *AlpineCollector) getPackageList() (map[string]PackageInfo, error) {
 	var data string
-	for _, arch := range Archlist {
-		url := fmt.Sprintf(URL, arch)
+	for _, arch := range ac.Archlist {
+		url := fmt.Sprintf(ac.URL, arch)
 		resp, err := http.Get(url)
 		if err != nil {
 			log.Fatal(err)
 		}
 		defer resp.Body.Close()
-		body, err := ioutil.ReadAll(resp.Body)
+		body, err := io.ReadAll(resp.Body)
 		if err != nil {
 			log.Fatal(err)
 		}
-		res, err := decompressGzip(body)
+		res, err := ac.decompressGzip(body)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -156,14 +164,14 @@ func getPackageList() (map[string]PackageInfo, error) {
 	return packageList, nil
 }
 
-func decompressGzip(data []byte) (string, error) {
+func (ac *AlpineCollector) decompressGzip(data []byte) (string, error) {
 	reader, err := gzip.NewReader(bytes.NewReader(data))
 	if err != nil {
 		return "", err
 	}
 	defer reader.Close()
 
-	uncompressedData, err := ioutil.ReadAll(reader)
+	uncompressedData, err := io.ReadAll(reader)
 	if err != nil {
 		return "", err
 	}
@@ -171,7 +179,7 @@ func decompressGzip(data []byte) (string, error) {
 	return string(uncompressedData), nil
 }
 
-func calculatePageRank(pkgInfoMap map[string]PackageInfo, iterations int, dampingFactor float64) map[string]float64 {
+func (ac *AlpineCollector) calculatePageRank(pkgInfoMap map[string]PackageInfo, iterations int, dampingFactor float64) map[string]float64 {
 	pageRank := make(map[string]float64)
 	numPackages := len(pkgInfoMap)
 
@@ -204,14 +212,14 @@ func calculatePageRank(pkgInfoMap map[string]PackageInfo, iterations int, dampin
 	return pageRank
 }
 
-func isUniqueViolation(err error) bool {
+func (ac *AlpineCollector) isUniqueViolation(err error) bool {
 	if pqErr, ok := err.(*pq.Error); ok {
 		return pqErr.Code == "23505"
 	}
 	return false
 }
 
-func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
+func (ac *AlpineCollector) updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
 	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return err
@@ -241,7 +249,7 @@ func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
 	return nil
 }
 
-func storeDependenciesInDatabase(pkgName string, dependencies []string) error {
+func (ac *AlpineCollector) storeDependenciesInDatabase(pkgName string, dependencies []string) error {
 	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return err
@@ -257,7 +265,7 @@ func storeDependenciesInDatabase(pkgName string, dependencies []string) error {
 	return nil
 }
 
-func generateDependencyGraph(pkgInfoMap map[string]PackageInfo, outputPath string) error {
+func (ac *AlpineCollector) generateDependencyGraph(pkgInfoMap map[string]PackageInfo, outputPath string) error {
 	file, err := os.Create(outputPath)
 	if err != nil {
 		return err

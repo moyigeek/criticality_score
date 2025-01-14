@@ -29,7 +29,17 @@ type DepInfo struct {
 	PageRank    float64
 }
 
-func storeDependenciesInDatabase(pkgName string, dependencies []DepInfo) error {
+type NixCollector struct {
+	RepoDir    string
+	PkgInfoMap map[string]DepInfo
+}
+
+func NewNixCollector() *NixCollector {
+	return &NixCollector{
+		PkgInfoMap: make(map[string]DepInfo),
+	}
+}
+func (NixCollector *NixCollector) storeDependenciesInDatabase(pkgName string, dependencies []DepInfo) error {
 	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return err
@@ -76,7 +86,7 @@ func attributePathToNixExpression(attributePath string) string {
 }
 
 // getAllNixPackages retrieves all Nix packages as DepInfo and their dependencies
-func GetAllNixPackages(poolsize int) (map[DepInfo][]DepInfo, error) {
+func (NixCollector *NixCollector) GetAllNixPackages(poolsize int) (map[DepInfo][]DepInfo, error) {
 	cmd := exec.Command("nix-env", "-qaP")
 	out, err := cmd.Output()
 	if err != nil {
@@ -130,7 +140,7 @@ func GetAllNixPackages(poolsize int) (map[DepInfo][]DepInfo, error) {
 					packageVersion = ""
 				}
 
-				packageInfo, err := GetNixPackageInfo(attributePath)
+				packageInfo, err := NixCollector.GetNixPackageInfo(attributePath)
 				if err != nil {
 					fmt.Printf("Error getting info for %s: %v\n", attributePath, err)
 					continue
@@ -144,7 +154,7 @@ func GetAllNixPackages(poolsize int) (map[DepInfo][]DepInfo, error) {
 					GitLink:     packageInfo.GitLink,
 				}
 
-				dependencies, err := GetNixPackageDependencies(attributePath)
+				dependencies, err := NixCollector.GetNixPackageDependencies(attributePath)
 				if err != nil {
 					fmt.Printf("Error getting dependencies for %s: %v\n", attributePath, err)
 					continue
@@ -161,7 +171,7 @@ func GetAllNixPackages(poolsize int) (map[DepInfo][]DepInfo, error) {
 }
 
 // getNixPackageInfo retrieves the package information using attribute path
-func GetNixPackageInfo(attributePath string) (DepInfo, error) {
+func (NixCollector *NixCollector) GetNixPackageInfo(attributePath string) (DepInfo, error) {
 	nixPkgExpression := attributePathToNixExpression(attributePath)
 
 	expr := fmt.Sprintf(`
@@ -213,12 +223,12 @@ in
 		GitLink:     result["gitLink"],
 	}
 
-	depInfo.GitLink = processGitLink(depInfo.GitLink)
+	depInfo.GitLink = NixCollector.processGitLink(depInfo.GitLink)
 
 	return depInfo, nil
 }
 
-func GetNixPackageDependencies(attributePath string) ([]DepInfo, error) {
+func (NixCollector *NixCollector) GetNixPackageDependencies(attributePath string) ([]DepInfo, error) {
 	nixPkgExpression := attributePathToNixExpression(attributePath)
 
 	exprTemplate := `
@@ -230,7 +240,7 @@ func GetNixPackageDependencies(attributePath string) ([]DepInfo, error) {
 	}
 	`
 	evalExpr := fmt.Sprintf(exprTemplate, nixPkgExpression)
-	results, err := nixEval(evalExpr)
+	results, err := NixCollector.nixEval(evalExpr)
 	if err != nil {
 		return nil, fmt.Errorf("Error getting dependencies for %s: %v", attributePath, err)
 	}
@@ -245,7 +255,7 @@ func GetNixPackageDependencies(attributePath string) ([]DepInfo, error) {
 }
 
 // nixEval executes a Nix expression and parses the JSON output into []DepInfo
-func nixEval(expr string) (map[string][]DepInfo, error) {
+func (NixCollector *NixCollector) nixEval(expr string) (map[string][]DepInfo, error) {
 	cmd := exec.Command("nix", "eval", "--impure", "--expr", expr, "--extra-experimental-features", "nix-command", "--json")
 	var out bytes.Buffer
 	cmd.Stdout = &out
@@ -277,7 +287,7 @@ func nixEval(expr string) (map[string][]DepInfo, error) {
 }
 
 // processGitLink processes the gitLink to ensure it points to a git repository
-func processGitLink(gitLink string) string {
+func (NixCollector *NixCollector) processGitLink(gitLink string) string {
 	if gitLink == "" {
 		return ""
 	}
@@ -302,7 +312,7 @@ func processGitLink(gitLink string) string {
 	return ""
 }
 
-func mergeDependencies(packages map[DepInfo][]DepInfo) map[DepInfo][]DepInfo {
+func (NixCollector *NixCollector) mergeDependencies(packages map[DepInfo][]DepInfo) map[DepInfo][]DepInfo {
 	mergedPackages := make(map[DepInfo][]DepInfo)
 
 	for pkg, deps := range packages {
@@ -362,7 +372,7 @@ func getAllDep(packages map[string][]string, pkgName string, visited map[string]
 	return deps
 }
 
-func calculatePageRank(packages map[DepInfo][]DepInfo, iterations int, dampingFactor float64) map[string]float64 {
+func (NixCollector *NixCollector) calculatePageRank(packages map[DepInfo][]DepInfo, iterations int, dampingFactor float64) map[string]float64 {
 	ranks := make(map[string]float64)
 	numPackages := float64(len(packages))
 
@@ -445,7 +455,7 @@ func LoadPackage() (map[DepInfo][]DepInfo, error) {
 	return packages, nil
 }
 
-func GetNixPackageList() ([]DepInfo, error) {
+func (NixCollector *NixCollector) GetNixPackageList() ([]DepInfo, error) {
 	cmd := exec.Command("nix-env", "-qaP")
 	out, err := cmd.Output()
 	if err != nil {
@@ -480,29 +490,17 @@ func reverseDependencies(deps map[DepInfo][]DepInfo) map[DepInfo][]DepInfo {
 	return reversed
 }
 
-func Nix(workerCount int, batchSize int) {
-	// packages, err := LoadPackage()
-	// if err != nil {
-	//     fmt.Printf("Error loading package list: %v\n", err)
-	//     return
-	// }
-
-	// if packages == nil {
-	packages, err := GetAllNixPackages(workerCount)
+func (NixCollector *NixCollector) Collect(workerCount int, batchSize int) {
+	packages, err := NixCollector.GetAllNixPackages(workerCount)
 	if err != nil {
 		fmt.Printf("Error retrieving Nix packages: %v\n", err)
 		return
 	}
 
-	//     if err := SavePackage(packages); err != nil {
-	//         fmt.Printf("Error saving package list: %v\n", err)
-	//         return
-	//     }
-	// }
 	fmt.Println("Nix package information retrieved successfully")
-	countDependencies(packages)
+	NixCollector.countDependencies(packages)
 
-	pageRanks := calculatePageRank(packages, 20, 0.85)
+	pageRanks := NixCollector.calculatePageRank(packages, 20, 0.85)
 
 	for pkgInfo := range packages {
 		pkgInfo.PageRank = pageRanks[pkgInfo.Name]
@@ -511,13 +509,13 @@ func Nix(workerCount int, batchSize int) {
 
 	fmt.Println("Nix package information updated successfully")
 
-	if err := batchupdateOrInsertNixPackages(packages, batchSize); err != nil {
+	if err := NixCollector.batchupdateOrInsertNixPackages(packages, batchSize); err != nil {
 		fmt.Printf("Error updating or inserting Nix packages into database: %v\n", err)
 		return
 	}
 
 	for pkg, pkgInfo := range packages {
-		if err := storeDependenciesInDatabase(pkg.Name, pkgInfo); err != nil {
+		if err := NixCollector.storeDependenciesInDatabase(pkg.Name, pkgInfo); err != nil {
 			if isUniqueViolation(err) {
 				continue
 			}
@@ -528,7 +526,7 @@ func Nix(workerCount int, batchSize int) {
 	fmt.Println("Successfully updated package information in the database")
 }
 
-func batchupdateOrInsertNixPackages(packages map[DepInfo][]DepInfo, batchSize int) error {
+func (NixCollector *NixCollector) batchupdateOrInsertNixPackages(packages map[DepInfo][]DepInfo, batchSize int) error {
 	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return fmt.Errorf("error connecting to database: %w", err)
@@ -665,7 +663,7 @@ func normalizeGitLink(link string) string {
 	return "" // 如果不符合任何协议，返回空字符串
 }
 
-func countDependencies(packages map[DepInfo][]DepInfo) {
+func (NixCollector *NixCollector) countDependencies(packages map[DepInfo][]DepInfo) {
 	countMap := make(map[string]int)
 	depMap := make(map[string][]string)
 

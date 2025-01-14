@@ -1,55 +1,63 @@
 package score
 
 import (
-	"database/sql"
-	"fmt"
 	"log"
 	"math"
-	"strings"
 	"time"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
+	"github.com/HUSTSecLab/criticality_score/pkg/storage/repository"
 )
 
 type LinkScore struct {
-	GitMetadata  GitMetadata
-	LangEcoScore LangEcoScore
-	DistScore    DistScore
-	Score        float64
+	GitId            int64
+	GitMetadataScore GitMetadataScore
+	LangEcoId        int64
+	LangEcoScore     LangEcoScore
+	DistId           int64
+	DistScore        DistScore
+	Score            float64
 }
 
 type GitMetadata struct {
-	StarCount        *int
-	ForkCount        *int
-	CreatedSince     *time.Time
-	UpdatedSince     *time.Time
-	ContributorCount *int
-	CommitFrequency  *float64
-	Org_Count        *int
+	Id               int64
+	CreatedSince     time.Time
+	UpdatedSince     time.Time
+	ContributorCount int
+	CommitFrequency  float64
+	Org_Count        int
+}
+
+type GitMetadataScore struct {
+	Id               int64
 	GitMetadataScore float64
 }
 
+type DistMetadata struct {
+	Id       int64
+	DepCount int
+	PageRank float64
+	Type     repository.DistType
+}
+
+type LangEcoMetadata struct {
+	Id       int64
+	Type     repository.LangEcosystemType
+	DepCount int
+}
+
 type DistScore struct {
+	Id           int64
 	DistImpact   float64
 	DistPageRank float64
 	DistScore    float64
 }
 
 type LangEcoScore struct {
+	Id              int64
 	LangEcoImpact   float64
 	LangEcoPageRank float64
 	LangEcoScore    float64
-}
-
-type PackageData struct {
-	Depends_count int
-	PageRank      float64
-}
-
-type UpdateData struct {
-	Link         string
-	DistroScores float64
-	Score        float64
 }
 
 // Define weights (αi) and max thresholds (Ti)
@@ -93,98 +101,98 @@ var thresholds = map[string]map[string]float64{
 	},
 }
 
-var PackageList = map[string]int{
-	"debian_packages":   0,
-	"arch_packages":     0,
-	"nix_packages":      0,
-	"homebrew_packages": 0,
-	"gentoo_packages":   0,
-	"alpine_packages":   0,
-	"fedora_packages":   0,
-	"ubuntu_packages":   0,
-	"deepin_packages":   0,
-	"aur_packages":      0,
-	"centos_packages":   0,
+var PackageList = map[repository.DistType]int{
+	repository.Debian:   0,
+	repository.Arch:     0,
+	repository.Nix:      0,
+	repository.Homebrew: 0,
+	repository.Gentoo:   0,
+	repository.Alpine:   0,
+	repository.Fedora:   0,
+	repository.Ubuntu:   0,
+	repository.Deepin:   0,
+	repository.Aur:      0,
+	repository.Centos:   0,
 }
 
-func CalculateDependencyRatio(link, packageType string, linkCount map[string]map[string]PackageData) (float64, error) {
-	if _, exist := linkCount[packageType][strings.ToLower(link)]; !exist {
-		return 0, nil
-	}
-	return float64(linkCount[packageType][strings.ToLower(link)].Depends_count) / float64(PackageList[packageType]), nil
+var PackageCounts = map[repository.LangEcosystemType]int{
+	repository.Npm:   3.37e6,
+	repository.Go:    1.29e6,
+	repository.Maven: 668e3,
+	repository.Pypi:  574e3,
+	repository.NuGet: 430e3,
+	repository.Cargo: 168e3,
 }
 
-func CalculaterepoCount(db *sql.DB) {
-	for repo := range PackageList {
-		var count int
-		err := db.QueryRow(fmt.Sprintf("SELECT COUNT(*) FROM %s", repo)).Scan(&count)
-		if err != nil {
-			fmt.Println("Error querying project type:", err)
-			return
-		}
-		PackageList[repo] = count
-	}
+func (langEcoMetadata *LangEcoMetadata) ParseLangEcoMetadata(langEcosystem *repository.LangEcosystem) {
+	langEcoMetadata.Id = *langEcosystem.ID
+	langEcoMetadata.Type = *langEcosystem.Type
+	langEcoMetadata.DepCount = *langEcosystem.DepCount
 }
 
-func GetProjectTypeFromDB(link string) string {
-	var projectType string
-	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
-	if err != nil {
-		fmt.Println("Error initializing database:", err)
-		return ""
-	}
-	defer db.Close()
-	err = db.QueryRow("SELECT ecosystem FROM git_metrics WHERE git_link = $1", link).Scan(&projectType)
-	if err != nil {
-		fmt.Println("Error querying project type:", err)
-		return ""
-	}
-
-	return projectType
+func (distMetadata *DistMetadata) PraseDistMetadata(distLink *repository.DistLinkInfo) {
+	distMetadata.Id = *distLink.ID
+	distMetadata.DepCount = *distLink.DepCount
+	distMetadata.PageRank = *distLink.PageRank
+	distMetadata.Type = *distLink.Type
 }
+
+func (distScore *DistScore) CalculateDistMerics(distMetadata *DistMetadata, distRepoCount int) {
+	distScore.Id = distMetadata.Id
+	distScore.DistImpact = float64(distMetadata.DepCount) / float64(distRepoCount)
+	distScore.DistPageRank = distMetadata.PageRank
+}
+
+func (langEcoScore *LangEcoScore) CalulateLangEcoMeritcs(langEcoMetadata *LangEcoMetadata, langRepoCount int) {
+	langEcoScore.Id = langEcoMetadata.Id
+	langEcoScore.LangEcoImpact = float64(langEcoMetadata.DepCount) / float64(langRepoCount)
+}
+
+func (gitMetadata *GitMetadata) ParseMetadata(gitMetic *repository.GitMetric) {
+	gitMetadata.Id = *gitMetic.ID
+	gitMetadata.CreatedSince = *gitMetic.CreatedSince
+	gitMetadata.UpdatedSince = *gitMetic.UpdatedSince
+	gitMetadata.ContributorCount = *gitMetic.ContributorCount
+	gitMetadata.CommitFrequency = *gitMetic.CommitFrequency
+	gitMetadata.Org_Count = *gitMetic.OrgCount
+}
+
 func (langEcoScore *LangEcoScore) CalculateLangEcoScore() {
+	langEcoScore.LangEcoScore = weights["lang_eco_score"]["lang_eco_impact"] * langEcoScore.LangEcoImpact
 }
 
 func NewLangEcoScore() *LangEcoScore {
 	return &LangEcoScore{}
 }
 
-func (data *GitMetadata) CalculateGitMetadataScore() {
+func (gitMetadataScore *GitMetadataScore) CalculateGitMetadataScore(gitMetadata *GitMetadata) {
 	var score float64
-	var createdSinceScore, updatedSinceScore, contributorCountScore, commitFrequencyScore, Org_CountScore float64
+	var createdSinceScore, updatedSinceScore, contributorCountScore, commitFrequencyScore, orgCountScore float64
 
-	if data.CreatedSince != nil {
-		monthsSinceCreation := time.Since(*data.CreatedSince).Hours() / (24 * 30)
-		normalized := math.Log(monthsSinceCreation+1) / math.Log(math.Max(monthsSinceCreation, thresholds["gitMetadataScore"]["created_since"])+1)
-		createdSinceScore = weights["gitMetadataScore"]["created_since"] * normalized
-		score += createdSinceScore
-	}
+	monthsSinceCreation := time.Since(gitMetadata.CreatedSince).Hours() / (24 * 30)
+	normalized := math.Log(monthsSinceCreation+1) / math.Log(math.Max(monthsSinceCreation, thresholds["gitMetadataScore"]["created_since"])+1)
+	createdSinceScore = weights["gitMetadataScore"]["created_since"] * normalized
+	score += createdSinceScore
 
-	if data.UpdatedSince != nil {
-		monthsSinceUpdate := time.Since(*data.UpdatedSince).Hours() / (24 * 30)
-		normalized := math.Log(monthsSinceUpdate+1) / math.Log(math.Max(monthsSinceUpdate, thresholds["gitMetadataScore"]["updated_since"])+1)
-		updatedSinceScore = weights["gitMetadataScore"]["updated_since"] * normalized
-		score += updatedSinceScore
-	}
+	monthsSinceUpdate := time.Since(gitMetadata.UpdatedSince).Hours() / (24 * 30)
+	normalized = math.Log(monthsSinceUpdate+1) / math.Log(math.Max(monthsSinceUpdate, thresholds["gitMetadataScore"]["updated_since"])+1)
+	updatedSinceScore = weights["gitMetadataScore"]["updated_since"] * normalized
+	score += updatedSinceScore
 
-	if data.ContributorCount != nil {
-		normalized := math.Log(float64(*data.ContributorCount)+1) / math.Log(math.Max(float64(*data.ContributorCount), thresholds["gitMetadataScore"]["contributor_count"])+1)
-		contributorCountScore = weights["gitMetadataScore"]["contributor_count"] * normalized
-		score += contributorCountScore
-	}
+	normalized = math.Log(float64(gitMetadata.ContributorCount)+1) / math.Log(math.Max(float64(gitMetadata.ContributorCount), thresholds["gitMetadataScore"]["contributor_count"])+1)
+	contributorCountScore = weights["gitMetadataScore"]["contributor_count"] * normalized
+	score += contributorCountScore
 
-	if data.CommitFrequency != nil {
-		normalized := math.Log(float64(*data.CommitFrequency)+1) / math.Log(math.Max(float64(*data.CommitFrequency), thresholds["gitMetadataScore"]["commit_frequency"])+1)
-		commitFrequencyScore = weights["gitMetadataScore"]["commit_frequency"] * normalized
-		score += commitFrequencyScore
-	}
+	normalized = math.Log(gitMetadata.CommitFrequency+1) / math.Log(math.Max(gitMetadata.CommitFrequency, thresholds["gitMetadataScore"]["commit_frequency"])+1)
+	commitFrequencyScore = weights["gitMetadataScore"]["commit_frequency"] * normalized
+	score += commitFrequencyScore
 
-	if data.Org_Count != nil {
-		normalized := math.Log(float64(*data.Org_Count)+1) / math.Log(math.Max(float64(*data.Org_Count), thresholds["gitMetadataScore"]["org_count"])+1)
-		Org_CountScore = weights["gitMetadataScore"]["org_count"] * normalized
-		score += Org_CountScore
-	}
-	data.GitMetadataScore = score
+	normalized = math.Log(float64(gitMetadata.Org_Count)+1) / math.Log(math.Max(float64(gitMetadata.Org_Count), thresholds["gitMetadataScore"]["org_count"])+1)
+	orgCountScore = weights["gitMetadataScore"]["org_count"] * normalized
+	score += orgCountScore
+
+	gitMetadataScore.GitMetadataScore = score
+	gitMetadataScore.Id = gitMetadata.Id
 }
 
 func NewGitMetadata() *GitMetadata {
@@ -197,7 +205,7 @@ func (distScore *DistScore) CalculateDistScore() {
 func (linkScore *LinkScore) CalculateScore() {
 	score := 0.0
 
-	score += weights["gitMetadataScore"]["gitMetadataScore"] * linkScore.GitMetadata.GitMetadataScore
+	score += weights["gitMetadataScore"]["gitMetadataScore"] * linkScore.GitMetadataScore.GitMetadataScore
 
 	score += weights["lang_eco_impact"]["lang_eco_impact"] * linkScore.LangEcoScore.LangEcoScore
 
@@ -214,190 +222,163 @@ func (linkScore *LinkScore) CalculateScore() {
 	linkScore.Score = score / totalnum
 }
 
-func NewLinkScore(gitMetadata *GitMetadata, distScore *DistScore, langEcoScore *LangEcoScore) *LinkScore {
+func NewGitMetadataScore() *GitMetadataScore {
+	return &GitMetadataScore{}
+}
+
+func NewLangEcoMetadata() *LangEcoMetadata {
+	return &LangEcoMetadata{}
+}
+
+func NewDistMetadata() *DistMetadata {
+	return &DistMetadata{}
+}
+
+func NewLinkScore(gitMetadataScore *GitMetadataScore, distScore *DistScore, langEcoScore *LangEcoScore) *LinkScore {
 	return &LinkScore{
-		LangEcoScore: *langEcoScore,
-		DistScore:    *distScore,
-		GitMetadata:  *gitMetadata,
+		LangEcoScore:     *langEcoScore,
+		DistScore:        *distScore,
+		GitMetadataScore: *gitMetadataScore,
 	}
-}
-
-func UpdateScore(db *sql.DB, packageScore map[string]*LinkScore, batchSize int, flag string) error {
-	updates := make([]UpdateData, 0, len(packageScore))
-
-	for link, score := range packageScore {
-		updates = append(updates, UpdateData{
-			Link:         link,
-			DistroScores: float64(score.DistScore.DistImpact),
-			Score:        float64(score.Score),
-		})
-	}
-
-	for i := 0; i < len(updates); i += batchSize {
-		end := i + batchSize
-		if end > len(updates) {
-			end = len(updates)
-		}
-		batch := updates[i:end]
-
-		query := "UPDATE git_metrics SET dist_impact = CASE git_link"
-		args := []interface{}{}
-		for j, update := range batch {
-			query += fmt.Sprintf(" WHEN $%d THEN $%d::double precision ", j*5+1, j*5+2)
-			args = append(args, update.Link, update.DistroScores, update.Score)
-		}
-		query += " END, scores = CASE git_link"
-		for j, _ := range batch {
-			query += fmt.Sprintf(" WHEN $%d THEN $%d::double precision ", j*5+1, j*5+3)
-		}
-		query += " END, lang_eco_impact = CASE git_link"
-		for j, _ := range batch {
-			query += fmt.Sprintf(" WHEN $%d THEN $%d::double precision ", j*5+1, j*5+4)
-		}
-		query += " END, dist_pagerank = CASE git_link"
-		for j, _ := range batch {
-			query += fmt.Sprintf(" WHEN $%d THEN $%d::double precision ", j*5+1, j*5+5)
-		}
-		query += " END WHERE git_link IN ("
-		for j, _ := range batch {
-			if j > 0 {
-				query += ", "
-			}
-			query += fmt.Sprintf("$%d", j*5+1)
-		}
-		query += ")"
-		result, err := db.Exec(query, args...)
-		if err != nil {
-			log.Printf("Error executing query: %v", err)
-			return fmt.Errorf("failed to update batch: %w", err)
-		}
-
-		rowsAffected, err := result.RowsAffected()
-		if err != nil {
-			log.Printf("Error retrieving rows affected: %v", err)
-			return fmt.Errorf("failed to retrieve affected rows: %w", err)
-		}
-		log.Printf("Batch [%d - %d]: %d rows updated", i, end, rowsAffected)
-	}
-
-	return nil
-}
-
-func (gitMetadata *GitMetadata) FetchGitMetadata(db *sql.DB, gitLink string) error {
-	row := db.QueryRow("SELECT created_since, updated_since, contributor_count, commit_frequency, org_count FROM git_metrics WHERE git_link = $1", gitLink)
-	err := row.Scan(&gitMetadata.CreatedSince, &gitMetadata.UpdatedSince, &gitMetadata.ContributorCount, &gitMetadata.CommitFrequency, &gitMetadata.Org_Count)
-	if err != nil {
-		log.Printf("Failed to fetch data for git link %s: %v", gitLink, err)
-		return err
-	}
-	return nil
-}
-
-func (distScore *DistScore) CalculateDistSubScore(link string, linkCount map[string]map[string]PackageData) {
-	dist_impact := 0.0
-	dist_pagerank := 0.0
-	for repo := range PackageList {
-		depRatio, err := CalculateDependencyRatio(link, repo, linkCount)
-		if err == nil {
-			dist_impact += depRatio
-		}
-		pageRank := linkCount[repo][link].PageRank
-		dist_pagerank += pageRank
-	}
-	dist_impact = LogNormalize(dist_impact, thresholds["distScore"]["dist_impact"])
-	dist_pagerank = LogNormalize(dist_pagerank, thresholds["distScore"]["dist_pagerank"])
-	distScore.DistImpact = dist_impact
-	distScore.DistPageRank = dist_pagerank
 }
 
 func NewDistScore() *DistScore {
 	return &DistScore{}
 }
 
-func FetchdLinkCount(repo string, db *sql.DB) map[string]PackageData {
-	rows, err := db.Query("SELECT git_link, depends_count, dist_pagerank FROM " + repo)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer rows.Close()
-
-	gitLinks := make(map[string]PackageData)
-	for rows.Next() {
-		var gitLink sql.NullString
-		var dependsCount int
-		var pageRank float64
-
-		err := rows.Scan(&gitLink, &dependsCount, &pageRank)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		if gitLink.Valid {
-			link := strings.ToLower(gitLink.String)
-			if !strings.HasSuffix(link, ".git") {
-				link += ".git"
-			}
-
-			if _, exist := gitLinks[link]; !exist {
-				gitLinks[link] = PackageData{
-					Depends_count: dependsCount,
-					PageRank:      pageRank,
-				}
-			}
-			data := gitLinks[link]
-			data.Depends_count += dependsCount
-			data.PageRank += pageRank
-			gitLinks[link] = data
-		}
-	}
-	return gitLinks
-}
-
-func FetchAllLinks(db *sql.DB) ([]string, error) {
-	rows, err := db.Query("SELECT git_link FROM git_metrics")
-	if err != nil {
-		return nil, err
-	}
-	defer rows.Close()
-
-	var links []string
-	for rows.Next() {
-		var link string
-		if err := rows.Scan(&link); err != nil {
-			return nil, err
-		}
-		links = append(links, link)
-	}
-	return links, nil
-}
-
-func FetchdLinkCountSingle(repo string, link string, db *sql.DB) PackageData {
-	url := fmt.Sprintf("SELECT git_link, depends_count, dist_pagerank FROM %s WHERE git_link = '%s'", repo, link)
-	rows, err := db.Query(url)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer rows.Close()
-
-	var data PackageData
-	for rows.Next() {
-		var gitLink sql.NullString
-		var dependsCount int
-		var pageRank float64
-
-		err := rows.Scan(&gitLink, &dependsCount, &pageRank)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		if gitLink.Valid {
-			data.Depends_count += dependsCount
-			data.PageRank += pageRank
-		}
-	}
-	return data
-}
-
 func LogNormalize(value, threshold float64) float64 {
 	return math.Log(value+1) / math.Log(math.Max(value, threshold)+1)
+}
+
+func FetchGitMetrics(ac storage.AppDatabaseContext) map[string]*GitMetadata {
+	repo := repository.NewGitMetricsRepository(ac)
+	linksIter, err := repo.Query()
+	linksMap := make(map[string]*GitMetadata)
+	if err != nil {
+		log.Fatalf("Failed to fetch git links: %v", err)
+	}
+	for link := range linksIter {
+		gitMetadata := NewGitMetadata()
+		gitMetadata.ParseMetadata(link)
+		linksMap[*link.GitLink] = gitMetadata
+	}
+	return linksMap
+}
+
+func FetchLangEcoMetadata(ac storage.AppDatabaseContext) map[string]*LangEcoMetadata {
+	repo := repository.NewLangEcoLinkRepository(ac)
+	LangEcoMap := make(map[string]*LangEcoMetadata)
+	linksIter, err := repo.Query()
+	if err != nil {
+		log.Fatalf("Failed to fetch lang eco links: %v", err)
+	}
+	for link := range linksIter {
+		langEcoMetadata := NewLangEcoMetadata()
+		langEcoMetadata.ParseLangEcoMetadata(link)
+		if exists, ok := LangEcoMap[*link.GitLink]; ok && exists != nil {
+			LangEcoMap[*link.GitLink].DepCount += langEcoMetadata.DepCount
+		} else {
+			LangEcoMap[*link.GitLink] = langEcoMetadata
+		}
+	}
+	return LangEcoMap
+}
+
+func FetchDistMetadata(ac storage.AppDatabaseContext) map[string]*DistMetadata {
+	repo := repository.NewDistDependencyRepository(ac)
+	distMap := make(map[string]*DistMetadata)
+	linksIter, err := repo.Query()
+	if err != nil {
+		log.Fatalf("Failed to fetch dist links: %v", err)
+	}
+	for link := range linksIter {
+		distMetadata := NewDistMetadata()
+		distMetadata.PraseDistMetadata(link)
+		if exists, ok := distMap[*link.GitLink]; ok && exists != nil {
+			distMap[*link.GitLink].DepCount += distMetadata.DepCount
+			distMap[*link.GitLink].PageRank += distMetadata.PageRank
+		} else {
+			distMap[*link.GitLink] = distMetadata
+		}
+	}
+	return distMap
+}
+func FetchGitLink(ac storage.AppDatabaseContext) []string {
+	gitLink := []string{}
+	return gitLink
+}
+
+func UpdatePackageList(ac storage.AppDatabaseContext) {
+	repo := repository.NewDistDependencyRepository(ac)
+	for distType := range PackageList {
+		count, err := repo.QueryDistCountByType(int(distType))
+		if err != nil {
+			log.Fatalf("Failed to fetch dist links: %v", err)
+		}
+		PackageList[distType] = count
+	}
+}
+
+func UpdateScore(ac storage.AppDatabaseContext, packageScore map[string]*LinkScore) {
+	repo := repository.NewScoreRepository(ac)
+	scores := []*repository.Score{}
+	for link, linkScore := range packageScore {
+		score := repository.Score{
+			Score:     &linkScore.Score,
+			GitLink:   &link,
+			DistID:    &linkScore.DistId,
+			GitID:     &linkScore.GitId,
+			DepsDevID: &linkScore.LangEcoId,
+			DistScore: &linkScore.DistScore.DistScore,
+			DevScore:  &linkScore.LangEcoScore.LangEcoScore,
+			GitScore:  &linkScore.GitMetadataScore.GitMetadataScore,
+		}
+		scores = append(scores, &score)
+	}
+	if err := repo.BatchInsertOrUpdate(scores); err != nil {
+		log.Fatalf("Failed to update score: %v", err)
+	}
+}
+
+func FetchDistMetadataSingle(ac storage.AppDatabaseContext, link string) map[string]*DistMetadata {
+	repo := repository.NewDistDependencyRepository(ac)
+	linksMap := []*repository.DistLinkInfo{}
+	distMap := make(map[string]*DistMetadata)
+	for PackageType := range PackageList {
+		distInfo, err := repo.GetByLink(link, int(PackageType))
+		if err != nil {
+			log.Fatalf("Failed to fetch dist links: %v", err)
+		}
+		linksMap = append(linksMap, distInfo)
+	}
+	for _, link := range linksMap {
+		distMetadata := NewDistMetadata()
+		distMetadata.PraseDistMetadata(link)
+		if exists, ok := distMap[*link.GitLink]; ok && exists != nil {
+			distMap[*link.GitLink].DepCount += distMetadata.DepCount
+			distMap[*link.GitLink].PageRank += distMetadata.PageRank
+		} else {
+			distMap[*link.GitLink] = distMetadata
+		}
+	}
+	return distMap
+}
+
+func FetchLangEcoMetadataSingle(ac storage.AppDatabaseContext, link string) map[string]*LangEcoMetadata {
+	repo := repository.NewLangEcoLinkRepository(ac)
+	langEcoMap := make(map[string]*LangEcoMetadata)
+	linksIter, err := repo.QueryByLink(link)
+	if err != nil {
+		log.Fatalf("Failed to fetch lang eco links: %v", err)
+	}
+	for link := range linksIter {
+		langEcoMetadata := NewLangEcoMetadata()
+		langEcoMetadata.ParseLangEcoMetadata(link)
+		if exists, ok := langEcoMap[*link.GitLink]; ok && exists != nil {
+			langEcoMap[*link.GitLink].DepCount += langEcoMetadata.DepCount
+		} else {
+			langEcoMap[*link.GitLink] = langEcoMetadata
+		}
+	}
+	return langEcoMap
 }

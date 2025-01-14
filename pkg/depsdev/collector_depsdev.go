@@ -273,8 +273,6 @@ func Depsdev(batchSize int, workerPoolSize int, calculatePageRankFlag bool) {
 					return
 				}
 
-				mu.Lock()
-
 				var ltype repository.LangEcosystemType
 				switch strings.ToLower(system) {
 				case "cargo":
@@ -296,8 +294,10 @@ func Depsdev(batchSize int, workerPoolSize int, calculatePageRankFlag bool) {
 					ltype:   ltype,
 				}
 
+				mu.Lock()
+
 				if _, exists := langEco[key]; !exists {
-					langEco[key] = 0
+					langEco[key] = pkgDepMap[system][pkgName]
 				} else {
 					langEco[key] += pkgDepMap[system][pkgName]
 				}

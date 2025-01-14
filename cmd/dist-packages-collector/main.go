@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/alpine"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/archlinux"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/aur"
@@ -13,7 +15,6 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/nix"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/ubuntu"
 	"github.com/HUSTSecLab/criticality_score/pkg/config"
-	"github.com/HUSTSecLab/criticality_score/pkg/logger"
 	"github.com/spf13/pflag"
 )
 
@@ -22,6 +23,8 @@ var (
 	flagGenDot  = pflag.String("gendot", "", "output dot file")
 	workerCount = pflag.Int("worker", 1, "number of workers")
 	batchSize   = pflag.Int("batch", 1000, "batch size")
+	downloadDir = pflag.String("downloadDir", "./download", "download directory")
+	extractDir  = pflag.String("extractDir", "./extract", "extract directory")
 )
 
 func main() {
@@ -30,29 +33,29 @@ func main() {
 
 	switch *flagType {
 	case "archlinux":
-		archlinux.Archlinux(*flagGenDot)
+		archlinux.NewArchLinux(*downloadDir, *extractDir).Collect(*flagGenDot)
 	case "debian":
-		debian.Debian(*flagGenDot)
+		debian.NewDebianCollector().Collect(*flagGenDot)
 	case "deepin":
-		deepin.Deepin(*flagGenDot)
+		deepin.NewDeepinCollector().Collect(*flagGenDot)
 	case "ubuntu":
-		ubuntu.Ubuntu(*flagGenDot)
+		ubuntu.NewUbuntuCollector().Collect(*flagGenDot)
 	case "nix":
 		if *flagGenDot == "" {
-			logger.Errorf("Nix not support gendot")
+			log.Fatal("Nix not support gendot")
 		}
-		nix.Nix(*workerCount, *batchSize)
+		nix.NewNixCollector().Collect(*workerCount, *batchSize)
 	case "homebrew":
-		homebrew.Homebrew(*flagGenDot)
+		homebrew.NewHomebrewCollector().Collect(*flagGenDot)
 	case "gentoo":
-		gentoo.Gentoo(*flagGenDot)
+		gentoo.NewGentooCollector().Collect(*flagGenDot)
 	case "fedora":
-		fedora.Fedora(*flagGenDot)
+		fedora.NewFedoraCollector().Collect(*flagGenDot)
 	case "centos":
-		centos.Centos(*flagGenDot)
+		centos.NewCentosCollector().Collect(*flagGenDot)
 	case "alpine":
-		alpine.Alpine(*flagGenDot)
+		alpine.NewAlpineCollector().Collect(*flagGenDot)
 	case "aur":
-		aur.Aur(*flagGenDot)
+		aur.NewAurCollector().Collect(*flagGenDot)
 	}
 }

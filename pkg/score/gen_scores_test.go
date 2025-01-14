@@ -3,31 +3,7 @@ package score
 import (
 	"math"
 	"testing"
-	"time"
 )
-
-func TestCalculateGitMetadataScore(t *testing.T) {
-	createdSince := time.Now().AddDate(-1, 0, 0)
-	updatedSince := time.Now().AddDate(0, -6, 0)
-	contributorCount := 100
-	commitFrequency := 50.0
-	orgCount := 10
-
-	gitMetadata := &GitMetadata{
-		CreatedSince:     &createdSince,
-		UpdatedSince:     &updatedSince,
-		ContributorCount: &contributorCount,
-		CommitFrequency:  &commitFrequency,
-		Org_Count:        &orgCount,
-	}
-
-	expectedScore := 1.8338566950193282
-	gitMetadata.CalculateGitMetadataScore()
-
-	if gitMetadata.GitMetadataScore != expectedScore {
-		t.Errorf("Expected score %v, but got %v", expectedScore, gitMetadata.GitMetadataScore)
-	}
-}
 
 func TestCalculateDistScore(t *testing.T) {
 	distScore := &DistScore{

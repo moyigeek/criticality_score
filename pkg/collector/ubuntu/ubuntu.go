@@ -26,7 +26,25 @@ type DepInfo struct {
 	PageRank    float64
 }
 
-func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
+type PackageInfo struct {
+	DependsCount int
+	Description  string
+	Homepage     string
+	Version      string
+	PageRank     float64
+}
+
+type UbuntuCollector struct {
+	packages map[string]map[string]interface{}
+}
+
+func NewUbuntuCollector() *UbuntuCollector {
+	return &UbuntuCollector{
+		packages: make(map[string]map[string]interface{}),
+	}
+}
+
+func (uc *UbuntuCollector) updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
 	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return err
@@ -56,7 +74,7 @@ func updateOrInsertDatabase(pkgInfoMap map[string]PackageInfo) error {
 	return nil
 }
 
-func storeDependenciesInDatabase(pkgName string, dependencies []DepInfo) error {
+func (uc *UbuntuCollector) storeDependenciesInDatabase(pkgName string, dependencies []DepInfo) error {
 	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
 	if err != nil {
 		return err
@@ -72,7 +90,7 @@ func storeDependenciesInDatabase(pkgName string, dependencies []DepInfo) error {
 	return nil
 }
 
-func getMirrorFile(path string) []byte {
+func (uc *UbuntuCollector) getMirrorFile(path string) []byte {
 	resp, _ := http.Get("https://mirrors.hust.edu.cn/ubuntu/" + path)
 	defer resp.Body.Close()
 
@@ -80,8 +98,8 @@ func getMirrorFile(path string) []byte {
 	return body
 }
 
-func getDecompressedFile(path string) string {
-	file := getMirrorFile(path)
+func (uc *UbuntuCollector) getDecompressedFile(path string) string {
+	file := uc.getMirrorFile(path)
 	reader, _ := gzip.NewReader(strings.NewReader(string(file)))
 	defer reader.Close()
 
@@ -89,19 +107,19 @@ func getDecompressedFile(path string) string {
 	return string(decompressed)
 }
 
-func getPackageList() string {
+func (uc *UbuntuCollector) getPackageList() string {
 	var content string
-	content = getDecompressedFile("dists/jammy/main/binary-amd64/Packages.gz")
-	content += getDecompressedFile("dists/jammy/universe/binary-amd64/Packages.gz")
-	content += getDecompressedFile("dists/jammy/multiverse/binary-amd64/Packages.gz")
-	content += getDecompressedFile("dists/jammy/restricted/binary-amd64/Packages.gz")
+	content = uc.getDecompressedFile("dists/jammy/main/binary-amd64/Packages.gz")
+	content += uc.getDecompressedFile("dists/jammy/universe/binary-amd64/Packages.gz")
+	content += uc.getDecompressedFile("dists/jammy/multiverse/binary-amd64/Packages.gz")
+	content += uc.getDecompressedFile("dists/jammy/restricted/binary-amd64/Packages.gz")
 	return content
 }
 
-func parseList() map[string]map[string]interface{} {
-	content := getPackageList()
+func (uc *UbuntuCollector) parseList() {
+	content := uc.getPackageList()
 	lists := strings.Split(content, "\n\n")
-	packages := make(map[string]map[string]interface{})
+	uc.packages = make(map[string]map[string]interface{})
 
 	for _, packageStr := range lists {
 		if strings.TrimSpace(packageStr) == "" {
@@ -133,21 +151,19 @@ func parseList() map[string]map[string]interface{} {
 			depList := strings.Split(depends, ",")
 			var depStrings []interface{}
 			for _, dep := range depList {
-				depInfo := toDep(strings.TrimSpace(dep), packageStr)
+				depInfo := uc.toDep(strings.TrimSpace(dep), packageStr)
 				depStrings = append(depStrings, depInfo)
 			}
 			pkg["Depends"] = depStrings
 		}
 
 		if packageName, ok := pkg["Package"].(string); ok {
-			packages[packageName] = pkg
+			uc.packages[packageName] = pkg
 		}
 	}
-
-	return packages
 }
 
-func toDep(dep string, rawContent string) DepInfo {
+func (uc *UbuntuCollector) toDep(dep string, rawContent string) DepInfo {
 	re := regexp.MustCompile(`^(.+?)(:.+?)?(\s\((.+)\))?(\s\|.+)?$`)
 	matches := re.FindStringSubmatch(dep)
 
@@ -177,7 +193,7 @@ func toDep(dep string, rawContent string) DepInfo {
 	return depInfo
 }
 
-func generateDependencyGraph(packages map[string]map[string]interface{}, outputPath string) error {
+func (uc *UbuntuCollector) generateDependencyGraph(outputPath string) error {
 	file, err := os.Create(outputPath)
 	if err != nil {
 		return err
@@ -190,14 +206,14 @@ func generateDependencyGraph(packages map[string]map[string]interface{}, outputP
 	packageIndices := make(map[string]int)
 	index := 0
 
-	for pkgName, pkgInfo := range packages {
+	for pkgName, pkgInfo := range uc.packages {
 		packageIndices[pkgName] = index
 		label := fmt.Sprintf("%s@%s", pkgName, pkgInfo["Version"].(string))
 		writer.WriteString(fmt.Sprintf("  %d [label=\"%s\"];\n", index, label))
 		index++
 	}
 
-	for pkgName, pkgInfo := range packages {
+	for pkgName, pkgInfo := range uc.packages {
 		pkgIndex := packageIndices[pkgName]
 		if depends, ok := pkgInfo["Depends"].([]interface{}); ok {
 			for _, depInterface := range depends {
@@ -215,15 +231,15 @@ func generateDependencyGraph(packages map[string]map[string]interface{}, outputP
 	return nil
 }
 
-func getAllDep(packages map[string]map[string]interface{}, pkgName string, deps []string) []string {
+func (uc *UbuntuCollector) getAllDep(pkgName string, deps []string) []string {
 	deps = append(deps, pkgName)
-	if pkg, ok := packages[pkgName]; ok {
+	if pkg, ok := uc.packages[pkgName]; ok {
 		if depends, ok := pkg["Depends"].([]interface{}); ok {
 			for _, depInterface := range depends {
 				if depMap, ok := depInterface.(DepInfo); ok {
 					pkgname := depMap.Name
 					if !contains(deps, pkgname) {
-						deps = getAllDep(packages, pkgname, deps)
+						deps = uc.getAllDep(pkgname, deps)
 					}
 				}
 			}
@@ -232,24 +248,24 @@ func getAllDep(packages map[string]map[string]interface{}, pkgName string, deps 
 	return deps
 }
 
-func rankPage(packages map[string]map[string]interface{}, maxIterations int, dampingFactor float64) map[string]float64 {
+func (uc *UbuntuCollector) rankPage(maxIterations int, dampingFactor float64) map[string]float64 {
 	rank := make(map[string]float64)
-	N := len(packages)
-	for pkgName := range packages {
+	N := len(uc.packages)
+	for pkgName := range uc.packages {
 		rank[pkgName] = 1.0 / float64(N)
 	}
 
 	for i := 0; i < maxIterations; i++ {
 		newRank := make(map[string]float64)
-		for pkgName := range packages {
+		for pkgName := range uc.packages {
 			newRank[pkgName] = (1 - dampingFactor) / float64(N)
 		}
 
-		for pkgName, pkgInfo := range packages {
+		for pkgName, pkgInfo := range uc.packages {
 			if depends, ok := pkgInfo["Depends"].([]interface{}); ok {
 				for _, depInterface := range depends {
 					if depInfo, ok := depInterface.(DepInfo); ok {
-						if _, ok := packages[depInfo.Name]; ok {
+						if _, ok := uc.packages[depInfo.Name]; ok {
 							newRank[depInfo.Name] += dampingFactor * rank[pkgName] / float64(len(depends))
 						}
 					}
@@ -261,6 +277,7 @@ func rankPage(packages map[string]map[string]interface{}, maxIterations int, dam
 	}
 	return rank
 }
+
 func contains(slice []string, item string) bool {
 	for _, a := range slice {
 		if a == item {
@@ -270,21 +287,21 @@ func contains(slice []string, item string) bool {
 	return false
 }
 
-func Ubuntu(outputPath string) {
+func (uc *UbuntuCollector) Collect(outputPath string) {
 	fmt.Println("Getting package list...")
-	packages := parseList()
-	fmt.Printf("Done, total: %d packages.\n", len(packages))
+	uc.parseList()
+	fmt.Printf("Done, total: %d packages.\n", len(uc.packages))
 	fmt.Println("Building dependencies graph...")
 
-	keys := make([]string, 0, len(packages))
-	for k := range packages {
+	keys := make([]string, 0, len(uc.packages))
+	for k := range uc.packages {
 		keys = append(keys, k)
 	}
 	sort.Strings(keys)
 
 	depMap := make(map[string][]string)
 	for _, pkgName := range keys {
-		deps := getAllDep(packages, pkgName, []string{})
+		deps := uc.getAllDep(pkgName, []string{})
 		depMap[pkgName] = deps
 	}
 	fmt.Println("Calculating dependencies count...")
@@ -295,11 +312,11 @@ func Ubuntu(outputPath string) {
 		}
 	}
 
-	pagerank := rankPage(packages, 20, 0.85)
+	pagerank := uc.rankPage(20, 0.85)
 
 	pkgInfoMap := make(map[string]PackageInfo)
 
-	for pkgName, pkgInfo := range packages {
+	for pkgName, pkgInfo := range uc.packages {
 		depCount := countMap[pkgName]
 
 		description, ok := pkgInfo["Description"].(string)
@@ -328,12 +345,12 @@ func Ubuntu(outputPath string) {
 		}
 	}
 
-	err := updateOrInsertDatabase(pkgInfoMap)
+	err := uc.updateOrInsertDatabase(pkgInfoMap)
 	if err != nil {
 		fmt.Printf("Error updating database: %v\n", err)
 		return
 	}
-	for _, pkgInfo := range packages {
+	for _, pkgInfo := range uc.packages {
 		if packageName, ok := pkgInfo["Package"].(string); ok {
 			if depends, ok := pkgInfo["Depends"].([]interface{}); ok {
 				dependencies := make([]DepInfo, len(depends))
@@ -342,7 +359,7 @@ func Ubuntu(outputPath string) {
 						dependencies[i] = depInfo
 					}
 				}
-				if err := storeDependenciesInDatabase(packageName, dependencies); err != nil {
+				if err := uc.storeDependenciesInDatabase(packageName, dependencies); err != nil {
 					if isUniqueViolation(err) {
 						continue
 					}
@@ -355,21 +372,13 @@ func Ubuntu(outputPath string) {
 	fmt.Println("Database updated successfully.")
 
 	if outputPath != "" {
-		err := generateDependencyGraph(packages, outputPath)
+		err := uc.generateDependencyGraph(outputPath)
 		if err != nil {
 			fmt.Printf("Error generating dependency graph: %v\n", err)
 			return
 		}
 		fmt.Println("Dependency graph generated successfully.")
 	}
-}
-
-type PackageInfo struct {
-	DependsCount int
-	Description  string
-	Homepage     string
-	Version      string
-	PageRank     float64
 }
 
 func isUniqueViolation(err error) bool {

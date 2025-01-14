@@ -13,6 +13,7 @@ type LangEcoLinkRepository interface {
 	/** QUERY **/
 	QueryByLink(link string) (iter.Seq[*LangEcosystem], error)
 	GetByLinkAndType(link string, typ LangEcosystemType) (*LangEcosystem, error)
+	Query() (iter.Seq[*LangEcosystem], error) // Get all LangEcosystem Information in order to calculate the score.
 
 	/** INSERT/UPDATE **/
 	// NOTE: update_time will be updated automatically
@@ -53,6 +54,11 @@ func NewLangEcoLinkRepository(appDb storage.AppDatabaseContext) LangEcoLinkRepos
 	return &langEcoLinkRepository{
 		appDb: appDb,
 	}
+}
+
+// Query implements LangEcoLinkRepository.
+func (l *langEcoLinkRepository) Query() (iter.Seq[*LangEcosystem], error) {
+	panic("unimplemented")
 }
 
 // BatchInsertOrUpdate implements LangEcoLinkRepository.
