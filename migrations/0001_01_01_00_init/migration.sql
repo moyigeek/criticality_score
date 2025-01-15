@@ -11,9 +11,6 @@ create table if not exists arch_packages
     link_confidence real
 );
 
-alter table arch_packages
-    owner to postgres;
-
 create table if not exists debian_packages
 (
     package         text not null
@@ -27,9 +24,6 @@ create table if not exists debian_packages
     link_confidence real
 );
 
-alter table debian_packages
-    owner to postgres;
-
 create table if not exists git_metrics
 (
     git_link          varchar(255)                   not null
@@ -41,7 +35,7 @@ create table if not exists git_metrics
     contributor_count integer          default 0,
     commit_frequency  double precision default 0,
     depsdev_count     integer          default 0,
-    deps_distro       double precision default 0,
+    dist_impact       double precision default 0,
     scores            double precision default 0,
     org_count         integer          default 0,
     _name             varchar(255),
@@ -51,11 +45,10 @@ create table if not exists git_metrics
     license           varchar(255),
     language          varchar(255),
     clone_valid       boolean          default false not null,
-    depsdev_pagerank  double precision default 0
+    lang_eco_pagerank double precision default 0,
+    lang_eco_impact   double precision default 0,
+    dist_pagerank     double precision default 0
 );
-
-alter table git_metrics
-    owner to postgres;
 
 create table if not exists nix_packages
 (
@@ -71,9 +64,6 @@ create table if not exists nix_packages
     link_confidence real
 );
 
-alter table nix_packages
-    owner to postgres;
-
 create table if not exists homebrew_packages
 (
     package         text not null
@@ -87,17 +77,11 @@ create table if not exists homebrew_packages
     link_confidence real
 );
 
-alter table homebrew_packages
-    owner to postgres;
-
 create table if not exists github_links
 (
     git_link text not null
         primary key
 );
-
-alter table github_links
-    owner to postgres;
 
 create table if not exists arch_relationships
 (
@@ -107,9 +91,6 @@ create table if not exists arch_relationships
     primary key (frompackage, topackage)
 );
 
-alter table arch_relationships
-    owner to postgres;
-
 create table if not exists debian_relationships
 (
     frompackage varchar(255) not null
@@ -117,9 +98,6 @@ create table if not exists debian_relationships
     topackage   varchar(255) not null,
     primary key (frompackage, topackage)
 );
-
-alter table debian_relationships
-    owner to postgres;
 
 create table if not exists gentoo_packages
 (
@@ -135,9 +113,6 @@ create table if not exists gentoo_packages
     page_rank       double precision default 0
 );
 
-alter table gentoo_packages
-    owner to postgres;
-
 create table if not exists gentoo_relationships
 (
     frompackage varchar(255) not null
@@ -145,9 +120,6 @@ create table if not exists gentoo_relationships
     topackage   varchar(255) not null,
     primary key (frompackage, topackage)
 );
-
-alter table gentoo_relationships
-    owner to postgres;
 
 create table if not exists homebrew_relationships
 (
@@ -157,9 +129,6 @@ create table if not exists homebrew_relationships
     primary key (frompackage, topackage)
 );
 
-alter table homebrew_relationships
-    owner to postgres;
-
 create table if not exists nix_relationships
 (
     frompackage varchar(255) not null
@@ -167,9 +136,6 @@ create table if not exists nix_relationships
     topackage   varchar(255) not null,
     primary key (frompackage, topackage)
 );
-
-alter table nix_relationships
-    owner to postgres;
 
 create table if not exists git_repositories
 (
@@ -181,18 +147,12 @@ create table if not exists git_repositories
     domestic_confidence boolean
 );
 
-alter table git_repositories
-    owner to postgres;
-
 create table if not exists git_relationships
 (
     fromgitlink varchar(255) not null,
     togitlink   varchar(255) not null,
     primary key (fromgitlink, togitlink)
 );
-
-alter table git_relationships
-    owner to postgres;
 
 create table if not exists git_metrics_prod
 (
@@ -217,9 +177,6 @@ create table if not exists git_metrics_prod
     language          varchar(255)
 );
 
-alter table git_metrics_prod
-    owner to postgres;
-
 create table if not exists deepin_packages
 (
     package         text not null
@@ -231,11 +188,10 @@ create table if not exists deepin_packages
     depends_count   bigint           default 1,
     git_link        text,
     page_rank       double precision default 0,
-    link_confidence real
+    link_confidence real,
+    default_install integer          default 0,
+    pkg_scores      double precision default 0
 );
-
-alter table deepin_packages
-    owner to postgres;
 
 create table if not exists deepin_relationships
 (
@@ -245,9 +201,6 @@ create table if not exists deepin_relationships
     constraint debian_relationships_copy1_pkey
         primary key (frompackage, topackage)
 );
-
-alter table deepin_relationships
-    owner to postgres;
 
 create table if not exists ubuntu_packages
 (
@@ -263,9 +216,6 @@ create table if not exists ubuntu_packages
     link_confidence real
 );
 
-alter table ubuntu_packages
-    owner to postgres;
-
 create table if not exists ubuntu_relationships
 (
     frompackage varchar(255) not null
@@ -275,24 +225,19 @@ create table if not exists ubuntu_relationships
         primary key (frompackage, topackage)
 );
 
-alter table ubuntu_relationships
-    owner to postgres;
-
 create table if not exists fedora_packages
 (
-    package       text not null
+    package         text not null
         constraint homebrew_packages_copy1_pkey1
             primary key,
-    homepage      text,
-    description   text,
-    depends_count bigint           default 1,
-    git_link      text,
-    page_rank     double precision default 0,
-    version       text
+    homepage        text,
+    description     text,
+    depends_count   bigint           default 1,
+    git_link        text,
+    page_rank       double precision default 0,
+    version         text,
+    link_confidence real
 );
-
-alter table fedora_packages
-    owner to postgres;
 
 create table if not exists fedora_relationships
 (
@@ -302,9 +247,6 @@ create table if not exists fedora_relationships
     constraint homebrew_relationships_copy1_pkey
         primary key (frompackage, topackage)
 );
-
-alter table fedora_relationships
-    owner to postgres;
 
 create table if not exists centos_packages
 (
@@ -320,9 +262,6 @@ create table if not exists centos_packages
     link_confidence real
 );
 
-alter table centos_packages
-    owner to postgres;
-
 create table if not exists centos_relationships
 (
     frompackage varchar(255) not null
@@ -331,9 +270,6 @@ create table if not exists centos_relationships
     constraint fedora_relationships_copy1_pkey
         primary key (frompackage, topackage)
 );
-
-alter table centos_relationships
-    owner to postgres;
 
 create table if not exists git_mirror
 (
@@ -344,24 +280,19 @@ create table if not exists git_mirror
     others   varchar(255)
 );
 
-alter table git_mirror
-    owner to postgres;
-
 create table if not exists alpine_packages
 (
-    package       text not null
+    package         text not null
         constraint fedora_packages_copy1_pkey1
             primary key,
-    homepage      text,
-    description   text,
-    depends_count bigint           default 1,
-    git_link      text,
-    page_rank     double precision default 0,
-    version       text
+    homepage        text,
+    description     text,
+    depends_count   bigint           default 1,
+    git_link        text,
+    page_rank       double precision default 0,
+    version         text,
+    link_confidence real
 );
-
-alter table alpine_packages
-    owner to postgres;
 
 create table if not exists alpine_relationships
 (
@@ -372,24 +303,19 @@ create table if not exists alpine_relationships
         primary key (frompackage, topackage)
 );
 
-alter table alpine_relationships
-    owner to postgres;
-
 create table if not exists aur_packages
 (
-    package       text not null
+    package         text not null
         constraint alpine_packages_copy1_pkey
             primary key,
-    homepage      text,
-    description   text,
-    depends_count bigint           default 1,
-    git_link      text,
-    page_rank     double precision default 0,
-    version       text
+    homepage        text,
+    description     text,
+    depends_count   bigint           default 1,
+    git_link        text,
+    page_rank       double precision default 0,
+    version         text,
+    link_confidence real
 );
-
-alter table aur_packages
-    owner to postgres;
 
 create table if not exists aur_relationships
 (
@@ -400,9 +326,6 @@ create table if not exists aur_relationships
         primary key (frompackage, topackage)
 );
 
-alter table aur_relationships
-    owner to postgres;
-
 create table if not exists _migrations_history
 (
     id      integer generated always as identity,
@@ -411,5 +334,48 @@ create table if not exists _migrations_history
     version varchar
 );
 
-alter table _migrations_history
-    owner to postgres;
+create view draw_arch(frompackage, topackage, fromdepends, todepends) as
+SELECT ar.frompackage,
+       ar.topackage,
+       ap1.depends_count AS fromdepends,
+       ap2.depends_count AS todepends
+FROM arch_relationships ar
+         JOIN arch_packages ap1 ON ar.frompackage::text = ap1.package
+         JOIN arch_packages ap2 ON ar.topackage::text = ap2.package;
+
+create view draw_debian(frompackage, topackage, fromdepends, todepends) as
+SELECT ar.frompackage,
+       ar.topackage,
+       dp1.depends_count AS fromdepends,
+       dp2.depends_count AS todepends
+FROM debian_relationships ar
+         JOIN debian_packages dp1 ON ar.frompackage::text = dp1.package
+         JOIN debian_packages dp2 ON ar.topackage::text = dp2.package;
+
+create view draw_gentoo(frompackage, topackage, fromdepends, todepends) as
+SELECT ar.frompackage,
+       ar.topackage,
+       gp1.depends_count AS fromdepends,
+       gp2.depends_count AS todepends
+FROM gentoo_relationships ar
+         JOIN gentoo_packages gp1 ON ar.frompackage::text = gp1.package
+         JOIN gentoo_packages gp2 ON ar.topackage::text = gp2.package;
+
+create view draw_homebrew(frompackage, topackage, fromdepends, todepends) as
+SELECT ar.frompackage,
+       ar.topackage,
+       hp1.depends_count AS fromdepends,
+       hp2.depends_count AS todepends
+FROM homebrew_relationships ar
+         JOIN homebrew_packages hp1 ON ar.frompackage::text = hp1.package
+         JOIN homebrew_packages hp2 ON ar.topackage::text = hp2.package;
+
+create view draw_nix(frompackage, topackage, fromdepends, todepends) as
+SELECT ar.frompackage,
+       ar.topackage,
+       np1.depends_count AS fromdepends,
+       np2.depends_count AS todepends
+FROM nix_relationships ar
+         JOIN nix_packages np1 ON ar.frompackage::text = np1.package
+         JOIN nix_packages np2 ON ar.topackage::text = np2.package;
+
