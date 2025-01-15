@@ -27,13 +27,12 @@ type GitMetricsRepository interface {
 type GitMetric struct {
 	ID               *int64 `generated:"true"`
 	GitLink          *string
-	EcoSystem        *string
 	CreatedSince     *time.Time
 	UpdatedSince     *time.Time
 	ContributorCount *int
 	CommitFrequency  *float64
 	OrgCount         *int
-	License          *string
+	License          *pq.StringArray
 	Language         *pq.StringArray
 	CloneValid       *bool
 	UpdateTime       *time.Time

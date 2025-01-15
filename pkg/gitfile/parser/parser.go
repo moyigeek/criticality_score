@@ -14,8 +14,6 @@ const (
 	UNKNOWN_NAME       string  = ""
 	UNKNOWN_OWNER      string  = ""
 	UNKNOWN_SOURCE     string  = ""
-	UNKNOWN_LICENSE    string  = ""
-	UNKNOWN_LANGUAGES  string  = ""
 	UNKNOWN_ECOSYSTEMS string  = ""
 	UNKNOWN_COUNT      int     = 0
 	UNKNOWN_FREQUENCY  float64 = 0

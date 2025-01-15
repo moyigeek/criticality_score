@@ -11,7 +11,10 @@ import (
 	url "github.com/HUSTSecLab/criticality_score/pkg/gitfile/parser/url"
 	"github.com/HUSTSecLab/criticality_score/pkg/logger"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
+	"github.com/HUSTSecLab/criticality_score/pkg/storage/repository"
 	"github.com/bytedance/gopkg/util/gopool"
+	"github.com/lib/pq"
+	"github.com/samber/lo"
 	"github.com/spf13/pflag"
 )
 
@@ -59,7 +62,9 @@ func main() {
 	logger.Infof("%d urls in total", len(urls))
 	wg.Add(len(urls))
 
-	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
+	ctx := storage.GetDefaultAppDatabaseContext()
+	gmr := repository.NewGitMetricsRepository(ctx)
+
 	if err != nil {
 		logger.Fatal("Connecting Database Failed")
 	}
@@ -78,53 +83,31 @@ func main() {
 			u := url.ParseURL(input)
 			r, err := collector.Collect(&u, config.GetGitStoragePath())
 			if err != nil {
-				logger.Panicf("Collecting %s Failed", u.URL)
+				logger.Errorf("Collecting %s Failed", u.URL)
+				return
 			}
 			logger.Infof("[*] %s Collected", input)
 
 			repo, err := git.ParseRepo(r)
 			if err != nil {
-				logger.Panicf("Parsing %s Failed", input)
-			}
-
-			result, err := db.Exec(`UPDATE git_metrics SET
-				_name = $1,
-				_owner = $2,
-				_source = $3,
-				ecosystem = $4,
-				created_since = $5,
-				updated_since = $6,
-				contributor_count = $7,
-				commit_frequency = $8,
-				license = $9,
-				language = $10,
-				need_update = FALSE WHERE git_link = $11`,
-				repo.Name,
-				repo.Owner,
-				repo.Source,
-				repo.Ecosystems,
-				repo.CreatedSince,
-				repo.UpdatedSince,
-				repo.ContributorCount,
-				repo.CommitFrequency,
-				repo.License,
-				repo.Languages,
-				input)
-
-			if err != nil {
-				logger.Errorf("Update database for %s Failed: %v", input, err)
+				logger.Errorf("Parsing %s Failed", input)
 				return
 			}
 
-			rowAffected, err := result.RowsAffected()
+			err = gmr.InsertOrUpdate(&repository.GitMetric{
+				GitLink:          lo.ToPtr(input),
+				CreatedSince:     lo.ToPtr(repo.CreatedSince),
+				UpdatedSince:     lo.ToPtr(repo.UpdatedSince),
+				ContributorCount: lo.ToPtr(repo.ContributorCount),
+				CommitFrequency:  lo.ToPtr(repo.CommitFrequency),
+				OrgCount:         lo.ToPtr(repo.OrgCount),
+				License:          lo.ToPtr(pq.StringArray(repo.Licenses)),
+				Language:         lo.ToPtr(pq.StringArray(repo.Languages)),
+			})
 
 			if err != nil {
-				logger.Errorf("Get RowsAffected for %s Failed: %v", input, err)
+				logger.Errorf("Inserting %s Failed", input)
 				return
-			}
-
-			if rowAffected == 0 {
-				logger.Errorf("Update %s Failed", input)
 			}
 		})
 	}

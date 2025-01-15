@@ -33,14 +33,14 @@ var (
 )
 
 type Repo struct {
-	Name    string
-	Owner   string
-	Source  string
-	URL     string
-	License string
+	Name     string
+	Owner    string
+	Source   string
+	URL      string
+	Licenses []string
 	// is_maintained bool
-	Languages        string
-	Ecosystems       string
+	Languages        []string
+	Ecosystems       []string
 	CreatedSince     time.Time
 	UpdatedSince     time.Time
 	ContributorCount int
@@ -54,9 +54,9 @@ func NewRepo() Repo {
 		Owner:            parser.UNKNOWN_OWNER,
 		Source:           parser.UNKNOWN_SOURCE,
 		URL:              parser.UNKNOWN_URL,
-		License:          parser.UNKNOWN_LICENSE,
-		Languages:        parser.UNKNOWN_LANGUAGES,
-		Ecosystems:       parser.UNKNOWN_ECOSYSTEMS,
+		Licenses:         nil,
+		Languages:        nil,
+		Ecosystems:       nil,
 		CreatedSince:     parser.UNKNOWN_TIME,
 		UpdatedSince:     parser.UNKNOWN_TIME,
 		ContributorCount: parser.UNKNOWN_COUNT,
@@ -320,7 +320,7 @@ func GetLicense(f *object.File) (string, error) {
 	}
 	cov := licensecheck.Scan([]byte(text))
 	if len(cov.Match) == 0 {
-		return parser.UNKNOWN_LICENSE, nil
+		return "", nil
 	}
 
 	license := cov.Match[0].ID
@@ -437,13 +437,13 @@ func (repo *Repo) WalkRepo(r *git.Repository) error {
 		filesize := f.Size
 		GetLanguages(filename, filesize, &languages)
 		GetEcosystem(filename, filesize, &ecosystems)
-		if repo.License == parser.UNKNOWN_LICENSE {
+		if repo.Licenses == nil {
 			if _, ok := parser.LICENSE_FILENAMES[filename]; ok {
 				license, err := GetLicense(f)
 				if err != nil {
 					logger.Error(err)
-				} else {
-					repo.License = license
+				} else if license != "" {
+					repo.Licenses = []string{license}
 				}
 			}
 		}
@@ -453,22 +453,8 @@ func (repo *Repo) WalkRepo(r *git.Repository) error {
 		return err
 	}
 
-	l := ""
-	for _, s := range getTopNKeys(languages) {
-		l += fmt.Sprintf("%s ", s)
-	}
-
-	e := ""
-	for _, s := range getTopNKeys(ecosystems) {
-		e += fmt.Sprintf("%s ", s)
-	}
-
-	if len(l) != 0 {
-		repo.Languages = l[:len(l)-1]
-	}
-	if len(e) != 0 {
-		repo.Ecosystems = e[:len(e)-1]
-	}
+	repo.Languages = getTopNKeys(languages)
+	repo.Ecosystems = getTopNKeys(ecosystems)
 
 	return nil
 }
@@ -487,7 +473,7 @@ func (repo *Repo) Show() {
 		"Repository Name", repo.Name,
 		"Source", repo.Source,
 		"Owner", repo.Owner,
-		"License", repo.License,
+		"License", repo.Licenses,
 		"URL", repo.URL,
 		"Languages", repo.Languages,
 		"Ecosystems", repo.Ecosystems,

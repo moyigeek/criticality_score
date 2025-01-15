@@ -104,7 +104,7 @@ func main() {
 				language = $3
 				WHERE git_link = $4`,
 				result.Ecosystems,
-				result.License,
+				result.Licenses,
 				result.Languages,
 				input)
 
