@@ -32,7 +32,7 @@ type WorkflowHistory struct {
 	Payload  *string
 }
 
-const WorkflowHistoryTableName = "workflow_history"
+const WorkflowHistoryTableName = "workflows"
 
 type workflowHistoryRepository struct {
 	ctx storage.AppDatabaseContext

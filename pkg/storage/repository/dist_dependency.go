@@ -14,14 +14,14 @@ const DistDependencyTableName = "distribution_dependencies"
 type DistDependencyRepository interface {
 	/** QUERY **/
 
-	Query() (iter.Seq[*DistLinkInfo], error) // Query all distribution information.
-	QueryByType(distType int) (iter.Seq[*DistLinkInfo], error)
-	GetByLink(packageName string, distType int) (*DistLinkInfo, error)
+	Query() (iter.Seq[*DistDependency], error) // Query all distribution information.
+	QueryByType(distType int) (iter.Seq[*DistDependency], error)
+	GetByLink(packageName string, distType int) (*DistDependency, error)
 	QueryDistCountByType(distType int) (int, error) // Get the total number of packages in a Distro.
 
 	/** INSERT/UPDATE **/
 	// update_time will be updated automatically
-	InsertOrUpdate(packageInfo *DistLinkInfo) error
+	InsertOrUpdate(packageInfo *DistDependency) error
 }
 
 type distLinkRepository struct {
@@ -46,7 +46,7 @@ const (
 	Ubuntu
 )
 
-type DistLinkInfo struct {
+type DistDependency struct {
 	ID         *int64 `generated:"true"`
 	GitLink    *string
 	Type       *DistType
@@ -60,7 +60,7 @@ func NewDistDependencyRepository(appDb storage.AppDatabaseContext) DistDependenc
 }
 
 // Query implements DistributionDependencyRepository.
-func (r *distLinkRepository) Query() (iter.Seq[*DistLinkInfo], error) {
+func (r *distLinkRepository) Query() (iter.Seq[*DistDependency], error) {
 	panic("unimplemented")
 }
 
@@ -70,13 +70,13 @@ func (r *distLinkRepository) QueryDistCountByType(distType int) (int, error) {
 }
 
 // GetByLink implements DistributionDependencyRepository.
-func (r *distLinkRepository) GetByLink(packageName string, distType int) (*DistLinkInfo, error) {
-	return sqlutil.QueryCommonFirst[DistLinkInfo](r.ctx, DistDependencyTableName,
+func (r *distLinkRepository) GetByLink(packageName string, distType int) (*DistDependency, error) {
+	return sqlutil.QueryCommonFirst[DistDependency](r.ctx, DistDependencyTableName,
 		`WHERE git_link = $1 and type = $2 ORDER BY id DESC`, packageName, distType)
 }
 
 // InsertOrUpdate implements DistributionDependencyRepository.
-func (r *distLinkRepository) InsertOrUpdate(packageInfo *DistLinkInfo) error {
+func (r *distLinkRepository) InsertOrUpdate(packageInfo *DistDependency) error {
 	if packageInfo.GitLink == nil || packageInfo.Type == nil {
 		return ErrInvalidInput
 	}
@@ -93,7 +93,7 @@ func (r *distLinkRepository) InsertOrUpdate(packageInfo *DistLinkInfo) error {
 }
 
 // QueryByType implements DistributionDependencyRepository.
-func (r *distLinkRepository) QueryByType(distType int) (iter.Seq[*DistLinkInfo], error) {
-	return sqlutil.QueryCommon[DistLinkInfo](r.ctx, DistDependencyTableName,
+func (r *distLinkRepository) QueryByType(distType int) (iter.Seq[*DistDependency], error) {
+	return sqlutil.QueryCommon[DistDependency](r.ctx, DistDependencyTableName,
 		"where type = $1", distType)
 }

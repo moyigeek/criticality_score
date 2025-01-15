@@ -163,11 +163,15 @@ func getInsertQueryAndArgs[T any](tableName string, data *T) (string, []interfac
 	reflectVal := reflect.ValueOf(data).Elem()
 
 	columns := make([]string, 0)
+	returningColumns := make([]string, 0)
 	values := make([]interface{}, 0)
 
 	cToFMap := getTypeColumnToFieldInfo(reflectType)
 
 	for k, v := range cToFMap {
+		if v.isGenerated {
+			returningColumns = append(returningColumns, k)
+		}
 		// if generated or nil, ignore
 		if v.isGenerated || reflectVal.Field(v.idx).IsNil() {
 			continue
@@ -181,6 +185,7 @@ func getInsertQueryAndArgs[T any](tableName string, data *T) (string, []interfac
 	}
 
 	columnsStr := strings.Join(columns, ", ")
+	returningColumnsStr := strings.Join(returningColumns, ", ")
 	// value str $1, $2
 	valuesArr := make([]string, 0)
 	for i := 1; i <= len(values); i++ {
@@ -189,6 +194,10 @@ func getInsertQueryAndArgs[T any](tableName string, data *T) (string, []interfac
 	valuesStr := strings.Join(valuesArr, ", ")
 
 	insertSentenceTemplate := `INSERT INTO %s (%s) VALUES (%s)`
+	if returningColumnsStr != "" {
+		insertSentenceTemplate += ` RETURNING %s`
+	}
+
 	insertSentence := fmt.Sprintf(insertSentenceTemplate, tableName, columnsStr, valuesStr)
 
 	return insertSentence, values, nil
@@ -338,12 +347,44 @@ func QueryCommonFirst[T any](ctx storage.AppDatabaseContext, from string, afterF
 	return QueryFirst[T](ctx, query, args...)
 }
 
+func scanGeneratedColumns(data interface{}, rows *sql.Rows) {
+	reflectType := reflect.TypeOf(data).Elem()
+	reflectVal := reflect.ValueOf(data).Elem()
+
+	cToFMap := getTypeColumnToFieldInfo(reflectType)
+
+	columnNames, err := rows.Columns()
+	if err != nil {
+		return
+	}
+
+	for _, columnName := range columnNames {
+		fieldInfo, ok := cToFMap[columnName]
+		if !ok {
+			continue
+		}
+		if fieldInfo.isGenerated {
+			fieldVal := reflectVal.Field(fieldInfo.idx)
+			newObj := reflect.New(fieldVal.Type().Elem())
+			rows.Scan(newObj.Interface())
+			fieldVal.Set(newObj)
+		}
+	}
+}
+
 func Insert[T any](ctx storage.AppDatabaseContext, into string, data *T) error {
 	insertSentence, values, err := getInsertQueryAndArgs[T](into, data)
 	if err != nil {
 		return err
 	}
-	_, err = ctx.Exec(insertSentence, values...)
+	rows, err := ctx.Query(insertSentence, values...)
+	if err != nil {
+		return err
+	}
+	if rows.Next() {
+		scanGeneratedColumns(data, rows)
+	}
+
 	return err
 }
 

@@ -130,7 +130,7 @@ func (langEcoMetadata *LangEcoMetadata) ParseLangEcoMetadata(langEcosystem *repo
 	langEcoMetadata.DepCount = *langEcosystem.DepCount
 }
 
-func (distMetadata *DistMetadata) PraseDistMetadata(distLink *repository.DistLinkInfo) {
+func (distMetadata *DistMetadata) PraseDistMetadata(distLink *repository.DistDependency) {
 	distMetadata.Id = *distLink.ID
 	distMetadata.DepCount = *distLink.DepCount
 	distMetadata.PageRank = *distLink.PageRank
@@ -330,7 +330,7 @@ func UpdateScore(ac storage.AppDatabaseContext, packageScore map[string]*LinkSco
 			GitID:     &linkScore.GitId,
 			DepsDevID: &linkScore.LangEcoId,
 			DistScore: &linkScore.DistScore.DistScore,
-			DevScore:  &linkScore.LangEcoScore.LangEcoScore,
+			LangScore: &linkScore.LangEcoScore.LangEcoScore,
 			GitScore:  &linkScore.GitMetadataScore.GitMetadataScore,
 		}
 		scores = append(scores, &score)
@@ -342,7 +342,7 @@ func UpdateScore(ac storage.AppDatabaseContext, packageScore map[string]*LinkSco
 
 func FetchDistMetadataSingle(ac storage.AppDatabaseContext, link string) map[string]*DistMetadata {
 	repo := repository.NewDistDependencyRepository(ac)
-	linksMap := []*repository.DistLinkInfo{}
+	linksMap := []*repository.DistDependency{}
 	distMap := make(map[string]*DistMetadata)
 	for PackageType := range PackageList {
 		distInfo, err := repo.GetByLink(link, int(PackageType))
