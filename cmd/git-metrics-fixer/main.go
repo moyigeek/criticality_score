@@ -2,9 +2,7 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
-	"log"
 	"os"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/config"
@@ -14,6 +12,7 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/logger"
 	scores "github.com/HUSTSecLab/criticality_score/pkg/score"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
+	"github.com/HUSTSecLab/criticality_score/pkg/storage/repository"
 	gogit "github.com/go-git/go-git/v5"
 	"github.com/spf13/pflag"
 )
@@ -54,55 +53,34 @@ func main() {
 	logger.Infof("%s Collected", repo.Name)
 
 	repo.Show()
-	gitMetadata := &scores.GitMetadata{
-		CommitFrequency:  repo.CommitFrequency,
-		ContributorCount: repo.ContributorCount,
-		CreatedSince:     repo.CreatedSince,
-		UpdatedSince:     repo.UpdatedSince,
-		Org_Count:        repo.OrgCount,
+	gitMetric := &repository.GitMetric{
+		GitLink:          &link,
+		CommitFrequency:  &repo.CommitFrequency,
+		ContributorCount: &repo.ContributorCount,
+		CreatedSince:     &repo.CreatedSince,
+		UpdatedSince:     &repo.UpdatedSince,
+		OrgCount:         &repo.OrgCount,
 	}
+	gitMetadata := InsertGitMeticAndFetch(ac, gitMetric)
+
 	gitMetadataScore := scores.NewGitMetadataScore()
-	gitMetadataScore.CalculateGitMetadataScore(gitMetadata)
+	gitMetadataScore.CalculateGitMetadataScore(gitMetadata[link])
 
-	distScore := scores.NewDistScore()
-	distMetadata := scores.FetchDistMetadataSingle(ac, link)
-	distScore.CalculateDistMerics(distMetadata[link], scores.PackageList[distMetadata[link].Type])
-	distScore.CalculateDistScore()
-
-	langEcoScore := scores.NewLangEcoScore()
-	langEcoMetadata := scores.FetchLangEcoMetadataSingle(ac, link)
-	langEcoScore.CalulateLangEcoMeritcs(langEcoMetadata[link], scores.PackageCounts[langEcoMetadata[link].Type])
-	langEcoScore.CalculateLangEcoScore()
+	distScore := scores.FetchDistMetadataSingle(ac, link)
+	distScore[link].CalculateDistScore()
+	langEcoScore := scores.FetchLangEcoMetadataSingle(ac, link)
+	langEcoScore[link].CalculateLangEcoScore()
 
 	if updateDB {
 		scores.UpdateScore(ac, map[string]*scores.LinkScore{
-			link: scores.NewLinkScore(gitMetadataScore, distScore, langEcoScore),
+			link: scores.NewLinkScore(gitMetadataScore, distScore[link], langEcoScore[link]),
 		})
 	}
 }
-func updateGitMetrics(db *sql.DB, repo *git.Repo, score float64, depsDistro float64) error {
-	query := `
-		 UPDATE git_metrics 
-		 SET created_since = $1, updated_since = $2, contributor_count = $3, commit_frequency = $4, org_count = $5, scores = $6, dist_impact = $7
-		 WHERE git_link = $8
-	 `
-	_, err := db.Exec(query, repo.CreatedSince, repo.UpdatedSince, repo.ContributorCount, repo.CommitFrequency, repo.OrgCount, score, depsDistro, repo.URL)
-	if err != nil {
-		fmt.Print(err)
-		return err
-	}
-	return nil
-}
 
-func FetchDepsdev(db *sql.DB, git_link string) int {
-	query := fmt.Sprintf("SELECT depsdev_count FROM git_metrics WHERE git_link = '%s'", git_link)
-	var depsdev_count sql.NullInt64
-	err := db.QueryRow(query).Scan(&depsdev_count)
-	if err != nil {
-		log.Fatal(err)
-	}
-	if !depsdev_count.Valid {
-		return 0
-	}
-	return int(depsdev_count.Int64)
+func InsertGitMeticAndFetch(ac storage.AppDatabaseContext, gitMetadata *repository.GitMetric) map[string]*scores.GitMetadata {
+	repo := repository.NewGitMetricsRepository(ac)
+	repo.InsertOrUpdate(gitMetadata)
+	gitMetric := scores.FetchGitMetricsSingle(ac, *gitMetadata.GitLink)
+	return gitMetric
 }

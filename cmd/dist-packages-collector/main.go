@@ -1,8 +1,6 @@
 package main
 
 import (
-	"log"
-
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/alpine"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/archlinux"
 	"github.com/HUSTSecLab/criticality_score/pkg/collector/aur"
@@ -24,7 +22,6 @@ var (
 	workerCount = pflag.Int("worker", 1, "number of workers")
 	batchSize   = pflag.Int("batch", 1000, "batch size")
 	downloadDir = pflag.String("downloadDir", "./download", "download directory")
-	extractDir  = pflag.String("extractDir", "./extract", "extract directory")
 )
 
 func main() {
@@ -33,7 +30,7 @@ func main() {
 
 	switch *flagType {
 	case "archlinux":
-		archlinux.NewArchLinux(*downloadDir, *extractDir).Collect(*flagGenDot)
+		archlinux.NewArchLinuxCollector().Collect(*flagGenDot)
 	case "debian":
 		debian.NewDebianCollector().Collect(*flagGenDot)
 	case "deepin":
@@ -41,12 +38,9 @@ func main() {
 	case "ubuntu":
 		ubuntu.NewUbuntuCollector().Collect(*flagGenDot)
 	case "nix":
-		if *flagGenDot == "" {
-			log.Fatal("Nix not support gendot")
-		}
-		nix.NewNixCollector().Collect(*workerCount, *batchSize)
+		nix.NewNixCollector().Collect(*workerCount, *batchSize, *flagGenDot)
 	case "homebrew":
-		homebrew.NewHomebrewCollector().Collect(*flagGenDot)
+		homebrew.NewHomebrewCollector().Collect(*flagGenDot, *downloadDir)
 	case "gentoo":
 		gentoo.NewGentooCollector().Collect(*flagGenDot)
 	case "fedora":

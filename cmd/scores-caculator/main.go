@@ -28,18 +28,13 @@ func main() {
 	packageScore := make(map[string]*scores.LinkScore)
 
 	for _, link := range linksMap {
-		distScore := scores.NewDistScore()
-		distScore.CalculateDistMerics(distMetricMap[link], scores.PackageList[distMetricMap[link].Type])
-		distScore.CalculateDistScore()
-
-		langEcoScore := scores.NewLangEcoScore()
-		langEcoScore.CalulateLangEcoMeritcs(langEcoMetricMap[link], scores.PackageCounts[langEcoMetricMap[link].Type])
-		langEcoScore.CalculateLangEcoScore()
+		distMetricMap[link].CalculateDistScore()
+		langEcoMetricMap[link].CalculateLangEcoScore()
 
 		gitMetadataScore := scores.NewGitMetadataScore()
 		gitMetadataScore.CalculateGitMetadataScore(gitMeticMap[link])
 
-		packageScore[link] = scores.NewLinkScore(gitMetadataScore, distScore, langEcoScore)
+		packageScore[link] = scores.NewLinkScore(gitMetadataScore, distMetricMap[link], langEcoMetricMap[link])
 		packageScore[link].CalculateScore()
 	}
 	log.Println("Updating database...")

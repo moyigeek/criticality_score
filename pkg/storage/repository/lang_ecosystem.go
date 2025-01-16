@@ -39,11 +39,12 @@ type langEcoLinkRepository struct {
 }
 
 type LangEcosystem struct {
-	ID         *int64 `generated:"true"`
-	GitLink    *string
-	Type       *LangEcosystemType
-	DepCount   *int
-	UpdateTime *time.Time
+	ID            *int64 `generated:"true"`
+	GitLink       *string
+	Type          *LangEcosystemType
+	LangEcoImpact *float64
+	DepCount      *int
+	UpdateTime    *time.Time
 }
 
 const LangEcosystemTableName = "lang_ecosystems"

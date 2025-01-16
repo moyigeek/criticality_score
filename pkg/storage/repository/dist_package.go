@@ -16,6 +16,7 @@ type DistPackageRepository interface {
 
 	/** INSERT/UPDATE **/
 
+	InsertOrUpdate(packageInfo *DistPackage) error
 	// NOTE: git_link will be ignored
 	Insert(packageInfo *DistPackage) error
 	// NOTE: git_link will be ignored
@@ -68,6 +69,11 @@ var _ DistPackageRepository = (*distPackageRepository)(nil)
 // NewDistPackageRepository creates a new DistPackageRepository.
 func NewDistPackageRepository(appDb storage.AppDatabaseContext, prefix DistPackageTablePrefix) DistPackageRepository {
 	return &distPackageRepository{ctx: appDb, prefix: prefix}
+}
+
+// InsertOrUpdate implements DistPackageRepository.
+func (d *distPackageRepository) InsertOrUpdate(packageInfo *DistPackage) error {
+	panic("unimplemented")
 }
 
 // BatchInsert implements DistPackageRepository.

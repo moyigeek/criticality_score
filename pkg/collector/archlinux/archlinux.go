@@ -1,498 +1,69 @@
 package archlinux
 
 import (
-	"archive/tar"
-	"bufio"
-	"compress/gzip"
-	"fmt"
-	"io"
 	"log"
-	"os"
-	"path/filepath"
-	"regexp"
-	"sort"
 	"strings"
 
+	collector "github.com/HUSTSecLab/criticality_score/pkg/collector/internal"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
-	"github.com/lib/pq"
+	"github.com/HUSTSecLab/criticality_score/pkg/storage/repository"
 )
 
-type DepInfo struct {
-	Name         string
-	Arch         string
-	Version      string
-	Description  string
-	Homepage     string
-	DependsCount int
-	PageRank     float64
+type ArchLinuxCollector struct {
+	collector.CollecterInterface
 }
 
-type ArchLinux struct {
-	downloadDir string
-	extractDir  string
-	packages    map[string]map[string]interface{}
-}
-
-func NewArchLinux(downloadDir, extractDir string) *ArchLinux {
-	return &ArchLinux{
-		downloadDir: downloadDir,
-		extractDir:  extractDir,
-		packages:    make(map[string]map[string]interface{}),
-	}
-}
-
-func (al *ArchLinux) updateOrInsertDatabase(pkgInfoMap map[string]DepInfo) error {
-	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
+func (al *ArchLinuxCollector) Collect(outputPath string) {
+	adc := storage.GetDefaultAppDatabaseContext()
+	data := al.GetPackageInfo(collector.ArchlinuxURL)
+	al.ParseInfo(data)
+	al.GetDep()
+	al.PageRank(0.85, 20)
+	al.GetDepCount()
+	al.UpdateDistRepoCount(adc)
+	al.CalculateDistImpact()
+	al.UpdateOrInsertDatabase(adc)
+	al.UpdateOrInsertDistDependencyDatabase(adc)
+	err := al.GenerateDependencyGraph(outputPath)
 	if err != nil {
-		return err
-	}
-	defer db.Close()
-
-	for pkgName, pkgInfo := range pkgInfoMap {
-		var exists bool
-		err := db.QueryRow("SELECT EXISTS(SELECT 1 FROM arch_packages WHERE package = $1)", pkgName).Scan(&exists)
-		if err != nil {
-			return err
-		}
-
-		if !exists {
-			_, err := db.Exec("INSERT INTO arch_packages (package, depends_count, description, homepage, version, page_rank) VALUES ($1, $2, $3, $4, $5, $6)",
-				pkgName, pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgInfo.Version, pkgInfo.PageRank)
-			if err != nil {
-				return err
-			}
-		} else {
-			_, err := db.Exec("UPDATE arch_packages SET depends_count = $1, description = $2, homepage = $3, version = $4, page_rank = $5 WHERE package = $6",
-				pkgInfo.DependsCount, pkgInfo.Description, pkgInfo.Homepage, pkgInfo.Version, pkgInfo.PageRank, pkgName)
-			if err != nil {
-				return err
-			}
-		}
-	}
-	return nil
-}
-
-func (al *ArchLinux) storeDependenciesInDatabase(pkgName string, dependencies []DepInfo) error {
-	db, err := storage.GetDefaultAppDatabaseContext().GetDatabaseConnection()
-	if err != nil {
-		return err
-	}
-	defer db.Close()
-
-	for _, dep := range dependencies {
-		_, err := db.Exec("INSERT INTO arch_relationships (frompackage, topackage) VALUES ($1, $2)", pkgName, dep.Name)
-		if err != nil {
-			return err
-		}
-	}
-	return nil
-}
-
-func (al *ArchLinux) toDep(dep string, rawContent string) DepInfo {
-	re := regexp.MustCompile(`^([^=><!]+?)(?:([=><!]+)([^:]+))?(?::(.+?))?(?:\s*\((.+)\))?$`)
-	matches := re.FindStringSubmatch(dep)
-
-	depInfo := DepInfo{Name: dep, Arch: "", Version: "", Description: "", Homepage: ""}
-
-	if matches != nil {
-		depInfo.Name = matches[1]
-		depInfo.Version = matches[2] + matches[3]
-		depInfo.Arch = matches[4]
-	}
-
-	descriptionRegex := regexp.MustCompile(`(?m)^%DESC%\s*(.+)$`)
-	homepageRegex := regexp.MustCompile(`(?m)^%URL%\s*(.+)$`)
-
-	if descMatches := descriptionRegex.FindStringSubmatch(rawContent); len(descMatches) > 1 {
-		depInfo.Description = descMatches[1]
-	}
-
-	if homeMatches := homepageRegex.FindStringSubmatch(rawContent); len(homeMatches) > 1 {
-		depInfo.Homepage = homeMatches[1]
-	}
-
-	return depInfo
-}
-
-func (al *ArchLinux) extractTarGz(gzipStream io.Reader, dest string) error {
-	uncompressedStream, err := gzip.NewReader(gzipStream)
-	if err != nil {
-		return err
-	}
-	defer uncompressedStream.Close()
-
-	tarReader := tar.NewReader(uncompressedStream)
-	hasFiles := false
-
-	for {
-		header, err := tarReader.Next()
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			return err
-		}
-
-		hasFiles = true
-		target := filepath.Join(dest, header.Name)
-		switch header.Typeflag {
-		case tar.TypeDir:
-			if err := os.MkdirAll(target, 0o755); err != nil {
-				return err
-			}
-		case tar.TypeReg:
-			if err := os.MkdirAll(filepath.Dir(target), 0o755); err != nil {
-				return err
-			}
-			file, err := os.OpenFile(target, os.O_CREATE|os.O_WRONLY, os.FileMode(header.Mode))
-			if err != nil {
-				return err
-			}
-			if _, err := io.Copy(file, tarReader); err != nil {
-				file.Close()
-				return err
-			}
-			file.Close()
-		}
-	}
-
-	if !hasFiles {
-		return fmt.Errorf("empty tar archive")
-	}
-
-	return nil
-}
-
-func (al *ArchLinux) readDescFile(descPath string) (DepInfo, []DepInfo, error) {
-	file, err := os.Open(descPath)
-	if err != nil {
-		return DepInfo{}, nil, err
-	}
-	defer file.Close()
-
-	var pkgInfo DepInfo
-	var dependencies []DepInfo
-	var inPackageSection, inDependSection bool
-	var rawContent strings.Builder
-	var expectNextLine string
-
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		line := scanner.Text()
-		if line == "%NAME%" {
-			inPackageSection = true
-			continue
-		}
-		if line == "%VERSION%" {
-			expectNextLine = "version"
-			inPackageSection = false
-			inDependSection = false
-			continue
-		}
-		if line == "%DEPENDS%" {
-			inDependSection = true
-			inPackageSection = false
-			continue
-		}
-		if strings.HasPrefix(line, "%") {
-			inPackageSection = false
-			inDependSection = false
-		}
-
-		if expectNextLine == "version" {
-			pkgInfo.Version = line
-			expectNextLine = ""
-			continue
-		}
-
-		if inPackageSection && line != "" {
-			rawContent.WriteString(line + "\n")
-			pkgInfo = al.toDep(line, rawContent.String())
-		}
-
-		if inDependSection && line != "" {
-			rawContent.WriteString(line + "\n")
-			dependencies = append(dependencies, al.toDep(line, rawContent.String()))
-		}
-
-		if line == "%URL%" {
-			expectNextLine = "url"
-		} else if line == "%DESC%" {
-			expectNextLine = "desc"
-		} else if expectNextLine == "url" {
-			pkgInfo.Homepage = line
-			expectNextLine = ""
-		} else if expectNextLine == "desc" {
-			pkgInfo.Description = line
-			expectNextLine = ""
-		}
-	}
-
-	if err := scanner.Err(); err != nil {
-		return DepInfo{}, nil, err
-	}
-	return pkgInfo, dependencies, nil
-}
-
-func (al *ArchLinux) generateDependencyGraph(outputPath string) error {
-	file, err := os.Create(outputPath)
-	if err != nil {
-		return err
-	}
-	defer file.Close()
-
-	writer := bufio.NewWriter(file)
-	writer.WriteString("digraph {\n")
-
-	packageIndices := make(map[string]int)
-	index := 0
-
-	for pkgName, pkgInfo := range al.packages {
-		packageIndices[pkgName] = index
-		label := fmt.Sprintf("%s@%s", pkgName, pkgInfo["Info"].(DepInfo).Version)
-		writer.WriteString(fmt.Sprintf("  %d [label=\"%s\"];\n", index, label))
-		index++
-	}
-
-	for pkgName, pkgInfo := range al.packages {
-		pkgIndex := packageIndices[pkgName]
-		if depends, ok := pkgInfo["Depends"].([]DepInfo); ok {
-			for _, dep := range depends {
-				if depIndex, ok := packageIndices[dep.Name]; ok {
-					writer.WriteString(fmt.Sprintf("  %d -> %d [label=\"%s\"];\n", pkgIndex, depIndex, dep.Version))
-				}
-			}
-		}
-	}
-
-	writer.WriteString("}\n")
-	writer.Flush()
-	return nil
-}
-
-func (al *ArchLinux) getAllDep(pkgName string, deps []string) []string {
-	deps = append(deps, pkgName)
-	if pkg, ok := al.packages[pkgName]; ok {
-		if depends, ok := pkg["Depends"].([]DepInfo); ok {
-			for _, dep := range depends {
-				pkgname := dep.Name
-				if !contains(deps, pkgname) {
-					deps = al.getAllDep(pkgname, deps)
-				}
-			}
-		}
-	}
-	return deps
-}
-
-func (al *ArchLinux) calculatePageRank(iterations int, dampingFactor float64) map[string]float64 {
-	pageRank := make(map[string]float64)
-	outgoingLinks := make(map[string]int)
-
-	for pkgName, pkgInfo := range al.packages {
-		pageRank[pkgName] = 1.0 / float64(len(al.packages))
-		if depends, ok := pkgInfo["Depends"].([]DepInfo); ok {
-			outgoingLinks[pkgName] = len(depends)
-		} else {
-			outgoingLinks[pkgName] = 0
-		}
-	}
-
-	for i := 0; i < iterations; i++ {
-		newPageRank := make(map[string]float64)
-		for pkgName := range al.packages {
-			newPageRank[pkgName] = (1 - dampingFactor) / float64(len(al.packages))
-		}
-
-		for pkgName, pkgInfo := range al.packages {
-			var depNum int
-			if depends, ok := pkgInfo["Depends"].([]DepInfo); ok {
-				for _, dep := range depends {
-					if outgoingLinks[dep.Name] > 0 {
-						depNum++
-					}
-				}
-			}
-			if depends, ok := pkgInfo["Depends"].([]DepInfo); ok {
-				for _, dep := range depends {
-					if outgoingLinks[dep.Name] > 0 {
-						newPageRank[dep.Name] += dampingFactor * pageRank[pkgName] / float64(depNum)
-					}
-				}
-			}
-		}
-
-		pageRank = newPageRank
-	}
-
-	return pageRank
-}
-
-func contains(slice []string, item string) bool {
-	for _, s := range slice {
-		if s == item {
-			return true
-		}
-	}
-	return false
-}
-
-func (al *ArchLinux) Collect(outputPath string) {
-	// if _, err := os.Stat(al.downloadDir); os.IsNotExist(err) {
-	// 	log.Println("Download directory not found, starting download...")
-	DownloadFiles()
-	// }
-
-	log.Println("Getting package list...")
-
-	packageNamePattern := regexp.MustCompile(`^([a-zA-Z0-9\-_]+)-([0-9\._]+)`)
-
-	if _, err := os.Stat(al.extractDir); os.IsNotExist(err) {
-		err := os.Mkdir(al.extractDir, 0o755)
-		if err != nil {
-			log.Printf("Error creating extract directory: %v\n", err)
-			return
-		}
-	}
-
-	err := filepath.Walk(al.downloadDir, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if strings.HasSuffix(info.Name(), ".tar.gz") {
-			file, err := os.Open(path)
-			if err != nil {
-				return err
-			}
-			defer file.Close()
-
-			err = al.extractTarGz(file, al.extractDir)
-			if err != nil {
-				if err.Error() == "empty tar archive" {
-					return nil
-				}
-				return nil
-			}
-		}
-		return nil
-	})
-	if err != nil {
-		log.Printf("Error walking through download directory: %v\n", err)
+		log.Printf("Error generating dependency graph: %v\n", err)
 		return
 	}
-
-	err = filepath.Walk(al.extractDir, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
-		if strings.HasSuffix(info.Name(), "desc") {
-			packageName := packageNamePattern.FindStringSubmatch(filepath.Base(filepath.Dir(path)))
-			if packageName != nil {
-				pkgInfo, dependencies, err := al.readDescFile(path)
-				if err != nil {
-					return err
-				}
-				if _, ok := al.packages[pkgInfo.Name]; !ok {
-					al.packages[pkgInfo.Name] = make(map[string]interface{})
-				}
-				al.packages[pkgInfo.Name]["Depends"] = dependencies
-				al.packages[pkgInfo.Name]["Info"] = pkgInfo
-			}
-		}
-		return nil
-	})
-	if err != nil {
-		log.Printf("Error walking through extracted directory: %v\n", err)
-		return
-	}
-	log.Printf("Done, total: %d packages.\n", len(al.packages))
-
-	if outputPath != "" {
-		err := al.generateDependencyGraph(outputPath)
-		if err != nil {
-			log.Printf("Error generating dependency graph: %v\n", err)
-			return
-		}
-		log.Println("Dependency graph generated successfully.")
-	}
-	log.Println("Building dependencies graph...")
-	keys := make([]string, 0, len(al.packages))
-	for k := range al.packages {
-		keys = append(keys, k)
-	}
-	sort.Strings(keys)
-
-	depMap := make(map[string][]string)
-	for _, pkgName := range keys {
-		deps := al.getAllDep(pkgName, []string{})
-		depMap[pkgName] = deps
-	}
-
-	pagerank := al.calculatePageRank(20, 0.85)
-	log.Println("Calculating dependencies count...")
-	countMap := make(map[string]int)
-	for _, deps := range depMap {
-		for _, dep := range deps {
-			countMap[dep]++
-		}
-	}
-
-	pkgInfoMap := make(map[string]DepInfo)
-
-	for pkgName, pkgInfo := range al.packages {
-		depCount := countMap[pkgName]
-
-		var description, homepage, version string
-
-		if info, ok := pkgInfo["Info"].(DepInfo); ok {
-			description = info.Description
-			homepage = info.Homepage
-			version = info.Version
-		} else {
-			description = ""
-			homepage = ""
-		}
-		pageRank, _ := pagerank[pkgName]
-
-		pkgInfoMap[pkgName] = DepInfo{
-			Name:         pkgName,
-			DependsCount: depCount,
-			Description:  description,
-			Homepage:     homepage,
-			Version:      version,
-			PageRank:     pageRank,
-		}
-	}
-
-	err = al.updateOrInsertDatabase(pkgInfoMap)
-	if err != nil {
-		log.Printf("Error updating database: %v\n", err)
-		return
-	}
-	for _, pkgInfo := range al.packages {
-		if packageInfo, ok := pkgInfo["Info"].(DepInfo); ok {
-			packageName := packageInfo.Name
-			if depends, ok := pkgInfo["Depends"].([]DepInfo); ok {
-				if err := al.storeDependenciesInDatabase(packageName, depends); err != nil {
-					if isUniqueViolation(err) {
-						continue
-					}
-					log.Printf("Error storing dependencies for package %s: %v\n", packageName, err)
-					return
-				}
-			} else {
-				log.Printf("No valid dependencies found for package %s\n", packageName)
-			}
-		} else {
-			log.Printf("Invalid package name for pkgInfo: %v\n", pkgInfo)
-		}
-	}
-	log.Println("Database updated successfully.")
 }
 
-func isUniqueViolation(err error) bool {
-	if pqErr, ok := err.(*pq.Error); ok {
-		return pqErr.Code == "23505"
+func (al *ArchLinuxCollector) ParseInfo(data string) {
+	var currentPkg *collector.PackageInfo
+	var depend bool
+
+	lines := strings.Split(data, "\n")
+	for idx, line := range lines {
+		switch {
+		case line == "%NAME%":
+			if currentPkg != nil {
+				al.SetPkgInfo(currentPkg.Name, currentPkg)
+			}
+			currentPkg = &collector.PackageInfo{Name: strings.TrimSpace(lines[idx+1])}
+		case line == "%DESC%":
+			currentPkg.Description = strings.TrimSpace(lines[idx+1])
+		case line == "%VERSION%":
+			currentPkg.Version = strings.TrimSpace(lines[idx+1])
+		case line == "%URL%":
+			currentPkg.Homepage = strings.TrimSpace(lines[idx+1])
+		case line == "%DEPENDS%":
+			depend = true
+		case depend && (strings.Contains(line, "%") && line != "%DEPENDS%"):
+			depend = false
+		case depend && line != "":
+			currentPkg.DirectDepends = append(currentPkg.DirectDepends, strings.TrimSpace(line))
+		}
 	}
-	return false
+	if currentPkg != nil {
+		al.SetPkgInfo(currentPkg.Name, currentPkg)
+	}
+}
+
+func NewArchLinuxCollector() *ArchLinuxCollector {
+	return &ArchLinuxCollector{
+		collector.NewCollector(repository.Arch, repository.DistPackageTablePrefix("arch")),
+	}
 }
