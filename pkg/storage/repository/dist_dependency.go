@@ -68,10 +68,37 @@ func (r *distLinkRepository) Query() (iter.Seq[*DistDependency], error) {
 }
 
 // QueryDistCountByType implements DistributionDependencyRepository.
-func (r *distLinkRepository) QueryDistCountByType(distType int) (int, error) {
-	// FIXME: Delete situation is not considered in this qeury.
-	row := r.ctx.QueryRow(`SELECT DISTINCT ON (git_link) SUM(dep_count) FROM distribution_dependencies WHERE git_link = $1 ORDER BY git_link, id DESC`, distType)
+func (r *distLinkRepository) QueryDistCountByType(distType DistType) (int, error) {
+	var tableName string
+	switch distType {
+	case Debian:
+		tableName = "debian_packages"
+	case Arch:
+		tableName = "arch_packages"
+	case Homebrew:
+		tableName = "homebrew_packages"
+	case Nix:
+		tableName = "nix_packages"
+	case Alpine:
+		tableName = "alpine_packages"
+	case Centos:
+		tableName = "centos_packages"
+	case Aur:
+		tableName = "aur_packages"
+	case Deepin:
+		tableName = "deepin_packages"
+	case Fedora:
+		tableName = "fedora_packages"
+	case Gentoo:
+		tableName = "gentoo_packages"
+	case Ubuntu:
+		tableName = "ubuntu_packages"
+	default:
+		return 0, ErrInvalidInput
+	}
+
 	var result int
+	row := r.ctx.QueryRow(`SELECT COUNT(*) FROM ` + tableName)
 	err := row.Scan(&result)
 	return result, err
 }
