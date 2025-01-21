@@ -59,7 +59,9 @@ func NewLangEcoLinkRepository(appDb storage.AppDatabaseContext) LangEcoLinkRepos
 
 // Query implements LangEcoLinkRepository.
 func (l *langEcoLinkRepository) Query() (iter.Seq[*LangEcosystem], error) {
-	panic("unimplemented")
+	return sqlutil.Query[LangEcosystem](l.appDb, `SELECT DISTINCT ON (git_link)
+		git_link, type, lang_eco_impact, dep_count, update_time
+		FROM lang_ecosystems ORDER BY git_link, id DESC`)
 }
 
 // BatchInsertOrUpdate implements LangEcoLinkRepository.

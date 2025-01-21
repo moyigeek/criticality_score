@@ -62,12 +62,18 @@ func NewDistDependencyRepository(appDb storage.AppDatabaseContext) DistDependenc
 
 // Query implements DistributionDependencyRepository.
 func (r *distLinkRepository) Query() (iter.Seq[*DistDependency], error) {
-	panic("unimplemented")
+	return sqlutil.Query[DistDependency](r.ctx, `SELECT DISTINCT ON (git_link)
+		id, git_link, type, dep_impact, dep_count, page_rank, update_time
+		FROM distribution_dependencies ORDER BY git_link, id DESC`)
 }
 
 // QueryDistCountByType implements DistributionDependencyRepository.
 func (r *distLinkRepository) QueryDistCountByType(distType int) (int, error) {
-	panic("unimplemented")
+	// FIXME: Delete situation is not considered in this qeury.
+	row := r.ctx.QueryRow(`SELECT DISTINCT ON (git_link) SUM(dep_count) FROM distribution_dependencies WHERE git_link = $1 ORDER BY git_link, id DESC`, distType)
+	var result int
+	err := row.Scan(&result)
+	return result, err
 }
 
 // GetByLink implements DistributionDependencyRepository.

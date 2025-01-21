@@ -198,7 +198,7 @@ func getInsertQueryAndArgs[T any](tableName string, data *T) (string, []interfac
 		insertSentenceTemplate += ` RETURNING %s`
 	}
 
-	insertSentence := fmt.Sprintf(insertSentenceTemplate, tableName, columnsStr, valuesStr)
+	insertSentence := fmt.Sprintf(insertSentenceTemplate, tableName, columnsStr, valuesStr, returningColumnsStr)
 
 	return insertSentence, values, nil
 }
@@ -262,6 +262,69 @@ func getUpdateQueryAndArgs[T any](tableName string, data *T) (string, []interfac
 	updateSentence := fmt.Sprintf(updateSentenceTemplate, tableName, valuesStr, whereStr)
 
 	return updateSentence, values, nil
+}
+
+func getUpsertQueryAndArgs[T any](tableName string, data *T) (string, []interface{}, error) {
+	reflectType := reflect.TypeOf(*data)
+	reflectVal := reflect.ValueOf(data).Elem()
+
+	columns := make([]string, 0)
+	pks := make([]string, 0)
+	values := make([]interface{}, 0)
+
+	returningColumns := make([]string, 0)
+
+	cToFMap := getTypeColumnToFieldInfo(reflectType)
+
+	for k, v := range cToFMap {
+		if v.isGenerated {
+			returningColumns = append(returningColumns, k)
+		}
+		// if generated or nil, ignore
+		if v.isGenerated || reflectVal.Field(v.idx).IsNil() {
+			continue
+		}
+		if v.isPk {
+			pks = append(pks, k)
+		}
+		columns = append(columns, k)
+		values = append(values, reflectVal.Field(v.idx).Elem().Interface())
+	}
+
+	if len(columns) == 0 {
+		return "", nil, fmt.Errorf("no column to insert")
+	}
+
+	pkStr := strings.Join(pks, ", ")
+
+	columnsStr := strings.Join(columns, ", ")
+	// value str $1, $2
+	valuesArr := make([]string, 0)
+	for i := 1; i <= len(values); i++ {
+		valuesArr = append(valuesArr, fmt.Sprintf("$%d", i))
+	}
+	valuesStr := strings.Join(valuesArr, ", ")
+
+	updateStr := ""
+
+	returningColumnsStr := strings.Join(returningColumns, ", ")
+
+	for i, column := range columns {
+		if i != 0 {
+			updateStr += ", "
+		}
+		updateStr += fmt.Sprintf("%s = $%d", column, i+1)
+	}
+
+	insertOrUpdateSentenceTemplate := `INSERT INTO %s (%s) VALUES (%s) ON CONFLICT (%s) DO UPDATE SET %s`
+
+	if returningColumnsStr != "" {
+		insertOrUpdateSentenceTemplate += ` RETURNING %s`
+	}
+
+	insertOrUpdateSentence := fmt.Sprintf(insertOrUpdateSentenceTemplate, tableName, columnsStr, valuesStr, pkStr, updateStr, returningColumnsStr)
+
+	return insertOrUpdateSentence, values, nil
 }
 
 func getDeleteQueryAndArgs[T any](tableName string, data *T) (string, []interface{}, error) {
@@ -427,6 +490,21 @@ func BatchUpdate[T any](ctx storage.AppDatabaseContext, tableName string, data [
 		batchCtx.AppendExec(updateSentence, args...)
 	}
 	return nil
+}
+
+func Upsert[T any](ctx storage.AppDatabaseContext, into string, data *T) error {
+	insertSentence, values, err := getUpsertQueryAndArgs[T](into, data)
+	if err != nil {
+		return err
+	}
+	rows, err := ctx.Query(insertSentence, values...)
+	if err != nil {
+		return err
+	}
+	if rows.Next() {
+		scanGeneratedColumns(data, rows)
+	}
+	return err
 }
 
 func Delete[T any](ctx storage.AppDatabaseContext, tableName string, data *T) error {

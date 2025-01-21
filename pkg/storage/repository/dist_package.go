@@ -73,7 +73,7 @@ func NewDistPackageRepository(appDb storage.AppDatabaseContext, prefix DistPacka
 
 // InsertOrUpdate implements DistPackageRepository.
 func (d *distPackageRepository) InsertOrUpdate(packageInfo *DistPackage) error {
-	panic("unimplemented")
+	return sqlutil.Upsert(d.ctx, string(d.prefix)+DistPackageTableNameAppendix, packageInfo)
 }
 
 // BatchInsert implements DistPackageRepository.
