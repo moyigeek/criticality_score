@@ -53,7 +53,7 @@ const (
 
 type DistPackage struct {
 	Package     *string `pk:"true"`
-	HomePage    *string
+	HomePage    *string `column:"homepage"`
 	Description *string
 	Version     *string
 	GitLink     *string
