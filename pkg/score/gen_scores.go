@@ -316,8 +316,16 @@ func FetchDistMetadata(ac storage.AppDatabaseContext) map[string]*DistScore {
 	return distMap
 }
 func FetchGitLink(ac storage.AppDatabaseContext) []string {
-	gitLink := []string{}
-	return gitLink
+	repo := repository.NewAllGitLinkRepository(ac)
+	linksIter, err := repo.Query()
+	if err != nil {
+		log.Fatalf("Failed to fetch git links: %v", err)
+	}
+	links := []string{}
+	for link := range linksIter {
+		links = append(links, link)
+	}
+	return links
 }
 
 func UpdatePackageList(ac storage.AppDatabaseContext) {

@@ -194,11 +194,13 @@ func getInsertQueryAndArgs[T any](tableName string, data *T, returning bool) (st
 	valuesStr := strings.Join(valuesArr, ", ")
 
 	insertSentenceTemplate := `INSERT INTO %s (%s) VALUES (%s)`
+	var insertSentence string
 	if returning && returningColumnsStr != "" {
 		insertSentenceTemplate += ` RETURNING %s`
+		insertSentence = fmt.Sprintf(insertSentenceTemplate, tableName, columnsStr, valuesStr, returningColumnsStr)
+	} else {
+		insertSentence = fmt.Sprintf(insertSentenceTemplate, tableName, columnsStr, valuesStr)
 	}
-
-	insertSentence := fmt.Sprintf(insertSentenceTemplate, tableName, columnsStr, valuesStr, returningColumnsStr)
 
 	return insertSentence, values, nil
 }
@@ -318,12 +320,14 @@ func getUpsertQueryAndArgs[T any](tableName string, data *T) (string, []interfac
 
 	insertOrUpdateSentenceTemplate := `INSERT INTO %s (%s) VALUES (%s) ON CONFLICT (%s) DO UPDATE SET %s`
 
+	var insertOrUpdateSentence string
+
 	if returningColumnsStr != "" {
 		insertOrUpdateSentenceTemplate += ` RETURNING %s`
+		insertOrUpdateSentence = fmt.Sprintf(insertOrUpdateSentenceTemplate, tableName, columnsStr, valuesStr, pkStr, updateStr, returningColumnsStr)
+	} else {
+		insertOrUpdateSentence = fmt.Sprintf(insertOrUpdateSentenceTemplate, tableName, columnsStr, valuesStr, pkStr, updateStr)
 	}
-
-	insertOrUpdateSentence := fmt.Sprintf(insertOrUpdateSentenceTemplate, tableName, columnsStr, valuesStr, pkStr, updateStr, returningColumnsStr)
-
 	return insertOrUpdateSentence, values, nil
 }
 

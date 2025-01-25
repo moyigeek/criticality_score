@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"regexp"
 	"strings"
@@ -18,6 +19,15 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/samber/lo"
 )
+
+var PackageCounts = map[repository.LangEcosystemType]int{
+	repository.Npm:   3.37e6,
+	repository.Go:    1.29e6,
+	repository.Maven: 668e3,
+	repository.Pypi:  574e3,
+	repository.NuGet: 430e3,
+	repository.Cargo: 168e3,
+}
 
 type DependentInfo struct {
 	DependentCount         int `json:"dependentCount"`
@@ -216,11 +226,11 @@ type GitMetrics struct {
 }
 
 func Depsdev(batchSize int, workerPoolSize int, calculatePageRankFlag bool) {
-	db := storage.GetDefaultAppDatabaseContext()
-	repo := repository.NewLangEcoLinkRepository(db)
+	ac := storage.GetDefaultAppDatabaseContext()
+	repo := repository.NewLangEcoLinkRepository(ac)
 	rdb, _ := storage.InitRedis()
-	// gitLinks := getGitlink(db)
-	gitLinks := []string{"https://github.com/facebook/react.git"}
+	gitLinks := fetchGitLink(ac)
+	// gitLinks := []string{"https://github.com/facebook/react.git"}
 	pkgMap := make(map[string][]Version)
 	pkgDepMap := make(map[string]map[string]int)
 	for _, gitlink := range gitLinks {
@@ -267,7 +277,7 @@ func Depsdev(batchSize int, workerPoolSize int, calculatePageRankFlag bool) {
 			go func(system, pkgName string) {
 				defer wg.Done()
 				defer func() { <-semaphore }()
-				_, err := storage.GetKeyValue(rdb, pkgName)
+				gitlink, err := storage.GetKeyValue(rdb, pkgName)
 				if err != nil {
 					fmt.Println("Error getting key:", err)
 					return
@@ -290,7 +300,7 @@ func Depsdev(batchSize int, workerPoolSize int, calculatePageRankFlag bool) {
 				}
 
 				key := langEcoKey{
-					gitLink: pkgName,
+					gitLink: gitlink,
 					ltype:   ltype,
 				}
 
@@ -310,9 +320,10 @@ func Depsdev(batchSize int, workerPoolSize int, calculatePageRankFlag bool) {
 	var toUpdateList []*repository.LangEcosystem
 	for key, info := range langEco {
 		toUpdateList = append(toUpdateList, lo.ToPtr(repository.LangEcosystem{
-			GitLink:  lo.ToPtr(key.gitLink),
-			Type:     lo.ToPtr(key.ltype),
-			DepCount: lo.ToPtr(info),
+			GitLink:       lo.ToPtr(key.gitLink),
+			Type:          lo.ToPtr(key.ltype),
+			DepCount:      lo.ToPtr(info),
+			LangEcoImpact: lo.ToPtr(float64(info) / float64(PackageCounts[key.ltype])),
 		}))
 	}
 	err := repo.BatchInsertOrUpdate(toUpdateList)
@@ -416,4 +427,17 @@ func getAndProcessDependencies(system, name, version string) Dependencies {
 func removeInvisibleChars(input string) string {
 	re := regexp.MustCompile(`[[:cntrl:]]+`)
 	return re.ReplaceAllString(input, "")
+}
+
+func fetchGitLink(ac storage.AppDatabaseContext) []string {
+	repo := repository.NewAllGitLinkRepository(ac)
+	linksIter, err := repo.Query()
+	if err != nil {
+		log.Fatalf("Failed to fetch git links: %v", err)
+	}
+	links := []string{}
+	for link := range linksIter {
+		links = append(links, link)
+	}
+	return links
 }

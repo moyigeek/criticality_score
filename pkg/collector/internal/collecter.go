@@ -51,6 +51,11 @@ func (cl *Collecter) UpdateOrInsertDatabase(ac storage.AppDatabaseContext) {
 	for _, pkgInfo := range cl.PkgInfoMap {
 		distPackage := pkgInfo.ParseDistPackage()
 		repo := repository.NewDistPackageRepository(ac, cl.DistPackageTablePrefix)
+
+		if pkgInfo.Name == "" {
+			continue
+		}
+
 		err := repo.InsertOrUpdate(distPackage)
 		if err != nil {
 			log.Println("Error inserting package info into database:", err)
@@ -118,6 +123,7 @@ func (cl *Collecter) PageRank(d float64, iterations int) {
 
 	for i := 0; i < iterations; i++ {
 		newRanks := make(map[string]float64)
+
 		for pkgName := range cl.PkgInfoMap {
 			newRanks[pkgName] = (1 - d) / N
 		}
@@ -129,6 +135,7 @@ func (cl *Collecter) PageRank(d float64, iterations int) {
 					depNum++
 				}
 			}
+
 			share := ranks[pkgName] / float64(depNum)
 			for _, dep := range pkgInfo.DirectDepends {
 				if _, exists := cl.PkgInfoMap[dep]; exists {
@@ -139,6 +146,7 @@ func (cl *Collecter) PageRank(d float64, iterations int) {
 
 		ranks = newRanks
 	}
+
 	for pkgName, rank := range ranks {
 		pkgInfo := cl.PkgInfoMap[pkgName]
 		pkgInfo.PageRank = rank
@@ -152,6 +160,7 @@ func (cl *Collecter) ParseInfo(pkgInfo string) {
 
 func (cl *Collecter) GetPackageInfo(urls PackageURL) string {
 	var result string
+
 	for _, url := range urls {
 		resp, err := http.Get(url)
 		if err != nil {
@@ -171,6 +180,7 @@ func (cl *Collecter) GetPackageInfo(urls PackageURL) string {
 
 			tarReader := tar.NewReader(gzipReader)
 			var body strings.Builder
+
 			for {
 				_, err := tarReader.Next()
 				if err == io.EOF {
@@ -200,6 +210,7 @@ func (cl *Collecter) GetPackageInfo(urls PackageURL) string {
 
 			reader := bufio.NewReader(gzipReader)
 			var body strings.Builder
+
 			for {
 				line, err := reader.ReadString('\n')
 				body.WriteString(line)
@@ -218,15 +229,23 @@ func (cl *Collecter) GetPackageInfo(urls PackageURL) string {
 			continue
 		}
 	}
+
 	return result
 }
 
 func (cl *Collecter) GetDepCount() {
 	countMap := make(map[string]int)
+
 	for _, deps := range cl.PkgInfoMap {
 		for _, dep := range deps.IndirectDepends {
 			countMap[dep]++
 		}
+	}
+
+	for pkgName, count := range countMap {
+		pkgInfo := cl.PkgInfoMap[pkgName]
+		pkgInfo.DependsCount = count
+		cl.PkgInfoMap[pkgName] = pkgInfo
 	}
 }
 
@@ -255,9 +274,14 @@ func (cl *Collecter) GetPkgInfo(pkgName string) *PackageInfo {
 
 func (cl *Collecter) UpdateOrInsertDistDependencyDatabase(ac storage.AppDatabaseContext) {
 	for _, pkgInfo := range cl.PkgInfoMap {
+		if pkgInfo.Name == "" {
+			continue
+		}
+
 		pkgInfo.GetGitlinkByPkg(ac)
 		distPackage := pkgInfo.ParseDistLinkInfo()
 		repo := repository.NewDistDependencyRepository(ac)
+
 		if pkgInfo.Gitlink != "" {
 			err := repo.InsertOrUpdate(distPackage)
 			if err != nil {
@@ -278,7 +302,9 @@ func (cl *Collecter) UpdateDistRepoCount(ac storage.AppDatabaseContext) {
 	repo := repository.NewDistDependencyRepository(ac)
 	count, err := repo.QueryDistCountByType(cl.Type)
 	if err != nil {
-		log.Fatalf("Failed to fetch dist links: %v", err)
+		log.Println("Error getting count from dist dependency repository:", err)
+		return
 	}
+
 	cl.DistRepoCount = count
 }

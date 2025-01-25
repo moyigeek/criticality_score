@@ -6,6 +6,7 @@ create table distribution_dependencies
     git_link    varchar,
     type        int,
     dep_count   int,
+    dep_impact  float8,
     impact      float8,
     page_rank   float8,
     update_time timestamp
@@ -138,6 +139,7 @@ create table lang_ecosystems
     git_link    varchar not null,
     type        int,
     dep_count   int,
+    lang_eco_impact float8,
     update_time timestamp default now()
 );
 

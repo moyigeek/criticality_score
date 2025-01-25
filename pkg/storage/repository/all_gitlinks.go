@@ -17,9 +17,13 @@ type allGitLinkRepository struct {
 
 var _ AllGitLinkRepository = (*allGitLinkRepository)(nil)
 
+func NewAllGitLinkRepository(appDb storage.AppDatabaseContext) AllGitLinkRepository {
+	return &allGitLinkRepository{ctx: appDb}
+}
+
 // Query implements AllLinkRepository.
 func (a *allGitLinkRepository) Query() (iter.Seq[string], error) {
-	rows, err := a.ctx.Query("SELECT link FROM all_links")
+	rows, err := a.ctx.Query("SELECT git_link FROM all_gitlinks")
 
 	if err != nil {
 		return nil, err
