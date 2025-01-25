@@ -8,7 +8,6 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage/sqlutil"
 	"github.com/lib/pq"
-	"github.com/samber/lo"
 )
 
 type GitMetricsRepository interface {
@@ -27,15 +26,15 @@ type GitMetricsRepository interface {
 type GitMetric struct {
 	ID               *int64 `generated:"true"`
 	GitLink          *string
-	CreatedSince     *time.Time
-	UpdatedSince     *time.Time
-	ContributorCount *int
-	CommitFrequency  *float64
-	OrgCount         *int
-	License          *pq.StringArray
-	Language         *pq.StringArray
-	CloneValid       *bool
-	UpdateTime       *time.Time
+	CreatedSince     **time.Time
+	UpdatedSince     **time.Time
+	ContributorCount **int
+	CommitFrequency  **float64
+	OrgCount         **int
+	License          **pq.StringArray
+	Language         **pq.StringArray
+	CloneValid       **bool
+	UpdateTime       **time.Time
 }
 
 const GitMetricTableName = "git_metrics"
@@ -49,7 +48,7 @@ var _ GitMetricsRepository = (*gitmetricsRepository)(nil)
 // BatchInsertOrUpdate implements GitMetricsRepository.
 func (g *gitmetricsRepository) BatchInsertOrUpdate(data []*GitMetric) error {
 	for _, d := range data {
-		d.UpdateTime = lo.ToPtr(time.Now())
+		d.UpdateTime = sqlutil.ToNullable(time.Now())
 	}
 	return sqlutil.BatchInsert(g.appDb, string(GitMetricTableName), data)
 }
@@ -60,7 +59,7 @@ func (g *gitmetricsRepository) InsertOrUpdate(data *GitMetric) error {
 	if err != nil {
 		sqlutil.MergeStruct(oldData, data)
 	}
-	data.UpdateTime = lo.ToPtr(time.Now())
+	data.UpdateTime = sqlutil.ToNullable(time.Now())
 	return sqlutil.Insert(g.appDb, string(GitMetricTableName), data)
 }
 

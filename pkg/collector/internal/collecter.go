@@ -276,7 +276,7 @@ func (cl *Collecter) CalculateDistImpact() {
 
 func (cl *Collecter) UpdateDistRepoCount(ac storage.AppDatabaseContext) {
 	repo := repository.NewDistDependencyRepository(ac)
-	count, err := repo.QueryDistCountByType(int(cl.Type))
+	count, err := repo.QueryDistCountByType(cl.Type)
 	if err != nil {
 		log.Fatalf("Failed to fetch dist links: %v", err)
 	}

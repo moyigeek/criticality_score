@@ -12,9 +12,9 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/logger"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage/repository"
+	"github.com/HUSTSecLab/criticality_score/pkg/storage/sqlutil"
 	"github.com/bytedance/gopkg/util/gopool"
 	"github.com/lib/pq"
-	"github.com/samber/lo"
 	"github.com/spf13/pflag"
 )
 
@@ -95,14 +95,14 @@ func main() {
 			}
 
 			err = gmr.InsertOrUpdate(&repository.GitMetric{
-				GitLink:          lo.ToPtr(input),
-				CreatedSince:     lo.ToPtr(repo.CreatedSince),
-				UpdatedSince:     lo.ToPtr(repo.UpdatedSince),
-				ContributorCount: lo.ToPtr(repo.ContributorCount),
-				CommitFrequency:  lo.ToPtr(repo.CommitFrequency),
-				OrgCount:         lo.ToPtr(repo.OrgCount),
-				License:          lo.ToPtr(pq.StringArray(repo.Licenses)),
-				Language:         lo.ToPtr(pq.StringArray(repo.Languages)),
+				GitLink:          sqlutil.ToData(input),
+				CreatedSince:     sqlutil.ToNullable(repo.CreatedSince),
+				UpdatedSince:     sqlutil.ToNullable(repo.UpdatedSince),
+				ContributorCount: sqlutil.ToNullable(repo.ContributorCount),
+				CommitFrequency:  sqlutil.ToNullable(repo.CommitFrequency),
+				OrgCount:         sqlutil.ToNullable(repo.OrgCount),
+				License:          sqlutil.ToNullable(pq.StringArray(repo.Licenses)),
+				Language:         sqlutil.ToNullable(pq.StringArray(repo.Languages)),
 			})
 
 			if err != nil {

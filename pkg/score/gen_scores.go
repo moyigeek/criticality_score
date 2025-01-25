@@ -7,6 +7,7 @@ import (
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage/repository"
+	"github.com/HUSTSecLab/criticality_score/pkg/storage/sqlutil"
 )
 
 type LinkScore struct {
@@ -141,11 +142,21 @@ func (distMetadata *DistMetadata) PraseDistMetadata(distLink *repository.DistDep
 
 func (gitMetadata *GitMetadata) ParseMetadata(gitMetic *repository.GitMetric) {
 	gitMetadata.Id = *gitMetic.ID
-	gitMetadata.CreatedSince = *gitMetic.CreatedSince
-	gitMetadata.UpdatedSince = *gitMetic.UpdatedSince
-	gitMetadata.ContributorCount = *gitMetic.ContributorCount
-	gitMetadata.CommitFrequency = *gitMetic.CommitFrequency
-	gitMetadata.Org_Count = *gitMetic.OrgCount
+	if !sqlutil.IsNull(gitMetic.CreatedSince) {
+		gitMetadata.CreatedSince = **gitMetic.CreatedSince
+	}
+	if !sqlutil.IsNull(gitMetic.UpdatedSince) {
+		gitMetadata.UpdatedSince = **gitMetic.UpdatedSince
+	}
+	if !sqlutil.IsNull(gitMetic.ContributorCount) {
+		gitMetadata.ContributorCount = **gitMetic.ContributorCount
+	}
+	if !sqlutil.IsNull(gitMetic.CommitFrequency) {
+		gitMetadata.CommitFrequency = **gitMetic.CommitFrequency
+	}
+	if !sqlutil.IsNull(gitMetic.OrgCount) {
+		gitMetadata.Org_Count = **gitMetic.OrgCount
+	}
 }
 
 func (langEcoScore *LangEcoScore) CalculateLangEcoScore() {
@@ -185,11 +196,11 @@ func (gitMetadataScore *GitMetadataScore) CalculateGitMetadataScore(gitMetadata 
 	gitMetadataScore.GitMetadataScore = score
 	gitMetadataScore.GitMetrics = []*repository.GitMetric{
 		{
-			CreatedSince:     &gitMetadata.CreatedSince,
-			UpdatedSince:     &gitMetadata.UpdatedSince,
-			ContributorCount: &gitMetadata.ContributorCount,
-			CommitFrequency:  &gitMetadata.CommitFrequency,
-			OrgCount:         &gitMetadata.Org_Count,
+			CreatedSince:     sqlutil.ToNullable(gitMetadata.CreatedSince),
+			UpdatedSince:     sqlutil.ToNullable(gitMetadata.UpdatedSince),
+			ContributorCount: sqlutil.ToNullable(gitMetadata.ContributorCount),
+			CommitFrequency:  sqlutil.ToNullable(gitMetadata.CommitFrequency),
+			OrgCount:         sqlutil.ToNullable(gitMetadata.Org_Count),
 		},
 	}
 }

@@ -530,3 +530,22 @@ func MergeStruct[T any](old *T, dst *T) {
 		}
 	}
 }
+
+// ToData convert data to pointer
+func ToData[T any](data T) *T {
+	return &data
+}
+
+// ToNullable convert data to nullable pointer
+func ToNullable[T any](data T) **T {
+	d := &data
+	return &d
+}
+
+func IsUnset[T any](data *T) bool {
+	return data == nil
+}
+
+func IsNull[T any](data **T) bool {
+	return data == nil || *data == nil
+}

@@ -13,6 +13,7 @@ import (
 	scores "github.com/HUSTSecLab/criticality_score/pkg/score"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage/repository"
+	"github.com/HUSTSecLab/criticality_score/pkg/storage/sqlutil"
 	gogit "github.com/go-git/go-git/v5"
 	"github.com/spf13/pflag"
 )
@@ -55,11 +56,11 @@ func main() {
 	repo.Show()
 	gitMetric := &repository.GitMetric{
 		GitLink:          &link,
-		CommitFrequency:  &repo.CommitFrequency,
-		ContributorCount: &repo.ContributorCount,
-		CreatedSince:     &repo.CreatedSince,
-		UpdatedSince:     &repo.UpdatedSince,
-		OrgCount:         &repo.OrgCount,
+		CommitFrequency:  sqlutil.ToNullable(repo.CommitFrequency),
+		ContributorCount: sqlutil.ToNullable(repo.ContributorCount),
+		CreatedSince:     sqlutil.ToNullable(repo.CreatedSince),
+		UpdatedSince:     sqlutil.ToNullable(repo.UpdatedSince),
+		OrgCount:         sqlutil.ToNullable(repo.OrgCount),
 	}
 	gitMetadata := InsertGitMeticAndFetch(ac, gitMetric)
 
