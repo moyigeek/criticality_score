@@ -79,7 +79,7 @@ func (ctx *batchExecContext) AppendExec(sentence string, args ...interface{}) er
 		if err != nil {
 			return fmt.Errorf("invalid placeholder $%s in sentence %s", nStr, sentence)
 		}
-		if n < 0 || n >= len(args) {
+		if n < 1 || n > len(args) {
 			return fmt.Errorf("invalid placeholder $%d in sentence %s", n, sentence)
 		}
 		toReplace[i] = start + n
@@ -88,7 +88,7 @@ func (ctx *batchExecContext) AppendExec(sentence string, args ...interface{}) er
 	// replace all placeholders with $n in the sentence
 	for i := len(matches) - 1; i >= 0; i-- {
 		n := toReplace[i]
-		s = s[:matches[i][0]] + "$" + strconv.Itoa(n+1) + s[matches[i][1]:]
+		s = s[:matches[i][0]] + "$" + strconv.Itoa(n) + s[matches[i][1]:]
 	}
 
 	ctx.sentences += sentence + ";"
