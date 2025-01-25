@@ -17,7 +17,7 @@ type DistDependencyRepository interface {
 	Query() (iter.Seq[*DistDependency], error) // Query all distribution information.
 	QueryByType(distType int) (iter.Seq[*DistDependency], error)
 	GetByLink(packageName string, distType int) (*DistDependency, error)
-	QueryDistCountByType(distType int) (int, error) // Get the total number of packages in a Distro.
+	QueryDistCountByType(distType DistType) (int, error) // Get the total number of packages in a Distro.
 
 	/** INSERT/UPDATE **/
 	// update_time will be updated automatically

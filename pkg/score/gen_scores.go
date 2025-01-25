@@ -312,7 +312,7 @@ func FetchGitLink(ac storage.AppDatabaseContext) []string {
 func UpdatePackageList(ac storage.AppDatabaseContext) {
 	repo := repository.NewDistDependencyRepository(ac)
 	for distType := range PackageList {
-		count, err := repo.QueryDistCountByType(int(distType))
+		count, err := repo.QueryDistCountByType(distType)
 		if err != nil {
 			log.Fatalf("Failed to fetch dist links: %v", err)
 		}
