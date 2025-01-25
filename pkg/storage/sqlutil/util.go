@@ -158,7 +158,7 @@ func createIterator[T any](rows *sql.Rows) iter.Seq[*T] {
 	}
 }
 
-func getInsertQueryAndArgs[T any](tableName string, data *T) (string, []interface{}, error) {
+func getInsertQueryAndArgs[T any](tableName string, data *T, returning bool) (string, []interface{}, error) {
 	reflectType := reflect.TypeOf(*data)
 	reflectVal := reflect.ValueOf(data).Elem()
 
@@ -194,7 +194,7 @@ func getInsertQueryAndArgs[T any](tableName string, data *T) (string, []interfac
 	valuesStr := strings.Join(valuesArr, ", ")
 
 	insertSentenceTemplate := `INSERT INTO %s (%s) VALUES (%s)`
-	if returningColumnsStr != "" {
+	if returning && returningColumnsStr != "" {
 		insertSentenceTemplate += ` RETURNING %s`
 	}
 
@@ -436,7 +436,7 @@ func scanGeneratedColumns(data interface{}, rows *sql.Rows) {
 }
 
 func Insert[T any](ctx storage.AppDatabaseContext, into string, data *T) error {
-	insertSentence, values, err := getInsertQueryAndArgs[T](into, data)
+	insertSentence, values, err := getInsertQueryAndArgs[T](into, data, true)
 	if err != nil {
 		return err
 	}
@@ -458,7 +458,7 @@ func BatchInsert[T any](ctx storage.AppDatabaseContext, into string, data []*T) 
 	})
 	defer batchCtx.Commit()
 	for _, d := range data {
-		insertSentence, args, err := getInsertQueryAndArgs[T](into, d)
+		insertSentence, args, err := getInsertQueryAndArgs[T](into, d, false)
 		if err != nil {
 			return err
 		}
