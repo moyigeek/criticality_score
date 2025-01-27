@@ -158,6 +158,49 @@ func createIterator[T any](rows *sql.Rows) iter.Seq[*T] {
 	}
 }
 
+func getBatchInsertQueryAndArgs[T any](tableName string, data []*T) (string, []interface{}, error) {
+	reflectType := reflect.TypeOf(data[0]).Elem()
+
+	columns := make([]string, 0)
+	values := make([]interface{}, 0)
+
+	cToFMap := getTypeColumnToFieldInfo(reflectType)
+
+	for k, v := range cToFMap {
+		columns = append(columns, k)
+		for i := 0; i < len(data); i++ {
+			reflectVal := reflect.ValueOf(data[i]).Elem()
+			// if generated or nil, ignore
+			if v.isGenerated || reflectVal.Field(v.idx).IsNil() {
+				continue
+			}
+			values = append(values, reflectVal.Field(v.idx).Elem().Interface())
+		}
+	}
+
+	if len(columns) == 0 {
+		return "", nil, fmt.Errorf("no column to insert")
+	}
+
+	columnsStr := strings.Join(columns, ", ")
+
+	valuesStr := ""
+	for i := 0; i < len(data); i++ {
+		// value str $1, $2
+		valuesStr += "("
+		for j := 0; j < len(values); j++ {
+			valuesStr += fmt.Sprintf("$%d", i*len(values)+j+1)
+			valuesStr += ", "
+		}
+		valuesStr += ")"
+	}
+
+	insertSentenceTemplate := `INSERT INTO %s (%s) VALUES %s`
+	var insertSentence string
+	insertSentence = fmt.Sprintf(insertSentenceTemplate, tableName, columnsStr, valuesStr)
+	return insertSentence, values, nil
+}
+
 func getInsertQueryAndArgs[T any](tableName string, data *T, returning bool) (string, []interface{}, error) {
 	reflectType := reflect.TypeOf(*data)
 	reflectVal := reflect.ValueOf(data).Elem()
@@ -456,17 +499,23 @@ func Insert[T any](ctx storage.AppDatabaseContext, into string, data *T) error {
 }
 
 func BatchInsert[T any](ctx storage.AppDatabaseContext, into string, data []*T) error {
-	batchCtx := ctx.NewBatchExecContext(&storage.BatchExecContextConfig{
-		AutoCommit:     true,
-		AutoCommitSize: 1000,
-	})
-	defer batchCtx.Commit()
-	for _, d := range data {
-		insertSentence, args, err := getInsertQueryAndArgs[T](into, d, false)
+	const BatchInsertSizePerTime = 1000
+
+	if len(data) == 0 {
+		return fmt.Errorf("no data to insert")
+	}
+
+	for i := 0; i < len(data); i += BatchInsertSizePerTime {
+		d := data[i:min(i+BatchInsertSizePerTime, len(data))]
+
+		insertSentence, values, err := getBatchInsertQueryAndArgs[T](into, d)
 		if err != nil {
 			return err
 		}
-		batchCtx.AppendExec(insertSentence, args...)
+		_, err = ctx.Exec(insertSentence, values...)
+		if err != nil {
+			return err
+		}
 	}
 	return nil
 }
@@ -478,22 +527,6 @@ func Update[T any](ctx storage.AppDatabaseContext, tableName string, data *T) er
 	}
 	_, err = ctx.Exec(updateSentence, values...)
 	return err
-}
-
-func BatchUpdate[T any](ctx storage.AppDatabaseContext, tableName string, data []*T) error {
-	batchCtx := ctx.NewBatchExecContext(&storage.BatchExecContextConfig{
-		AutoCommit:     true,
-		AutoCommitSize: 1000,
-	})
-	defer batchCtx.Commit()
-	for _, d := range data {
-		updateSentence, args, err := getUpdateQueryAndArgs[T](tableName, d)
-		if err != nil {
-			return err
-		}
-		batchCtx.AppendExec(updateSentence, args...)
-	}
-	return nil
 }
 
 func Upsert[T any](ctx storage.AppDatabaseContext, into string, data *T) error {

@@ -23,8 +23,6 @@ type DistPackageRepository interface {
 	BatchInsert(packageInfos []*DistPackage) error
 	// NOTE: git_link will be ignored
 	Update(packageInfos *DistPackage) error
-	// NOTE: git_link will be ignored
-	BatchUpdate(packageInfos []*DistPackage) error
 
 	UpdateGitLink(name, gitLink string) error
 
@@ -79,11 +77,6 @@ func (d *distPackageRepository) InsertOrUpdate(packageInfo *DistPackage) error {
 // BatchInsert implements DistPackageRepository.
 func (d *distPackageRepository) BatchInsert(packageInfos []*DistPackage) error {
 	return sqlutil.BatchInsert(d.ctx, string(d.prefix)+DistPackageTableNameAppendix, packageInfos)
-}
-
-// BatchUpdate implements DistPackageRepository.
-func (d *distPackageRepository) BatchUpdate(packageInfos []*DistPackage) error {
-	return sqlutil.BatchUpdate(d.ctx, string(d.prefix)+DistPackageTableNameAppendix, packageInfos)
 }
 
 // Delete implements DistPackageRepository.
