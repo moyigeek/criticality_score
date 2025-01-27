@@ -19,11 +19,14 @@ func Collect(gitLink string) {
 
 	recordFail := func(e error) {
 		logger.Errorf("Collecting %s Failed: %s", gitLink, e)
-		gmr.InsertOrUpdateFailed(&repository.FailedGitMetric{
+		err := gmr.InsertOrUpdateFailed(&repository.FailedGitMetric{
 			GitLink:    sqlutil.ToData(gitLink),
 			Message:    sqlutil.ToNullable(e.Error()),
 			UpdateTime: sqlutil.ToNullable(time.Now()),
 		})
+		if err != nil {
+			logger.Errorf("Inserting %s Failed %s", gitLink, err)
+		}
 	}
 
 	recordSuccess := func(repo *git.Repo) {
@@ -41,7 +44,7 @@ func Collect(gitLink string) {
 		})
 
 		if err != nil {
-			logger.Fatalf("Inserting %s Failed", gitLink)
+			logger.Errorf("Inserting %s Failed", gitLink)
 		}
 	}
 

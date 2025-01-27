@@ -98,7 +98,7 @@ func (g *gitmetricsRepository) DeleteFailed(link string) error {
 func (g *gitmetricsRepository) InsertOrUpdateFailed(data *FailedGitMetric) error {
 	_, err := g.ctx.Exec(`INSERT INTO `+FailedGitMetricTableName+` (git_link, message, update_time, times)
 		VALUES ($1, $2, $3, 1)
-		ON CONFLICT (git_link) DO UPDATE SET message = $2, update_time = $3, times = times + 1`,
+		ON CONFLICT (git_link) DO UPDATE SET message = $2, update_time = $3, times = `+FailedGitMetricTableName+`.times + 1`,
 		data.GitLink, data.Message, data.UpdateTime)
 	return err
 
