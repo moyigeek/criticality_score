@@ -184,11 +184,13 @@ func getBatchInsertQueryAndArgs[T any](tableName string, data []*T) (string, []i
 
 	columnsStr := strings.Join(columns, ", ")
 
+	numPerData := len(values) / len(data)
+
 	valuesStr := ""
 	for i := 0; i < len(data); i++ {
 		// value str $1, $2
 		valuesStr += "("
-		for j := 0; j < len(values); j++ {
+		for j := 0; j < numPerData; j++ {
 			valuesStr += fmt.Sprintf("$%d", i*len(values)+j+1)
 			valuesStr += ", "
 		}
