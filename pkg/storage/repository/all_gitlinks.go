@@ -31,13 +31,16 @@ func (a *allGitLinkRepository) Query() (iter.Seq[string], error) {
 
 	return func(yield func(string) bool) {
 		for rows.Next() {
-			var link string
+			var link *string
 			err := rows.Scan(&link)
 			if err != nil {
 				return
 			}
+			if link == nil {
+				continue
+			}
 
-			if !yield(link) {
+			if !yield(*link) {
 				return
 			}
 		}
