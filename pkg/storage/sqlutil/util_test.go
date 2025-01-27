@@ -132,9 +132,9 @@ func TestInsertSentence(t *testing.T) {
 			var err error
 			switch tt.args.data.(type) {
 			case *a:
-				got, args, err = getInsertQueryAndArgs(tt.args.tableName, tt.args.data.(*a))
+				got, args, err = getInsertQueryAndArgs(tt.args.tableName, tt.args.data.(*a), false)
 			case *b:
-				got, args, err = getInsertQueryAndArgs(tt.args.tableName, tt.args.data.(*b))
+				got, args, err = getInsertQueryAndArgs(tt.args.tableName, tt.args.data.(*b), false)
 			}
 			assertQueryBuilderWant(t, got, args, err, tt.wantErr, tt.want)
 		})
