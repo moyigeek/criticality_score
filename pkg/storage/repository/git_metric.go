@@ -21,6 +21,10 @@ type GitMetricsRepository interface {
 	// NOTE: update_time will be updated automatically
 	// and the data will not copy from old data
 	BatchInsertOrUpdate(data []*GitMetric) error
+
+	// times will be updated automatically
+	InsertOrUpdateFailed(data *FailedGitMetric) error
+	DeleteFailed(link string) error
 }
 
 type GitMetric struct {
@@ -37,10 +41,18 @@ type GitMetric struct {
 	UpdateTime       **time.Time
 }
 
+type FailedGitMetric struct {
+	GitLink    *string `pk:"true"`
+	Message    **string
+	UpdateTime **time.Time
+	Times      **int
+}
+
 const GitMetricTableName = "git_metrics"
+const FailedGitMetricTableName = "failed_git_metrics"
 
 type gitmetricsRepository struct {
-	appDb storage.AppDatabaseContext
+	ctx storage.AppDatabaseContext
 }
 
 var _ GitMetricsRepository = (*gitmetricsRepository)(nil)
@@ -50,7 +62,7 @@ func (g *gitmetricsRepository) BatchInsertOrUpdate(data []*GitMetric) error {
 	for _, d := range data {
 		d.UpdateTime = sqlutil.ToNullable(time.Now())
 	}
-	return sqlutil.BatchInsert(g.appDb, string(GitMetricTableName), data)
+	return sqlutil.BatchInsert(g.ctx, string(GitMetricTableName), data)
 }
 
 // InsertOrUpdate implements GitMetricsRepository.
@@ -60,7 +72,7 @@ func (g *gitmetricsRepository) InsertOrUpdate(data *GitMetric) error {
 		sqlutil.MergeStruct(oldData, data)
 	}
 	data.UpdateTime = sqlutil.ToNullable(time.Now())
-	return sqlutil.Insert(g.appDb, string(GitMetricTableName), data)
+	return sqlutil.Insert(g.ctx, string(GitMetricTableName), data)
 }
 
 // Query implements GitMetricsRepository.
@@ -69,14 +81,29 @@ func (g *gitmetricsRepository) Query() (iter.Seq[*GitMetric], error) {
 	 * 
 	FROM %s
 	ORDER BY git_link, id DESC)`, GitMetricTableName)
-	return sqlutil.QueryCommon[GitMetric](g.appDb, subQuery, "")
+	return sqlutil.QueryCommon[GitMetric](g.ctx, subQuery, "")
 }
 
 // QueryByLink implements GitMetricsRepository.
 func (g *gitmetricsRepository) QueryByLink(link string) (*GitMetric, error) {
-	return sqlutil.QueryCommonFirst[GitMetric](g.appDb, GitMetricTableName, "WHERE git_link = $1 ORDER BY id DESC", link)
+	return sqlutil.QueryCommonFirst[GitMetric](g.ctx, GitMetricTableName, "WHERE git_link = $1 ORDER BY id DESC", link)
+}
+
+// DeleteFailed implements GitMetricsRepository.
+func (g *gitmetricsRepository) DeleteFailed(link string) error {
+	return sqlutil.Delete(g.ctx, FailedGitMetricTableName, &FailedGitMetric{GitLink: &link})
+}
+
+// InsertOrUpdateFailed implements GitMetricsRepository.
+func (g *gitmetricsRepository) InsertOrUpdateFailed(data *FailedGitMetric) error {
+	_, err := g.ctx.Exec(`INSERT INTO `+FailedGitMetricTableName+` (git_link, message, update_time, times)
+		VALUES ($1, $2, $3, 1)
+		ON CONFLICT (git_link) DO UPDATE SET message = $2, update_time = $3, times = times + 1`,
+		data.GitLink, data.Message, data.UpdateTime)
+	return err
+
 }
 
 func NewGitMetricsRepository(appDb storage.AppDatabaseContext) GitMetricsRepository {
-	return &gitmetricsRepository{appDb: appDb}
+	return &gitmetricsRepository{ctx: appDb}
 }
