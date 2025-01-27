@@ -39,8 +39,8 @@ from (
     ) order by git_link
 ) union (
     select git_link, 1 as type from failed_git_metrics
-    where updated_time < now() - least(pow(2, times), 60) * interval '1 day'
-    order by updated_time desc
+    where update_time < now() - least(pow(2, times), 60) * interval '1 day'
+    order by update_time desc
 ) union (
     select git_link, 2 as type from (
         select distinct on (git_link) git_link, update_time, commit_frequency from
