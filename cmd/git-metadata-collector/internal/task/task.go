@@ -18,19 +18,27 @@ func Collect(gitLink string) {
 	gmr := repository.NewGitMetricsRepository(storage.GetDefaultAppDatabaseContext())
 
 	recordFail := func(e error) {
-		logger.Errorf("Collecting %s Failed: %s", gitLink, e)
+		logger.WithFields(map[string]any{
+			"gitlink": gitLink,
+			"error":   e,
+		}).Errorf("Collecting git metrics failed: %v", gitLink)
 		err := gmr.InsertOrUpdateFailed(&repository.FailedGitMetric{
 			GitLink:    sqlutil.ToData(gitLink),
 			Message:    sqlutil.ToNullable(e.Error()),
 			UpdateTime: sqlutil.ToNullable(time.Now()),
 		})
 		if err != nil {
-			logger.Errorf("Inserting %s Failed %s", gitLink, err)
+			logger.WithFields(map[string]any{
+				"gitlink": gitLink,
+				"error":   err,
+			}).Errorf("Inserting row failed: %v", gitLink)
 		}
 	}
 
 	recordSuccess := func(repo *git.Repo) {
-		logger.Infof("%s Collected", gitLink)
+		logger.WithFields(map[string]any{
+			"gitlink": gitLink,
+		}).Infof("git metrics collected successfully: %v", gitLink)
 
 		err := gmr.InsertOrUpdate(&repository.GitMetric{
 			GitLink:          sqlutil.ToData(gitLink),

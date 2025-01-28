@@ -18,6 +18,7 @@ func main() {
 	config.RegistCommonFlags(pflag.CommandLine)
 	config.RegistGitStorageFlags(pflag.CommandLine)
 	config.ParseFlags(pflag.CommandLine)
+	logger.SetContext("git-metadata-collector")
 
 	// psql.CreateTable(db)
 	gp := gopool.NewPool("collector", int32(*flagJobsCount), &gopool.Config{})

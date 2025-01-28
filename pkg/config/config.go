@@ -34,6 +34,7 @@ func GetDatabaseConfig() *storage.Config {
 func GetLogConfig() *logger.AppLoggerConfig {
 	var level logger.LoggerLevel
 	var format logger.LoggerFormatType
+	var ttype logger.LoggerOutput
 
 	viperLevel := viper.GetString("log.level")
 	switch viperLevel {
@@ -68,13 +69,26 @@ func GetLogConfig() *logger.AppLoggerConfig {
 		format = logger.LoggerFormatJSON
 	}
 
+	viperType := viper.GetString("log.type")
+
+	switch viperType {
+	case "console":
+		ttype = logger.LoggerOutputStderr
+	case "file":
+		ttype = logger.LoggerOutputFile
+	case "es":
+		ttype = logger.LoggerOutputElasticSearch
+	default:
+		ttype = logger.LoggerOutputStderr
+	}
+
 	return &logger.AppLoggerConfig{
 		Level:         level,
 		FormatType:    format,
-		Output:        logger.LoggerOutput(viper.GetInt("log.output")),
-		OutputPath:    viper.GetString("log.output-path"),
-		OutputEsURL:   viper.GetString("log.output-es-url"),
-		OutputEsIndex: viper.GetString("log.output-es-index"),
+		Output:        ttype,
+		OutputPath:    viper.GetString("log.path"),
+		OutputEsURL:   viper.GetString("log.es-url"),
+		OutputEsIndex: viper.GetString("log.es-index"),
 	}
 
 }

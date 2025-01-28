@@ -10,6 +10,15 @@ func init() {
 	instance = NewLogrusLogger(nil)
 }
 
+func SetContext(ctx string) {
+	switch l := instance.(type) {
+	case *logrusLogger:
+		l.entry = l.entry.WithField("context", ctx)
+	default:
+		// do nothing
+	}
+}
+
 func Config(config *AppLoggerConfig) {
 	instance.Config(config)
 }
