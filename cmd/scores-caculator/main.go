@@ -28,7 +28,14 @@ func main() {
 	packageScore := make(map[string]*scores.LinkScore)
 
 	for _, link := range linksMap {
+		if _, ok := distMetricMap[link]; !ok {
+			distMetricMap[link] = scores.NewDistScore()
+		}
 		distMetricMap[link].CalculateDistScore()
+
+		if _, ok := langEcoMetricMap[link]; !ok {
+			langEcoMetricMap[link] = scores.NewLangEcoScore()
+		}
 		langEcoMetricMap[link].CalculateLangEcoScore()
 
 		gitMetadataScore := scores.NewGitMetadataScore()

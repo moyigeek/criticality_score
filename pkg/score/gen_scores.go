@@ -131,6 +131,7 @@ func (langEcoMetadata *LangEcoMetadata) ParseLangEcoMetadata(langEcosystem *repo
 	langEcoMetadata.Id = *langEcosystem.ID
 	langEcoMetadata.Type = *langEcosystem.Type
 	langEcoMetadata.DepCount = *langEcosystem.DepCount
+	langEcoMetadata.LangEcoImpact = *langEcosystem.LangEcoImpact
 }
 
 func (distMetadata *DistMetadata) PraseDistMetadata(distLink *repository.DistDependency) {

@@ -21,12 +21,13 @@ import (
 )
 
 var PackageCounts = map[repository.LangEcosystemType]int{
-	repository.Npm:   3.37e6,
-	repository.Go:    1.29e6,
-	repository.Maven: 668e3,
-	repository.Pypi:  574e3,
-	repository.NuGet: 430e3,
-	repository.Cargo: 168e3,
+	repository.Npm:    3.37e6,
+	repository.Go:     1.29e6,
+	repository.Maven:  668e3,
+	repository.Pypi:   574e3,
+	repository.NuGet:  430e3,
+	repository.Cargo:  168e3,
+	repository.Others: 1,
 }
 
 type DependentInfo struct {
@@ -143,7 +144,7 @@ func queryDepsDev(projectType, projectName, version string) int {
 
 	var info DependentInfo
 	if err := json.NewDecoder(resp.Body).Decode(&info); err != nil {
-		fmt.Println("Error decoding response:", err)
+		// fmt.Println("Error decoding response:", err)
 		return 0
 	}
 	return info.DependentCount
@@ -229,26 +230,44 @@ func Depsdev(batchSize int, workerPoolSize int, calculatePageRankFlag bool) {
 	ac := storage.GetDefaultAppDatabaseContext()
 	repo := repository.NewLangEcoLinkRepository(ac)
 	rdb, _ := storage.InitRedis()
-	gitLinks := fetchGitLink(ac)
+	gitLinks := fetchGitLink(ac, lo.ToPtr(0))
 	// gitLinks := []string{"https://github.com/facebook/react.git"}
 	pkgMap := make(map[string][]Version)
 	pkgDepMap := make(map[string]map[string]int)
+	var count int
+	var mu sync.Mutex
+	var wg sync.WaitGroup
+	semaphore := make(chan struct{}, workerPoolSize)
+
 	for _, gitlink := range gitLinks {
-		depMap := queryDepsName(gitlink, rdb)
-		for pkgName, pkgInfo := range depMap {
-			if _, exists := pkgDepMap[pkgInfo.System]; !exists {
-				pkgDepMap[pkgInfo.System] = make(map[string]int)
+		count++
+		log.Println("Processing gitlink:", gitlink, "Count: ", count, "/", len(gitLinks))
+		wg.Add(1)
+		semaphore <- struct{}{}
+		go func(gitlink string) {
+			defer wg.Done()
+			defer func() { <-semaphore }()
+			depMap := queryDepsName(gitlink, rdb)
+			mu.Lock()
+			for pkgName, pkgInfo := range depMap {
+				if _, exists := pkgDepMap[pkgInfo.System]; !exists {
+					pkgDepMap[pkgInfo.System] = make(map[string]int)
+				}
+				pkgDepMap[pkgInfo.System][pkgName] = queryDepsDev(pkgInfo.System, pkgInfo.Name, pkgInfo.Version)
 			}
-			pkgDepMap[pkgInfo.System][pkgName] = queryDepsDev(pkgInfo.System, pkgInfo.Name, pkgInfo.Version)
-		}
-		if calculatePageRankFlag {
-			pkgdepMap := fetchDep(depMap, workerPoolSize)
-			for pkgName, pkgInfo := range pkgdepMap {
-				pkgMap[pkgName] = pkgInfo
+			mu.Unlock()
+			if calculatePageRankFlag {
+				pkgdepMap := fetchDep(depMap, workerPoolSize)
+				mu.Lock()
+				for pkgName, pkgInfo := range pkgdepMap {
+					pkgMap[pkgName] = pkgInfo
+				}
+				mu.Unlock()
+				storage.PersistData(rdb)
 			}
-			storage.PersistData(rdb)
-		}
+		}(gitlink)
 	}
+	wg.Wait()
 	var pageRank map[string]float64
 	if calculatePageRankFlag {
 		pageRank = calculatePageRank(pkgMap, 100, 0.85)
@@ -260,9 +279,6 @@ func Depsdev(batchSize int, workerPoolSize int, calculatePageRankFlag bool) {
 			}
 		}
 	}
-	var mu sync.Mutex
-	var wg sync.WaitGroup
-	semaphore := make(chan struct{}, workerPoolSize)
 	type langEcoKey struct {
 		gitLink string
 		ltype   repository.LangEcosystemType
@@ -317,6 +333,23 @@ func Depsdev(batchSize int, workerPoolSize int, calculatePageRankFlag bool) {
 		}
 	}
 	wg.Wait()
+
+	for _, link := range gitLinks {
+		found := false
+		for key := range langEco {
+			if key.gitLink == link {
+				found = true
+				break
+			}
+		}
+		if !found {
+			key := langEcoKey{
+				gitLink: link,
+				ltype:   repository.LangEcosystemType(6),
+			}
+			langEco[key] = 0
+		}
+	}
 	var toUpdateList []*repository.LangEcosystem
 	for key, info := range langEco {
 		toUpdateList = append(toUpdateList, lo.ToPtr(repository.LangEcosystem{
@@ -429,15 +462,20 @@ func removeInvisibleChars(input string) string {
 	return re.ReplaceAllString(input, "")
 }
 
-func fetchGitLink(ac storage.AppDatabaseContext) []string {
+func fetchGitLink(ac storage.AppDatabaseContext, limit *int) []string {
 	repo := repository.NewAllGitLinkRepository(ac)
 	linksIter, err := repo.Query()
 	if err != nil {
 		log.Fatalf("Failed to fetch git links: %v", err)
 	}
 	links := []string{}
+	count := 0
 	for link := range linksIter {
+		if *limit > 0 && count >= *limit {
+			break
+		}
 		links = append(links, link)
+		count++
 	}
 	return links
 }

@@ -159,50 +159,60 @@ func createIterator[T any](rows *sql.Rows) iter.Seq[*T] {
 }
 
 func getBatchInsertQueryAndArgs[T any](tableName string, data []*T) (string, []interface{}, error) {
-	reflectType := reflect.TypeOf(data[0]).Elem()
-
-	columns := make([]string, 0)
-	values := make([]interface{}, 0)
-
-	cToFMap := getTypeColumnToFieldInfo(reflectType)
-
-	for k, v := range cToFMap {
-		columns = append(columns, k)
-		for i := 0; i < len(data); i++ {
-			reflectVal := reflect.ValueOf(data[i]).Elem()
-			// if generated or nil, ignore
-			if v.isGenerated || reflectVal.Field(v.idx).IsNil() {
-				continue
-			}
-			values = append(values, reflectVal.Field(v.idx).Elem().Interface())
-		}
+	if len(data) == 0 {
+		return "", nil, fmt.Errorf("empty data")
 	}
 
+	reflectType := reflect.TypeOf(data[0]).Elem()
+	cToFMap := getTypeColumnToFieldInfo(reflectType)
+
+	columns := make([]string, 0)
+	for k, v := range cToFMap {
+		if k == "id" || k == "update_time" || v.isGenerated {
+			continue
+		}
+		columns = append(columns, k)
+	}
 	if len(columns) == 0 {
 		return "", nil, fmt.Errorf("no column to insert")
 	}
 
-	columnsStr := strings.Join(columns, ", ")
-
-	numPerData := len(values) / len(data)
-
-	valuesStr := ""
-	for i := 0; i < len(data); i++ {
-		// value str $1, $2
-		valuesStr += "("
-		for j := 0; j < numPerData; j++ {
-			valuesStr += fmt.Sprintf("$%d", i*len(values)+j+1)
-			valuesStr += ", "
+	var values []interface{}
+	for _, item := range data {
+		elem := reflect.ValueOf(item).Elem()
+		for _, col := range columns {
+			fieldInfo := cToFMap[col]
+			fieldVal := elem.Field(fieldInfo.idx)
+			if fieldVal.IsNil() {
+				values = append(values, nil)
+			} else {
+				values = append(values, fieldVal.Elem().Interface())
+			}
 		}
-		valuesStr += ")"
 	}
 
-	insertSentenceTemplate := `INSERT INTO %s (%s) VALUES %s`
-	var insertSentence string
-	insertSentence = fmt.Sprintf(insertSentenceTemplate, tableName, columnsStr, valuesStr)
-	return insertSentence, values, nil
-}
+	numPerData := len(columns)
+	var placeholders []string
+	for i := 0; i < len(data); i++ {
+		ph := make([]string, numPerData)
+		start := i*numPerData + 1
+		for j := 0; j < numPerData; j++ {
+			ph[j] = fmt.Sprintf("$%d", start+j)
+		}
+		placeholders = append(placeholders, "("+strings.Join(ph, ", ")+")")
+	}
 
+	columnsStr := strings.Join(columns, ", ")
+	valuesStr := strings.Join(placeholders, ", ")
+	insertSQL := fmt.Sprintf(
+		"INSERT INTO %s (%s) VALUES %s",
+		tableName,
+		columnsStr,
+		valuesStr,
+	)
+
+	return insertSQL, values, nil
+}
 func getInsertQueryAndArgs[T any](tableName string, data *T, returning bool) (string, []interface{}, error) {
 	reflectType := reflect.TypeOf(*data)
 	reflectVal := reflect.ValueOf(data).Elem()
@@ -501,7 +511,7 @@ func Insert[T any](ctx storage.AppDatabaseContext, into string, data *T) error {
 }
 
 func BatchInsert[T any](ctx storage.AppDatabaseContext, into string, data []*T) error {
-	const BatchInsertSizePerTime = 1000
+	const BatchInsertSizePerTime = 500
 
 	if len(data) == 0 {
 		return fmt.Errorf("no data to insert")

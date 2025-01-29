@@ -8,7 +8,7 @@ import (
 
 var (
 	flagBatchSize     = pflag.Int("batch", 100, "batch size")
-	workerCount       = pflag.Int("workers", 10, "number of workers")
+	workerCount       = pflag.Int("workers", 50, "number of workers")
 	calculatePageRank = pflag.Bool("pagerank", false, "calculate page rank")
 )
 
