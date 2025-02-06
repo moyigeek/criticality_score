@@ -27,10 +27,12 @@ func (cc *CentosCollector) Collect(outputPath string) {
 	cc.CalculateDistImpact()
 	cc.UpdateOrInsertDatabase(adc)
 	cc.UpdateOrInsertDistDependencyDatabase(adc)
-	err := cc.GenerateDependencyGraph(outputPath)
-	if err != nil {
-		log.Printf("Error generating dependency graph: %v\n", err)
-		return
+	if outputPath != "" {
+		err := cc.GenerateDependencyGraph(outputPath)
+		if err != nil {
+			log.Printf("Error generating dependency graph: %v\n", err)
+			return
+		}
 	}
 }
 

@@ -27,10 +27,12 @@ func (fc *FedoraCollector) Collect(outputPath string) {
 	fc.CalculateDistImpact()
 	fc.UpdateOrInsertDatabase(adc)
 	fc.UpdateOrInsertDistDependencyDatabase(adc)
-	err := fc.GenerateDependencyGraph(outputPath)
-	if err != nil {
-		log.Printf("Error generating dependency graph: %v\n", err)
-		return
+	if outputPath != "" {
+		err := fc.GenerateDependencyGraph(outputPath)
+		if err != nil {
+			log.Printf("Error generating dependency graph: %v\n", err)
+			return
+		}
 	}
 }
 

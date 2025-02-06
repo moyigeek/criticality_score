@@ -282,7 +282,7 @@ func (cl *Collecter) UpdateOrInsertDistDependencyDatabase(ac storage.AppDatabase
 		distPackage := pkgInfo.ParseDistLinkInfo()
 		repo := repository.NewDistDependencyRepository(ac)
 
-		if pkgInfo.Gitlink != "" {
+		if pkgInfo.Gitlink != "" && pkgInfo.Gitlink != "NA" && pkgInfo.Gitlink != "NaN" {
 			err := repo.InsertOrUpdate(distPackage)
 			if err != nil {
 				log.Println("Error inserting package info into database:", err)

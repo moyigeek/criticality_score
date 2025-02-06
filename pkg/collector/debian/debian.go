@@ -25,10 +25,12 @@ func (dc *DebianCollector) Collect(outputPath string) {
 	dc.CalculateDistImpact()
 	dc.UpdateOrInsertDatabase(adc)
 	dc.UpdateOrInsertDistDependencyDatabase(adc)
-	err := dc.GenerateDependencyGraph(outputPath)
-	if err != nil {
-		log.Printf("Error generating dependency graph: %v\n", err)
-		return
+	if outputPath != "" {
+		err := dc.GenerateDependencyGraph(outputPath)
+		if err != nil {
+			log.Printf("Error generating dependency graph: %v\n", err)
+			return
+		}
 	}
 }
 
@@ -47,7 +49,7 @@ func (dc *DebianCollector) ParseInfo(data string) {
 		case strings.Contains(line, "Description"):
 			currentPkg.Description = strings.TrimSpace(strings.Split(line, ":")[1])
 		case strings.Contains(line, "Homepage"):
-			currentPkg.Homepage = strings.TrimSpace(strings.Split(line, ":")[1])
+			currentPkg.Homepage = strings.TrimSpace(strings.Split(line, ":")[1] + ":" + strings.Split(line, ":")[2])
 		case strings.Contains(line, "Depends"):
 			depLine := strings.TrimPrefix(line, "Depends: ")
 			re := regexp.MustCompile(`[\w\-\.|]+(?:\s*\([^)]+\))?`)

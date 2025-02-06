@@ -62,7 +62,7 @@ func NewDistDependencyRepository(appDb storage.AppDatabaseContext) DistDependenc
 
 // Query implements DistributionDependencyRepository.
 func (r *distLinkRepository) Query() (iter.Seq[*DistDependency], error) {
-	return sqlutil.Query[DistDependency](r.ctx, `SELECT DISTINCT ON (git_link) id, git_link, type, dep_impact, dep_count, page_rank, update_time FROM distribution_dependencies ORDER BY git_link, id DESC`)
+	return sqlutil.Query[DistDependency](r.ctx, `SELECT DISTINCT ON (git_link) id, git_link, type, dep_count, page_rank, update_time FROM distribution_dependencies ORDER BY git_link, id DESC`)
 }
 
 // QueryDistCountByType implements DistributionDependencyRepository.

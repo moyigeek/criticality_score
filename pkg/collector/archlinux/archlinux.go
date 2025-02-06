@@ -24,10 +24,12 @@ func (al *ArchLinuxCollector) Collect(outputPath string) {
 	al.CalculateDistImpact()
 	al.UpdateOrInsertDatabase(adc)
 	al.UpdateOrInsertDistDependencyDatabase(adc)
-	err := al.GenerateDependencyGraph(outputPath)
-	if err != nil {
-		log.Printf("Error generating dependency graph: %v\n", err)
-		return
+	if outputPath != "" {
+		err := al.GenerateDependencyGraph(outputPath)
+		if err != nil {
+			log.Printf("Error generating dependency graph: %v\n", err)
+			return
+		}
 	}
 }
 

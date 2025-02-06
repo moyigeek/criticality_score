@@ -27,10 +27,12 @@ func (ac *AurCollector) Collect(outputPath string) {
 	ac.CalculateDistImpact()
 	ac.UpdateOrInsertDatabase(adc)
 	ac.UpdateOrInsertDistDependencyDatabase(adc)
-	err := ac.GenerateDependencyGraph(outputPath)
-	if err != nil {
-		log.Printf("Error generating dependency graph: %v\n", err)
-		return
+	if outputPath != "" {
+		err := ac.GenerateDependencyGraph(outputPath)
+		if err != nil {
+			log.Printf("Error generating dependency graph: %v\n", err)
+			return
+		}
 	}
 }
 

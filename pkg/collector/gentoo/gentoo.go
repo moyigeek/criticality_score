@@ -34,10 +34,12 @@ func (hc *GentooCollector) Collect(outputPath string) {
 	hc.CalculateDistImpact()
 	hc.UpdateOrInsertDatabase(adc)
 	hc.UpdateOrInsertDistDependencyDatabase(adc)
-	err = hc.GenerateDependencyGraph(outputPath)
-	if err != nil {
-		log.Printf("Error generating dependency graph: %v\n", err)
-		return
+	if outputPath != "" {
+		err = hc.GenerateDependencyGraph(outputPath)
+		if err != nil {
+			log.Printf("Error generating dependency graph: %v\n", err)
+			return
+		}
 	}
 }
 

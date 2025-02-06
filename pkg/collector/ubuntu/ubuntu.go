@@ -25,10 +25,12 @@ func (dc *UbuntuCollector) Collect(outputPath string) {
 	dc.CalculateDistImpact()
 	dc.UpdateOrInsertDatabase(adc)
 	dc.UpdateOrInsertDistDependencyDatabase(adc)
-	err := dc.GenerateDependencyGraph(outputPath)
-	if err != nil {
-		log.Printf("Error generating dependency graph: %v\n", err)
-		return
+	if outputPath != "" {
+		err := dc.GenerateDependencyGraph(outputPath)
+		if err != nil {
+			log.Printf("Error generating dependency graph: %v\n", err)
+			return
+		}
 	}
 }
 

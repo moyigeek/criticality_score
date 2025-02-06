@@ -34,10 +34,12 @@ func (nc *NixCollector) Collect(workerCount int, batchSize int, outputPath strin
 	nc.CalculateDistImpact()
 	nc.UpdateOrInsertDatabase(adc)
 	nc.UpdateOrInsertDistDependencyDatabase(adc)
-	err = nc.GenerateDependencyGraph(outputPath)
-	if err != nil {
-		log.Printf("Error generating dependency graph: %v\n", err)
-		return
+	if outputPath != "" {
+		err = nc.GenerateDependencyGraph(outputPath)
+		if err != nil {
+			log.Printf("Error generating dependency graph: %v\n", err)
+			return
+		}
 	}
 }
 
