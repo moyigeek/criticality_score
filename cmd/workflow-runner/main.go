@@ -6,7 +6,9 @@ import (
 	"time"
 
 	"github.com/HUSTSecLab/criticality_score/cmd/workflow-runner/internal/workflow"
+	"github.com/HUSTSecLab/criticality_score/pkg/config"
 	"github.com/HUSTSecLab/criticality_score/pkg/logger"
+	"github.com/spf13/pflag"
 )
 
 var handler workflow.RunningHandler
@@ -18,6 +20,11 @@ func StopCurrentWorkflow() {
 }
 
 func main() {
+	config.RegistCommonFlags(pflag.CommandLine)
+	config.RegistGitStorageFlags(pflag.CommandLine)
+	config.RegistGithubTokenFlags(pflag.CommandLine)
+	config.ParseFlags(pflag.CommandLine)
+
 	initCmds()
 	initSources()
 	initTasks()

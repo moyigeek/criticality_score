@@ -16,6 +16,10 @@ services:
     restart: always
     environment:
       GITHUB_TOKEN: ${GITHUB_TOKEN}
+    command:
+      - /app/workflow-runner
+      - -c
+      - /config/config.yaml
     volumes:
       - ${DATA_DIR}/config:/config:ro
       - ${DATA_DIR}/rec:/data/rec
