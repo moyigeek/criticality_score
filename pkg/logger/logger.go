@@ -42,7 +42,10 @@ type AppLoggerConfig struct {
 	// the elastic search url, take effect only when output = LoggerOutputElasticSearch
 	OutputEsURL string
 	// the elastic search index, take effect only when output = LoggerOutputElasticSearch
-	OutputEsIndex string
+	OutputEsIndex    string
+	OutputEsUser     string
+	OutputEsPassword string
+	OutputEsCert     string
 }
 
 type LoggerOutput int

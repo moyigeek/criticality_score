@@ -94,8 +94,19 @@ func (l *logrusLogger) Config(config *AppLoggerConfig) error {
 	case LoggerOutputStderr:
 		l.logger.SetOutput(os.Stderr)
 	case LoggerOutputElasticSearch:
+		var caCert []byte = nil
+		if config.OutputEsCert != "" {
+			caCert, err = os.ReadFile(config.OutputEsCert)
+			if err != nil {
+				return err
+			}
+		}
+
 		client, err := elasticsearch.NewClient(elasticsearch.Config{
 			Addresses: []string{config.OutputEsURL},
+			Username:  config.OutputEsUser,
+			Password:  config.OutputEsPassword,
+			CACert:    caCert,
 		})
 		if err != nil {
 			return err

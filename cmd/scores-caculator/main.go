@@ -1,9 +1,8 @@
 package main
 
 import (
-	"log"
-
 	"github.com/HUSTSecLab/criticality_score/pkg/config"
+	"github.com/HUSTSecLab/criticality_score/pkg/logger"
 	scores "github.com/HUSTSecLab/criticality_score/pkg/score"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	_ "github.com/lib/pq"
@@ -39,11 +38,14 @@ func main() {
 		langEcoMetricMap[link].CalculateLangEcoScore()
 
 		gitMetadataScore := scores.NewGitMetadataScore()
+		if _, ok := gitMeticMap[link]; !ok {
+			continue
+		}
 		gitMetadataScore.CalculateGitMetadataScore(gitMeticMap[link])
 
 		packageScore[link] = scores.NewLinkScore(gitMetadataScore, distMetricMap[link], langEcoMetricMap[link])
 		packageScore[link].CalculateScore()
 	}
-	log.Println("Updating database...")
+	logger.Println("Updating database...")
 	scores.UpdateScore(ac, packageScore)
 }

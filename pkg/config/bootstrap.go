@@ -59,6 +59,9 @@ func RegistLogFlags(flag *pflag.FlagSet) {
 	viper.BindPFlag("log.path", flag.Lookup("log-path"))
 	viper.BindPFlag("log.es-url", flag.Lookup("log-es-url"))
 	viper.BindPFlag("log.es-index", flag.Lookup("log-es-index"))
+	viper.BindPFlag("log.es-user", flag.Lookup("log-es-user"))
+	viper.BindPFlag("log.es-password", flag.Lookup("log-es-password"))
+	viper.BindPFlag("log.es-cert", flag.Lookup("log-es-cert"))
 
 	viper.BindEnv("log.debug", "LOG_DEBUG")
 	viper.BindEnv("log.type", "LOG_TYPE")

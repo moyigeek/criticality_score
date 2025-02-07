@@ -5,67 +5,144 @@ import (
 	"time"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
+	"github.com/HUSTSecLab/criticality_score/pkg/storage/sqlutil"
 	"github.com/lib/pq"
 )
 
 type ResultRepository interface {
 	/** QUERY **/
-	QueryOrderByScoreWithPaging(take int, skip int) (iter.Seq[*Result], error)
-	QueryByUntilOrderByScoreWithPaging(take int, skip int, until time.Time) (iter.Seq[*Result], error)
-
-	QueryHistoryByLink(gitLink string) (iter.Seq[*Result], error)
-	GetByLink(gitLink string) (*Result, error)
+	CountByLink(search string) (int, error)
+	QueryByLink(search string, skip int, take int) (iter.Seq[*Result], error)
+	GetByScoreID(scoreID int) (*Result, error)
+	QueryGitDetailsByScoreID(scoreID int) (iter.Seq[*ResultGitDetail], error)
+	QueryLangDetailsByScoreID(scoreID int) (iter.Seq[*ResultLangDetail], error)
+	QueryDistDetailsByScoreID(scoreID int) (iter.Seq[*ResultDistDetail], error)
 }
 
 type Result struct {
-	SeqId                  *int64          `column:"id"`
-	GitLink                *string         `column:"git_link"`
-	EcoSystem              *string         `column:"ecosystem"`
-	CreatedSince           *time.Time      `column:"created_since"`
-	UpdatedSince           *time.Time      `column:"updated_since"`
-	ContributorCount       *int            `column:"contributor_count"`
-	CommitFrequency        *float64        `column:"commit_frequency"`
-	DepsDevCount           *int            `column:"depsdev_count"`
-	DepsDistro             *string         `column:"deps_distro"`
-	OrgCount               *int            `column:"org_count"`
-	License                *string         `column:"license"`
-	Language               *pq.StringArray `column:"language"`
-	CloneValid             *bool           `column:"clone_valid"`
-	DepsDevPageRank        *float64        `column:"depsdev_pagerank"`
-	Scores                 *float64        `column:"scores"`
-	IsDeleted              *bool           `column:"is_deleted"`
-	UpdateTimeGitMetadata  *time.Time      `column:"update_time_git_metadata"`
-	UpdateTimeDepsDev      *time.Time      `column:"update_time_deps_dev"`
-	UpdateTimeDistribution *time.Time      `column:"update_time_distribution"`
-	UpdateTimeScores       *time.Time      `column:"update_time_scores"`
-	UpdateTime             *time.Time      `column:"update_time"`
+	GitLink    *string
+	ScoreID    **int
+	DistScore  **float64
+	LangScore  **float64
+	GitScore   **float64
+	Score      **float64
+	UpdateTime **time.Time
+}
+
+type ResultGitDetail struct {
+	License          **pq.StringArray
+	Language         **pq.StringArray
+	CommitFrequency  **float64
+	CreatedSince     **time.Time
+	UpdatedSince     **time.Time
+	OrgCount         **int
+	ContributorCount **int
+	UpdateTime       **time.Time
+}
+
+type ResultLangDetail struct {
+	Type          **int
+	LangEcoImpact **float64
+	DepCount      **int
+	UpdateTime    **time.Time
+}
+
+type ResultDistDetail struct {
+	Type       **int
+	Count      **int
+	Impact     **float64
+	PageRank   **float64
+	UpdateTime **time.Time
 }
 
 type resultRepository struct {
 	ctx storage.AppDatabaseContext
 }
 
+// CountByLink implements ResultRepository.
+func (r *resultRepository) CountByLink(search string) (int, error) {
+	row := r.ctx.QueryRow(`select count(*) from all_gitlinks_cache where git_link like $1`, "%"+search+"%")
+	var count int
+	err := row.Scan(&count)
+	return count, err
+}
+
+// QueryDistDetailsByScoreID implements ResultRepository.
+func (r *resultRepository) QueryDistDetailsByScoreID(scoreID int) (iter.Seq[*ResultDistDetail], error) {
+	return sqlutil.Query[ResultDistDetail](r.ctx, `select
+		dd.type as type,
+		dd.dep_count as count,
+		dd.impact as impact,
+		dd.page_rank as page_rank,
+		dd.update_time as update_time
+	from scores_dist sd
+	left join distribution_dependencies dd on sd.distribution_dependencies_id = dd.id
+	where sd.score_id = $1`, scoreID)
+}
+
+// QueryGitDetailsByScoreID implements ResultRepository.
+func (r *resultRepository) QueryGitDetailsByScoreID(scoreID int) (iter.Seq[*ResultGitDetail], error) {
+	return sqlutil.Query[ResultGitDetail](r.ctx, `select
+		gm.license as license,
+		gm.language as language,
+		gm.commit_frequency as commit_frequency,
+		gm.created_since as created_since,
+		gm.updated_since as updated_since,
+		gm.org_count as org_count,
+		gm.contributor_count as contributor_count,
+		gm.update_time as update_time
+	from scores_git sg
+	left join git_metrics gm on sg.git_metrics_id = gm.id
+	where sg.score_id = $1`, scoreID)
+}
+
+// QueryLangDetailsByScoreID implements ResultRepository.
+func (r *resultRepository) QueryLangDetailsByScoreID(scoreID int) (iter.Seq[*ResultLangDetail], error) {
+	return sqlutil.Query[ResultLangDetail](r.ctx, `select
+		le.type as type,
+		le.lang_eco_impact as lang_eco_impact,
+		le.dep_count as dep_count,
+		le.update_time as update_time
+	from scores_lang sl
+	left join lang_ecosystems le on sl.lang_ecosystems_id = le.id
+	where sl.score_id = $1`, scoreID)
+}
+
+// QueryWithCountByLink implements ResultRepository.
+func (r *resultRepository) QueryByLink(search string, skip int, take int) (iter.Seq[*Result], error) {
+	rows, err := sqlutil.Query[Result](r.ctx, `select distinct on (s.id, ag.git_link)
+		ag.git_link as git_link,
+		s.id as score_id,
+		s.dist_score as dist_score,
+		s.lang_score as lang_score,
+		s.git_score as git_score,
+		s.score as score,
+		s.update_time as update_time
+	from all_gitlinks_cache ag
+	left join scores s on ag.git_link = s.git_link
+	where ag.git_link like $1 order by s.id desc limit $2 offset $3
+	`, "%"+search+"%", take, skip)
+	return rows, err
+}
+
+// GetByScoreID implements ResultRepository.
+func (r *resultRepository) GetByScoreID(scoreID int) (*Result, error) {
+	row, err := sqlutil.QueryFirst[Result](r.ctx, `select 
+		ag.git_link as git_link,
+		s.id as score_id,
+		s.dist_score as dist_score,
+		s.lang_score as lang_score,
+		s.git_score as git_score,
+		s.score as score,
+		s.update_time as update_time
+	from all_gitlinks_cache ag
+	left join scores s on ag.git_link = s.git_link
+	where s.id = $1
+	`, scoreID)
+	return row, err
+}
+
 var _ ResultRepository = (*resultRepository)(nil)
-
-// GetByLink implements ResultRepository.
-func (r *resultRepository) GetByLink(gitLink string) (*Result, error) {
-	panic("unimplemented")
-}
-
-// QueryByUntilOrderByScoreWithPaging implements ResultRepository.
-func (r *resultRepository) QueryByUntilOrderByScoreWithPaging(take int, skip int, until time.Time) (iter.Seq[*Result], error) {
-	panic("unimplemented")
-}
-
-// QueryHistoryByLink implements ResultRepository.
-func (r *resultRepository) QueryHistoryByLink(gitLink string) (iter.Seq[*Result], error) {
-	panic("unimplemented")
-}
-
-// QueryOrderByScoreWithPaging implements ResultRepository.
-func (r *resultRepository) QueryOrderByScoreWithPaging(take int, skip int) (iter.Seq[*Result], error) {
-	panic("unimplemented")
-}
 
 func NewResultRepository(appDb storage.AppDatabaseContext) ResultRepository {
 	return &resultRepository{ctx: appDb}

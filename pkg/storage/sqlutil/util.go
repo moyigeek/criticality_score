@@ -503,6 +503,7 @@ func Insert[T any](ctx storage.AppDatabaseContext, into string, data *T) error {
 	if err != nil {
 		return err
 	}
+	defer rows.Close()
 	if rows.Next() {
 		scanGeneratedColumns(data, rows)
 	}

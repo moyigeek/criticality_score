@@ -1,0 +1,143 @@
+definitions:
+  model.PageDTO-model_ResultDTO:
+    properties:
+      count:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/model.ResultDTO'
+        type: array
+      start:
+        type: integer
+      total:
+        type: integer
+    type: object
+  model.ResultDTO:
+    properties:
+      distDetail:
+        items:
+          $ref: '#/definitions/model.ResultDistDetailDTO'
+        type: array
+      distroScore:
+        type: number
+      gitDetail:
+        items:
+          $ref: '#/definitions/model.ResultGitMetadataDTO'
+        type: array
+      gitScore:
+        type: number
+      langDetail:
+        items:
+          $ref: '#/definitions/model.ResultLangDetailDTO'
+        type: array
+      langScore:
+        type: number
+      link:
+        type: string
+      score:
+        type: number
+      scoreID:
+        type: integer
+      updateTime:
+        type: string
+    type: object
+  model.ResultDistDetailDTO:
+    properties:
+      count:
+        type: integer
+      impact:
+        type: number
+      pageRank:
+        type: number
+      type:
+        type: integer
+      updateTime:
+        type: string
+    type: object
+  model.ResultGitMetadataDTO:
+    properties:
+      commitFrequency:
+        type: number
+      contributorCount:
+        type: integer
+      createdSince:
+        type: string
+      language:
+        items:
+          type: string
+        type: array
+      license:
+        items:
+          type: string
+        type: array
+      orgCount:
+        type: integer
+      updateTime:
+        type: string
+      updatedSince:
+        type: string
+    type: object
+  model.ResultLangDetailDTO:
+    properties:
+      depCount:
+        type: integer
+      langEcoImpact:
+        type: number
+      type:
+        type: integer
+      updateTime:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /results:
+    get:
+      consumes:
+      - application/json
+      description: |-
+        Search score results by git link
+        NOTE: All details are ignored, should use /results/:scoreid to get details
+        NOTE: Maxium take count is 1000
+      parameters:
+      - description: Search query
+        in: query
+        name: q
+        required: true
+        type: string
+      - description: Skip count
+        in: query
+        name: start
+        type: integer
+      - description: Take count
+        in: query
+        name: take
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.PageDTO-model_ResultDTO'
+      summary: Search score results by git link
+  /results/{scoreid}:
+    get:
+      consumes:
+      - application/json
+      description: Get score results, including all details by scoreid
+      parameters:
+      - description: Score ID
+        in: path
+        name: scoreid
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ResultDTO'
+      summary: Get score results
+swagger: "2.0"

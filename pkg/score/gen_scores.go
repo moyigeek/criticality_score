@@ -1,9 +1,10 @@
 package score
 
 import (
-	"log"
 	"math"
 	"time"
+
+	log "github.com/HUSTSecLab/criticality_score/pkg/logger"
 
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage/repository"
@@ -11,13 +12,13 @@ import (
 )
 
 type LinkScore struct {
-	GitMetrics       []*repository.GitMetric
+	// GitMetrics       []*repository.GitMetric
 	GitMetadataScore GitMetadataScore
-	LangEcosystems   []*repository.LangEcosystem
-	LangEcoScore     LangEcoScore
-	DistDependencies []*repository.DistDependency
-	DistScore        DistScore
-	Score            float64
+	// LangEcosystems   []*repository.LangEcosystem
+	LangEcoScore LangEcoScore
+	// DistDependencies []*repository.DistDependency
+	DistScore DistScore
+	Score     float64
 }
 
 type GitMetadata struct {
@@ -197,11 +198,7 @@ func (gitMetadataScore *GitMetadataScore) CalculateGitMetadataScore(gitMetadata 
 	gitMetadataScore.GitMetadataScore = score
 	gitMetadataScore.GitMetrics = []*repository.GitMetric{
 		{
-			CreatedSince:     sqlutil.ToNullable(gitMetadata.CreatedSince),
-			UpdatedSince:     sqlutil.ToNullable(gitMetadata.UpdatedSince),
-			ContributorCount: sqlutil.ToNullable(gitMetadata.ContributorCount),
-			CommitFrequency:  sqlutil.ToNullable(gitMetadata.CommitFrequency),
-			OrgCount:         sqlutil.ToNullable(gitMetadata.Org_Count),
+			ID: sqlutil.ToData(gitMetadata.Id),
 		},
 	}
 }
@@ -347,9 +344,9 @@ func UpdateScore(ac storage.AppDatabaseContext, packageScore map[string]*LinkSco
 		score := repository.Score{
 			Score:            &linkScore.Score,
 			GitLink:          &link,
-			DistDependencies: linkScore.DistDependencies,
-			GitMetrics:       linkScore.GitMetrics,
-			LangEcosystems:   linkScore.LangEcosystems,
+			DistDependencies: linkScore.DistScore.DistDependencies,
+			GitMetrics:       linkScore.GitMetadataScore.GitMetrics,
+			LangEcosystems:   linkScore.LangEcoScore.LangEcosystems,
 			DistScore:        &linkScore.DistScore.DistScore,
 			LangScore:        &linkScore.LangEcoScore.LangEcoScore,
 			GitScore:         &linkScore.GitMetadataScore.GitMetadataScore,

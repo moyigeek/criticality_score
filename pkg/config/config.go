@@ -83,12 +83,15 @@ func GetLogConfig() *logger.AppLoggerConfig {
 	}
 
 	return &logger.AppLoggerConfig{
-		Level:         level,
-		FormatType:    format,
-		Output:        ttype,
-		OutputPath:    viper.GetString("log.path"),
-		OutputEsURL:   viper.GetString("log.es-url"),
-		OutputEsIndex: viper.GetString("log.es-index"),
+		Level:            level,
+		FormatType:       format,
+		Output:           ttype,
+		OutputPath:       viper.GetString("log.path"),
+		OutputEsURL:      viper.GetString("log.es-url"),
+		OutputEsIndex:    viper.GetString("log.es-index"),
+		OutputEsUser:     viper.GetString("log.es-user"),
+		OutputEsPassword: viper.GetString("log.es-password"),
+		OutputEsCert:     viper.GetString("log.es-cert"),
 	}
 
 }

@@ -5,6 +5,7 @@ import (
 	"iter"
 	"time"
 
+	"github.com/HUSTSecLab/criticality_score/pkg/logger"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage/sqlutil"
 	"github.com/samber/lo"
@@ -60,64 +61,81 @@ type scoreRepository struct {
 
 // BatchInsertOrUpdate implements ScoreRepository.
 func (s *scoreRepository) BatchInsertOrUpdate(scores []*Score) error {
-	autoCommitSize := 1000
+	// TODO: Implement this function use batch method
 
-	for i := 0; i < len(scores); i += autoCommitSize {
-		var sql string
-		values := make([]interface{}, 0, len(scores)*5)
-		sql = `BEGIN;
-		DO $$
-		DECLARE
-			sid int8;
-		BEGIN`
-
-		currentScores := scores[i:min(i+autoCommitSize, len(scores))]
-		for _, score := range currentScores {
-
-			sql += `INSERT INTO ` + ScoreTableName + ` (git_link, dist_score, lang_score, git_score, score, update_time) VALUES `
-			ph := 1 // placeholder
-			sql += fmt.Sprintf("($%d, $%d, $%d, $%d, $%d, now()) RETURNING id INTO sid;\n", ph, ph+1, ph+2, ph+3, ph+4)
-			values = append(values, score.GitLink, score.DistScore, score.LangScore, score.GitScore, score.Score)
-			ph += 5
-
-			// insert DistDependencies
-			sql += `INSERT INTO ` + ScoreDistTableName + ` (score_id, dist_id) VALUES `
-			for _, score := range scores {
-				for _, dist := range score.DistDependencies {
-					sql += fmt.Sprintf("($%d, sid),", ph)
-					values = append(values, dist.ID)
-					ph++
-				}
-			}
-
-			// insert LangEcosystems
-			sql += `INSERT INTO ` + ScoreLangTableName + ` (score_id, lang_id) VALUES `
-			for _, score := range scores {
-				for _, lang := range score.LangEcosystems {
-					sql += fmt.Sprintf("($%d, sid),", ph)
-					values = append(values, lang.ID)
-					ph++
-				}
-			}
-
-			// insert GitMetrics
-			sql += `INSERT INTO ` + ScoreGitTableName + ` (score_id, git_id) VALUES `
-			for _, score := range scores {
-				for _, git := range score.GitMetrics {
-					sql += fmt.Sprintf("($%d, sid),", ph)
-					values = append(values, git.ID)
-					ph++
-				}
-			}
+	// FIXME: This is a temporary solution
+	cnt := 0
+	for _, score := range scores {
+		err := s.InsertOrUpdate(score)
+		cnt++
+		if cnt%1000 == 0 {
+			logger.WithFields(map[string]any{"cnt": cnt}).Info("Inserted scores")
 		}
 
-		sql += `END$$;
-		COMMIT;`
-
-		_, err := s.ctx.Exec(sql, values...)
-		return err
+		if err != nil {
+			return err
+		}
 	}
 	return nil
+
+	// autoCommitSize := 1000
+
+	// for i := 0; i < len(scores); i += autoCommitSize {
+	// 	var sql string
+	// 	values := make([]interface{}, 0, len(scores)*5)
+	// 	sql = `BEGIN;
+	// 	DO $$
+	// 	DECLARE
+	// 		sid int8;
+	// 	BEGIN`
+
+	// 	currentScores := scores[i:min(i+autoCommitSize, len(scores))]
+	// 	for _, score := range currentScores {
+
+	// 		sql += `INSERT INTO ` + ScoreTableName + ` (git_link, dist_score, lang_score, git_score, score, update_time) VALUES `
+	// 		ph := 1 // placeholder
+	// 		sql += fmt.Sprintf("($%d, $%d, $%d, $%d, $%d, now()) RETURNING id INTO sid;\n", ph, ph+1, ph+2, ph+3, ph+4)
+	// 		values = append(values, score.GitLink, score.DistScore, score.LangScore, score.GitScore, score.Score)
+	// 		ph += 5
+
+	// 		// insert DistDependencies
+	// 		sql += `INSERT INTO ` + ScoreDistTableName + ` (score_id, dist_id) VALUES `
+	// 		for _, score := range scores {
+	// 			for _, dist := range score.DistDependencies {
+	// 				sql += fmt.Sprintf("($%d, sid),", ph)
+	// 				values = append(values, dist.ID)
+	// 				ph++
+	// 			}
+	// 		}
+
+	// 		// insert LangEcosystems
+	// 		sql += `INSERT INTO ` + ScoreLangTableName + ` (score_id, lang_id) VALUES `
+	// 		for _, score := range scores {
+	// 			for _, lang := range score.LangEcosystems {
+	// 				sql += fmt.Sprintf("($%d, sid),", ph)
+	// 				values = append(values, lang.ID)
+	// 				ph++
+	// 			}
+	// 		}
+
+	// 		// insert GitMetrics
+	// 		sql += `INSERT INTO ` + ScoreGitTableName + ` (score_id, git_id) VALUES `
+	// 		for _, score := range scores {
+	// 			for _, git := range score.GitMetrics {
+	// 				sql += fmt.Sprintf("($%d, sid),", ph)
+	// 				values = append(values, git.ID)
+	// 				ph++
+	// 			}
+	// 		}
+	// 	}
+
+	// 	sql += `END$$;
+	// 	COMMIT;`
+
+	// 	_, err := s.ctx.Exec(sql, values...)
+	// 	return err
+	// }
+	// return nil
 }
 
 // BatchIntLink implements ScoreRepository.
@@ -146,7 +164,7 @@ func (s *scoreRepository) InsertOrUpdate(score *Score) error {
 		if cid == nil {
 			continue
 		}
-		_, err := s.ctx.Exec(`INSERT INTO `+ScoreDistTableName+` (score_id, dist_id) VALUES ($1, $2)`, id, *cid)
+		_, err := s.ctx.Exec(`INSERT INTO `+ScoreDistTableName+` (score_id, distribution_dependencies_id) VALUES ($1, $2)`, id, *cid)
 		if err != nil {
 			return err
 		}
@@ -158,7 +176,7 @@ func (s *scoreRepository) InsertOrUpdate(score *Score) error {
 		if cid == nil {
 			continue
 		}
-		_, err := s.ctx.Exec(`INSERT INTO `+ScoreLangTableName+` (score_id, lang_id) VALUES ($1, $2)`, id, *cid)
+		_, err := s.ctx.Exec(`INSERT INTO `+ScoreLangTableName+` (score_id, lang_ecosystems_id) VALUES ($1, $2)`, id, *cid)
 		if err != nil {
 			return err
 		}
@@ -170,7 +188,7 @@ func (s *scoreRepository) InsertOrUpdate(score *Score) error {
 		if cid == nil {
 			continue
 		}
-		_, err := s.ctx.Exec(`INSERT INTO `+ScoreGitTableName+` (score_id, git_id) VALUES ($1, $2)`, id, *cid)
+		_, err := s.ctx.Exec(`INSERT INTO `+ScoreGitTableName+` (score_id, git_metrics_id) VALUES ($1, $2)`, id, *cid)
 		if err != nil {
 			return err
 		}
