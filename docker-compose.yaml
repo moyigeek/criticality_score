@@ -26,6 +26,15 @@ services:
       - ${DATA_DIR}/log:/data/log
       - ${STORAGE_DIR}:/storage
       - ${GENTOO_PREFIX_DIR}:/root/gentoo
+  gitcollector:
+    build: .
+    command:
+      - /app/git-metadata-collector
+      - -c
+      - /config/config.yaml
+    volumes:
+      - ${DATA_DIR}/config:/config:ro
+      - ${STORAGE_DIR}:/storage
   apiserver:
     build: .
     restart: always
