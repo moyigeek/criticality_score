@@ -1,8 +1,0 @@
-# update crontab template
-0 */6 *   * * @ENV@ @WORKFLOW_DIR@/update.sh -C @REC_DIR@ package >> @OUTPUT_FILE@ 2>&1
-0 */6 *   * * @ENV@ @WORKFLOW_DIR@/update.sh -C @REC_DIR@ depsdev >> @OUTPUT_FILE@ 2>&1
-0 0   */3 * * @ENV@ @WORKFLOW_DIR@/update.sh -C @REC_DIR@ github  >> @OUTPUT_FILE@ 2>&1
-0 0   *   * 0 @ENV@ @WORKFLOW_DIR@/update.sh -C @REC_DIR@ git     >> @OUTPUT_FILE@ 2>&1
-
-# vim:set filetype=crontab:
-
