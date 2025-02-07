@@ -98,7 +98,7 @@ func (r *resultRepository) QueryDistDetailsByScoreID(scoreID int) (iter.Seq[*Res
 	return sqlutil.Query[ResultDistDetail](r.ctx, `select
 		dd.type as type,
 		dd.dep_count as count,
-		dd.impact as impact,
+		dd.dep_impact as impact,
 		dd.page_rank as page_rank,
 		dd.update_time as update_time
 	from scores_dist sd
