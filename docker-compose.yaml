@@ -35,6 +35,7 @@ services:
     volumes:
       - ${DATA_DIR}/config:/config:ro
       - ${STORAGE_DIR}:/storage
+      - ./data/es/certs:/escerts
   apiserver:
     build: .
     restart: always
