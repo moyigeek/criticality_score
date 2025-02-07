@@ -137,7 +137,7 @@ func (r *resultRepository) QueryLangDetailsByScoreID(scoreID int) (iter.Seq[*Res
 // QueryWithCountByLink implements ResultRepository.
 func (r *resultRepository) QueryByLink(search string, skip int, take int) (iter.Seq[*Result], error) {
 	rows, err := sqlutil.Query[Result](r.ctx, `select * from (
-		select distinct on (s.id, ag.git_link)
+		select distinct on (ag.git_link)
 			ag.git_link as git_link,
 			s.id as score_id,
 			s.dist_score as dist_score,
@@ -148,7 +148,7 @@ func (r *resultRepository) QueryByLink(search string, skip int, take int) (iter.
 		from all_gitlinks_cache ag
 		left join scores s on ag.git_link = s.git_link
 		where ag.git_link like $1
-		order by s.id desc, ag.git_link) as t
+		order by ag.git_link, s.id desc) as t
 	order by score desc nulls last
 	limit $2 offset $3`, "%"+search+"%", take, skip)
 	return rows, err
