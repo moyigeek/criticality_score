@@ -3,7 +3,7 @@ import styles from './layout.module.css';
 import React from 'react';
 
 export default function PublicLayout({ children, modal }: React.PropsWithChildren<{
-  modal?: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return <>
     <div className={clsx(styles['public-container'])}>

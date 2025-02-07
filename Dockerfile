@@ -9,11 +9,13 @@ COPY go.mod go.sum /build/
 RUN go mod download && rm -rf /build
 
 # build the app
-COPY . /build
+COPY ./cmd /build/cmd
+COPY ./migrations /build/migrations
+COPY ./pkg /build/pkg
+COPY ./Makefile ./go.mod ./go.sum /build/
 
-RUN make all && \
-    mkdir -p /app && \
-    cp bin/* /app
+RUN make && \
+    cp -r bin /app
 
 # final stage
 FROM ubuntu:24.04
@@ -43,12 +45,12 @@ RUN echo '#!/bin/bash' > /update.sh && \
     echo 'APP_BIN=/app CFG_FILE=/config/config.json /workflow/update.sh -C /data/rec "$1"' >> /update.sh && \
     chmod +x /update.sh
 
-# install nix package manager
-RUN bash -c 'sh <(curl -L https://nixos.org/nix/install) --daemon'
+# # install nix package manager
+# RUN bash -c 'sh <(curl -L https://nixos.org/nix/install) --daemon'
 
-# add nix to the path
-ENV NIX_PROFILES="/nix/var/nix/profiles/default /root/.nix-profile"
-ENV PATH=/root/.nix-profile/bin:$PATH
+# # add nix to the path
+# ENV NIX_PROFILES="/nix/var/nix/profiles/default /root/.nix-profile"
+# ENV PATH=/root/.nix-profile/bin:$PATH
 
 COPY --from=builder /app /app
 
