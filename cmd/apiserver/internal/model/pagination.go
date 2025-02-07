@@ -7,11 +7,11 @@ type PageDTO[T any] struct {
 	Items   []T `json:"items"`
 }
 
-func NewPageDTO[T any](total int, current int, items []T) *PageDTO[T] {
+func NewPageDTO[T any](total int, current int, take int, items []T) *PageDTO[T] {
 	return &PageDTO[T]{
 		Total:   total,
 		Current: current,
-		Take:    len(items),
+		Take:    take,
 		Items:   items,
 	}
 }

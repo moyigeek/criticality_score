@@ -15,6 +15,47 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/histories": {
+            "get": {
+                "description": "Get score histories by git link",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get score histories",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Git link",
+                        "name": "link",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Skip count",
+                        "name": "start",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Take count",
+                        "name": "take",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.PageDTO-model_ResultDTO"
+                        }
+                    }
+                }
+            }
+        },
         "/results": {
             "get": {
                 "description": "Search score results by git link\nNOTE: All details are ignored, should use /results/:scoreid to get details\nNOTE: Maxium take count is 1000",

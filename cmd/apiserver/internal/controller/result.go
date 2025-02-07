@@ -69,7 +69,56 @@ func resultsHandler(c *gin.Context) {
 		items = append(items, *model.ResultDOToDTO(v))
 	}
 
-	c.JSON(200, model.NewPageDTO(cnt, q.Skip, items))
+	c.JSON(200, model.NewPageDTO(cnt, q.Skip, q.Take, items))
+}
+
+// @Summary Get score histories
+// @Description Get score histories by git link
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.PageDTO[model.ResultDTO]
+// @Router /histories [get]
+// @Param link query string true "Git link"
+// @Param start query int false "Skip count"
+// @Param take query int false "Take count"
+func historiesHandler(c *gin.Context) {
+	r := repository.NewResultRepository(storage.GetDefaultAppDatabaseContext())
+
+	type query struct {
+		Link string `form:"link"`
+		Skip int    `form:"start"`
+		Take int    `form:"take"`
+	}
+
+	var q query
+
+	if err := c.ShouldBindQuery(&q); err != nil {
+		c.JSON(400, "Invalid query parameters")
+		return
+	}
+
+	cnt, err := r.CountHistoriesByLink(q.Link)
+	if err != nil {
+		logger.Error("Error occurred when counting histories", err)
+		c.JSON(500, "Error occurred when counting histories")
+		return
+	}
+
+	histories, err := r.QueryHistoriesByLink(q.Link, q.Skip, q.Take)
+
+	if err != nil {
+		logger.Error("Error occurred when querying histories", err)
+		c.JSON(500, "Error occurred when querying histories")
+		return
+	}
+
+	var items []model.ResultDTO = make([]model.ResultDTO, 0)
+
+	for v := range histories {
+		items = append(items, *model.ResultDOToDTO(v))
+	}
+
+	c.JSON(200, model.NewPageDTO(cnt, q.Skip, q.Take, items))
 }
 
 // @Summary Get score results
@@ -135,4 +184,5 @@ func resultHandler(c *gin.Context) {
 func registResult(e gin.IRouter) {
 	e.GET("/results", resultsHandler)
 	e.GET("/results/:scoreid", resultHandler)
+	e.GET("/histories", historiesHandler)
 }

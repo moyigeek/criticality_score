@@ -1,4 +1,4 @@
-import { getResults } from "@/service/client";
+import { getHistories } from "@/service/client";
 import { Result } from "antd";
 import Results from "./Results";
 
@@ -7,18 +7,18 @@ export default async function Page({
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
-  const query = (await searchParams)['q'];
+  const link = (await searchParams)['link'];
   const start = (await searchParams)['start'];
   const take = (await searchParams)['take'];
   let data;
-  if (typeof query !== "string" ||
+  if (typeof link !== "string" ||
     typeof start === "object" ||
-    typeof take === "object" || query == "") {
+    typeof take === "object") {
     data = undefined;
   } else {
-    data = await getResults({
+    data = await getHistories({
       query: {
-        q: query,
+        link: link,
         start: start ? parseInt(start) : 0,
         take: take ? parseInt(take) : 10
       }
@@ -35,4 +35,5 @@ export default async function Page({
   return <Results items={data.data} />
 
 }
+
 

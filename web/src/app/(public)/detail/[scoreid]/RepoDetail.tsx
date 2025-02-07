@@ -49,6 +49,8 @@ export function RepoDetail(
       <span className="font-bold">{data.link}</span>
     </div>
 
+    <h3 className="my-4 font-bold">Total Score: {data.score}</h3>
+
     <h3 className="my-4 font-bold">Git Metadata: {data.gitScore}</h3>
 
     <Table pagination={false} dataSource={data.gitDetail} columns={[
@@ -63,10 +65,12 @@ export function RepoDetail(
       {
         title: "Created Since",
         dataIndex: "createdSince",
+        render: (t) => new Date(t).toLocaleString()
       },
       {
         title: "Updated Since",
         dataIndex: "updatedSince",
+        render: (t) => new Date(t).toLocaleString()
       },
       {
         title: "Language",
@@ -85,6 +89,7 @@ export function RepoDetail(
       {
         title: "Update Time",
         dataIndex: "updateTime",
+        render: (t) => new Date(t).toLocaleString()
       }
     ]} />
 
@@ -107,6 +112,7 @@ export function RepoDetail(
       {
         title: "Update Time",
         dataIndex: "updateTime",
+        render: (t) => new Date(t).toLocaleString()
       }
     ]} />
 
@@ -133,6 +139,7 @@ export function RepoDetail(
       {
         title: "Update Time",
         dataIndex: "updateTime",
+        render: (t) => new Date(t).toLocaleString()
       }
     ]} />
 

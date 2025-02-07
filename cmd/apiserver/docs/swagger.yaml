@@ -91,6 +91,33 @@ definitions:
 info:
   contact: {}
 paths:
+  /histories:
+    get:
+      consumes:
+      - application/json
+      description: Get score histories by git link
+      parameters:
+      - description: Git link
+        in: query
+        name: link
+        required: true
+        type: string
+      - description: Skip count
+        in: query
+        name: start
+        type: integer
+      - description: Take count
+        in: query
+        name: take
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.PageDTO-model_ResultDTO'
+      summary: Get score histories
   /results:
     get:
       consumes:

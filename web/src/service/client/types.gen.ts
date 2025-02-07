@@ -46,6 +46,35 @@ export type ModelResultLangDetailDto = {
     updateTime?: string;
 };
 
+export type GetHistoriesData = {
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * Git link
+         */
+        link: string;
+        /**
+         * Skip count
+         */
+        start?: number;
+        /**
+         * Take count
+         */
+        take?: number;
+    };
+    url: '/histories';
+};
+
+export type GetHistoriesResponses = {
+    /**
+     * OK
+     */
+    200: ModelPageDtoModelResultDto;
+};
+
+export type GetHistoriesResponse = GetHistoriesResponses[keyof GetHistoriesResponses];
+
 export type GetResultsData = {
     body?: never;
     path?: never;

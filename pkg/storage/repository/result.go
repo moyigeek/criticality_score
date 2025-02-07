@@ -13,6 +13,8 @@ type ResultRepository interface {
 	/** QUERY **/
 	CountByLink(search string) (int, error)
 	QueryByLink(search string, skip int, take int) (iter.Seq[*Result], error)
+	CountHistoriesByLink(link string) (int, error)
+	QueryHistoriesByLink(link string, skip int, take int) (iter.Seq[*Result], error)
 	GetByScoreID(scoreID int) (*Result, error)
 	QueryGitDetailsByScoreID(scoreID int) (iter.Seq[*ResultGitDetail], error)
 	QueryLangDetailsByScoreID(scoreID int) (iter.Seq[*ResultLangDetail], error)
@@ -59,9 +61,33 @@ type resultRepository struct {
 	ctx storage.AppDatabaseContext
 }
 
+// QueryHistoriesByLink implements ResultRepository.
+func (r *resultRepository) QueryHistoriesByLink(link string, skip int, take int) (iter.Seq[*Result], error) {
+	rows, err := sqlutil.Query[Result](r.ctx, `select ag.git_link as git_link,
+		s.id as score_id,
+		s.dist_score as dist_score,
+		s.lang_score as lang_score,
+		s.git_score as git_score,
+		s.score as score,
+		s.update_time as update_time
+	from all_gitlinks_cache ag
+	left join scores s on ag.git_link = s.git_link
+	where ag.git_link = $1 order by s.id desc limit $2 offset $3
+	`, link, take, skip)
+	return rows, err
+}
+
 // CountByLink implements ResultRepository.
 func (r *resultRepository) CountByLink(search string) (int, error) {
 	row := r.ctx.QueryRow(`select count(*) from all_gitlinks_cache where git_link like $1`, "%"+search+"%")
+	var count int
+	err := row.Scan(&count)
+	return count, err
+}
+
+// CountHistoriesByLink implements ResultRepository.
+func (r *resultRepository) CountHistoriesByLink(link string) (int, error) {
+	row := r.ctx.QueryRow(`select count(*) from scores where git_link = $1`, link)
 	var count int
 	err := row.Scan(&count)
 	return count, err
@@ -110,18 +136,21 @@ func (r *resultRepository) QueryLangDetailsByScoreID(scoreID int) (iter.Seq[*Res
 
 // QueryWithCountByLink implements ResultRepository.
 func (r *resultRepository) QueryByLink(search string, skip int, take int) (iter.Seq[*Result], error) {
-	rows, err := sqlutil.Query[Result](r.ctx, `select distinct on (s.id, ag.git_link)
-		ag.git_link as git_link,
-		s.id as score_id,
-		s.dist_score as dist_score,
-		s.lang_score as lang_score,
-		s.git_score as git_score,
-		s.score as score,
-		s.update_time as update_time
-	from all_gitlinks_cache ag
-	left join scores s on ag.git_link = s.git_link
-	where ag.git_link like $1 order by s.id desc limit $2 offset $3
-	`, "%"+search+"%", take, skip)
+	rows, err := sqlutil.Query[Result](r.ctx, `select * from (
+		select distinct on (s.id, ag.git_link)
+			ag.git_link as git_link,
+			s.id as score_id,
+			s.dist_score as dist_score,
+			s.lang_score as lang_score,
+			s.git_score as git_score,
+			s.score as score,
+			s.update_time as update_time
+		from all_gitlinks_cache ag
+		left join scores s on ag.git_link = s.git_link
+		where ag.git_link like $1
+		order by s.id desc, ag.git_link) as t
+	order by score desc nulls last
+	limit $2 offset $3`, "%"+search+"%", take, skip)
 	return rows, err
 }
 

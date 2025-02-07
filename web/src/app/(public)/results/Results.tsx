@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Loading from "./loading";
+import ScoreCard from "@/components/ScoreCard";
 
 export default function Results(props: {
   items?: ModelPageDtoModelResultDto
@@ -61,41 +62,9 @@ export default function Results(props: {
     return <Loading />
   } else if (data?.items) {
     content = data.items.map((item) => (
-      <div key={item.scoreID} className="my-8 p-8 w-full rounded-xl bg-white border-solid border border-slate-200 shadow-sm">
-        <div className="flex items-center gap-2">
-          {item.link?.indexOf("github") !== -1 ? <GithubOutlined /> : <ForkOutlined />}
-          <span className="font-bold">{item.link}</span>
-        </div>
-
-        {item.scoreID == null ? <div className="mt-4 text-red-600">
-          No Score Data Found
-        </div> : <>
-          <Row gutter={16} className="mt-4">
-            <Col span={4}>
-              <Statistic title="Total Score" value={item.score} precision={4} />
-            </Col>
-            <Col span={4}>
-              <Statistic title="Git Metadata" value={item.gitScore} precision={4} />
-            </Col>
-            <Col span={4}>
-              <Statistic title="Lang Ecosystem" value={item.langScore} precision={4} />
-            </Col>
-            <Col span={4}>
-              <Statistic title="Distributions" value={item.distroScore} precision={4} />
-            </Col>
-          </Row>
-
-          <div className="mt-4 flex gap-4">
-            <Link href={`/detail/${item.scoreID}?q=${search}`} className="text-blue-800" passHref>Details</Link>
-            <a href="#" className="text-blue-800">Histories</a>
-          </div>
-        </>
-
-        }
-
-
-
-      </div>
+      <ScoreCard key={item.scoreID} item={item} keepSearchParams={{
+        q: search
+      }} />
     ));
   } else {
     content = <Result
