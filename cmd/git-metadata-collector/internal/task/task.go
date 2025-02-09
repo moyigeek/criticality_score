@@ -54,6 +54,14 @@ func Collect(gitLink string) {
 		if err != nil {
 			logger.Errorf("Inserting %s Failed", gitLink)
 		}
+
+		err = gmr.DeleteFailed(gitLink)
+		if err != nil {
+			logger.WithFields(map[string]any{
+				"gitlink": gitLink,
+				"error":   err,
+			}).Errorf("Deleting failed row failed: %v", gitLink)
+		}
 	}
 
 	u := url.ParseURL(gitLink)
