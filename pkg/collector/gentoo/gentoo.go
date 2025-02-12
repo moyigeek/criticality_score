@@ -19,9 +19,9 @@ type GentooCollector struct {
 	collector.CollecterInterface
 }
 
-func (hc *GentooCollector) Collect(outputPath string) {
+func (hc *GentooCollector) Collect(outputPath string, downloadDir string) {
 	adc := storage.GetDefaultAppDatabaseContext()
-	err := hc.cloneGentooRepo(outputPath)
+	err := hc.cloneGentooRepo(downloadDir)
 	if err != nil {
 		log.Printf("Error cloning Gentoo repository: %v\n", err)
 		return

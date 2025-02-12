@@ -512,7 +512,7 @@ func Insert[T any](ctx storage.AppDatabaseContext, into string, data *T) error {
 }
 
 func BatchInsert[T any](ctx storage.AppDatabaseContext, into string, data []*T) error {
-	const BatchInsertSizePerTime = 500
+	const BatchInsertSizePerTime = 1000
 
 	if len(data) == 0 {
 		return fmt.Errorf("no data to insert")

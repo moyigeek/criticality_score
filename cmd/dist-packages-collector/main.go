@@ -50,18 +50,18 @@ func main() {
 			defer wg.Done()
 			ubuntu.NewUbuntuCollector().Collect(*flagGenDot)
 		}()
-		go func() {
-			defer wg.Done()
-			nix.NewNixCollector().Collect(*workerCount, *batchSize, *flagGenDot)
-		}()
+		// go func() {
+		// 	defer wg.Done()
+		// 	nix.NewNixCollector().Collect(*workerCount, *batchSize, *flagGenDot)
+		// }()
 		go func() {
 			defer wg.Done()
 			homebrew.NewHomebrewCollector().Collect(*flagGenDot, *downloadDir)
 		}()
-		go func() {
-			defer wg.Done()
-			gentoo.NewGentooCollector().Collect(*flagGenDot)
-		}()
+		// go func() {
+		// 	defer wg.Done()
+		// 	gentoo.NewGentooCollector().Collect(*flagGenDot)
+		// }()
 		go func() {
 			defer wg.Done()
 			fedora.NewFedoraCollector().Collect(*flagGenDot)
@@ -95,7 +95,7 @@ func main() {
 		case "homebrew":
 			homebrew.NewHomebrewCollector().Collect(*flagGenDot, *downloadDir)
 		case "gentoo":
-			gentoo.NewGentooCollector().Collect(*flagGenDot)
+			gentoo.NewGentooCollector().Collect(*flagGenDot, *downloadDir)
 		case "fedora":
 			fedora.NewFedoraCollector().Collect(*flagGenDot)
 		case "centos":

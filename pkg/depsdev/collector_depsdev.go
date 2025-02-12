@@ -20,6 +20,9 @@ import (
 	"github.com/samber/lo"
 )
 
+var Pkg2GitLink = make(map[string]map[string]struct{})
+var pkg2GitLinkMutex sync.Mutex
+
 var PackageCounts = map[repository.LangEcosystemType]int{
 	repository.Npm:    3.37e6,
 	repository.Go:     1.29e6,
@@ -40,7 +43,9 @@ type VersionInfo struct {
 	VersionKey struct {
 		Version string `json:"version"`
 	} `json:"versionKey"`
-	PublishedAt time.Time `json:"publishedAt"`
+	PublishedAt  time.Time `json:"publishedAt"`
+	IsDefault    bool      `json:"isDefault"`
+	IsDeprecated bool      `json:"isDeprecated"`
 }
 
 type PackageInfo struct {
@@ -102,7 +107,6 @@ func getLatestVersion(repo, projectType string) string {
 	client := &http.Client{}
 	resp, err := client.Do(req.WithContext(ctx))
 	if err != nil {
-		fmt.Println("Error fetching package information:", err)
 		return ""
 	}
 	defer resp.Body.Close()
@@ -114,7 +118,7 @@ func getLatestVersion(repo, projectType string) string {
 	var latestVersion string
 	var latestDate time.Time
 	for _, version := range result.Versions {
-		if version.PublishedAt.After(latestDate) {
+		if version.PublishedAt.After(latestDate) && version.IsDefault {
 			latestDate = version.PublishedAt
 			latestVersion = version.VersionKey.Version
 		}
@@ -124,17 +128,12 @@ func getLatestVersion(repo, projectType string) string {
 }
 
 func queryDepsDev(projectType, projectName, version string) int {
+	version = getLatestVersion(projectName, projectType)
 	url := fmt.Sprintf("https://api.deps.dev/v3alpha/systems/%s/packages/%s/versions/%s:dependents", projectType, projectName, version)
 	resp, err := http.Get(url)
-	if err != nil {
-		version = getLatestVersion(projectName, projectType)
-		url = fmt.Sprintf("https://api.deps.dev/v3alpha/systems/%s/packages/%s/versions/%s:dependents", projectType, projectName, version)
-		resp, err = http.Get(url)
-		if err != nil {
-			fmt.Println("Error fetching package information:", err)
-			return 0
-		}
-		defer resp.Body.Close()
+	if err != nil || resp.StatusCode != http.StatusOK {
+		// fmt.Println("Error fetching package information:", err)
+		return 0
 	}
 	defer resp.Body.Close()
 
@@ -216,6 +215,12 @@ func queryDepsName(gitlink string, rdb *redis.Client) map[string]Version {
 			latestVersions[name][system] = version
 			depMap[name] = Version{Name: name, System: system, Version: version}
 			storage.SetKeyValue(rdb, name, gitlink)
+			pkg2GitLinkMutex.Lock()
+			if _, exists := Pkg2GitLink[name]; !exists {
+				Pkg2GitLink[name] = make(map[string]struct{})
+			}
+			Pkg2GitLink[name][gitlink] = struct{}{}
+			pkg2GitLinkMutex.Unlock()
 		}
 	}
 	return depMap
@@ -231,9 +236,10 @@ func Depsdev(batchSize int, workerPoolSize int, calculatePageRankFlag bool) {
 	repo := repository.NewLangEcoLinkRepository(ac)
 	rdb, _ := storage.InitRedis()
 	gitLinks := fetchGitLink(ac, lo.ToPtr(0))
-	// gitLinks := []string{"https://github.com/facebook/react.git"}
+	// gitLinks := []string{"https://github.com/webpack/webpack"}
 	pkgMap := make(map[string][]Version)
 	pkgDepMap := make(map[string]map[string]int)
+	var pkgDepMapMutex sync.Mutex
 	var count int
 	var mu sync.Mutex
 	var wg sync.WaitGroup
@@ -248,14 +254,14 @@ func Depsdev(batchSize int, workerPoolSize int, calculatePageRankFlag bool) {
 			defer wg.Done()
 			defer func() { <-semaphore }()
 			depMap := queryDepsName(gitlink, rdb)
-			mu.Lock()
+			pkgDepMapMutex.Lock()
 			for pkgName, pkgInfo := range depMap {
 				if _, exists := pkgDepMap[pkgInfo.System]; !exists {
 					pkgDepMap[pkgInfo.System] = make(map[string]int)
 				}
 				pkgDepMap[pkgInfo.System][pkgName] = queryDepsDev(pkgInfo.System, pkgInfo.Name, pkgInfo.Version)
 			}
-			mu.Unlock()
+			pkgDepMapMutex.Unlock()
 			if calculatePageRankFlag {
 				pkgdepMap := fetchDep(depMap, workerPoolSize)
 				mu.Lock()
@@ -293,42 +299,39 @@ func Depsdev(batchSize int, workerPoolSize int, calculatePageRankFlag bool) {
 			go func(system, pkgName string) {
 				defer wg.Done()
 				defer func() { <-semaphore }()
-				gitlink, err := storage.GetKeyValue(rdb, pkgName)
-				if err != nil {
-					fmt.Println("Error getting key:", err)
-					return
+				gitlinks := Pkg2GitLink[pkgName]
+				for gitlink := range gitlinks {
+					var ltype repository.LangEcosystemType
+					switch strings.ToLower(system) {
+					case "cargo":
+						ltype = repository.Cargo
+					case "go":
+						ltype = repository.Go
+					case "maven":
+						ltype = repository.Maven
+					case "npm":
+						ltype = repository.Npm
+					case "nuget":
+						ltype = repository.NuGet
+					case "pypi":
+						ltype = repository.Pypi
+					}
+
+					key := langEcoKey{
+						gitLink: gitlink,
+						ltype:   ltype,
+					}
+
+					mu.Lock()
+
+					if _, exists := langEco[key]; !exists {
+						langEco[key] = pkgDepMap[system][pkgName]
+					} else {
+						langEco[key] += pkgDepMap[system][pkgName]
+					}
+
+					mu.Unlock()
 				}
-
-				var ltype repository.LangEcosystemType
-				switch strings.ToLower(system) {
-				case "cargo":
-					ltype = repository.Cargo
-				case "go":
-					ltype = repository.Go
-				case "maven":
-					ltype = repository.Maven
-				case "npm":
-					ltype = repository.Npm
-				case "nuget":
-					ltype = repository.NuGet
-				case "pypi":
-					ltype = repository.Pypi
-				}
-
-				key := langEcoKey{
-					gitLink: gitlink,
-					ltype:   ltype,
-				}
-
-				mu.Lock()
-
-				if _, exists := langEco[key]; !exists {
-					langEco[key] = pkgDepMap[system][pkgName]
-				} else {
-					langEco[key] += pkgDepMap[system][pkgName]
-				}
-
-				mu.Unlock()
 			}(system, pkgName)
 		}
 	}
@@ -425,6 +428,7 @@ func calculatePageRank(pkgInfoMap map[string][]Version, iterations int, dampingF
 
 func getAndProcessDependencies(system, name, version string) Dependencies {
 	var result Dependencies
+	version = getLatestVersion(name, system)
 	url := fmt.Sprintf("https://api.deps.dev/v3alpha/systems/%s/packages/%s/versions/%s:dependencies", system, name, version)
 	resp, err := http.Get(url)
 	if err != nil {
@@ -432,17 +436,6 @@ func getAndProcessDependencies(system, name, version string) Dependencies {
 		return result
 	}
 	defer resp.Body.Close()
-
-	if resp.StatusCode != http.StatusOK {
-		version = getLatestVersion(name, system)
-		url = fmt.Sprintf("https://api.deps.dev/v3alpha/systems/%s/packages/%s/versions/%s:dependencies", system, name, version)
-		resp, err = http.Get(url)
-		if err != nil {
-			fmt.Println("Error querying deps.dev:", err)
-			return result
-		}
-		defer resp.Body.Close()
-	}
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Println("Error reading response body:", err)

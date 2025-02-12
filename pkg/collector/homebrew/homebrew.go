@@ -23,7 +23,7 @@ func (hc *HomebrewCollector) Collect(outputPath string, downloadDir string) {
 	adc := storage.GetDefaultAppDatabaseContext()
 	err := hc.CloneHomebrewRepo(downloadDir)
 	if err != nil {
-		log.Printf("Error cloning Gentoo repository: %v\n", err)
+		log.Printf("Error cloning homebrew repository: %v\n", err)
 		return
 	}
 	hc.ParseInfo(downloadDir)

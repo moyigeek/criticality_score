@@ -75,12 +75,12 @@ var weights = map[string]map[string]float64{
 		"gitMetadataScore":  1,
 	},
 	"distScore": {
-		"dist_impact":   1,
-		"dist_pagerank": 1,
+		"dist_impact":   500,
+		"dist_pagerank": 500,
 		"distScore":     5,
 	},
 	"langEcoScore": {
-		"lang_eco_impact": 1,
+		"lang_eco_impact": 14,
 		"langEcoScore":    5,
 	},
 }
@@ -162,7 +162,7 @@ func (gitMetadata *GitMetadata) ParseMetadata(gitMetic *repository.GitMetric) {
 }
 
 func (langEcoScore *LangEcoScore) CalculateLangEcoScore() {
-	langEcoScore.LangEcoScore = weights["lang_eco_score"]["lang_eco_impact"] * langEcoScore.LangEcoImpact
+	langEcoScore.LangEcoScore = weights["langEcoScore"]["lang_eco_impact"] * langEcoScore.LangEcoImpact
 }
 
 func NewLangEcoScore() *LangEcoScore {

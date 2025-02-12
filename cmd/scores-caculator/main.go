@@ -20,6 +20,7 @@ func main() {
 	ac := storage.GetDefaultAppDatabaseContext()
 	scores.UpdatePackageList(ac)
 	linksMap := scores.FetchGitLink(ac)
+	// linksMap := []string{"https://github.com/webpack/webpack"}
 	gitMeticMap := scores.FetchGitMetrics(ac)
 	langEcoMetricMap := scores.FetchLangEcoMetadata(ac)
 	distMetricMap := scores.FetchDistMetadata(ac)

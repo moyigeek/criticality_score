@@ -120,8 +120,12 @@ func (r *distLinkRepository) InsertOrUpdate(packageInfo *DistDependency) error {
 		return err
 	}
 
-	sqlutil.MergeStruct(oldInfo, packageInfo)
-	return sqlutil.Insert(r.ctx, DistDependencyTableName, packageInfo)
+	if oldInfo == nil {
+		return sqlutil.Insert(r.ctx, DistDependencyTableName, packageInfo)
+	} else {
+		sqlutil.MergeStruct(oldInfo, packageInfo)
+		return sqlutil.Insert(r.ctx, DistDependencyTableName, packageInfo)
+	}
 }
 
 // QueryByType implements DistributionDependencyRepository.

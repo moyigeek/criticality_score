@@ -238,14 +238,22 @@ func (cl *Collecter) GetDepCount() {
 
 	for _, deps := range cl.PkgInfoMap {
 		for _, dep := range deps.IndirectDepends {
+			if idx := strings.Index(dep, ">"); idx != -1 {
+				dep = dep[:idx]
+			} else if idx := strings.Index(dep, "="); idx != -1 {
+				dep = dep[:idx]
+			} else if idx := strings.Index(dep, "<"); idx != -1 {
+				dep = dep[:idx]
+			}
 			countMap[dep]++
 		}
 	}
 
 	for pkgName, count := range countMap {
-		pkgInfo := cl.PkgInfoMap[pkgName]
-		pkgInfo.DependsCount = count
-		cl.PkgInfoMap[pkgName] = pkgInfo
+		if pkgInfo, ok := cl.PkgInfoMap[pkgName]; ok {
+			pkgInfo.DependsCount = count
+			cl.PkgInfoMap[pkgName] = pkgInfo
+		}
 	}
 }
 

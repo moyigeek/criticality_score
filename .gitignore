@@ -27,3 +27,5 @@ go.work.sum
 data/
 .env
 .vscode/
+
+cmd/dist-packages-collector/download/
