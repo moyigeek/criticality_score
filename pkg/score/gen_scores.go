@@ -72,16 +72,16 @@ var weights = map[string]map[string]float64{
 		"contributor_count": 2,
 		"commit_frequency":  1,
 		"org_count":         1,
-		"gitMetadataScore":  1,
+		"gitMetadataScore":  0.2,
 	},
 	"distScore": {
-		"dist_impact":   500,
-		"dist_pagerank": 500,
-		"distScore":     5,
+		"dist_impact":   1,
+		"dist_pagerank": 84,
+		"distScore":     0.5,
 	},
 	"langEcoScore": {
-		"lang_eco_impact": 14,
-		"langEcoScore":    5,
+		"lang_eco_impact": 1,
+		"langEcoScore":    0.3,
 	},
 }
 
@@ -92,16 +92,16 @@ var thresholds = map[string]map[string]float64{
 		"contributor_count": 40000,
 		"commit_frequency":  1000,
 		"org_count":         8400,
-		"gitMetadataScore":  1,
+		"gitMetadataScore":  10,
 	},
 	"distScore": {
-		"dist_impact":   1,
-		"dist_pagerank": 1,
-		"distScore":     1,
+		"dist_impact":   0.1,
+		"dist_pagerank": 0.001,
+		"distScore":     100,
 	},
 	"langEcoScore": {
-		"lang_eco_impact": 1,
-		"langEcoScore":    1,
+		"lang_eco_impact": 0.2,
+		"langEcoScore":    2,
 	},
 }
 
@@ -162,7 +162,11 @@ func (gitMetadata *GitMetadata) ParseMetadata(gitMetic *repository.GitMetric) {
 }
 
 func (langEcoScore *LangEcoScore) CalculateLangEcoScore() {
-	langEcoScore.LangEcoScore = weights["langEcoScore"]["lang_eco_impact"] * langEcoScore.LangEcoImpact
+	langEcoScore.LangEcoScore = weights["langEcoScore"]["lang_eco_impact"] * LogNormalize(langEcoScore.LangEcoImpact, thresholds["langEcoScore"]["lang_eco_impact"])
+}
+
+func (langEcoScore *LangEcoScore) NormalizeScore() {
+	langEcoScore.LangEcoScore = math.Log(langEcoScore.LangEcoScore+1) / math.Log(thresholds["langEcoScore"]["langEcoScore"]+1) * 100
 }
 
 func NewLangEcoScore() *LangEcoScore {
@@ -203,31 +207,32 @@ func (gitMetadataScore *GitMetadataScore) CalculateGitMetadataScore(gitMetadata 
 	}
 }
 
+func (gitMetadataScore *GitMetadataScore) NormalizeScore() {
+	gitMetadataScore.GitMetadataScore = math.Log(gitMetadataScore.GitMetadataScore+1) / math.Log(thresholds["gitMetadataScore"]["gitMetadataScore"]+1) * 100
+}
+
 func NewGitMetadata() *GitMetadata {
 	return &GitMetadata{}
 }
 
 func (distScore *DistScore) CalculateDistScore() {
-	distScore.DistScore = weights["distScore"]["dist_impact"]*distScore.DistImpact + weights["distScore"]["dist_pagerank"]*distScore.DistPageRank
+	distScore.DistScore = weights["distScore"]["dist_impact"]*LogNormalize(distScore.DistImpact, thresholds["distScore"]["dist_impact"]) + weights["distScore"]["dist_pagerank"]*LogNormalize(distScore.DistPageRank, thresholds["distScore"]["dist_pagerank"])
 }
+
+func (distScore *DistScore) NormalizeScore() {
+	distScore.DistScore = math.Log(distScore.DistScore+1) / math.Log(thresholds["distScore"]["distScore"]+1) * 100
+}
+
 func (linkScore *LinkScore) CalculateScore() {
 	score := 0.0
 
 	score += weights["gitMetadataScore"]["gitMetadataScore"] * linkScore.GitMetadataScore.GitMetadataScore
 
-	score += weights["lang_eco_impact"]["lang_eco_impact"] * linkScore.LangEcoScore.LangEcoScore
+	score += weights["langEcoScore"]["langEcoScore"] * linkScore.LangEcoScore.LangEcoScore
 
 	score += weights["distScore"]["distScore"] * linkScore.DistScore.DistScore
 
-	var totalnum float64
-	for nameScore, value := range weights {
-		for nameSubScore := range value {
-			if nameSubScore != nameScore {
-				totalnum += weights["gitMetadataScore"][nameSubScore]
-			}
-		}
-	}
-	linkScore.Score = score / totalnum
+	linkScore.Score = score
 }
 
 func NewGitMetadataScore() *GitMetadataScore {
@@ -303,12 +308,13 @@ func FetchDistMetadata(ac storage.AppDatabaseContext) map[string]*DistScore {
 	for link := range linksIter {
 		distMetadata := NewDistMetadata()
 		distMetadata.PraseDistMetadata(link)
+		coefficient := PackageList[distMetadata.Type] / PackageList[repository.Homebrew]
 		if exists, ok := distMap[*link.GitLink]; ok && exists != nil {
 			distMap[*link.GitLink].DistDependencies = append(distMap[*link.GitLink].DistDependencies, link)
-			distMap[*link.GitLink].DistImpact += distMetadata.DepImpact
-			distMap[*link.GitLink].DistPageRank += distMetadata.PageRank
+			distMap[*link.GitLink].DistImpact += float64(coefficient) * distMetadata.DepImpact
+			distMap[*link.GitLink].DistPageRank += float64(coefficient) * distMetadata.PageRank
 		} else {
-			distMap[*link.GitLink] = &DistScore{DistDependencies: []*repository.DistDependency{link}, DistImpact: distMetadata.DepImpact, DistPageRank: distMetadata.PageRank}
+			distMap[*link.GitLink] = &DistScore{DistDependencies: []*repository.DistDependency{link}, DistImpact: float64(coefficient) * distMetadata.DepImpact, DistPageRank: float64(coefficient) * distMetadata.PageRank}
 		}
 	}
 	return distMap
@@ -372,12 +378,13 @@ func FetchDistMetadataSingle(ac storage.AppDatabaseContext, link string) map[str
 	for _, link := range linksMap {
 		distMetadata := NewDistMetadata()
 		distMetadata.PraseDistMetadata(link)
+		coefficient := PackageList[distMetadata.Type] / PackageList[repository.Homebrew]
 		if exists, ok := distMap[*link.GitLink]; ok && exists != nil {
 			distMap[*link.GitLink].DistDependencies = append(distMap[*link.GitLink].DistDependencies, link)
-			distMap[*link.GitLink].DistImpact += distMetadata.DepImpact
-			distMap[*link.GitLink].DistPageRank += distMetadata.PageRank
+			distMap[*link.GitLink].DistImpact += float64(coefficient) * distMetadata.DepImpact
+			distMap[*link.GitLink].DistPageRank += float64(coefficient) * distMetadata.PageRank
 		} else {
-			distMap[*link.GitLink] = &DistScore{DistDependencies: []*repository.DistDependency{link}, DistImpact: distMetadata.DepImpact, DistPageRank: distMetadata.PageRank}
+			distMap[*link.GitLink] = &DistScore{DistDependencies: []*repository.DistDependency{link}, DistImpact: float64(coefficient) * distMetadata.DepImpact, DistPageRank: float64(coefficient) * distMetadata.PageRank}
 		}
 	}
 	return distMap

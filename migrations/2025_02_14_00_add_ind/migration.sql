@@ -1,0 +1,1 @@
+CREATE INDEX idx_scores_git_link_id ON scores(git_link, id DESC);

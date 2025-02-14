@@ -20,8 +20,7 @@ import (
 	"github.com/samber/lo"
 )
 
-var Pkg2GitLink = make(map[string]map[string]struct{})
-var pkg2GitLinkMutex sync.Mutex
+var Pkg2GitLink sync.Map
 
 var PackageCounts = map[repository.LangEcosystemType]int{
 	repository.Npm:    3.37e6,
@@ -168,8 +167,8 @@ func getGitlink(db *sql.DB) []string {
 	return gitLinks
 }
 
-func queryDepsName(gitlink string, rdb *redis.Client) map[string]Version {
-	depMap := make(map[string]Version)
+func queryDepsName(gitlink string, rdb *redis.Client) *sync.Map {
+	depMap := &sync.Map{}
 	if strings.Contains(gitlink, ".git") {
 		gitlink = strings.TrimSuffix(gitlink, ".git")
 	}
@@ -195,7 +194,7 @@ func queryDepsName(gitlink string, rdb *redis.Client) map[string]Version {
 		return depMap
 	}
 
-	latestVersions := make(map[string]map[string]string)
+	latestVersions := &sync.Map{}
 	for _, item := range result.Versions {
 		name := item.VersionKey.Name
 		version := item.VersionKey.Version
@@ -208,19 +207,19 @@ func queryDepsName(gitlink string, rdb *redis.Client) map[string]Version {
 			split := strings.Split(name, "/")
 			name = split[len(split)-1]
 		}
-		if _, exists := latestVersions[name]; !exists {
-			latestVersions[name] = make(map[string]string)
+		if _, exists := latestVersions.Load(name); !exists {
+			latestVersions.Store(name, &sync.Map{})
 		}
-		if currentVersion, exists := latestVersions[name][system]; !exists || version > currentVersion {
-			latestVersions[name][system] = version
-			depMap[name] = Version{Name: name, System: system, Version: version}
+		systemMap, _ := latestVersions.Load(name)
+		if currentVersion, exists := systemMap.(*sync.Map).Load(system); !exists || version > currentVersion.(string) {
+			systemMap.(*sync.Map).Store(system, version)
+			depMap.Store(name, Version{Name: name, System: system, Version: version})
 			storage.SetKeyValue(rdb, name, gitlink)
-			pkg2GitLinkMutex.Lock()
-			if _, exists := Pkg2GitLink[name]; !exists {
-				Pkg2GitLink[name] = make(map[string]struct{})
+			if _, exists := Pkg2GitLink.Load(name); !exists {
+				Pkg2GitLink.Store(name, &sync.Map{})
 			}
-			Pkg2GitLink[name][gitlink] = struct{}{}
-			pkg2GitLinkMutex.Unlock()
+			gitLinks, _ := Pkg2GitLink.Load(name)
+			gitLinks.(*sync.Map).Store(gitlink, struct{}{})
 		}
 	}
 	return depMap
@@ -231,15 +230,14 @@ type GitMetrics struct {
 	LangEcoPageRank float64
 }
 
-func Depsdev(batchSize int, workerPoolSize int, calculatePageRankFlag bool) {
+func Depsdev(batchSize int, workerPoolSize int, calculatePageRankFlag bool, debugMode bool) {
 	ac := storage.GetDefaultAppDatabaseContext()
 	repo := repository.NewLangEcoLinkRepository(ac)
 	rdb, _ := storage.InitRedis()
-	gitLinks := fetchGitLink(ac, lo.ToPtr(0))
-	// gitLinks := []string{"https://github.com/webpack/webpack"}
-	pkgMap := make(map[string][]Version)
-	pkgDepMap := make(map[string]map[string]int)
-	var pkgDepMapMutex sync.Mutex
+	gitLinks := []string{"https://github.com/ecomfe/react-hooks", "https://github.com/facebook/react"}
+	// gitLinks := fetchGitLink(ac, lo.ToPtr(0))
+	pkgMap := &sync.Map{}
+	pkgDepMap := &sync.Map{}
 	var count int
 	var mu sync.Mutex
 	var wg sync.WaitGroup
@@ -254,20 +252,25 @@ func Depsdev(batchSize int, workerPoolSize int, calculatePageRankFlag bool) {
 			defer wg.Done()
 			defer func() { <-semaphore }()
 			depMap := queryDepsName(gitlink, rdb)
-			pkgDepMapMutex.Lock()
-			for pkgName, pkgInfo := range depMap {
-				if _, exists := pkgDepMap[pkgInfo.System]; !exists {
-					pkgDepMap[pkgInfo.System] = make(map[string]int)
+			depMap.Range(func(pkgName, pkgInfo interface{}) bool {
+				if _, exists := pkgDepMap.Load(pkgInfo.(Version).System); !exists {
+					pkgDepMap.Store(pkgInfo.(Version).System, &sync.Map{})
 				}
-				pkgDepMap[pkgInfo.System][pkgName] = queryDepsDev(pkgInfo.System, pkgInfo.Name, pkgInfo.Version)
-			}
-			pkgDepMapMutex.Unlock()
+				systemMap, _ := pkgDepMap.Load(pkgInfo.(Version).System)
+				systemMap.(*sync.Map).Store(pkgName, queryDepsDev(pkgInfo.(Version).System, pkgInfo.(Version).Name, pkgInfo.(Version).Version))
+				return true
+			})
 			if calculatePageRankFlag {
 				pkgdepMap := fetchDep(depMap, workerPoolSize)
 				mu.Lock()
-				for pkgName, pkgInfo := range pkgdepMap {
-					pkgMap[pkgName] = pkgInfo
-				}
+				pkgdepMap.Range(func(pkgName, pkgInfo interface{}) bool {
+					if _, exists := pkgMap.Load(pkgName); !exists {
+						pkgMap.Store(pkgName, []Version{})
+					}
+					current, _ := pkgMap.Load(pkgName)
+					pkgMap.Store(pkgName, append(current.([]Version), pkgInfo.([]Version)...))
+					return true
+				})
 				mu.Unlock()
 				storage.PersistData(rdb)
 			}
@@ -276,31 +279,37 @@ func Depsdev(batchSize int, workerPoolSize int, calculatePageRankFlag bool) {
 	wg.Wait()
 	var pageRank map[string]float64
 	if calculatePageRankFlag {
-		pageRank = calculatePageRank(pkgMap, 100, 0.85)
+		pkgMapCopy := make(map[string][]Version)
+		pkgMap.Range(func(key, value interface{}) bool {
+			pkgMapCopy[key.(string)] = value.([]Version)
+			return true
+		})
+		pageRank = calculatePageRank(pkgMapCopy, 100, 0.85)
 	} else {
 		pageRank = make(map[string]float64)
-		for _, pkgMap := range pkgDepMap {
-			for pkgName := range pkgMap {
-				pageRank[pkgName] = 0.0
-			}
-		}
+		pkgDepMap.Range(func(_, systemMap interface{}) bool {
+			systemMap.(*sync.Map).Range(func(pkgName, _ interface{}) bool {
+				pageRank[pkgName.(string)] = 0.0
+				return true
+			})
+			return true
+		})
 	}
 	type langEcoKey struct {
 		gitLink string
 		ltype   repository.LangEcosystemType
 	}
+	langEco := &sync.Map{}
 
-	langEco := make(map[langEcoKey]int)
-
-	for system, pkgMap := range pkgDepMap {
-		for pkgName := range pkgMap {
+	pkgDepMap.Range(func(system, systemMap interface{}) bool {
+		systemMap.(*sync.Map).Range(func(pkgName, _ interface{}) bool {
 			wg.Add(1)
 			semaphore <- struct{}{}
 			go func(system, pkgName string) {
 				defer wg.Done()
 				defer func() { <-semaphore }()
-				gitlinks := Pkg2GitLink[pkgName]
-				for gitlink := range gitlinks {
+				gitlinks, _ := Pkg2GitLink.Load(pkgName)
+				gitlinks.(*sync.Map).Range(func(gitlink, _ interface{}) bool {
 					var ltype repository.LangEcosystemType
 					switch strings.ToLower(system) {
 					case "cargo":
@@ -318,62 +327,69 @@ func Depsdev(batchSize int, workerPoolSize int, calculatePageRankFlag bool) {
 					}
 
 					key := langEcoKey{
-						gitLink: gitlink,
+						gitLink: gitlink.(string),
 						ltype:   ltype,
 					}
 
 					mu.Lock()
 
-					if _, exists := langEco[key]; !exists {
-						langEco[key] = pkgDepMap[system][pkgName]
-					} else {
-						langEco[key] += pkgDepMap[system][pkgName]
+					if depCount, ok := systemMap.(*sync.Map).Load(pkgName); ok {
+						if value, exists := langEco.Load(key); !exists {
+							langEco.Store(key, depCount)
+						} else {
+							langEco.Store(key, value.(int)+depCount.(int))
+						}
 					}
 
 					mu.Unlock()
-				}
-			}(system, pkgName)
-		}
-	}
+					return true
+				})
+			}(system.(string), pkgName.(string))
+			return true
+		})
+		return true
+	})
 	wg.Wait()
 
+	existingLinks := make(map[string]bool)
+	langEco.Range(func(key, _ interface{}) bool {
+		existingLinks[key.(langEcoKey).gitLink] = true
+		return true
+	})
+
 	for _, link := range gitLinks {
-		found := false
-		for key := range langEco {
-			if key.gitLink == link {
-				found = true
-				break
-			}
-		}
-		if !found {
+		if !existingLinks[link] {
 			key := langEcoKey{
 				gitLink: link,
 				ltype:   repository.LangEcosystemType(6),
 			}
-			langEco[key] = 0
+			langEco.Store(key, 0)
 		}
 	}
+
 	var toUpdateList []*repository.LangEcosystem
-	for key, info := range langEco {
+	langEco.Range(func(key, info interface{}) bool {
 		toUpdateList = append(toUpdateList, lo.ToPtr(repository.LangEcosystem{
-			GitLink:       lo.ToPtr(key.gitLink),
-			Type:          lo.ToPtr(key.ltype),
-			DepCount:      lo.ToPtr(info),
-			LangEcoImpact: lo.ToPtr(float64(info) / float64(PackageCounts[key.ltype])),
+			GitLink:       lo.ToPtr(key.(langEcoKey).gitLink),
+			Type:          lo.ToPtr(key.(langEcoKey).ltype),
+			DepCount:      lo.ToPtr(info.(int)),
+			LangEcoImpact: lo.ToPtr(float64(info.(int)) / float64(PackageCounts[key.(langEcoKey).ltype])),
 		}))
-	}
+		return true
+	})
+
 	err := repo.BatchInsertOrUpdate(toUpdateList)
 	if err != nil {
 		fmt.Printf("Error updating database: %v\n", err)
 	}
 }
 
-func fetchDep(depMap map[string]Version, threadnum int) map[string][]Version {
-	depMapNew := make(map[string][]Version)
+func fetchDep(depMap *sync.Map, threadnum int) *sync.Map {
+	depMapNew := &sync.Map{}
 	var wg sync.WaitGroup
 	semaphore := make(chan struct{}, threadnum)
 	var mu sync.Mutex
-	for depName, depInfo := range depMap {
+	depMap.Range(func(depName, depInfo interface{}) bool {
 		wg.Add(1)
 		semaphore <- struct{}{}
 		go func(depName string, depInfo Version) {
@@ -385,45 +401,65 @@ func fetchDep(depMap map[string]Version, threadnum int) map[string][]Version {
 			version = depInfo.Version
 			result := getAndProcessDependencies(system, name, version)
 			mu.Lock()
-			depMapNew[name] = []Version{}
+			depMapNew.Store(name, []Version{})
 			for _, node := range result.Nodes {
 				if node.Relation == "DIRECT" {
-					depMapNew[name] = append(depMapNew[name], node.VersionKey)
+					if deps, ok := depMapNew.Load(name); ok {
+						depMapNew.Store(name, append(deps.([]Version), node.VersionKey))
+					}
 				}
 			}
 			mu.Unlock()
-		}(depName, depInfo)
-	}
+		}(depName.(string), depInfo.(Version))
+		return true
+	})
 	wg.Wait()
 	return depMapNew
 }
 
 func calculatePageRank(pkgInfoMap map[string][]Version, iterations int, dampingFactor float64) map[string]float64 {
-	pageRank := make(map[string]float64)
+	pageRank := &sync.Map{}
 	numPackages := len(pkgInfoMap)
 
 	for pkgName := range pkgInfoMap {
-		pageRank[pkgName] = 1.0 / float64(numPackages)
+		pageRank.Store(pkgName, 1.0/float64(numPackages))
 	}
 
 	for i := 0; i < iterations; i++ {
-		newPageRank := make(map[string]float64)
+		newPageRank := &sync.Map{}
 
 		for pkgName := range pkgInfoMap {
-			newPageRank[pkgName] = (1 - dampingFactor) / float64(numPackages)
+			newPageRank.Store(pkgName, (1-dampingFactor)/float64(numPackages))
 		}
 
+		var wg sync.WaitGroup
 		for pkgName, deps := range pkgInfoMap {
-			depNum := len(deps)
-			for _, depName := range deps {
-				if _, exists := pkgInfoMap[depName.Name]; exists {
-					newPageRank[depName.Name] += dampingFactor * (pageRank[pkgName] / float64(depNum))
+			wg.Add(1)
+			go func(pkgName string, deps []Version) {
+				defer wg.Done()
+				depNum := len(deps)
+				for _, depName := range deps {
+					if _, exists := pkgInfoMap[depName.Name]; exists {
+						if val, ok := pageRank.Load(pkgName); ok {
+							if newVal, ok := newPageRank.Load(depName.Name); ok {
+								newPageRank.Store(depName.Name, newVal.(float64)+dampingFactor*(val.(float64)/float64(depNum)))
+							}
+						}
+					}
 				}
-			}
+			}(pkgName, deps)
 		}
+		wg.Wait()
 		pageRank = newPageRank
 	}
-	return pageRank
+
+	result := make(map[string]float64)
+	pageRank.Range(func(key, value interface{}) bool {
+		result[key.(string)] = value.(float64)
+		return true
+	})
+
+	return result
 }
 
 func getAndProcessDependencies(system, name, version string) Dependencies {
