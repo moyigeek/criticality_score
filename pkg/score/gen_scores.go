@@ -64,6 +64,8 @@ type LangEcoScore struct {
 	LangEcoScore    float64
 }
 
+var SigmoidWeight = 1.2
+
 // Define weights (αi) and max thresholds (Ti)
 var weights = map[string]map[string]float64{
 	"gitMetadataScore": {
@@ -76,7 +78,7 @@ var weights = map[string]map[string]float64{
 	},
 	"distScore": {
 		"dist_impact":   1,
-		"dist_pagerank": 84,
+		"dist_pagerank": 1,
 		"distScore":     0.5,
 	},
 	"langEcoScore": {
@@ -92,16 +94,16 @@ var thresholds = map[string]map[string]float64{
 		"contributor_count": 40000,
 		"commit_frequency":  1000,
 		"org_count":         8400,
-		"gitMetadataScore":  10,
+		"gitMetadataScore":  4,
 	},
 	"distScore": {
-		"dist_impact":   0.1,
-		"dist_pagerank": 0.001,
-		"distScore":     100,
+		"dist_impact":   22,
+		"dist_pagerank": 3,
+		"distScore":     2,
 	},
 	"langEcoScore": {
-		"lang_eco_impact": 0.2,
-		"langEcoScore":    2,
+		"lang_eco_impact": 0.5,
+		"langEcoScore":    1,
 	},
 }
 
@@ -119,13 +121,13 @@ var PackageList = map[repository.DistType]int{
 	repository.Centos:   0,
 }
 
-var PackageCounts = map[repository.LangEcosystemType]int{
-	repository.Npm:   3.37e6,
-	repository.Go:    1.29e6,
-	repository.Maven: 668e3,
-	repository.Pypi:  574e3,
-	repository.NuGet: 430e3,
-	repository.Cargo: 168e3,
+var PackageWeight = map[repository.LangEcosystemType]float64{
+	repository.Npm:   1.5,
+	repository.Go:    1.4,
+	repository.Maven: 1.3,
+	repository.Pypi:  1.2,
+	repository.NuGet: 1.1,
+	repository.Cargo: 1,
 }
 
 func (langEcoMetadata *LangEcoMetadata) ParseLangEcoMetadata(langEcosystem *repository.LangEcosystem) {
@@ -138,6 +140,7 @@ func (langEcoMetadata *LangEcoMetadata) ParseLangEcoMetadata(langEcosystem *repo
 func (distMetadata *DistMetadata) PraseDistMetadata(distLink *repository.DistDependency) {
 	distMetadata.Id = *distLink.ID
 	distMetadata.DepCount = *distLink.DepCount
+	distMetadata.DepImpact = *distLink.DepImpact
 	distMetadata.PageRank = *distLink.PageRank
 	distMetadata.Type = *distLink.Type
 }
@@ -165,10 +168,6 @@ func (langEcoScore *LangEcoScore) CalculateLangEcoScore() {
 	langEcoScore.LangEcoScore = weights["langEcoScore"]["lang_eco_impact"] * LogNormalize(langEcoScore.LangEcoImpact, thresholds["langEcoScore"]["lang_eco_impact"])
 }
 
-func (langEcoScore *LangEcoScore) NormalizeScore() {
-	langEcoScore.LangEcoScore = math.Log(langEcoScore.LangEcoScore+1) / math.Log(thresholds["langEcoScore"]["langEcoScore"]+1) * 100
-}
-
 func NewLangEcoScore() *LangEcoScore {
 	return &LangEcoScore{}
 }
@@ -178,25 +177,20 @@ func (gitMetadataScore *GitMetadataScore) CalculateGitMetadataScore(gitMetadata 
 	var createdSinceScore, updatedSinceScore, contributorCountScore, commitFrequencyScore, orgCountScore float64
 
 	monthsSinceCreation := time.Since(gitMetadata.CreatedSince).Hours() / (24 * 30)
-	normalized := math.Log(monthsSinceCreation+1) / math.Log(math.Max(monthsSinceCreation, thresholds["gitMetadataScore"]["created_since"])+1)
-	createdSinceScore = weights["gitMetadataScore"]["created_since"] * normalized
+	createdSinceScore = weights["gitMetadataScore"]["created_since"] * LogNormalize(monthsSinceCreation, thresholds["gitMetadataScore"]["created_since"])
 	score += createdSinceScore
 
 	monthsSinceUpdate := time.Since(gitMetadata.UpdatedSince).Hours() / (24 * 30)
-	normalized = math.Log(monthsSinceUpdate+1) / math.Log(math.Max(monthsSinceUpdate, thresholds["gitMetadataScore"]["updated_since"])+1)
-	updatedSinceScore = weights["gitMetadataScore"]["updated_since"] * normalized
+	updatedSinceScore = weights["gitMetadataScore"]["updated_since"] * LogNormalize(monthsSinceUpdate, thresholds["gitMetadataScore"]["updated_since"])
 	score += updatedSinceScore
 
-	normalized = math.Log(float64(gitMetadata.ContributorCount)+1) / math.Log(math.Max(float64(gitMetadata.ContributorCount), thresholds["gitMetadataScore"]["contributor_count"])+1)
-	contributorCountScore = weights["gitMetadataScore"]["contributor_count"] * normalized
+	contributorCountScore = weights["gitMetadataScore"]["contributor_count"] * LogNormalize(float64(gitMetadata.ContributorCount), thresholds["gitMetadataScore"]["contributor_count"])
 	score += contributorCountScore
 
-	normalized = math.Log(gitMetadata.CommitFrequency+1) / math.Log(math.Max(gitMetadata.CommitFrequency, thresholds["gitMetadataScore"]["commit_frequency"])+1)
-	commitFrequencyScore = weights["gitMetadataScore"]["commit_frequency"] * normalized
+	commitFrequencyScore = weights["gitMetadataScore"]["commit_frequency"] * LogNormalize(gitMetadata.CommitFrequency, thresholds["gitMetadataScore"]["commit_frequency"])
 	score += commitFrequencyScore
 
-	normalized = math.Log(float64(gitMetadata.Org_Count)+1) / math.Log(math.Max(float64(gitMetadata.Org_Count), thresholds["gitMetadataScore"]["org_count"])+1)
-	orgCountScore = weights["gitMetadataScore"]["org_count"] * normalized
+	orgCountScore = weights["gitMetadataScore"]["org_count"] * LogNormalize(float64(gitMetadata.Org_Count), thresholds["gitMetadataScore"]["org_count"])
 	score += orgCountScore
 
 	gitMetadataScore.GitMetadataScore = score
@@ -207,10 +201,6 @@ func (gitMetadataScore *GitMetadataScore) CalculateGitMetadataScore(gitMetadata 
 	}
 }
 
-func (gitMetadataScore *GitMetadataScore) NormalizeScore() {
-	gitMetadataScore.GitMetadataScore = math.Log(gitMetadataScore.GitMetadataScore+1) / math.Log(thresholds["gitMetadataScore"]["gitMetadataScore"]+1) * 100
-}
-
 func NewGitMetadata() *GitMetadata {
 	return &GitMetadata{}
 }
@@ -219,18 +209,14 @@ func (distScore *DistScore) CalculateDistScore() {
 	distScore.DistScore = weights["distScore"]["dist_impact"]*LogNormalize(distScore.DistImpact, thresholds["distScore"]["dist_impact"]) + weights["distScore"]["dist_pagerank"]*LogNormalize(distScore.DistPageRank, thresholds["distScore"]["dist_pagerank"])
 }
 
-func (distScore *DistScore) NormalizeScore() {
-	distScore.DistScore = math.Log(distScore.DistScore+1) / math.Log(thresholds["distScore"]["distScore"]+1) * 100
-}
-
 func (linkScore *LinkScore) CalculateScore() {
 	score := 0.0
 
-	score += weights["gitMetadataScore"]["gitMetadataScore"] * linkScore.GitMetadataScore.GitMetadataScore
+	score += weights["gitMetadataScore"]["gitMetadataScore"] * LogNormalize(linkScore.GitMetadataScore.GitMetadataScore, thresholds["gitMetadataScore"]["gitMetadataScore"]) * 100
 
-	score += weights["langEcoScore"]["langEcoScore"] * linkScore.LangEcoScore.LangEcoScore
+	score += weights["langEcoScore"]["langEcoScore"] * LogNormalize(linkScore.LangEcoScore.LangEcoScore, thresholds["langEcoScore"]["langEcoScore"]) * 100
 
-	score += weights["distScore"]["distScore"] * linkScore.DistScore.DistScore
+	score += weights["distScore"]["distScore"] * LogNormalize(linkScore.DistScore.DistScore, thresholds["distScore"]["distScore"]) * 100
 
 	linkScore.Score = score
 }
@@ -263,6 +249,10 @@ func LogNormalize(value, threshold float64) float64 {
 	return math.Log(value+1) / math.Log(math.Max(value, threshold)+1)
 }
 
+func Sigmoid(value, threshold float64) float64 {
+	return 1 / (1 + SigmoidWeight*math.Exp(-1*(value-threshold)))
+}
+
 func FetchGitMetrics(ac storage.AppDatabaseContext) map[string]*GitMetadata {
 	repo := repository.NewGitMetricsRepository(ac)
 	linksIter, err := repo.Query()
@@ -290,9 +280,9 @@ func FetchLangEcoMetadata(ac storage.AppDatabaseContext) map[string]*LangEcoScor
 		langEcoMetadata.ParseLangEcoMetadata(link)
 		if exists, ok := LangEcoMap[*link.GitLink]; ok && exists != nil {
 			LangEcoMap[*link.GitLink].LangEcosystems = append(LangEcoMap[*link.GitLink].LangEcosystems, link)
-			LangEcoMap[*link.GitLink].LangEcoImpact += langEcoMetadata.LangEcoImpact
+			LangEcoMap[*link.GitLink].LangEcoImpact += langEcoMetadata.LangEcoImpact * PackageWeight[langEcoMetadata.Type]
 		} else {
-			LangEcoMap[*link.GitLink] = &LangEcoScore{LangEcosystems: []*repository.LangEcosystem{link}, LangEcoImpact: langEcoMetadata.LangEcoImpact}
+			LangEcoMap[*link.GitLink] = &LangEcoScore{LangEcosystems: []*repository.LangEcosystem{link}, LangEcoImpact: langEcoMetadata.LangEcoImpact * PackageWeight[langEcoMetadata.Type]}
 		}
 	}
 	return LangEcoMap

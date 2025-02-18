@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"net/url"
 	"regexp"
 	"strings"
 	"sync"
@@ -117,6 +118,10 @@ func getLatestVersion(repo, projectType string) string {
 	var latestVersion string
 	var latestDate time.Time
 	for _, version := range result.Versions {
+		if version.PublishedAt == (time.Time{}) {
+			latestVersion = version.VersionKey.Version
+			break
+		}
 		if version.PublishedAt.After(latestDate) && version.IsDefault {
 			latestDate = version.PublishedAt
 			latestVersion = version.VersionKey.Version
@@ -127,6 +132,7 @@ func getLatestVersion(repo, projectType string) string {
 }
 
 func queryDepsDev(projectType, projectName, version string) int {
+	projectName = url.QueryEscape(projectName)
 	version = getLatestVersion(projectName, projectType)
 	url := fmt.Sprintf("https://api.deps.dev/v3alpha/systems/%s/packages/%s/versions/%s:dependents", projectType, projectName, version)
 	resp, err := http.Get(url)
@@ -177,8 +183,8 @@ func queryDepsName(gitlink string, rdb *redis.Client) *sync.Map {
 		repo = strings.Split(gitlink, "/")[3]
 		name = strings.Split(gitlink, "/")[4]
 	}
-	url := fmt.Sprintf("https://api.deps.dev/v3alpha/projects/github.com%%2f%s%%2f%s:packageversions", repo, name)
-	resp, err := http.Get(url)
+	urlstr := fmt.Sprintf("https://api.deps.dev/v3alpha/projects/github.com%%2f%s%%2f%s:packageversions", repo, name)
+	resp, err := http.Get(urlstr)
 	if err != nil {
 		fmt.Println("Error querying deps.dev:", err)
 		return depMap
@@ -200,12 +206,7 @@ func queryDepsName(gitlink string, rdb *redis.Client) *sync.Map {
 		version := item.VersionKey.Version
 		system := item.VersionKey.System
 		if strings.Contains(name, "\u003E") {
-			split := strings.Split(name, "\u003E")
-			name = split[len(split)-1]
-		}
-		if strings.Contains(name, "/") {
-			split := strings.Split(name, "/")
-			name = split[len(split)-1]
+			name = strings.ReplaceAll(name, "\u003E", ">")
 		}
 		if _, exists := latestVersions.Load(name); !exists {
 			latestVersions.Store(name, &sync.Map{})
@@ -234,8 +235,8 @@ func Depsdev(batchSize int, workerPoolSize int, calculatePageRankFlag bool, debu
 	ac := storage.GetDefaultAppDatabaseContext()
 	repo := repository.NewLangEcoLinkRepository(ac)
 	rdb, _ := storage.InitRedis()
-	gitLinks := []string{"https://github.com/ecomfe/react-hooks", "https://github.com/facebook/react"}
-	// gitLinks := fetchGitLink(ac, lo.ToPtr(0))
+	// gitLinks := []string{"https://github.com/ecomfe/react-hooks", "https://github.com/facebook/react"}
+	gitLinks := fetchGitLink(ac, lo.ToPtr(0))
 	pkgMap := &sync.Map{}
 	pkgDepMap := &sync.Map{}
 	var count int
@@ -300,6 +301,21 @@ func Depsdev(batchSize int, workerPoolSize int, calculatePageRankFlag bool, debu
 		ltype   repository.LangEcosystemType
 	}
 	langEco := &sync.Map{}
+
+	// pkgDepMap.Range(func(system, systemMap interface{}) bool {
+	// 	systemMap.(*sync.Map).Range(func(pkgName, depCount interface{}) bool {
+	// 		if gitLinks, ok := Pkg2GitLink.Load(pkgName); ok {
+	// 			gitLinks.(*sync.Map).Range(func(gitlink, _ interface{}) bool {
+	// 				log.Printf("System: %s, Package: %s, DepCount: %d, GitLink: %s\n", system.(string), pkgName.(string), depCount.(int), gitlink.(string))
+	// 				return true
+	// 			})
+	// 		} else {
+	// 			log.Printf("System: %s, Package: %s, DepCount: %d, GitLink: Not Found\n", system.(string), pkgName.(string), depCount.(int))
+	// 		}
+	// 		return true
+	// 	})
+	// 	return true
+	// })
 
 	pkgDepMap.Range(func(system, systemMap interface{}) bool {
 		systemMap.(*sync.Map).Range(func(pkgName, _ interface{}) bool {
@@ -464,6 +480,7 @@ func calculatePageRank(pkgInfoMap map[string][]Version, iterations int, dampingF
 
 func getAndProcessDependencies(system, name, version string) Dependencies {
 	var result Dependencies
+	name = url.QueryEscape(name)
 	version = getLatestVersion(name, system)
 	url := fmt.Sprintf("https://api.deps.dev/v3alpha/systems/%s/packages/%s/versions/%s:dependencies", system, name, version)
 	resp, err := http.Get(url)

@@ -19,13 +19,12 @@ func main() {
 	config.ParseFlags(pflag.CommandLine)
 	ac := storage.GetDefaultAppDatabaseContext()
 	scores.UpdatePackageList(ac)
-	// linksMap := scores.FetchGitLink(ac)
-	linksMap := []string{"git://code.call-cc.org/chicken-core"}
+	linksMap := scores.FetchGitLink(ac)
+	// linksMap := []string{"https://gcc.gnu.org/git/gcc.git"}
 	gitMeticMap := scores.FetchGitMetrics(ac)
 	langEcoMetricMap := scores.FetchLangEcoMetadata(ac)
 	distMetricMap := scores.FetchDistMetadata(ac)
 	var gitMetadataScore = make(map[string]*scores.GitMetadataScore)
-	var MaxDistMetricScore, MaxLangEcoMetricScore, MaxGitMetaScore float64
 
 	packageScore := make(map[string]*scores.LinkScore)
 
@@ -34,32 +33,17 @@ func main() {
 			distMetricMap[link] = scores.NewDistScore()
 		}
 		distMetricMap[link].CalculateDistScore()
-		if distMetricMap[link].DistScore > MaxDistMetricScore {
-			MaxDistMetricScore = distMetricMap[link].DistScore
-		}
 
 		if _, ok := langEcoMetricMap[link]; !ok {
 			langEcoMetricMap[link] = scores.NewLangEcoScore()
 		}
 		langEcoMetricMap[link].CalculateLangEcoScore()
-		if langEcoMetricMap[link].LangEcoScore > MaxLangEcoMetricScore {
-			MaxLangEcoMetricScore = langEcoMetricMap[link].LangEcoScore
-		}
 
 		gitMetadataScore[link] = scores.NewGitMetadataScore()
 		if _, ok := gitMeticMap[link]; !ok {
 			continue
 		}
 		gitMetadataScore[link].CalculateGitMetadataScore(gitMeticMap[link])
-		if gitMetadataScore[link].GitMetadataScore > MaxGitMetaScore {
-			MaxGitMetaScore = gitMetadataScore[link].GitMetadataScore
-		}
-	}
-
-	for _, link := range linksMap {
-		langEcoMetricMap[link].NormalizeScore()
-		distMetricMap[link].NormalizeScore()
-		gitMetadataScore[link].NormalizeScore()
 		packageScore[link] = scores.NewLinkScore(gitMetadataScore[link], distMetricMap[link], langEcoMetricMap[link])
 		packageScore[link].CalculateScore()
 	}
