@@ -28,12 +28,10 @@ func fetchTasksFromDatabase() error {
 			return err
 		}
 
-		muTasks.Lock()
 		for r := range result {
 			ok = true
 			tasks = append(tasks, *r.GitLink)
 		}
-		muTasks.Unlock()
 
 		if !ok {
 			time.Sleep(IdleInterval)
@@ -52,6 +50,7 @@ func AddManualTask(task string) {
 }
 
 func GetTask() (string, error) {
+	// TODO: optimize the performance
 	muTasks.Lock()
 	defer muTasks.Unlock()
 
@@ -62,9 +61,7 @@ func GetTask() (string, error) {
 	}
 
 	if len(tasks) == 0 {
-		muTasks.Unlock()
 		err := fetchTasksFromDatabase()
-		muTasks.Lock()
 
 		if err != nil {
 			return "", err

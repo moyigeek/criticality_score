@@ -281,6 +281,7 @@ func (cl *Collecter) GetPkgInfo(pkgName string) *PackageInfo {
 }
 
 func (cl *Collecter) UpdateOrInsertDistDependencyDatabase(ac storage.AppDatabaseContext) {
+	var distMap = make(map[string]*repository.DistDependency)
 	for _, pkgInfo := range cl.PkgInfoMap {
 		if pkgInfo.Name == "" {
 			continue
@@ -288,13 +289,22 @@ func (cl *Collecter) UpdateOrInsertDistDependencyDatabase(ac storage.AppDatabase
 
 		pkgInfo.GetGitlinkByPkg(ac)
 		distPackage := pkgInfo.ParseDistLinkInfo()
-		repo := repository.NewDistDependencyRepository(ac)
-
 		if pkgInfo.Gitlink != "" && pkgInfo.Gitlink != "NA" && pkgInfo.Gitlink != "NaN" {
-			err := repo.InsertOrUpdate(distPackage)
-			if err != nil {
-				log.Println("Error inserting package info into database:", err)
+			if _, ok := distMap[*distPackage.GitLink]; !ok {
+				distMap[*distPackage.GitLink] = distPackage
+			} else {
+				distMap[*distPackage.GitLink].DepCount = lo.ToPtr(*distMap[*distPackage.GitLink].DepCount + *distPackage.DepCount)
+				distMap[*distPackage.GitLink].DepImpact = lo.ToPtr(*distMap[*distPackage.GitLink].DepImpact + *distPackage.DepImpact)
+				distMap[*distPackage.GitLink].PageRank = lo.ToPtr(*distMap[*distPackage.GitLink].PageRank + *distPackage.PageRank)
 			}
+		}
+	}
+
+	for _, distPackage := range distMap {
+		repo := repository.NewDistDependencyRepository(ac)
+		err := repo.InsertOrUpdate(distPackage)
+		if err != nil {
+			log.Println("Error inserting package info into database:", err)
 		}
 	}
 }

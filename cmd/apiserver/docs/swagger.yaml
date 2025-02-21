@@ -1,4 +1,17 @@
 definitions:
+  model.PageDTO-model_RankingResultDTO:
+    properties:
+      count:
+        type: integer
+      items:
+        items:
+          $ref: '#/definitions/model.RankingResultDTO'
+        type: array
+      start:
+        type: integer
+      total:
+        type: integer
+    type: object
   model.PageDTO-model_ResultDTO:
     properties:
       count:
@@ -11,6 +24,37 @@ definitions:
         type: integer
       total:
         type: integer
+    type: object
+  model.RankingResultDTO:
+    properties:
+      distDetail:
+        items:
+          $ref: '#/definitions/model.ResultDistDetailDTO'
+        type: array
+      distroScore:
+        type: number
+      gitDetail:
+        items:
+          $ref: '#/definitions/model.ResultGitMetadataDTO'
+        type: array
+      gitScore:
+        type: number
+      langDetail:
+        items:
+          $ref: '#/definitions/model.ResultLangDetailDTO'
+        type: array
+      langScore:
+        type: number
+      link:
+        type: string
+      ranking:
+        type: integer
+      score:
+        type: number
+      scoreID:
+        type: integer
+      updateTime:
+        type: string
     type: object
   model.ResultDTO:
     properties:
@@ -118,6 +162,32 @@ paths:
           schema:
             $ref: '#/definitions/model.PageDTO-model_ResultDTO'
       summary: Get score histories
+  /rankings:
+    get:
+      consumes:
+      - application/json
+      description: Get ranking results, optionally including all details
+      parameters:
+      - description: Skip count
+        in: query
+        name: start
+        type: integer
+      - description: Take count
+        in: query
+        name: take
+        type: integer
+      - description: Include details
+        in: query
+        name: detail
+        type: boolean
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.PageDTO-model_RankingResultDTO'
+      summary: Get ranking results
   /results:
     get:
       consumes:

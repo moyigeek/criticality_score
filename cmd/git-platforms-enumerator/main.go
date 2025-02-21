@@ -85,10 +85,10 @@ func main() {
 			}
 			en = enumerator.NewGithubEnumerator(&githubConfig)
 		case "gitlab":
-			tablePrefix = "gitlab_links"
+			tablePrefix = "gitlab"
 			en = enumerator.NewGitlabEnumerator(*flagTake, *flagJobs)
 		case "bitbucket":
-			tablePrefix = "bitbucket_links"
+			tablePrefix = "bitbucket"
 			en = enumerator.NewBitBucketEnumerator(*flagTake)
 		default:
 			panic("unknown platform")

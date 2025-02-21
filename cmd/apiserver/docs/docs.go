@@ -56,6 +56,46 @@ const docTemplate = `{
                 }
             }
         },
+        "/rankings": {
+            "get": {
+                "description": "Get ranking results, optionally including all details",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get ranking results",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Skip count",
+                        "name": "start",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Take count",
+                        "name": "take",
+                        "in": "query"
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Include details",
+                        "name": "detail",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/model.PageDTO-model_RankingResultDTO"
+                        }
+                    }
+                }
+            }
+        },
         "/results": {
             "get": {
                 "description": "Search score results by git link\nNOTE: All details are ignored, should use /results/:scoreid to get details\nNOTE: Maxium take count is 1000",
@@ -128,6 +168,26 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "model.PageDTO-model_RankingResultDTO": {
+            "type": "object",
+            "properties": {
+                "count": {
+                    "type": "integer"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.RankingResultDTO"
+                    }
+                },
+                "start": {
+                    "type": "integer"
+                },
+                "total": {
+                    "type": "integer"
+                }
+            }
+        },
         "model.PageDTO-model_ResultDTO": {
             "type": "object",
             "properties": {
@@ -145,6 +205,53 @@ const docTemplate = `{
                 },
                 "total": {
                     "type": "integer"
+                }
+            }
+        },
+        "model.RankingResultDTO": {
+            "type": "object",
+            "properties": {
+                "distDetail": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.ResultDistDetailDTO"
+                    }
+                },
+                "distroScore": {
+                    "type": "number"
+                },
+                "gitDetail": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.ResultGitMetadataDTO"
+                    }
+                },
+                "gitScore": {
+                    "type": "number"
+                },
+                "langDetail": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/model.ResultLangDetailDTO"
+                    }
+                },
+                "langScore": {
+                    "type": "number"
+                },
+                "link": {
+                    "type": "string"
+                },
+                "ranking": {
+                    "type": "integer"
+                },
+                "score": {
+                    "type": "number"
+                },
+                "scoreID": {
+                    "type": "integer"
+                },
+                "updateTime": {
+                    "type": "string"
                 }
             }
         },

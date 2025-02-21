@@ -1,0 +1,5 @@
+ALTER TABLE scores
+ADD COLUMN round integer DEFAULT 1;
+
+ALTER TABLE scores
+ALTER COLUMN round SET NOT NULL;

@@ -19,6 +19,8 @@ type ResultRepository interface {
 	QueryGitDetailsByScoreID(scoreID int) (iter.Seq[*ResultGitDetail], error)
 	QueryLangDetailsByScoreID(scoreID int) (iter.Seq[*ResultLangDetail], error)
 	QueryDistDetailsByScoreID(scoreID int) (iter.Seq[*ResultDistDetail], error)
+	QueryRankingCache(skip int, take int) (iter.Seq[*RankingResult], error)
+	MakeRankingCache() error
 }
 
 type Result struct {
@@ -29,6 +31,17 @@ type Result struct {
 	GitScore   **float64
 	Score      **float64
 	UpdateTime **time.Time
+}
+
+type RankingResult struct {
+	GitLink    *string
+	ScoreID    **int
+	DistScore  **float64
+	LangScore  **float64
+	GitScore   **float64
+	Score      **float64
+	UpdateTime **time.Time
+	Ranking    *int
 }
 
 type ResultGitDetail struct {
@@ -59,6 +72,22 @@ type ResultDistDetail struct {
 
 type resultRepository struct {
 	ctx storage.AppDatabaseContext
+}
+
+// QueryRanking implements ResultRepository.
+func (r *resultRepository) QueryRankingCache(skip int, take int) (iter.Seq[*RankingResult], error) {
+	rows, err := sqlutil.Query[RankingResult](r.ctx, `select * from rankings_cache limit $1 offset $2`, take, skip)
+	return rows, err
+}
+
+func (r *resultRepository) MakeRankingCache() error {
+	_, err := r.ctx.Exec(`DROP TABLE IF EXISTS rankings_cache_tmp;
+	CREATE TABLE rankings_cache_tmp AS
+	SELECT * FROM rankings;
+	DROP TABLE IF EXISTS rankings_cache;
+	ALTER TABLE rankings_cache_tmp RENAME TO rankings_cache;
+	`)
+	return err
 }
 
 // QueryHistoriesByLink implements ResultRepository.
