@@ -19,6 +19,8 @@ type ResultRepository interface {
 	QueryGitDetailsByScoreID(scoreID int) (iter.Seq[*ResultGitDetail], error)
 	QueryLangDetailsByScoreID(scoreID int) (iter.Seq[*ResultLangDetail], error)
 	QueryDistDetailsByScoreID(scoreID int) (iter.Seq[*ResultDistDetail], error)
+	QueryRankingCache(skip int, take int) (iter.Seq[*RankingResult], error)
+	MakeRankingCache() error
 }
 
 type Result struct {
@@ -29,6 +31,11 @@ type Result struct {
 	GitScore   **float64
 	Score      **float64
 	UpdateTime **time.Time
+}
+
+type RankingResult struct {
+	Result
+	Ranking *int
 }
 
 type ResultGitDetail struct {
@@ -59,6 +66,17 @@ type ResultDistDetail struct {
 
 type resultRepository struct {
 	ctx storage.AppDatabaseContext
+}
+
+// QueryRanking implements ResultRepository.
+func (r *resultRepository) QueryRankingCache(skip int, take int) (iter.Seq[*RankingResult], error) {
+	rows, err := sqlutil.Query[RankingResult](r.ctx, `select * from rankings limit $1 offset $2`, take, skip)
+	return rows, err
+}
+
+func (r *resultRepository) MakeRankingCache() error {
+	_, err := r.ctx.Exec(`REFRESH MATERIALIZED VIEW rankings`)
+	return err
 }
 
 // QueryHistoriesByLink implements ResultRepository.
