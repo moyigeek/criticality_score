@@ -74,7 +74,7 @@ func main() {
 
 	if updateDB {
 		scores.UpdateScore(ac, map[string]*scores.LinkScore{
-			link: scores.NewLinkScore(gitMetadataScore, distScore[link], langEcoScore[link]),
+			link: scores.NewLinkScore(gitMetadataScore, distScore[link], langEcoScore[link], 1),
 		})
 	}
 }

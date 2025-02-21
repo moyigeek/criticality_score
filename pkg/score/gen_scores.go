@@ -19,6 +19,7 @@ type LinkScore struct {
 	// DistDependencies []*repository.DistDependency
 	DistScore DistScore
 	Score     float64
+	Round     int
 }
 
 type GitMetadata struct {
@@ -44,10 +45,11 @@ type DistMetadata struct {
 }
 
 type LangEcoMetadata struct {
-	Id            int64
-	Type          repository.LangEcosystemType
-	LangEcoImpact float64
-	DepCount      int
+	Id              int64
+	Type            repository.LangEcosystemType
+	LangEcoImpact   float64
+	LangEcoPageRank float64
+	DepCount        int
 }
 
 type DistScore struct {
@@ -82,8 +84,9 @@ var weights = map[string]map[string]float64{
 		"distScore":     0.5,
 	},
 	"langEcoScore": {
-		"lang_eco_impact": 1,
-		"langEcoScore":    0.3,
+		"lang_eco_impact":   1,
+		"lang_eco_pagerank": 1,
+		"langEcoScore":      0.3,
 	},
 }
 
@@ -94,16 +97,17 @@ var thresholds = map[string]map[string]float64{
 		"contributor_count": 40000,
 		"commit_frequency":  1000,
 		"org_count":         8400,
-		"gitMetadataScore":  4,
+		"gitMetadataScore":  5,
 	},
 	"distScore": {
 		"dist_impact":   22,
 		"dist_pagerank": 3,
-		"distScore":     2,
+		"distScore":     1.5,
 	},
 	"langEcoScore": {
-		"lang_eco_impact": 0.5,
-		"langEcoScore":    1,
+		"lang_eco_impact":   1,
+		"lang_eco_pagerank": 0.0002,
+		"langEcoScore":      1.3,
 	},
 }
 
@@ -135,6 +139,7 @@ func (langEcoMetadata *LangEcoMetadata) ParseLangEcoMetadata(langEcosystem *repo
 	langEcoMetadata.Type = *langEcosystem.Type
 	langEcoMetadata.DepCount = *langEcosystem.DepCount
 	langEcoMetadata.LangEcoImpact = *langEcosystem.LangEcoImpact
+	langEcoMetadata.LangEcoPageRank = *langEcosystem.Lang_eco_pagerank
 }
 
 func (distMetadata *DistMetadata) PraseDistMetadata(distLink *repository.DistDependency) {
@@ -165,7 +170,7 @@ func (gitMetadata *GitMetadata) ParseMetadata(gitMetic *repository.GitMetric) {
 }
 
 func (langEcoScore *LangEcoScore) CalculateLangEcoScore() {
-	langEcoScore.LangEcoScore = weights["langEcoScore"]["lang_eco_impact"] * LogNormalize(langEcoScore.LangEcoImpact, thresholds["langEcoScore"]["lang_eco_impact"])
+	langEcoScore.LangEcoScore = weights["langEcoScore"]["lang_eco_impact"]*LogNormalize(langEcoScore.LangEcoImpact, thresholds["langEcoScore"]["lang_eco_impact"]) + weights["langEcoScore"]["lang_eco_pagerank"]*LogNormalize(langEcoScore.LangEcoPageRank, thresholds["langEcoScore"]["lang_eco_pagerank"])
 }
 
 func NewLangEcoScore() *LangEcoScore {
@@ -233,11 +238,12 @@ func NewDistMetadata() *DistMetadata {
 	return &DistMetadata{}
 }
 
-func NewLinkScore(gitMetadataScore *GitMetadataScore, distScore *DistScore, langEcoScore *LangEcoScore) *LinkScore {
+func NewLinkScore(gitMetadataScore *GitMetadataScore, distScore *DistScore, langEcoScore *LangEcoScore, round int) *LinkScore {
 	return &LinkScore{
 		LangEcoScore:     *langEcoScore,
 		DistScore:        *distScore,
 		GitMetadataScore: *gitMetadataScore,
+		Round:            round,
 	}
 }
 
@@ -281,8 +287,9 @@ func FetchLangEcoMetadata(ac storage.AppDatabaseContext) map[string]*LangEcoScor
 		if exists, ok := LangEcoMap[*link.GitLink]; ok && exists != nil {
 			LangEcoMap[*link.GitLink].LangEcosystems = append(LangEcoMap[*link.GitLink].LangEcosystems, link)
 			LangEcoMap[*link.GitLink].LangEcoImpact += langEcoMetadata.LangEcoImpact * PackageWeight[langEcoMetadata.Type]
+			LangEcoMap[*link.GitLink].LangEcoPageRank += langEcoMetadata.LangEcoPageRank * PackageWeight[langEcoMetadata.Type]
 		} else {
-			LangEcoMap[*link.GitLink] = &LangEcoScore{LangEcosystems: []*repository.LangEcosystem{link}, LangEcoImpact: langEcoMetadata.LangEcoImpact * PackageWeight[langEcoMetadata.Type]}
+			LangEcoMap[*link.GitLink] = &LangEcoScore{LangEcosystems: []*repository.LangEcosystem{link}, LangEcoImpact: langEcoMetadata.LangEcoImpact * PackageWeight[langEcoMetadata.Type], LangEcoPageRank: langEcoMetadata.LangEcoPageRank * PackageWeight[langEcoMetadata.Type]}
 		}
 	}
 	return LangEcoMap
@@ -346,6 +353,7 @@ func UpdateScore(ac storage.AppDatabaseContext, packageScore map[string]*LinkSco
 			DistScore:        &linkScore.DistScore.DistScore,
 			LangScore:        &linkScore.LangEcoScore.LangEcoScore,
 			GitScore:         &linkScore.GitMetadataScore.GitMetadataScore,
+			Round:            &linkScore.Round,
 		}
 		scores = append(scores, &score)
 	}
@@ -410,4 +418,13 @@ func FetchGitMetricsSingle(ac storage.AppDatabaseContext, link string) map[strin
 	gitMetadata.ParseMetadata(linkInfo)
 	linksMap[*linkInfo.GitLink] = gitMetadata
 	return linksMap
+}
+
+func GetRound(ac storage.AppDatabaseContext) int {
+	repo := repository.NewScoreRepository(ac)
+	round, err := repo.GetRound()
+	if err != nil {
+		log.Fatalf("Failed to fetch round: %v", err)
+	}
+	return round
 }

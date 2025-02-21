@@ -16,6 +16,7 @@ type ScoreRepository interface {
 
 	Query() (iter.Seq[*Score], error)
 	GetByGitLink(distID int64) (*Score, error)
+	GetRound() (int, error)
 
 	/** INSERT/UPDATE **/
 
@@ -46,6 +47,7 @@ type Score struct {
 	GitScore         *float64
 	Score            *float64
 	UpdateTime       *time.Time
+	Round            *int
 }
 
 const ScoreTableName = "scores"
@@ -201,6 +203,14 @@ func (s *scoreRepository) InsertOrUpdate(score *Score) error {
 func (s *scoreRepository) Query() (iter.Seq[*Score], error) {
 	subQuery := `(SELECT DISTINCT ON (git_link) * FROM ` + ScoreTableName + ` ORDER BY git_link, id DESC)`
 	return sqlutil.QueryCommon[Score](s.ctx, subQuery, "")
+}
+
+// GetRound implements ScoreRepository.
+func (s *scoreRepository) GetRound() (int, error) {
+	var result int
+	row := s.ctx.QueryRow(`SELECT MAX(round) FROM ` + ScoreTableName)
+	err := row.Scan(&result)
+	return result, err
 }
 
 func NewScoreRepository(appDb storage.AppDatabaseContext) ScoreRepository {

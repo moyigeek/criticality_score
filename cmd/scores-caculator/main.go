@@ -20,13 +20,14 @@ func main() {
 	ac := storage.GetDefaultAppDatabaseContext()
 	scores.UpdatePackageList(ac)
 	linksMap := scores.FetchGitLink(ac)
-	// linksMap := []string{"https://gcc.gnu.org/git/gcc.git"}
+	// linksMap := []string{"https://github.com/retep998/winapi-rs"}
 	gitMeticMap := scores.FetchGitMetrics(ac)
 	langEcoMetricMap := scores.FetchLangEcoMetadata(ac)
 	distMetricMap := scores.FetchDistMetadata(ac)
 	var gitMetadataScore = make(map[string]*scores.GitMetadataScore)
 
 	packageScore := make(map[string]*scores.LinkScore)
+	round := scores.GetRound(ac)
 
 	for _, link := range linksMap {
 		if _, ok := distMetricMap[link]; !ok {
@@ -44,7 +45,7 @@ func main() {
 			continue
 		}
 		gitMetadataScore[link].CalculateGitMetadataScore(gitMeticMap[link])
-		packageScore[link] = scores.NewLinkScore(gitMetadataScore[link], distMetricMap[link], langEcoMetricMap[link])
+		packageScore[link] = scores.NewLinkScore(gitMetadataScore[link], distMetricMap[link], langEcoMetricMap[link], round+1)
 		packageScore[link].CalculateScore()
 	}
 	logger.Println("Updating database...")
