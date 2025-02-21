@@ -3,6 +3,7 @@ package controller
 import (
 	"slices"
 	"strconv"
+	"time"
 
 	"github.com/HUSTSecLab/criticality_score/cmd/apiserver/internal/model"
 	"github.com/HUSTSecLab/criticality_score/pkg/logger"
@@ -181,8 +182,112 @@ func resultHandler(c *gin.Context) {
 	c.JSON(200, ret)
 }
 
+// @Summary Get ranking results
+// @Description Get ranking results, optionally including all details
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.PageDTO[model.RankingResultDTO]
+// @Router /rankings [get]
+// @Param start query int false "Skip count"
+// @Param take query int false "Take count"
+// @Param detail query bool false "Include details"
+func rankingHandler(c *gin.Context) {
+	r := repository.NewResultRepository(storage.GetDefaultAppDatabaseContext())
+	type query struct {
+		Skip   int  `form:"start"`
+		Take   int  `form:"take"`
+		Detail bool `form:"detail"`
+	}
+
+	var q query = query{
+		Skip:   0,
+		Take:   100,
+		Detail: false,
+	}
+
+	if err := c.ShouldBindQuery(&q); err != nil {
+		c.JSON(400, "Invalid query parameters")
+		return
+	}
+
+	if q.Take > 1000 {
+		q.Take = 1000
+	}
+
+	rankingCache, err := r.QueryRankingCache(q.Skip, q.Take)
+
+	if err != nil {
+		logger.Error("Error occurred when querying ranking cache", err)
+		c.JSON(500, "Error occurred when querying ranking cache")
+		return
+	}
+
+	results := lo.Map(slices.Collect(rankingCache), func(v *repository.RankingResult, i int) model.RankingResultDTO {
+		return *model.RankingDOToDTO(v)
+	})
+
+	if q.Detail {
+		for _, v := range results {
+			gitDetails, err := r.QueryGitDetailsByScoreID(*v.ScoreID)
+			if err != nil {
+				c.JSON(500, "Error occurred when querying git details")
+				return
+			}
+
+			langDetails, err := r.QueryLangDetailsByScoreID(*v.ScoreID)
+			if err != nil {
+				c.JSON(500, "Error occurred when querying lang details")
+				return
+			}
+
+			distDetails, err := r.QueryDistDetailsByScoreID(*v.ScoreID)
+			if err != nil {
+				c.JSON(500, "Error occurred when querying dist details")
+				return
+			}
+
+			v.GitDetail = lo.Map(slices.Collect(gitDetails), func(v *repository.ResultGitDetail, i int) model.ResultGitMetadataDTO {
+				return *model.ResultGitDetailDOToDTO(v)
+			})
+
+			v.LangDetail = lo.Map(slices.Collect(langDetails), func(v *repository.ResultLangDetail, i int) model.ResultLangDetailDTO {
+				return *model.ResultLangDetailDOToDTO(v)
+			})
+
+			v.DistDetail = lo.Map(slices.Collect(distDetails), func(v *repository.ResultDistDetail, i int) model.ResultDistDetailDTO {
+				return *model.ResultDistDetailDOToDTO(v)
+			})
+		}
+	}
+
+	c.JSON(200, model.NewPageDTO(len(results), q.Skip, q.Take, results))
+}
+
+func cacheRankingPeriodically() {
+	r := repository.NewResultRepository(storage.GetDefaultAppDatabaseContext())
+
+	for {
+		logger.Info("Updating ranking cache")
+
+		err := r.MakeRankingCache()
+		if err != nil {
+			logger.Error("Error occurred when updating ranking cache", err)
+			logger.Info("Ranking cache update failed, retry in 10 minutes")
+			<-time.After(10 * time.Minute)
+			continue
+		}
+
+		logger.Info("Ranking cache updated")
+
+		<-time.After(120 * time.Minute)
+	}
+}
+
 func registResult(e gin.IRouter) {
 	e.GET("/results", resultsHandler)
 	e.GET("/results/:scoreid", resultHandler)
 	e.GET("/histories", historiesHandler)
+	e.GET("/rankings", rankingHandler)
+
+	go cacheRankingPeriodically()
 }

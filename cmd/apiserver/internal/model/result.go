@@ -45,6 +45,11 @@ type ResultDTO struct {
 	UpdateTime  *time.Time             `json:"updateTime"`
 }
 
+type RankingResultDTO struct {
+	ResultDTO
+	Ranking int `json:"ranking"`
+}
+
 func ResultDOToDTO(r *repository.Result) *ResultDTO {
 	return &ResultDTO{
 		ScoreID:     *r.ScoreID,
@@ -86,5 +91,12 @@ func ResultDistDetailDOToDTO(r *repository.ResultDistDetail) *ResultDistDetailDT
 		Impact:     *r.Impact,
 		PageRank:   *r.PageRank,
 		UpdateTime: *r.UpdateTime,
+	}
+}
+
+func RankingDOToDTO(r *repository.RankingResult) *RankingResultDTO {
+	return &RankingResultDTO{
+		ResultDTO: *ResultDOToDTO(&r.Result),
+		Ranking:   *r.Ranking,
 	}
 }
