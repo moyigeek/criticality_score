@@ -222,12 +222,14 @@ func rankingHandler(c *gin.Context) {
 		return
 	}
 
-	results := lo.Map(slices.Collect(rankingCache), func(v *repository.RankingResult, i int) model.RankingResultDTO {
+	rankingResults := slices.Collect(rankingCache)
+	results := lo.Map(rankingResults, func(v *repository.RankingResult, i int) model.RankingResultDTO {
 		return *model.RankingDOToDTO(v)
 	})
 
 	if q.Detail {
-		for _, v := range results {
+		// TODO: cache info
+		for i, v := range results {
 			gitDetails, err := r.QueryGitDetailsByScoreID(*v.ScoreID)
 			if err != nil {
 				c.JSON(500, "Error occurred when querying git details")
@@ -246,15 +248,15 @@ func rankingHandler(c *gin.Context) {
 				return
 			}
 
-			v.GitDetail = lo.Map(slices.Collect(gitDetails), func(v *repository.ResultGitDetail, i int) model.ResultGitMetadataDTO {
+			results[i].GitDetail = lo.Map(slices.Collect(gitDetails), func(v *repository.ResultGitDetail, i int) model.ResultGitMetadataDTO {
 				return *model.ResultGitDetailDOToDTO(v)
 			})
 
-			v.LangDetail = lo.Map(slices.Collect(langDetails), func(v *repository.ResultLangDetail, i int) model.ResultLangDetailDTO {
+			results[i].LangDetail = lo.Map(slices.Collect(langDetails), func(v *repository.ResultLangDetail, i int) model.ResultLangDetailDTO {
 				return *model.ResultLangDetailDOToDTO(v)
 			})
 
-			v.DistDetail = lo.Map(slices.Collect(distDetails), func(v *repository.ResultDistDetail, i int) model.ResultDistDetailDTO {
+			results[i].DistDetail = lo.Map(slices.Collect(distDetails), func(v *repository.ResultDistDetail, i int) model.ResultDistDetailDTO {
 				return *model.ResultDistDetailDOToDTO(v)
 			})
 		}

@@ -96,7 +96,15 @@ func ResultDistDetailDOToDTO(r *repository.ResultDistDetail) *ResultDistDetailDT
 
 func RankingDOToDTO(r *repository.RankingResult) *RankingResultDTO {
 	return &RankingResultDTO{
-		ResultDTO: *ResultDOToDTO(&r.Result),
-		Ranking:   *r.Ranking,
+		ResultDTO: *ResultDOToDTO(&repository.Result{
+			ScoreID:    r.ScoreID,
+			GitLink:    r.GitLink,
+			GitScore:   r.GitScore,
+			DistScore:  r.DistScore,
+			LangScore:  r.LangScore,
+			Score:      r.Score,
+			UpdateTime: r.UpdateTime,
+		}),
+		Ranking: *r.Ranking,
 	}
 }
