@@ -55,7 +55,7 @@ func (r *platformLinkRepository) IsLinkInPlatform(link string) (bool, error) {
 func (r *platformLinkRepository) BeginTemp() error {
 	tn := getPlatformTableName(r.Platform)
 	query := fmt.Sprintf(`
-		DROP TABLE IF EXSITS %s_tmp;
+		DROP TABLE IF EXISTS %s_tmp;
 		CREATE TEMPORARY TABLE %s_tmp AS TABLE %s WITH NO DATA;
 	`, tn, tn, tn)
 	_, err := r.AppDb.Exec(query)
