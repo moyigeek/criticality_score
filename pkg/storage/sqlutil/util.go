@@ -599,3 +599,48 @@ func IsUnset[T any](data *T) bool {
 func IsNull[T any](data **T) bool {
 	return data == nil || *data == nil
 }
+
+// QueryWithPagination 分页查询数据，并返回数据迭代器和总页数
+func QueryWithPagination[T any](ctx storage.AppDatabaseContext, tableName string, limit, offset int) (iter.Seq[*T], int, error) {
+	if limit <= 0 {
+		return nil, 0, fmt.Errorf("limit must be positive")
+	}
+
+	// 查询总记录数
+	countSQL := fmt.Sprintf("SELECT COUNT(*) FROM %s", tableName)
+	countRows, err := ctx.Query(countSQL)
+	if err != nil {
+		return nil, 0, err
+	}
+	defer countRows.Close()
+
+	var totalCount int
+	if countRows.Next() {
+		if err := countRows.Scan(&totalCount); err != nil {
+			return nil, 0, err
+		}
+	}
+
+	// 计算总页数
+	totalPages := totalCount / limit
+	if totalCount%limit != 0 {
+		totalPages++
+	}
+
+	// 分页查询：使用 getSelectQuery 构造查询语句
+	afterFrom := fmt.Sprintf("LIMIT %d OFFSET %d", limit, offset)
+	query := getSelectQuery[T](tableName, afterFrom)
+	seq, err := Query[T](ctx, query)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	return seq, totalPages, nil
+}
+
+// UpdateGitLink 根据 tableName、package（假设数据库中对应列名为 package）更新对应记录的 git_link 字段
+func UpdateGitLink(ctx storage.AppDatabaseContext, tableName, pkg, newGitLink string) error {
+	query := fmt.Sprintf("UPDATE %s SET git_link = $1 WHERE package = $2", tableName)
+	_, err := ctx.Exec(query, newGitLink, pkg)
+	return err
+}
