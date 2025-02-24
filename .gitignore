@@ -29,3 +29,4 @@ data/
 .vscode/
 
 cmd/dist-packages-collector/download/
+config.yaml

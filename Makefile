@@ -37,4 +37,7 @@ clean:
 test:
 	$(GOTEST) -v ./...
 
+api:
+	./bin/apiserver -c config.yaml
+
 .PHONY: all build $(APPS) clean test fmt
