@@ -3,6 +3,8 @@ import { getQueryWithPagination } from "@/service/client";
 import { Table } from "antd";
 import React, { useEffect, useState } from "react";
 import TableDropdown from "./TableDropdown";
+import EditModal from "./EditModal";
+import { Button } from "antd";
 
 type Data = {
     package: string,
@@ -18,6 +20,7 @@ const GitLinkTable: React.FC = () => {
     const [pageSize, setPageSize] = useState<number>(10);
     const [total, setTotal] = useState<number>(0);
     const [tableName, setTableName] = useState<string>("arch_packages");
+    const [selectedPackage, setSelectedPackage] = useState<Data | null>(null);
 
     const fetchData = async (page: number, pageSize: number) => {
         const response = await getQueryWithPagination({
@@ -33,7 +36,7 @@ const GitLinkTable: React.FC = () => {
                 key: item.package, // 使用 package 作为 key
             }));
             setData(itemsWithKey);
-            setTotal(response.data.totalPages as number*pageSize); // 假设 totalPages 是总页数
+            setTotal(response.data.totalPages as number * pageSize); // 假设 totalPages 是总页数
         }
     };
 
@@ -50,9 +53,19 @@ const GitLinkTable: React.FC = () => {
         setTableName(newTableName);
     };
 
+    const handleEditClick = (record: Data) => {
+        setSelectedPackage(record);
+    };
+
+    const handleModalClose = () => {
+        setSelectedPackage(null);
+        //更新数据
+        fetchData(currentPage, pageSize);
+    };
+
     return (
         <div>
-            <TableDropdown onTableNameChange={handleTableNameChange} tableName={tableName}/>
+            <TableDropdown onTableNameChange={handleTableNameChange} tableName={tableName} />
             <Table
                 dataSource={data}
                 pagination={{
@@ -67,9 +80,24 @@ const GitLinkTable: React.FC = () => {
                     { title: 'Description', dataIndex: 'description', key: 'description' },
                     { title: 'Homepage', dataIndex: 'homepage', key: 'homepage' },
                     { title: 'Git Link', dataIndex: 'git_link', key: 'git_link' },
-                    { title: 'Action', key: 'action', render: () => <a>Edit</a> },
+                    {
+                        title: 'Action',
+                        key: 'action',
+                        render: (_, record) => (
+                            <Button type="link" onClick={() => handleEditClick(record)}>
+                                Edit
+                            </Button>
+                        ),
+                    },
                 ]}
             />
+            {selectedPackage && (
+                <EditModal
+                    currentPackage={selectedPackage}
+                    tableName={tableName}
+                    onClose={handleModalClose}
+                />
+            )}
         </div>
     );
 };

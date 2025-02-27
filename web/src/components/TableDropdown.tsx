@@ -38,10 +38,6 @@ const items: MenuProps['items'] = [
     label: 'gentoo_packages',
   },
   {
-    key: '9',
-    label: 'git_packages',
-  },
-  {
     key: '10',
     label: 'homebrew_packages',
   },
