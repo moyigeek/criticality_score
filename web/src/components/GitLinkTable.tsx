@@ -53,6 +53,7 @@ const GitLinkTable: React.FC = () => {
                     current: currentPage,
                     pageSize: pageSize,
                     total: total,
+                    showQuickJumper: true,
                 }}
                 onChange={handleTableChange}
                 columns={[
