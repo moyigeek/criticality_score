@@ -600,47 +600,85 @@ func IsNull[T any](data **T) bool {
 	return data == nil || *data == nil
 }
 
-// QueryWithPagination 分页查询数据，并返回数据迭代器和总页数
-func QueryWithPagination[T any](ctx storage.AppDatabaseContext, tableName string, limit, offset int) (iter.Seq[*T], int, error) {
-	if limit <= 0 {
-		return nil, 0, fmt.Errorf("limit must be positive")
-	}
-
-	// 查询总记录数
-	countSQL := fmt.Sprintf("SELECT COUNT(*) FROM %s", tableName)
-	countRows, err := ctx.Query(countSQL)
+func rowsToMap(rows *sql.Rows) (map[string]interface{}, error) {
+	columns, err := rows.Columns()
 	if err != nil {
-		return nil, 0, err
+		return nil, err
 	}
-	defer countRows.Close()
 
-	var totalCount int
-	if countRows.Next() {
-		if err := countRows.Scan(&totalCount); err != nil {
-			return nil, 0, err
+	values := make([]interface{}, len(columns))
+	valuePtrs := make([]interface{}, len(columns))
+
+	for i := range columns {
+		valuePtrs[i] = &values[i]
+	}
+
+	if err := rows.Scan(valuePtrs...); err != nil {
+		return nil, err
+	}
+
+	result := make(map[string]interface{})
+	for i, col := range columns {
+		val := values[i]
+		b, ok := val.([]byte)
+		if ok {
+			result[col] = string(b)
+		} else {
+			result[col] = val
 		}
 	}
 
-	// 计算总页数
-	totalPages := totalCount / limit
-	if totalCount%limit != 0 {
-		totalPages++
-	}
+	return result, nil
+}
 
-	// 分页查询：使用 getSelectQuery 构造查询语句
-	afterFrom := fmt.Sprintf("LIMIT %d OFFSET %d", limit, offset)
-	query := getSelectQuery[T](tableName, afterFrom)
-	seq, err := Query[T](ctx, query)
+func createMapIterator(rows *sql.Rows) iter.Seq[map[string]interface{}] {
+	return func(yield func(map[string]interface{}) bool) {
+		defer rows.Close()
+		for rows.Next() {
+			item, err := rowsToMap(rows)
+			if err != nil {
+				return
+			}
+			if !yield(item) {
+				return
+			}
+		}
+	}
+}
+
+func QueryWithPagination(ctx storage.AppDatabaseContext, tableName string, pageSize int, offset int) (iter.Seq[map[string]interface{}], int, error) {
+	// Calculate the total number of items
+	countQuery := fmt.Sprintf("SELECT COUNT(*) FROM %s", tableName)
+	var totalCount int
+	err := ctx.QueryRow(countQuery).Scan(&totalCount)
 	if err != nil {
 		return nil, 0, err
 	}
 
-	return seq, totalPages, nil
+	// Calculate the total number of pages
+	totalPages := (totalCount + pageSize - 1) / pageSize
+
+	// Query the items for the specified page
+	query := fmt.Sprintf("SELECT package,homepage,description,git_link FROM %s LIMIT $1 OFFSET $2", tableName)
+	rows, err := ctx.Query(query, pageSize, offset)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	items := createMapIterator(rows)
+	return items, totalPages, nil
 }
 
-// UpdateGitLink 根据 tableName、package（假设数据库中对应列名为 package）更新对应记录的 git_link 字段
-func UpdateGitLink(ctx storage.AppDatabaseContext, tableName, pkg, newGitLink string) error {
-	query := fmt.Sprintf("UPDATE %s SET git_link = $1 WHERE package = $2", tableName)
-	_, err := ctx.Exec(query, newGitLink, pkg)
-	return err
+// UpdateGitLink updates the gitlink value for a specified package in the given table.
+func UpdateGitLink(ctx storage.AppDatabaseContext, tableName string, packageName string, newGitLink string) error {
+	// Construct the update query
+	updateQuery := fmt.Sprintf("UPDATE %s SET git_link = $1 WHERE package = $2", tableName)
+
+	// Execute the update query
+	_, err := ctx.Exec(updateQuery, newGitLink, packageName)
+	if err != nil {
+		return fmt.Errorf("failed to update gitlink: %w", err)
+	}
+
+	return nil
 }

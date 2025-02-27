@@ -56,6 +56,50 @@ const docTemplate = `{
                 }
             }
         },
+        "/query-with-pagination": {
+            "get": {
+                "description": "Query the database with pagination support",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Query with pagination",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Table Name",
+                        "name": "tableName",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page Size",
+                        "name": "pageSize",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
         "/rankings": {
             "get": {
                 "description": "Get ranking results, optionally including all details",
@@ -165,9 +209,62 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/update-gitlink": {
+            "post": {
+                "description": "Update the git link for a specified package",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Update git link",
+                "parameters": [
+                    {
+                        "description": "Update Git Link Request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/controller.UpdateGitLinkRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
+        "controller.UpdateGitLinkRequest": {
+            "type": "object",
+            "required": [
+                "newGitLink",
+                "packageName",
+                "tableName"
+            ],
+            "properties": {
+                "newGitLink": {
+                    "type": "string"
+                },
+                "packageName": {
+                    "type": "string"
+                },
+                "tableName": {
+                    "type": "string"
+                }
+            }
+        },
         "model.PageDTO-model_RankingResultDTO": {
             "type": "object",
             "properties": {

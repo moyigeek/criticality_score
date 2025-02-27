@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"net/http"
 	"slices"
 	"strconv"
 	"time"
@@ -9,6 +10,7 @@ import (
 	"github.com/HUSTSecLab/criticality_score/pkg/logger"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage"
 	"github.com/HUSTSecLab/criticality_score/pkg/storage/repository"
+	"github.com/HUSTSecLab/criticality_score/pkg/storage/sqlutil"
 	"github.com/gin-gonic/gin"
 	"github.com/samber/lo"
 )
@@ -285,11 +287,87 @@ func cacheRankingPeriodically() {
 	}
 }
 
+// UpdateGitLinkRequest represents the request body for updating gitlink.
+type UpdateGitLinkRequest struct {
+	TableName   string `json:"tableName" binding:"required"`
+	PackageName string `json:"packageName" binding:"required"`
+	NewGitLink  string `json:"newGitLink" binding:"required"`
+}
+
+// QueryWithPaginationRequest represents the request parameters for querying with pagination.
+type QueryWithPaginationRequest struct {
+	TableName string `form:"tableName" binding:"required"`
+	PageSize  int    `form:"pageSize" binding:"required"`
+	Offset    int    `form:"offset" `
+}
+
+// @Summary Update git link
+// @Description Update the git link for a specified package
+// @Accept json
+// @Produce json
+// @Param request body UpdateGitLinkRequest true "Update Git Link Request"
+// @Success 200 {object} map[string]string
+// @Router /update-gitlink [post]
+func UpdateGitLinkHandler(c *gin.Context) {
+	var req UpdateGitLinkRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx := storage.GetDefaultAppDatabaseContext()
+	err := sqlutil.UpdateGitLink(ctx, req.TableName, req.PackageName, req.NewGitLink)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "GitLink updated successfully"})
+}
+
+// @Summary Query with pagination
+// @Description Query the database with pagination support
+// @Accept json
+// @Produce json
+// @Param tableName query string true "Table Name"
+// @Param pageSize query int true "Page Size"
+// @Param offset query int true "Offset"
+// @Success 200 {object} map[string]interface{}
+// @Router /query-with-pagination [get]
+func QueryWithPaginationHandler(c *gin.Context) {
+	var req QueryWithPaginationRequest
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx := storage.GetDefaultAppDatabaseContext()
+	iterSeq, totalPages, err := sqlutil.QueryWithPagination(ctx, req.TableName, req.PageSize, req.Offset)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// 将 iter.Seq 转换为切片
+	var items []map[string]interface{}
+	iterSeq(func(item map[string]interface{}) bool {
+		items = append(items, item)
+		return true
+	})
+
+	c.JSON(http.StatusOK, gin.H{
+		"items":      items,
+		"totalPages": totalPages,
+	})
+}
+
 func registResult(e gin.IRouter) {
 	e.GET("/results", resultsHandler)
 	e.GET("/results/:scoreid", resultHandler)
 	e.GET("/histories", historiesHandler)
 	e.GET("/rankings", rankingHandler)
+	e.POST("/update-gitlink", UpdateGitLinkHandler)
+	e.GET("/query-with-pagination", QueryWithPaginationHandler)
 
 	go cacheRankingPeriodically()
 }

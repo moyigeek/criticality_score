@@ -1,4 +1,17 @@
 definitions:
+  controller.UpdateGitLinkRequest:
+    properties:
+      newGitLink:
+        type: string
+      packageName:
+        type: string
+      tableName:
+        type: string
+    required:
+    - newGitLink
+    - packageName
+    - tableName
+    type: object
   model.PageDTO-model_RankingResultDTO:
     properties:
       count:
@@ -162,6 +175,36 @@ paths:
           schema:
             $ref: '#/definitions/model.PageDTO-model_ResultDTO'
       summary: Get score histories
+  /query-with-pagination:
+    get:
+      consumes:
+      - application/json
+      description: Query the database with pagination support
+      parameters:
+      - description: Table Name
+        in: query
+        name: tableName
+        required: true
+        type: string
+      - description: Page Size
+        in: query
+        name: pageSize
+        required: true
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Query with pagination
   /rankings:
     get:
       consumes:
@@ -237,4 +280,26 @@ paths:
           schema:
             $ref: '#/definitions/model.ResultDTO'
       summary: Get score results
+  /update-gitlink:
+    post:
+      consumes:
+      - application/json
+      description: Update the git link for a specified package
+      parameters:
+      - description: Update Git Link Request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/controller.UpdateGitLinkRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Update git link
 swagger: "2.0"
