@@ -33,7 +33,7 @@ const GitLinkTable: React.FC = () => {
                 key: item.package, // 使用 package 作为 key
             }));
             setData(itemsWithKey);
-            setTotal(response.data.totalPages as number); // 假设 totalPages 是总页数
+            setTotal(response.data.totalPages as number*pageSize); // 假设 totalPages 是总页数
         }
     };
 
@@ -67,7 +67,7 @@ const GitLinkTable: React.FC = () => {
                     { title: 'Description', dataIndex: 'description', key: 'description' },
                     { title: 'Homepage', dataIndex: 'homepage', key: 'homepage' },
                     { title: 'Git Link', dataIndex: 'git_link', key: 'git_link' },
-                    { title: 'Action', key: 'action', render: () => <a>View</a> },
+                    { title: 'Action', key: 'action', render: () => <a>Edit</a> },
                 ]}
             />
         </div>

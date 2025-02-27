@@ -13,7 +13,47 @@ const items: MenuProps['items'] = [
     key: '2',
     label: 'arch_packages',
   },
-  // 你可以添加更多的菜单项
+  {
+    key: '3',
+    label: 'aur_packages',
+  },
+  {
+    key: '4',
+    label: 'centos_packages',
+  },
+  {
+    key: '5',
+    label: 'debian_packages',
+  },
+  {
+    key: '6',
+    label: 'deepin_packages',
+  },
+  {
+    key: '7',
+    label: 'fedora_packages',
+  },
+  {
+    key: '8',
+    label: 'gentoo_packages',
+  },
+  {
+    key: '9',
+    label: 'git_packages',
+  },
+  {
+    key: '10',
+    label: 'homebrew_packages',
+  },
+  {
+    key:'11',
+    label:'nix_packages',
+  },
+  {
+    key:'12',
+    label:'ubuntu_packages',
+  }
+  
 ];
 
 interface TableDropdownProps {
