@@ -2,6 +2,7 @@
 import { getQueryWithPagination } from "@/service/client";
 import { Table } from "antd";
 import React, { useEffect, useState } from "react";
+import TableDropdown from "./TableDropdown";
 
 type Data = {
     package: string,
@@ -38,15 +39,20 @@ const GitLinkTable: React.FC = () => {
 
     useEffect(() => {
         fetchData(currentPage, pageSize);
-    }, [currentPage, pageSize]);
+    }, [currentPage, pageSize, tableName]);
 
     const handleTableChange = (pagination: any) => {
         setCurrentPage(pagination.current);
         setPageSize(pagination.pageSize);
     };
 
+    const handleTableNameChange = (newTableName: string) => {
+        setTableName(newTableName);
+    };
+
     return (
         <div>
+            <TableDropdown onTableNameChange={handleTableNameChange} tableName={tableName}/>
             <Table
                 dataSource={data}
                 pagination={{
