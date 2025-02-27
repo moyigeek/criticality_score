@@ -26,13 +26,13 @@ const GitLinkTable: React.FC = () => {
                 offset: (page - 1) * pageSize,
             },
         });
-        if (response) {
+        if (response && response.data && Array.isArray(response.data.items)) {
             const itemsWithKey = response.data.items.map((item: Data, index: number) => ({
                 ...item,
                 key: item.package, // 使用 package 作为 key
             }));
             setData(itemsWithKey);
-            setTotal(response.data.totalPages); // 假设 totalPages 是总页数
+            setTotal(response.data.totalPages as number); // 假设 totalPages 是总页数
         }
     };
 
