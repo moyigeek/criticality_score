@@ -249,11 +249,15 @@ const docTemplate = `{
         "controller.UpdateGitLinkRequest": {
             "type": "object",
             "required": [
+                "linkConfidence",
                 "newGitLink",
                 "packageName",
                 "tableName"
             ],
             "properties": {
+                "linkConfidence": {
+                    "type": "string"
+                },
                 "newGitLink": {
                     "type": "string"
                 },

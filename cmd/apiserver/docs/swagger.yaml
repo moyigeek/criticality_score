@@ -1,6 +1,8 @@
 definitions:
   controller.UpdateGitLinkRequest:
     properties:
+      linkConfidence:
+        type: string
       newGitLink:
         type: string
       packageName:
@@ -8,6 +10,7 @@ definitions:
       tableName:
         type: string
     required:
+    - linkConfidence
     - newGitLink
     - packageName
     - tableName

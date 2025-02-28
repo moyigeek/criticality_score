@@ -25,6 +25,7 @@ const EditModal: React.FC<EditModalProps> = ({ currentPackage, tableName, onClos
                     newGitLink: values.gitlink,
                     packageName: currentPackage.package,
                     tableName: tableName,
+                    linkConfidence: values.link_confidence, 
                 }
             });
             setLoading(false);
@@ -77,6 +78,14 @@ const EditModal: React.FC<EditModalProps> = ({ currentPackage, tableName, onClos
                             name="gitlink"
                             label="New GitLink"
                             rules={[{ required: true, message: "Please input the new gitlink!" }]}
+                        >
+                            <Input />
+                        </Form.Item>
+                        <Form.Item
+                            name="link_confidence"
+                            label="Link Confidence"
+                            rules={[{ required: true, message: "Please input the link confidence!" }]}
+                            initialValue={1}
                         >
                             <Input />
                         </Form.Item>

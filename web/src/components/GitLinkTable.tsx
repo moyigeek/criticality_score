@@ -11,6 +11,7 @@ type Data = {
     description: string,
     homepage: string,
     git_link: string,
+    link_confidence: string,
     key: string, // 添加 key 属性
 }
 
@@ -80,6 +81,7 @@ const GitLinkTable: React.FC = () => {
                     { title: 'Description', dataIndex: 'description', key: 'description',width: '20%' },
                     { title: 'Homepage', dataIndex: 'homepage', key: 'homepage' },
                     { title: 'Git Link', dataIndex: 'git_link', key: 'git_link',width:'25%' },
+                    { title: 'Link Confidence', dataIndex: 'link_confidence', key: 'link_confidence',width:'10%' },
                     {
                         title: 'Action',
                         key: 'action',

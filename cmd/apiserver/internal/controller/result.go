@@ -289,10 +289,10 @@ func cacheRankingPeriodically() {
 
 // UpdateGitLinkRequest represents the request body for updating gitlink.
 type UpdateGitLinkRequest struct {
-	TableName      string  `json:"tableName" binding:"required"`
-	PackageName    string  `json:"packageName" binding:"required"`
-	NewGitLink     string  `json:"newGitLink" binding:"required"`
-	LinkConfidence float32 `json:"linkConfidence" binding:"required"`
+	TableName      string `json:"tableName" binding:"required"`
+	PackageName    string `json:"packageName" binding:"required"`
+	NewGitLink     string `json:"newGitLink" binding:"required"`
+	LinkConfidence string `json:"linkConfidence" binding:"required"`
 }
 
 // QueryWithPaginationRequest represents the request parameters for querying with pagination.
