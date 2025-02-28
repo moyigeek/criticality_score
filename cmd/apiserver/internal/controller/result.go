@@ -289,9 +289,10 @@ func cacheRankingPeriodically() {
 
 // UpdateGitLinkRequest represents the request body for updating gitlink.
 type UpdateGitLinkRequest struct {
-	TableName   string `json:"tableName" binding:"required"`
-	PackageName string `json:"packageName" binding:"required"`
-	NewGitLink  string `json:"newGitLink" binding:"required"`
+	TableName      string  `json:"tableName" binding:"required"`
+	PackageName    string  `json:"packageName" binding:"required"`
+	NewGitLink     string  `json:"newGitLink" binding:"required"`
+	LinkConfidence float32 `json:"linkConfidence" binding:"required"`
 }
 
 // QueryWithPaginationRequest represents the request parameters for querying with pagination.
@@ -316,7 +317,7 @@ func UpdateGitLinkHandler(c *gin.Context) {
 	}
 
 	ctx := storage.GetDefaultAppDatabaseContext()
-	err := sqlutil.UpdateGitLink(ctx, req.TableName, req.PackageName, req.NewGitLink)
+	err := sqlutil.UpdateGitLink(ctx, req.TableName, req.PackageName, req.NewGitLink, req.LinkConfidence)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

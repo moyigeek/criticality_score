@@ -659,7 +659,7 @@ func QueryWithPagination(ctx storage.AppDatabaseContext, tableName string, pageS
 	totalPages := (totalCount + pageSize - 1) / pageSize
 
 	// Query the items for the specified page
-	query := fmt.Sprintf("SELECT package,homepage,description,git_link FROM %s LIMIT $1 OFFSET $2", tableName)
+	query := fmt.Sprintf("SELECT package,homepage,description,git_link,link_confidence FROM %s ORDER BY package LIMIT $1 OFFSET $2 ", tableName)
 	rows, err := ctx.Query(query, pageSize, offset)
 	if err != nil {
 		return nil, 0, err
@@ -669,15 +669,15 @@ func QueryWithPagination(ctx storage.AppDatabaseContext, tableName string, pageS
 	return items, totalPages, nil
 }
 
-// UpdateGitLink updates the gitlink value for a specified package in the given table.
-func UpdateGitLink(ctx storage.AppDatabaseContext, tableName string, packageName string, newGitLink string) error {
+// UpdateGitLink updates the gitlink and link_confidence values for a specified package in the given table.
+func UpdateGitLink(ctx storage.AppDatabaseContext, tableName string, packageName string, newGitLink string, newLinkConfidence float32) error {
 	// Construct the update query
-	updateQuery := fmt.Sprintf("UPDATE %s SET git_link = $1 WHERE package = $2", tableName)
+	updateQuery := fmt.Sprintf("UPDATE %s SET git_link = $1, link_confidence = $2 WHERE package = $3", tableName)
 
 	// Execute the update query
-	_, err := ctx.Exec(updateQuery, newGitLink, packageName)
+	_, err := ctx.Exec(updateQuery, newGitLink, newLinkConfidence, packageName)
 	if err != nil {
-		return fmt.Errorf("failed to update gitlink: %w", err)
+		return fmt.Errorf("failed to update gitlink and link_confidence: %w", err)
 	}
 
 	return nil

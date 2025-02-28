@@ -1,8 +1,9 @@
 "use client";
 import React, { useState } from "react";
-import { Modal, Input, Button, Form, Row, Col } from "antd";
+import { Modal, Input, Card,Skeleton, Form, Row, Col } from "antd";
 import { postUpdateGitlink } from "@/service/client";
 import { Data } from "./GitLinkTable"; // 导入 Data 类型
+
 
 interface EditModalProps {
     currentPackage: Data;
@@ -51,6 +52,8 @@ const EditModal: React.FC<EditModalProps> = ({ currentPackage, tableName, onClos
             confirmLoading={loading}
             okText="Confirm"
             cancelText="Cancel"
+            width='70%'
+            height='50%'
         >
             <Row gutter={16}>
                 <Col span={12}>
@@ -63,6 +66,12 @@ const EditModal: React.FC<EditModalProps> = ({ currentPackage, tableName, onClos
                     </div>
                 </Col>
                 <Col span={12}>
+                    <Row>
+                        <Card title="AI advice"  style={{ width: 300 }}>
+                        <Skeleton active />
+                        </Card>
+                    </Row>
+                    <Row>
                     <Form form={form} layout="vertical" name="edit_gitlink_form">
                         <Form.Item
                             name="gitlink"
@@ -72,6 +81,7 @@ const EditModal: React.FC<EditModalProps> = ({ currentPackage, tableName, onClos
                             <Input />
                         </Form.Item>
                     </Form>
+                    </Row>
                 </Col>
             </Row>
         </Modal>

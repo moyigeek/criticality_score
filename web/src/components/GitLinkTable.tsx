@@ -77,9 +77,9 @@ const GitLinkTable: React.FC = () => {
                 onChange={handleTableChange}
                 columns={[
                     { title: 'Package', dataIndex: 'package', key: 'package' },
-                    { title: 'Description', dataIndex: 'description', key: 'description' },
+                    { title: 'Description', dataIndex: 'description', key: 'description',width: '20%' },
                     { title: 'Homepage', dataIndex: 'homepage', key: 'homepage' },
-                    { title: 'Git Link', dataIndex: 'git_link', key: 'git_link' },
+                    { title: 'Git Link', dataIndex: 'git_link', key: 'git_link',width:'25%' },
                     {
                         title: 'Action',
                         key: 'action',
