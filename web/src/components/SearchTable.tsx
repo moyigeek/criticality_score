@@ -1,7 +1,8 @@
 "use client";
-import { getQueryWithPagination } from "@/service/client";
+import { getSearchPackages } from "@/service/client";
 import { Table } from "antd";
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import TableDropdown from "./TableDropdown";
 import EditModal from "./EditModal";
 import { Button, Row, Col } from "antd";
@@ -15,7 +16,11 @@ type Data = {
     key: string, // 添加 key 属性
 }
 
-const GitLinkTable: React.FC = () => {
+interface SearchTableProps {
+    searchQuery: string;
+}
+
+const SearchTable: React.FC<SearchTableProps> = ({ searchQuery }) => {
     const [data, setData] = useState<Data[]>([]);
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [pageSize, setPageSize] = useState<number>(10);
@@ -23,12 +28,17 @@ const GitLinkTable: React.FC = () => {
     const [tableName, setTableName] = useState<string>("arch_packages");
     const [selectedPackage, setSelectedPackage] = useState<Data | null>(null);
 
-    const fetchData = async (page: number, pageSize: number) => {
-        const response = await getQueryWithPagination({
+    useEffect(() => {
+        fetchData(currentPage, pageSize, tableName, searchQuery);
+    }, [searchQuery, currentPage, pageSize]);
+
+    const fetchData = async (page: number, pageSize: number, tableName: string, searchQuery: string) => {
+        const response = await getSearchPackages({
             query: {
-                tableName: tableName, // 替换为实际的表名
+                tableName: tableName,
                 pageSize: pageSize,
                 offset: (page - 1) * pageSize,
+                searchQuery: searchQuery,
             },
         });
         if (response && response.data && Array.isArray(response.data.items)) {
@@ -40,10 +50,6 @@ const GitLinkTable: React.FC = () => {
             setTotal(response.data.totalPages as number * pageSize); // 假设 totalPages 是总页数
         }
     };
-
-    useEffect(() => {
-        fetchData(currentPage, pageSize);
-    }, [currentPage, pageSize, tableName]);
 
     const handleTableChange = (pagination: any) => {
         setCurrentPage(pagination.current);
@@ -60,8 +66,8 @@ const GitLinkTable: React.FC = () => {
 
     const handleModalClose = () => {
         setSelectedPackage(null);
-        //更新数据
-        fetchData(currentPage, pageSize);
+        // 更新数据
+        fetchData(currentPage, pageSize, tableName, searchQuery);
     };
 
     return (
@@ -70,7 +76,6 @@ const GitLinkTable: React.FC = () => {
                 <Col span={24}>
                     <TableDropdown onTableNameChange={handleTableNameChange} tableName={tableName} />
                 </Col>
-
             </Row>
             <Table
                 dataSource={data}
@@ -109,4 +114,4 @@ const GitLinkTable: React.FC = () => {
     );
 };
 
-export default GitLinkTable;
+export default SearchTable;

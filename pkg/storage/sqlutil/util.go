@@ -688,3 +688,27 @@ func UpdateGitLink(ctx storage.AppDatabaseContext, tableName string, packageName
 
 	return nil
 }
+
+// SearchPackages searches for packages in the specified table that match the search query.
+func SearchPackages(ctx storage.AppDatabaseContext, tableName string, searchQuery string, pageSize int, offset int) (iter.Seq[map[string]interface{}], int, error) {
+	// Calculate the total number of items that match the search query
+	countQuery := fmt.Sprintf("SELECT COUNT(*) FROM %s WHERE package ILIKE $1", tableName)
+	var totalCount int
+	err := ctx.QueryRow(countQuery, "%"+searchQuery+"%").Scan(&totalCount)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	// Calculate the total number of pages
+	totalPages := (totalCount + pageSize - 1) / pageSize
+
+	// Query the items that match the search query for the specified page
+	query := fmt.Sprintf("SELECT package, homepage, description, git_link, link_confidence FROM %s WHERE package ILIKE $1 ORDER BY package LIMIT $2 OFFSET $3", tableName)
+	rows, err := ctx.Query(query, "%"+searchQuery+"%", pageSize, offset)
+	if err != nil {
+		return nil, 0, err
+	}
+
+	items := createMapIterator(rows)
+	return items, totalPages, nil
+}

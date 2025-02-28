@@ -362,6 +362,51 @@ func QueryWithPaginationHandler(c *gin.Context) {
 	})
 }
 
+// SearchPackagesRequest represents the request parameters for searching packages.
+type SearchPackagesRequest struct {
+	TableName   string `form:"tableName" binding:"required"`
+	SearchQuery string `form:"searchQuery" binding:"required"`
+	PageSize    int    `form:"pageSize" binding:"required"`
+	Offset      int    `form:"offset"`
+}
+
+// @Summary Search packages
+// @Description Search for packages in the specified table that match the search query
+// @Accept json
+// @Produce json
+// @Param tableName query string true "Table Name"
+// @Param searchQuery query string true "Search Query"
+// @Param pageSize query int true "Page Size"
+// @Param offset query int false "Offset"
+// @Success 200 {object} map[string]interface{}
+// @Router /search-packages [get]
+func SearchPackagesHandler(c *gin.Context) {
+	var req SearchPackagesRequest
+	if err := c.ShouldBindQuery(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx := storage.GetDefaultAppDatabaseContext()
+	iterSeq, totalPages, err := sqlutil.SearchPackages(ctx, req.TableName, req.SearchQuery, req.PageSize, req.Offset)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// 将 iter.Seq 转换为切片
+	var items []map[string]interface{}
+	iterSeq(func(item map[string]interface{}) bool {
+		items = append(items, item)
+		return true
+	})
+
+	c.JSON(http.StatusOK, gin.H{
+		"items":      items,
+		"totalPages": totalPages,
+	})
+}
+
 func registResult(e gin.IRouter) {
 	e.GET("/results", resultsHandler)
 	e.GET("/results/:scoreid", resultHandler)
@@ -369,6 +414,7 @@ func registResult(e gin.IRouter) {
 	e.GET("/rankings", rankingHandler)
 	e.POST("/update-gitlink", UpdateGitLinkHandler)
 	e.GET("/query-with-pagination", QueryWithPaginationHandler)
+	e.GET("/search-packages", SearchPackagesHandler)
 
 	go cacheRankingPeriodically()
 }

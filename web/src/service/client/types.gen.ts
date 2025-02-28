@@ -213,6 +213,41 @@ export type GetResultsByScoreidResponses = {
 
 export type GetResultsByScoreidResponse = GetResultsByScoreidResponses[keyof GetResultsByScoreidResponses];
 
+export type GetSearchPackagesData = {
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * Table Name
+         */
+        tableName: string;
+        /**
+         * Search Query
+         */
+        searchQuery: string;
+        /**
+         * Page Size
+         */
+        pageSize: number;
+        /**
+         * Offset
+         */
+        offset?: number;
+    };
+    url: '/search-packages';
+};
+
+export type GetSearchPackagesResponses = {
+    /**
+     * OK
+     */
+    200: {
+        [key: string]: unknown;
+    };
+};
+
+export type GetSearchPackagesResponse = GetSearchPackagesResponses[keyof GetSearchPackagesResponses];
+
 export type PostUpdateGitlinkData = {
     /**
      * Update Git Link Request

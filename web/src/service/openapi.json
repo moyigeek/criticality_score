@@ -205,6 +205,56 @@
                 }
             }
         },
+        "/search-packages": {
+            "get": {
+                "description": "Search for packages in the specified table that match the search query",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Search packages",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Table Name",
+                        "name": "tableName",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "Search Query",
+                        "name": "searchQuery",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Page Size",
+                        "name": "pageSize",
+                        "in": "query",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset",
+                        "name": "offset",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": true
+                        }
+                    }
+                }
+            }
+        },
         "/update-gitlink": {
             "post": {
                 "description": "Update the git link for a specified package",

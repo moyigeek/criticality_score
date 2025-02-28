@@ -283,6 +283,41 @@ paths:
           schema:
             $ref: '#/definitions/model.ResultDTO'
       summary: Get score results
+  /search-packages:
+    get:
+      consumes:
+      - application/json
+      description: Search for packages in the specified table that match the search
+        query
+      parameters:
+      - description: Table Name
+        in: query
+        name: tableName
+        required: true
+        type: string
+      - description: Search Query
+        in: query
+        name: searchQuery
+        required: true
+        type: string
+      - description: Page Size
+        in: query
+        name: pageSize
+        required: true
+        type: integer
+      - description: Offset
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Search packages
   /update-gitlink:
     post:
       consumes:
