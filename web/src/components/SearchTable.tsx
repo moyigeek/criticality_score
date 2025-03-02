@@ -2,10 +2,9 @@
 import { getSearchPackages } from "@/service/client";
 import { Table } from "antd";
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router";
 import TableDropdown from "./TableDropdown";
 import EditModal from "./EditModal";
-import { Button, Row, Col } from "antd";
+import { Button, } from "antd";
 
 type Data = {
     package: string,
@@ -58,6 +57,7 @@ const SearchTable: React.FC<SearchTableProps> = ({ searchQuery }) => {
 
     const handleTableNameChange = (newTableName: string) => {
         setTableName(newTableName);
+        fetchData(currentPage, pageSize, newTableName, searchQuery);
     };
 
     const handleEditClick = (record: Data) => {
@@ -72,11 +72,10 @@ const SearchTable: React.FC<SearchTableProps> = ({ searchQuery }) => {
 
     return (
         <div>
-            <Row>
-                <Col span={24}>
-                    <TableDropdown onTableNameChange={handleTableNameChange} tableName={tableName} />
-                </Col>
-            </Row>
+
+            <TableDropdown onTableNameChange={handleTableNameChange} tableName={tableName} />
+
+
             <Table
                 dataSource={data}
                 pagination={{

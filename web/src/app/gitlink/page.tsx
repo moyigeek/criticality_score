@@ -3,6 +3,7 @@ import GitLinkTable from '@/components/GitLinkTable';
 import TopNav from '@/components/TopNav';
 import SearchBar from '@/components/SearchBar';
 import SearchTable from '@/components/SearchTable';
+import { Space } from 'antd';
 import React, { useState } from 'react';
 
 const GitLinkPage: React.FC = () => {
@@ -21,6 +22,7 @@ const GitLinkPage: React.FC = () => {
 
     return (
         <div>
+            <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
             <TopNav initialKey="gitlink"/>
             <SearchBar onSearch={handleSearch} onClearSearch={handleClearSearch} />
             {isSearching ? (
@@ -28,6 +30,7 @@ const GitLinkPage: React.FC = () => {
             ) : (
                 <GitLinkTable />
             )}
+            </Space>
         </div>
     );
 };

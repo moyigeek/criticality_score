@@ -297,9 +297,10 @@ type UpdateGitLinkRequest struct {
 
 // QueryWithPaginationRequest represents the request parameters for querying with pagination.
 type QueryWithPaginationRequest struct {
-	TableName string `form:"tableName" binding:"required"`
-	PageSize  int    `form:"pageSize" binding:"required"`
-	Offset    int    `form:"offset" `
+	TableName  string `form:"tableName" binding:"required"`
+	PageSize   int    `form:"pageSize" binding:"required"`
+	Offset     int    `form:"offset"`
+	Confidence bool   `form:"confidence"`
 }
 
 // @Summary Update git link
@@ -333,6 +334,7 @@ func UpdateGitLinkHandler(c *gin.Context) {
 // @Param tableName query string true "Table Name"
 // @Param pageSize query int true "Page Size"
 // @Param offset query int true "Offset"
+// @Param confidence query bool true "Confidence"
 // @Success 200 {object} map[string]interface{}
 // @Router /query-with-pagination [get]
 func QueryWithPaginationHandler(c *gin.Context) {
@@ -341,9 +343,10 @@ func QueryWithPaginationHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+	println("[debug]req.confidence", req.Confidence)
 
 	ctx := storage.GetDefaultAppDatabaseContext()
-	iterSeq, totalPages, err := sqlutil.QueryWithPagination(ctx, req.TableName, req.PageSize, req.Offset)
+	iterSeq, totalPages, err := sqlutil.QueryWithPagination(ctx, req.TableName, req.PageSize, req.Offset, req.Confidence)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

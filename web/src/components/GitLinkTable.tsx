@@ -1,10 +1,9 @@
 "use client";
 import { getQueryWithPagination } from "@/service/client";
-import { Table } from "antd";
+import { Table, Switch, Button, Row, Col } from "antd";
 import React, { useEffect, useState } from "react";
 import TableDropdown from "./TableDropdown";
 import EditModal from "./EditModal";
-import { Button, Row, Col } from "antd";
 
 type Data = {
     package: string,
@@ -22,6 +21,7 @@ const GitLinkTable: React.FC = () => {
     const [total, setTotal] = useState<number>(0);
     const [tableName, setTableName] = useState<string>("arch_packages");
     const [selectedPackage, setSelectedPackage] = useState<Data | null>(null);
+    const [confidence, setConfidence] = useState<boolean>(true);
 
     const fetchData = async (page: number, pageSize: number) => {
         const response = await getQueryWithPagination({
@@ -29,6 +29,7 @@ const GitLinkTable: React.FC = () => {
                 tableName: tableName, // 替换为实际的表名
                 pageSize: pageSize,
                 offset: (page - 1) * pageSize,
+                confidence: confidence,
             },
         });
         if (response && response.data && Array.isArray(response.data.items)) {
@@ -43,7 +44,7 @@ const GitLinkTable: React.FC = () => {
 
     useEffect(() => {
         fetchData(currentPage, pageSize);
-    }, [currentPage, pageSize, tableName]);
+    }, [currentPage, pageSize, tableName, confidence]);
 
     const handleTableChange = (pagination: any) => {
         setCurrentPage(pagination.current);
@@ -60,17 +61,28 @@ const GitLinkTable: React.FC = () => {
 
     const handleModalClose = () => {
         setSelectedPackage(null);
-        //更新数据
+        // 更新数据
         fetchData(currentPage, pageSize);
+    };
+
+    const handleConfidenceChange = (checked: boolean) => {
+        setConfidence(checked);
     };
 
     return (
         <div>
-            <Row>
-                <Col span={24}>
+           <Row gutter={[16, 16]} justify="space-between" align="middle">
+                <Col>
                     <TableDropdown onTableNameChange={handleTableNameChange} tableName={tableName} />
                 </Col>
-
+                <Col>
+                    <Switch
+                        checkedChildren="linkConfidence"
+                        unCheckedChildren="linkConfidence"
+                        checked={confidence}
+                        onChange={handleConfidenceChange}
+                    />
+                </Col>
             </Row>
             <Table
                 dataSource={data}

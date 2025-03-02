@@ -87,6 +87,13 @@ const docTemplate = `{
                         "name": "offset",
                         "in": "query",
                         "required": true
+                    },
+                    {
+                        "type": "boolean",
+                        "description": "Confidence",
+                        "name": "confidence",
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {

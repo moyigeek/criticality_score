@@ -119,6 +119,10 @@ export type GetQueryWithPaginationData = {
          * Offset
          */
         offset: number;
+        /**
+         * Confidence
+         */
+        confidence: boolean;
     };
     url: '/query-with-pagination';
 };

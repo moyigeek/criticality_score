@@ -647,9 +647,15 @@ func createMapIterator(rows *sql.Rows) iter.Seq[map[string]interface{}] {
 	}
 }
 
-func QueryWithPagination(ctx storage.AppDatabaseContext, tableName string, pageSize int, offset int) (iter.Seq[map[string]interface{}], int, error) {
+func QueryWithPagination(ctx storage.AppDatabaseContext, tableName string, pageSize int, offset int, confidence bool) (iter.Seq[map[string]interface{}], int, error) {
 	// Calculate the total number of items
-	countQuery := fmt.Sprintf("SELECT COUNT(*) FROM %s", tableName)
+	println("[debug]:confidence:", confidence)
+	var countQuery string
+	if confidence {
+		countQuery = fmt.Sprintf("SELECT COUNT(*) FROM %s WHERE link_confidence IS NULL", tableName)
+	} else {
+		countQuery = fmt.Sprintf("SELECT COUNT(*) FROM %s", tableName)
+	}
 	var totalCount int
 	err := ctx.QueryRow(countQuery).Scan(&totalCount)
 	if err != nil {
@@ -660,7 +666,12 @@ func QueryWithPagination(ctx storage.AppDatabaseContext, tableName string, pageS
 	totalPages := (totalCount + pageSize - 1) / pageSize
 
 	// Query the items for the specified page
-	query := fmt.Sprintf("SELECT package,homepage,description,git_link,link_confidence FROM %s ORDER BY package LIMIT $1 OFFSET $2 ", tableName)
+	var query string
+	if confidence {
+		query = fmt.Sprintf("SELECT package, homepage, description, git_link, link_confidence FROM %s WHERE link_confidence IS NULL ORDER BY package LIMIT $1 OFFSET $2", tableName)
+	} else {
+		query = fmt.Sprintf("SELECT package, homepage, description, git_link, link_confidence FROM %s ORDER BY package LIMIT $1 OFFSET $2", tableName)
+	}
 	rows, err := ctx.Query(query, pageSize, offset)
 	if err != nil {
 		return nil, 0, err

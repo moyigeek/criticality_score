@@ -27,7 +27,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, onClearSearch }) => {
                 placeholder="Search packages"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                style={{ width: 300, marginRight: 10 }}
+                style={{ width: "95%", marginRight: 10 ,alignContent:"right"}}
             />
             <Button type="primary" onClick={handleSearch} style={{ marginRight: 10 }}>
                 Search

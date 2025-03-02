@@ -199,6 +199,11 @@ paths:
         name: offset
         required: true
         type: integer
+      - description: Confidence
+        in: query
+        name: confidence
+        required: true
+        type: boolean
       produces:
       - application/json
       responses:
